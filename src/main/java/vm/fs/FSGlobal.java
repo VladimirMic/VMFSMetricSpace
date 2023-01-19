@@ -1,15 +1,13 @@
 package vm.fs;
 
-import java.util.logging.Logger;
-
 /**
  *
  * @author xmic
  */
 public class FSGlobal {
 
-    private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
-    
-    
+    public static final String ROOT_FOLDER_PATH = "c:\\Data\\Similarity_search\\";
+    public static final String DATASET_FOLDER = ROOT_FOLDER_PATH + "Dataset";
+    public static final String RESULT_FOLDER = ROOT_FOLDER_PATH + "Dataset";
 
 }
