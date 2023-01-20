@@ -1,5 +1,11 @@
 package vm.fs.dataset;
 
+import java.util.Map;
+import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
+import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
+import vm.metricspace.Dataset;
+import vm.metricspace.dataToStringConvertors.SingularisedConvertors;
+
 /**
  *
  * @author xmic
@@ -32,18 +38,18 @@ public class FSDatasetInstanceSingularizator {
 
         public MPEG7dataset() {
             this.datasetName = "mpeg7_1m";
-            this.metricSpace = new DBMetricSpaceImpl();
-            this.metricSpacesStorage = new DBMetricSpacesStorage<>(metricSpace, SingularisedConvertors.MPEG7_SPACE);
+            this.metricSpace = new FSMetricSpaceImpl();
+            this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.MPEG7_SPACE);
         }
 
     }
 
     private static class DBFloatVectorDataset extends Dataset<float[]> {
 
-        public DBFloatVectorDataset(String datasetName) throws SQLException {
+        public DBFloatVectorDataset(String datasetName) {
             this.datasetName = datasetName;
-            this.metricSpace = new DBMetricSpaceImpl();
-            this.metricSpacesStorage = new DBMetricSpacesStorage<>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+            this.metricSpace = new FSMetricSpaceImpl();
+            this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
 
     }
