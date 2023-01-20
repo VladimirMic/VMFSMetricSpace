@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.List;
@@ -48,18 +47,18 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     }
 
     @Override
-    public Iterator<Object> getMetricObjectsFromDataset(String datasetName, Object... params) {
+    public Iterator<Object> getObjectsFromDataset(String datasetName, Object... params) {
         return getIteratorOfObjects(FSGlobal.DATASET_FOLDER, datasetName, params);
     }
 
     @Override
-    public List<Object> getMetricPivots(String pivotSetName, Object... params) {
+    public List<Object> getPivots(String pivotSetName, Object... params) {
         Iterator<Object> it = getIteratorOfObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, params);
         return Tools.getObjectsFromIterator(it);
     }
 
     @Override
-    public List<Object> getMetricQueryObjects(String querySetName, Object... params) {
+    public List<Object> getQueryObjects(String querySetName, Object... params) {
         Iterator<Object> it = getIteratorOfObjects(FSGlobal.QUERY_FOLDER, querySetName, params);
         return Tools.getObjectsFromIterator(it);
     }
@@ -91,12 +90,12 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
      * its data
      */
     @Override
-    public void storeMetricObjectToDataset(Object metricObject, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
+    public void storeObjectToDataset(Object metricObject, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
         GZIPOutputStream datasetOutputStream = null;
         try {
-            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName);
+            File f = getFileForObjects(FSGlobal.DATA_FOLDER, datasetName);
             datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
-            storeMetricObjectToDataset(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
+            storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } finally {
@@ -109,7 +108,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         }
     }
 
-    private void storeMetricObjectToDataset(Object metricObject, GZIPOutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
+    private void storeMetricObject(Object metricObject, GZIPOutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
         String id = metricSpace.getIDOfMetricObject(metricObject).toString();
         String data = dataSerializator.metricObjectDataToString((T) metricSpace.getDataOfMetricObject(metricObject, additionalParamsToExtractDataFromMetricObject));
         datasetOutputStream.write(id.getBytes());
@@ -119,13 +118,15 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     }
 
     @Override
-    public synchronized int storeMetricObjectsToDataset(Iterator<Object> it, int count, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
+    public synchronized int storeObjectsToDataset(Iterator<Object> it, int count, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
         GZIPOutputStream datasetOutputStream = null;
         int ret = 0;
         try {
+            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName);
+            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
             for (ret = 1; it.hasNext(); ret++) {
                 Object metricObject = it.next();
-                storeMetricObjectToDataset(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
+                storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
                 if (ret % 10000 == 0) {
                     LOG.log(Level.INFO, "Stored {0} metric objects", ret);
                 }
@@ -146,10 +147,9 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     private File getFileForObjects(String folder, String fileName) {
         File f = new File(folder);
         f.mkdirs();
+        LOG.log(Level.INFO, "Folder: " + f.getAbsolutePath() + ", file: " + fileName);
         return new File(f, fileName + ".gz");
     }
-
-    private DBStoreMetricPivots insertPivotsManager = null;
 
     /**
      *
@@ -160,22 +160,25 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
      * and its data
      */
     @Override
-    public void storeMetricPivots(List<Object> pivots, String pivotSetName, Object... additionalParamsToStoreWithNewPivotSet) {
-        if (insertPivotsManager == null) {
+    public void storePivots(List<Object> pivots, String pivotSetName, Object... additionalParamsToStoreWithNewPivotSet) {
+        GZIPOutputStream datasetOutputStream = null;
+        try {
+            File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName);
+            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
+            for (Object metricObject : pivots) {
+                storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewPivotSet);
+            }
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        } finally {
             try {
-                dbTableForPivotsAndQueries.checkAndAskForPivotSetExistence(pivotSetName, additionalParamsToStoreWithNewPivotSet);
-                insertPivotsManager = new DBStoreMetricPivots();
-            } catch (SQLException ex) {
-                Logger.getLogger(DBMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
-                return;
+                datasetOutputStream.flush();
+                datasetOutputStream.close();
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, null, ex);
             }
         }
-        for (Object pivot : pivots) {
-            insertPivotsManager.storeMetricObject(pivot, pivotSetName, additionalParamsToStoreWithNewPivotSet);
-        }
     }
-
-    private DBStoreMetricQueries insertQueriesManager = null;
 
     /**
      *
@@ -187,39 +190,62 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
      */
     @Override
     public void storeQueryObjects(List<Object> queryObjs, String querySetName, Object... additionalParamsToStoreWithNewQuerySet) {
-        if (insertQueriesManager == null) {
-            try {
-                dbTableForPivotsAndQueries.checkAndAskForQuerySetExistence(querySetName, additionalParamsToStoreWithNewQuerySet);
-                insertQueriesManager = new DBStoreMetricQueries();
-            } catch (SQLException ex) {
-                LOG.log(Level.SEVERE, null, ex);
-                return;
+        GZIPOutputStream datasetOutputStream = null;
+        try {
+            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, querySetName);
+            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
+            for (Object metricObject : queryObjs) {
+                storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewQuerySet);
             }
-        }
-        for (Object queryObj : queryObjs) {
-            insertQueriesManager.storeMetricObject(queryObj, querySetName, additionalParamsToStoreWithNewQuerySet);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                datasetOutputStream.flush();
+                datasetOutputStream.close();
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public int getPrecomputedDatasetSize(String datasetName) {
+        BufferedReader br = null;
         try {
-            String sql = "SELECT obj_count FROM dataset WHERE name='" + datasetName + "'";
-            LOG.log(Level.INFO, sql);
-            ResultSet rs = st.executeQuery(sql);
-            rs.next();
-            return rs.getInt("obj_count");
-        } catch (SQLException ex) {
+            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, datasetName + "_size.txt");
+            br = new BufferedReader(new FileReader(f));
+            String line = br.readLine();
+            return Integer.parseInt(line);
+        } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
         }
         return -1;
     }
 
-    public void updateDatasetSize(String datasetName) throws SQLException {
-        int numberOfObjectsInDataset = reevaluatetNumberOfObjectsInDataset(datasetName);
-        String sql = "UPDATE dataset SET obj_count=" + numberOfObjectsInDataset + " WHERE name='" + datasetName + "'";
-        System.out.println(datasetName + ": " + numberOfObjectsInDataset + " metric objects");
-        st.execute(sql);
+    @Override
+    public void updateDatasetSize(String datasetName, int count) {
+        FileOutputStream os = null;
+        try {
+            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt");
+            os = new FileOutputStream(f);
+            byte[] bytes = Integer.toString(count).getBytes();
+            os.write(bytes);
+        } catch (IOException ex) {
+            Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                os.close();
+            } catch (IOException ex) {
+                Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private class MetricObjectFileIterator<T> implements Iterator<Object> {
@@ -264,74 +290,9 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
                 counter++;
                 return entry;
             } catch (IOException ex) {
-                Logger.getLogger(DBMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+                LOG.log(Level.SEVERE, null, ex);
             }
             return null;
-        }
-    }
-
-    private class MetricObjectDBIterator<T> implements Iterator<Object> {
-
-        protected AbstractMap.SimpleEntry<String, T> nextObject;
-        protected AbstractMap.SimpleEntry<String, T> currentObject;
-        protected ResultSet set;
-
-        /**
-         * Number of objects read from the stream
-         */
-        protected int objectsRead;
-
-        public MetricObjectDBIterator(ResultSet set) {
-            this.set = set;
-            this.nextObject = nextStreamObject();
-        }
-
-        private AbstractMap.SimpleEntry<String, T> nextStreamObject() {
-            try {
-                set.next();
-                String dbIntId = set.getString("id");
-                String data = set.getString("data");
-                T transformed = (T) dataSerializator.parseDBString(data);
-                AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(dbIntId, transformed);
-                return entry;
-            } catch (SQLException ex) {
-                try {
-                    set.close();
-                } catch (SQLException ex1) {
-                    Logger.getLogger(DBMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex1);
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return nextObject != null;
-        }
-
-        @Override
-        public AbstractMap.SimpleEntry<String, T> next() throws NoSuchElementException, IllegalArgumentException, IllegalStateException {
-            if (nextObject == null) {
-                throw new NoSuchElementException("No more objects in the stream");
-            }
-            currentObject = nextObject;
-            nextObject = nextStreamObject();
-            return currentObject;
-        }
-
-    }
-
-    private class DBStoreMetricPivots extends DBAbstractInsertMetricObjects<T> {
-
-        public DBStoreMetricPivots() throws SQLException {
-            super(metricSpace, dataSerializator, "INSERT INTO pivot(id, pivot_set_name, data) VALUES (?, ?, ?)");
-        }
-    }
-
-    private class DBStoreMetricQueries extends DBAbstractInsertMetricObjects<T> {
-
-        public DBStoreMetricQueries() throws SQLException {
-            super(metricSpace, dataSerializator, "INSERT INTO query_obj(id, query_set_name, data) VALUES (?, ?, ?)");
         }
     }
 
