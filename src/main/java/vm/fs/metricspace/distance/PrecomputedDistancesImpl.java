@@ -1,4 +1,4 @@
-package vm.fs.metricSpaceImpl;
+package vm.fs.metricspace.distance;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,15 +12,17 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
+import vm.metricspace.distance.PrecomputedDistancesInterface;
 
 /**
  *
  * @author xmic
  */
-public class PrecomputedDistances {
-    
-    private static final Logger LOG = Logger.getLogger(PrecomputedDistances.class.getName());
+public class PrecomputedDistancesImpl extends PrecomputedDistancesInterface {
 
+    private static final Logger LOG = Logger.getLogger(PrecomputedDistancesImpl.class.getName());
+
+    @Override
     public float[][] loadPrecomPivotsToObjectsDists(String datasetName, String pivotSetName, int pivotCount, List<String> columnHeaders, List<String> rowHeaders) {
         try {
             List<float[]> retList = new ArrayList<>();
@@ -58,11 +60,11 @@ public class PrecomputedDistances {
         return null;
 
     }
-    
-    private File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount){
+
+    private File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount) {
         File f = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER);
         f.mkdirs();
-        return new File(f, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");        
+        return new File(f, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
     }
 
 }

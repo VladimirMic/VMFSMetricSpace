@@ -3,9 +3,9 @@ package vm.fs.metricSpaceImpl;
 import java.util.AbstractMap;
 import java.util.logging.Logger;
 import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.distance.DistanceFunction;
 import vm.metricspace.distance.impl.L2OnFloatsArray;
 import vm.metricspace.distance.impl.Sapir3DistanceFunction;
+import vm.metricspace.distance.DistanceFunctionInterface;
 
 /**
  *
@@ -17,7 +17,7 @@ public class FSMetricSpaceImpl <T> extends AbstractMetricSpace<T> {
     private static final Logger LOG = Logger.getLogger(FSMetricSpaceImpl.class.getName());
 
     @Override
-    public DistanceFunction getDistanceFunctionForDataset(String datasetName, Object... params) {
+    public DistanceFunctionInterface getDistanceFunctionForDataset(String datasetName, Object... params) {
         if (datasetName.contains("_PCA")) {
             return new L2OnFloatsArray();
         }
