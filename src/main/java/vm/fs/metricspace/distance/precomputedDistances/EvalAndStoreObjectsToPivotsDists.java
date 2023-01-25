@@ -1,4 +1,4 @@
-package vm.fs.main.datatools;
+package vm.fs.metricspace.distance.precomputedDistances;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -29,10 +29,10 @@ public class EvalAndStoreObjectsToPivotsDists {
         Dataset dataset;
         dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
         dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
-        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
-        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+//        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
+//        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
         int pivotCount = 512;
-        String output = "h:\\Similarity_search\\DistsToPivots\\" + dataset.getDatasetName() + "_" + pivotCount + "pivots.csv.gz";
+        String output = PrecomputedDistancesLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
@@ -78,29 +78,4 @@ public class EvalAndStoreObjectsToPivotsDists {
 
     }
 
-    private static void processBatch(AbstractMetricSpace metricSpace, Iterator<Object> objects, List<Object> pivots, GZIPOutputStream outputStream, DistanceFunctionInterface df, CountDownLatch latch, ConcurrentLinkedQueue<String> queue, ExecutorService threadPool) throws InterruptedException, IOException {
-        while (objects.hasNext()) {
-            final Object next = objects.next();
-            final Object nextID = metricSpace.getIDOfMetricObject(next);
-            final Object nextData = metricSpace.getDataOfMetricObject(next);
-
-            threadPool.execute(() -> {
-                StringBuilder sb = new StringBuilder();
-                sb.append(nextID.toString()).append(":");
-                for (Object pivot : pivots) {
-                    Object pivotID = metricSpace.getIDOfMetricObject(pivot);
-                    Object pivotData = metricSpace.getDataOfMetricObject(pivot);
-                    float dist = df.getDistance(nextData, pivotData);
-                    sb.append(pivotID.toString()).append(",").append(dist).append(",");
-                }
-                sb.append('\n');
-                queue.add(sb.toString());
-                latch.countDown();
-            });
-            while (!queue.isEmpty()) {
-                String poll = queue.poll();
-                outputStream.write(poll.getBytes());
-            }
-        }
-    }
 }

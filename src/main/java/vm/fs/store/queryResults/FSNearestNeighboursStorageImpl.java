@@ -46,7 +46,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         GZIPOutputStream datasetOutputStream = null;
         try {
             checkAndAskForResultsExistence(datasetName, querySetName, resultsName);
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(getFileForResults(resultsName, datasetName, querySetName), true), true);
+            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(getFileForResults(resultsName, datasetName, querySetName), false), true);
             for (int i = 0; i < queryObjectsIDs.size(); i++) {
                 if (queryResults[i] == null) {
                     continue;
@@ -94,7 +94,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         Object[] options = new String[]{"Yes", "No"};
         if (existResultSetSpace(datasetName, querySetName, resultsName)) {
             LOG.log(Level.WARNING, "Asking for a question, waiting for the reply");
-            String question = "Storing space for result set " + resultsName + " on the dataset " + datasetName + " and query set " + querySetName + " already exists. Do you want to results into it? Answer no causes immediate stop.";
+            String question = "Storing space for result set " + resultsName + " on the dataset " + datasetName + " and query set " + querySetName + " already exists. Do you want to delete results in it? Answer no causes immediate stop.";
             int add = JOptionPane.showOptionDialog(null, question, "New query results?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
             if (add == 1) {
                 System.exit(1);

@@ -15,6 +15,7 @@ public class FSGlobal {
     public static final String PRECOMPUTED_DISTS_FOLDER = DATA_FOLDER + "DistsToPivots";
 
     public static final String RESULT_FOLDER = ROOT_FOLDER_PATH + "Results\\";
+    public static final String RESULT_STATS_FOLDER = RESULT_FOLDER + "Processed_stats\\";
     public static final String GROUND_TRUTH_FOLDER = RESULT_FOLDER + "Ground_truth\\";
 
     public static final String AUXILIARY_FOR_DATA_TRANSFORMS = ROOT_FOLDER_PATH + "AuxiliaryDataForTransforms\\";

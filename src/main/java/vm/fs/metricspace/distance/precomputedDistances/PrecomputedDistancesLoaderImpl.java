@@ -1,4 +1,4 @@
-package vm.fs.metricspace.distance;
+package vm.fs.metricspace.distance.precomputedDistances;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,15 +12,15 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricspace.distance.PrecomputedDistancesInterface;
+import vm.metricspace.distance.PrecomputedDistancesLoader;
 
 /**
  *
  * @author xmic
  */
-public class PrecomputedDistancesImpl extends PrecomputedDistancesInterface {
+public class PrecomputedDistancesLoaderImpl extends PrecomputedDistancesLoader {
 
-    private static final Logger LOG = Logger.getLogger(PrecomputedDistancesImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(PrecomputedDistancesLoaderImpl.class.getName());
 
     @Override
     public float[][] loadPrecomPivotsToObjectsDists(String datasetName, String pivotSetName, int pivotCount, List<String> columnHeaders, List<String> rowHeaders) {
@@ -31,7 +31,7 @@ public class PrecomputedDistancesImpl extends PrecomputedDistancesInterface {
             try {
                 String line = br.readLine();
                 String[] columns = line.split(";");
-                columnHeaders = Tools.arrayToList(columns).subList(1, columns.length - 1);
+                columnHeaders = Tools.arrayToList(columns).subList(1, columns.length);
                 rowHeaders = new ArrayList<>();
                 for (int counter = 1; line != null; counter++) {
                     line = br.readLine();
@@ -61,10 +61,12 @@ public class PrecomputedDistancesImpl extends PrecomputedDistancesInterface {
 
     }
 
-    private File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount) {
+    protected static File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount) {
         File f = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER);
         f.mkdirs();
-        return new File(f, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
+        File ret = new File(f, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
+        LOG.log(Level.INFO, "File for precumputed distances: " + ret.getAbsolutePath());
+        return ret;
     }
 
 }

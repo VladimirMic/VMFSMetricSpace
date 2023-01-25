@@ -43,6 +43,23 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
         additional_stats
     }
 
+    public FSQueryExecutionStatsStoreImpl(String groundTruthName, String groundTruthQuerySetName, int groundTruthNNCount,
+            String candSetName, String candSetQuerySetName, String resultName,
+            Integer candSetFixedSize) {
+        Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> attributesForFileName = new HashMap<>();
+        attributesForFileName.put(DATA_NAMES_IN_FILE_NAME.ground_truth_name, groundTruthName);
+        attributesForFileName.put(DATA_NAMES_IN_FILE_NAME.ground_truth_query_set_name, groundTruthQuerySetName);
+        attributesForFileName.put(DATA_NAMES_IN_FILE_NAME.ground_truth_nn_count, Integer.toString(groundTruthNNCount));
+        attributesForFileName.put(DATA_NAMES_IN_FILE_NAME.cand_set_name, candSetName);
+        attributesForFileName.put(DATA_NAMES_IN_FILE_NAME.cand_set_query_set_name, candSetQuerySetName);
+        attributesForFileName.put(DATA_NAMES_IN_FILE_NAME.storing_result_name, resultName);
+        if (candSetFixedSize != null) {
+            attributesForFileName.put(DATA_NAMES_IN_FILE_NAME.cand_set_fixed_size, candSetFixedSize.toString());
+        }
+        output = getFileForStats(attributesForFileName);
+        content = parseAsMap();
+    }
+
     /**
      *
      * @param attributesForFileName: ground_truth_name,
@@ -56,16 +73,16 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
     }
 
     @Override
-    public void storeStatsForQuery(Object queryObjId, Integer distanceComputationsCount, Integer time, Object... additionalParametersToStore) {
+    public void storeStatsForQuery(Object queryObjId, Integer distanceComputationsCount, long time, Object... additionalParametersToStore) {
         TreeMap<FSQueryExecutionStatsStoreImpl.QUERY_STATS, String> treeMap = new TreeMap(new StatsAttributesComparator());
         treeMap.put(QUERY_STATS.query_obj_id, queryObjId.toString());
         treeMap.put(QUERY_STATS.cand_set_dynamic_size, Integer.toString(distanceComputationsCount));
-        if (time != null) {
-            treeMap.put(QUERY_STATS.query_execution_time, time.toString());
+        if (time != -1) {
+            treeMap.put(QUERY_STATS.query_execution_time, Long.toString(time));
         } else {
             treeMap.put(QUERY_STATS.query_execution_time, "null");
         }
-        if (additionalParametersToStore != null) {
+        if (additionalParametersToStore != null && additionalParametersToStore.length != 0) {
             String additionalStats = DataTypeConvertor.objectsToString(additionalParametersToStore, ";");
             treeMap.put(QUERY_STATS.additional_stats, additionalStats);
         } else {
@@ -79,9 +96,7 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
         content.put(queryObjId.toString(), line.split(";"));
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize(); //To change body of generated methods, choose Tools | Templates.
+    public void saveFile() {
         BufferedWriter bw = null;
         try {
             GZIPOutputStream datasetOutputStream = new GZIPOutputStream(new FileOutputStream(output, false), true);
@@ -104,10 +119,13 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } finally {
-            bw.flush();
-            bw.close();
+            try {
+                bw.flush();
+                bw.close();
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
         }
-
     }
 
     /**
@@ -150,7 +168,7 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
         for (Map.Entry<DATA_NAMES_IN_FILE_NAME, String> entry : treeMap.entrySet()) {
             path.append(entry.getValue()).append("_");
         }
-        File f = new File(FSGlobal.RESULT_FOLDER);
+        File f = new File(FSGlobal.RESULT_STATS_FOLDER);
         String fileName = path.toString();
         f.mkdirs();
         LOG.log(Level.INFO, "Folder: " + f.getAbsolutePath() + ", file: " + fileName);
