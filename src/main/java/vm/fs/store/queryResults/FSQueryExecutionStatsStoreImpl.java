@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPOutputStream;
 import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
@@ -24,7 +22,7 @@ import vm.queryResults.QueryExecutionStatsStoreInterface;
  *
  * @author Vlada
  */
-public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreInterface {
+public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInterface {
 
     private static final Logger LOG = Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName());
     protected final StatsAttributesComparator statsComp = new StatsAttributesComparator();
@@ -99,7 +97,7 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
     public void saveFile() {
         BufferedWriter bw = null;
         try {
-            GZIPOutputStream datasetOutputStream = new GZIPOutputStream(new FileOutputStream(output, false), true);
+            FileOutputStream datasetOutputStream = new FileOutputStream(output, false);
             bw = new BufferedWriter(new OutputStreamWriter(datasetOutputStream));
             for (String[] line : content.values()) {
                 TreeMap<QUERY_STATS, String> map = dataArrayToMap(line);
@@ -130,7 +128,7 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
 
     /**
      * returns list of rows. Each row is represented by a map where the first
-     * column (representing the queryObjId) is the key, and valu is to content
+     * column (representing the queryObjId) is the key, and value is to content
      * of the row
      *
      * @return
@@ -169,10 +167,10 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
             path.append(entry.getValue()).append("_");
         }
         File f = new File(FSGlobal.RESULT_STATS_FOLDER);
-        String fileName = path.toString();
+        String fileName = path.toString() + ".csv";
         f.mkdirs();
-        LOG.log(Level.INFO, "Folder: " + f.getAbsolutePath() + ", file: " + fileName);
-        return new File(f, fileName + ".gz");
+        LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
+        return new File(f, fileName);
 
     }
 
@@ -203,7 +201,7 @@ public class FSQueryExecutionStatsStoreImpl implements QueryExecutionStatsStoreI
                     return 4;
                 }
                 case storing_result_name: {
-                    return 5;
+                    return -1;
                 }
                 case cand_set_fixed_size: {
                     return 6;

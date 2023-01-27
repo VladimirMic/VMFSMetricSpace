@@ -6,11 +6,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.metricspace.distance.PrecomputedDistancesLoader;
 
@@ -23,7 +23,7 @@ public class PrecomputedDistancesLoaderImpl extends PrecomputedDistancesLoader {
     private static final Logger LOG = Logger.getLogger(PrecomputedDistancesLoaderImpl.class.getName());
 
     @Override
-    public float[][] loadPrecomPivotsToObjectsDists(String datasetName, String pivotSetName, int pivotCount, List<String> columnHeaders, List<String> rowHeaders) {
+    public float[][] loadPrecomPivotsToObjectsDists(String datasetName, String pivotSetName, int pivotCount) {
         try {
             List<float[]> retList = new ArrayList<>();
             BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount)))));
@@ -31,14 +31,17 @@ public class PrecomputedDistancesLoaderImpl extends PrecomputedDistancesLoader {
             try {
                 String line = br.readLine();
                 String[] columns = line.split(";");
-                columnHeaders = Tools.arrayToList(columns).subList(1, columns.length);
-                rowHeaders = new ArrayList<>();
+                columnHeaders = new HashMap<>();
+                for (int i = 1; i < columns.length; i++) {
+                    columnHeaders.put(columns[i], i - 1);
+                }
+                rowHeaders = new HashMap<>();
                 for (int counter = 1; line != null; counter++) {
                     line = br.readLine();
                     String[] split = line.split(";");
                     maxPivots = Math.min(split.length - 1, maxPivots);
                     float[] lineFloats = new float[maxPivots];
-                    rowHeaders.add(counter - 1, split[0]);
+                    rowHeaders.put(split[0], counter - 1);
                     for (int i = 0; i < lineFloats.length; i++) {
                         lineFloats[i] = Float.parseFloat(split[i + 1]);
                     }
