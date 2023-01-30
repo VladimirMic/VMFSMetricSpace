@@ -1,18 +1,15 @@
-package vm.fs.metricspace.distance.precomputedDistances;
+package vm.fs.main.metricspace.precomputeDistances;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.metricspace.distance.precomputedDistances.PrecomputedDistancesLoaderImpl;
 import vm.metricspace.AbstractMetricSpace;
 import vm.metricspace.Dataset;
 import vm.metricspace.distance.DistanceFunctionInterface;
@@ -25,13 +22,13 @@ public class EvalAndStoreObjectsToPivotsDists {
 
     public static final Logger LOGGER = Logger.getLogger(EvalAndStoreObjectsToPivotsDists.class.getName());
 
-    public static void main(String[] args) throws SQLException, FileNotFoundException, InterruptedException {
+    public static void main(String[] args) throws FileNotFoundException  {
         Dataset dataset;
         dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
         dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
-//        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
-//        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
-        int pivotCount = 512;
+        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
+        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+        int pivotCount = 256;
         String output = PrecomputedDistancesLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();

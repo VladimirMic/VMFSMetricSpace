@@ -24,9 +24,13 @@ public class PrecomputedDistancesLoaderImpl extends PrecomputedDistancesLoader {
 
     @Override
     public float[][] loadPrecomPivotsToObjectsDists(String datasetName, String pivotSetName, int pivotCount) {
+        List<float[]> retList = new ArrayList<>();
+        File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount);
+        if (!file.exists()) {
+            throw new IllegalArgumentException("File with the precomputed distances does no exists for datasetName " + datasetName + ", pivotSetName" + pivotSetName + ", pivotCount " + pivotCount);
+        }
         try {
-            List<float[]> retList = new ArrayList<>();
-            BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount)))));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));
             int maxPivots = pivotCount > 0 ? pivotCount : Integer.MAX_VALUE;
             try {
                 String line = br.readLine();
@@ -64,7 +68,7 @@ public class PrecomputedDistancesLoaderImpl extends PrecomputedDistancesLoader {
 
     }
 
-    protected static File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount) {
+    public final static File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount) {
         File f = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER);
         f.mkdirs();
         File ret = new File(f, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,7 +28,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
     private static final Logger LOG = Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName());
     protected final StatsAttributesComparator statsComp = new StatsAttributesComparator();
     private final File output;
-    protected final Map<String, String[]> content;
+    protected final Map<String, TreeMap<QUERY_STATS, String>> content;
 
     public static enum DATA_NAMES_IN_FILE_NAME {
         ground_truth_name, ground_truth_query_set_name, ground_truth_nn_count,
@@ -86,12 +87,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         } else {
             treeMap.put(QUERY_STATS.additional_stats, "null");
         }
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<QUERY_STATS, String> entry : treeMap.entrySet()) {
-            sb.append(entry.getValue()).append(";");
-        }
-        String line = sb.toString();
-        content.put(queryObjId.toString(), line.split(";"));
+        content.put(treeMap.get(QUERY_STATS.query_obj_id), treeMap);
     }
 
     public void saveFile() {
@@ -99,11 +95,13 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         try {
             FileOutputStream datasetOutputStream = new FileOutputStream(output, false);
             bw = new BufferedWriter(new OutputStreamWriter(datasetOutputStream));
-            for (String[] line : content.values()) {
-                TreeMap<QUERY_STATS, String> map = dataArrayToMap(line);
+            for (TreeMap<QUERY_STATS, String> map : content.values()) {
                 StringBuilder sb = new StringBuilder();
                 for (Map.Entry<QUERY_STATS, String> entry : map.entrySet()) {
-                    sb.append(entry.getValue()).append(";");
+                    sb.append(statsComp.getName(entry.getKey()));
+                    sb.append(";");
+                    sb.append(entry.getValue());
+                    sb.append(";");
                 }
                 try {
                     bw.write(sb.toString());
@@ -112,8 +110,6 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
                     Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            bw.write(bw.toString());
-            bw.write("\n");
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } finally {
@@ -127,34 +123,24 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
     }
 
     /**
-     * returns list of rows. Each row is represented by a map where the first
-     * column (representing the queryObjId) is the key, and value is to content
-     * of the row
+     * returns list of rows. Each row is represented by a map
      *
      * @return
      */
-    public final Map<String, String[]> parseAsMap() {
-        Map<String, String[]> ret = new HashMap<>();
+    public final Map<String, TreeMap<QUERY_STATS, String>> parseAsMap() {
+        Map<String, TreeMap<QUERY_STATS, String>> ret = new HashMap<>();
         if (!output.exists()) {
             return ret;
         }
-        List<String[]> values = Tools.parseCsvRowOriented(output.getAbsolutePath(), ";");
-        Iterator<String[]> it = values.iterator();
+        List<String[]> lines = Tools.parseCsvRowOriented(output.getAbsolutePath(), ";");
+        Iterator<String[]> it = lines.iterator();
         while (it.hasNext()) {
-            String[] next = it.next();
-            for (int i = 0; i < next.length; i++) {
-                ret.put(next[0], next);
+            String[] line = it.next();
+            TreeMap<QUERY_STATS, String> lineAsMap = new TreeMap<>(statsComp);
+            for (int i = 0; i + 1 < line.length; i += 2) {
+                lineAsMap.put(statsComp.indexToStats(line[i]), line[i + 1]);
             }
-        }
-        return ret;
-    }
-
-    protected TreeMap<FSQueryExecutionStatsStoreImpl.QUERY_STATS, String> dataArrayToMap(String[] array) {
-        TreeMap<FSQueryExecutionStatsStoreImpl.QUERY_STATS, String> ret = new TreeMap<>(statsComp);
-        for (int i = 0; i < array.length; i++) {
-            QUERY_STATS key = statsComp.indexToStats(i);
-            String string = array[i];
-            ret.put(key, string);
+            ret.put(lineAsMap.get(QUERY_STATS.query_obj_id), lineAsMap);
         }
         return ret;
     }
@@ -164,13 +150,16 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         treeMap.putAll(dataNamesInFileName);
         StringBuilder path = new StringBuilder();
         for (Map.Entry<DATA_NAMES_IN_FILE_NAME, String> entry : treeMap.entrySet()) {
-            path.append(entry.getValue()).append("_");
+            if (entry.getKey() != FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.storing_result_name) {
+                path.append(entry.getValue()).append("__");
+            }
         }
-        File f = new File(FSGlobal.RESULT_STATS_FOLDER);
+        File folder = new File(FSGlobal.RESULT_FOLDER, treeMap.get(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.storing_result_name));
+        folder = new File(folder, FSGlobal.RESULT_STATS_FOLDER);
         String fileName = path.toString() + ".csv";
-        f.mkdirs();
-        LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
-        return new File(f, fileName);
+        folder.mkdirs();
+        LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{folder.getAbsolutePath(), fileName});
+        return new File(folder, fileName);
 
     }
 
@@ -215,51 +204,51 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
 
         @Override
         public int compare(QUERY_STATS o1, QUERY_STATS o2) {
-            int order1 = getOrder(o1);
-            int order2 = getOrder(o2);
-            return Integer.compare(order1, order2);
+            String order1 = getName(o1);
+            String order2 = getName(o2);
+            return order2.compareTo(order1);
         }
 
-        public QUERY_STATS indexToStats(int index) {
+        public QUERY_STATS indexToStats(String index) {
             switch (index) {
-                case 0: {
+                case "query_obj_id": {
                     return QUERY_STATS.query_obj_id;
                 }
-                case 1: {
+                case "recall": {
                     return QUERY_STATS.recall;
                 }
-                case 2: {
+                case "cand_set_dynamic_size": {
                     return QUERY_STATS.cand_set_dynamic_size;
                 }
-                case 3: {
+                case "query_execution_time": {
                     return QUERY_STATS.query_execution_time;
                 }
-                case 4: {
+                case "additional_stats": {
                     return QUERY_STATS.additional_stats;
                 }
             }
             return null;
         }
 
-        public int getOrder(QUERY_STATS o) {
+        public String getName(QUERY_STATS o) {
             switch (o) {
                 case query_obj_id: {
-                    return 0;
+                    return "query_obj_id";
                 }
                 case recall: {
-                    return 1;
+                    return "recall";
                 }
                 case cand_set_dynamic_size: {
-                    return 2;
+                    return "cand_set_dynamic_size";
                 }
                 case query_execution_time: {
-                    return 3;
+                    return "query_execution_time";
                 }
                 case additional_stats: {
-                    return 4;
+                    return "additional_stats";
                 }
             }
-            return -1;
+            return "null";
         }
     }
 

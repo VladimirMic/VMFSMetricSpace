@@ -29,15 +29,11 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
 
     private static final Logger LOG = Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName());
 
-    private File getFileForGroundTruth(String resultsName, String datasetName, String querySetName) {
-        return new File(FSGlobal.GROUND_TRUTH_FOLDER, resultsName + "_" + datasetName + "_" + querySetName + ".gz");
-    }
-
     private File getFileForResults(String resultsName, String datasetName, String querySetName) {
-        File ret = new File(FSGlobal.RESULT_FOLDER);
+        File ret = new File(FSGlobal.RESULT_FOLDER, resultsName);
         ret.mkdirs();
-        ret = new File(ret, resultsName + "_" + datasetName + "_" + querySetName + ".gz");
-        LOG.log(Level.INFO, "File for results: " + ret.getAbsolutePath());
+        ret = new File(ret, datasetName + "_" + querySetName + ".gz");
+        LOG.log(Level.INFO, "File for results: {0}", ret.getAbsolutePath());
         return ret;
     }
 
@@ -75,7 +71,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
                 checkAndAskForResultsExistence(datasetName, querySetName, resultsName);
             }
             ask = false;
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(getFileForGroundTruth(resultsName, datasetName, querySetName), true), true);
+            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(getFileForResults(resultsName, datasetName, querySetName), true), true);
             String queryId = queryObjectID.toString();
             store(datasetOutputStream, queryId, queryResults);
         } catch (IOException ex) {
@@ -91,8 +87,9 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     }
 
     public void checkAndAskForResultsExistence(String datasetName, String querySetName, String resultsName) {
+        File fileForResults = getFileForResults(resultsName, datasetName, querySetName);
         Object[] options = new String[]{"Yes", "No"};
-        if (existResultSetSpace(datasetName, querySetName, resultsName)) {
+        if (fileForResults.exists()) {
             LOG.log(Level.WARNING, "Asking for a question, waiting for the reply");
             String question = "Storing space for result set " + resultsName + " on the dataset " + datasetName + " and query set " + querySetName + " already exists. Do you want to delete results in it? Answer no causes immediate stop.";
             int add = JOptionPane.showOptionDialog(null, question, "New query results?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
@@ -100,12 +97,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
                 System.exit(1);
             }
         }
-        LOG.log(Level.INFO, "Ok, continuing");
-    }
-
-    public boolean existResultSetSpace(String datasetName, String querySetName, String resultsName) {
-        File fileForResults = getFileForResults(resultsName, datasetName, querySetName);
-        return fileForResults.exists();
+        LOG.log(Level.INFO, "File with the results created");
     }
 
     @Override
@@ -114,7 +106,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             Map<String, TreeSet<Map.Entry<Object, Float>>> ret = new HashMap<>();
             File file = getFileForResults(queryResultsName, datasetName, querySetName);
             if (!file.exists()) {
-                LOG.log(Level.SEVERE, "The file with the results does not exist: " + file.getAbsolutePath());
+                LOG.log(Level.SEVERE, "The file with the results does not exist: {0}", file.getAbsolutePath());
                 return ret;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));

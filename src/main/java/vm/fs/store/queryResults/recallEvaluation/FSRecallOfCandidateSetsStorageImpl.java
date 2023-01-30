@@ -1,6 +1,12 @@
 package vm.fs.store.queryResults.recallEvaluation;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import vm.datatools.DataTypeConvertor;
+import vm.datatools.Tools;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsStoreInterface;
 
@@ -9,6 +15,8 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsStoreInterface;
  * @author Vlada
  */
 public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsStoreImpl implements RecallOfCandsSetsStoreInterface {
+
+    private static final Logger LOG = Logger.getLogger(FSRecallOfCandidateSetsStorageImpl.class.getName());
 
     /**
      *
@@ -21,16 +29,43 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
         super(attributesForFileName);
     }
 
+    /**
+     *
+     * @param groundTruthDatasetName
+     * @param groundTruthQuerySetName
+     * @param groundTruthNNCount
+     * @param candSetName
+     * @param candSetQuerySetName
+     * @param resultSetName
+     * @param candidateNNCount
+     */
+    public FSRecallOfCandidateSetsStorageImpl(String groundTruthDatasetName, String groundTruthQuerySetName, int groundTruthNNCount, String candSetName, String candSetQuerySetName, String resultSetName, Integer candidateNNCount) {
+        this(transformFileNameParamsToMap(groundTruthDatasetName, groundTruthQuerySetName, groundTruthNNCount, candSetName, candSetQuerySetName, resultSetName, candidateNNCount));
+    }
+
+    public static final Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> transformFileNameParamsToMap(String groundTruthDatasetName, String groundTruthQuerySetName, int groundTruthNNCount, String candSetName, String candSetQuerySetName, String resultSetName, Integer candidateSetFixedSize) {
+        Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> attributesForFileName = new HashMap<>();
+        attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.ground_truth_name, groundTruthDatasetName);
+        attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.ground_truth_query_set_name, groundTruthQuerySetName);
+        attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.ground_truth_nn_count, Integer.toString(groundTruthNNCount));
+        attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_name, candSetName);
+        attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_query_set_name, candSetQuerySetName);
+        attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.storing_result_name, resultSetName);
+        if (candidateSetFixedSize != null) {
+            attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_fixed_size, candidateSetFixedSize.toString());
+        }
+        return attributesForFileName;
+    }
+
     @Override
     public void storeRecallForQuery(Object queryObjId, float recall, Object... additionalParametersToStore) {
-        String[] line = content.get(queryObjId.toString());
-        int order = statsComp.getOrder(QUERY_STATS.recall);
-        line[order] = Float.toString(recall);
-        if (additionalParametersToStore[0] != null) {
-            String candidateNNCount = additionalParametersToStore[0].toString();
-            order = statsComp.getOrder(QUERY_STATS.cand_set_dynamic_size);
-            line[order] = candidateNNCount;
+        TreeMap<QUERY_STATS, String> line = content.get(queryObjId.toString());
+        if (line == null) {
+            LOG.log(Level.SEVERE, "Statistics not found for the query " + queryObjId.toString());
         }
+        line.put(QUERY_STATS.recall, Float.toString(recall));
+        String candidateNNCount = DataTypeConvertor.objectsToString(additionalParametersToStore, ";");
+        line.put(QUERY_STATS.additional_stats, candidateNNCount);
     }
 
 }
