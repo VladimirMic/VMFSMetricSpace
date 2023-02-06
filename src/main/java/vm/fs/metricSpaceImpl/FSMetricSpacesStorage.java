@@ -110,7 +110,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
 
     private void storeMetricObject(Object metricObject, GZIPOutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
         String id = metricSpace.getIDOfMetricObject(metricObject).toString();
-        String data = dataSerializator.metricObjectDataToString((T) metricSpace.getDataOfMetricObject(metricObject, additionalParamsToExtractDataFromMetricObject));
+        String data = dataSerializator.metricObjectDataToString((T) metricSpace.getDataOfMetricObject(metricObject));
         datasetOutputStream.write(id.getBytes());
         datasetOutputStream.write(':');
         datasetOutputStream.write(data.getBytes());

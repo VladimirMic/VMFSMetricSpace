@@ -231,6 +231,9 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         }
 
         public String getName(QUERY_STATS o) {
+            if (o == null) {
+                return "null";
+            }
             switch (o) {
                 case query_obj_id: {
                     return "query_obj_id";

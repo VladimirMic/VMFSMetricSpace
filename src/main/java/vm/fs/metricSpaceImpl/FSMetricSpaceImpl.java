@@ -42,7 +42,7 @@ public class FSMetricSpaceImpl <T> extends AbstractMetricSpace<T> {
     }
 
     @Override
-    public T getDataOfMetricObject(Object o, Object... params) {
+    public T getDataOfMetricObject(Object o) {
         AbstractMap.SimpleEntry<Object, T> entry = (AbstractMap.SimpleEntry<Object, T>) o;
         return entry.getValue();
     }
