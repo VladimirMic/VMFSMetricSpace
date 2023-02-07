@@ -42,7 +42,7 @@ public class FSDatasetInstanceSingularizator {
             this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.MPEG7_SPACE);
         }
 
-    }
+        }
 
     private static class DBFloatVectorDataset extends Dataset<float[]> {
 

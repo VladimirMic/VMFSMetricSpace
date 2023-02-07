@@ -20,4 +20,7 @@ public class FSGlobal {
 
     public static final String AUXILIARY_FOR_DATA_TRANSFORMS = ROOT_FOLDER_PATH + "AuxiliaryDataForTransforms\\";
     public static final String AUXILIARY_FOR_SVD_TRANSFORMS = AUXILIARY_FOR_DATA_TRANSFORMS + "SVD\\";
+
+    public static final String AUXILIARY_FOR_DATA_FILTERING = ROOT_FOLDER_PATH + "AuxiliaryDataForFiltering\\";
+    public static final String AUXILIARY_FOR_TRIANGULAR_FILTERING_WITH_LIMITED_ANGLES = AUXILIARY_FOR_DATA_FILTERING + "Triangle_ineq_with_limited_angles\\";
 }

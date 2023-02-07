@@ -22,12 +22,17 @@ public class EvalAndStoreObjectsToPivotsDists {
 
     public static final Logger LOGGER = Logger.getLogger(EvalAndStoreObjectsToPivotsDists.class.getName());
 
-    public static void main(String[] args) throws FileNotFoundException  {
-        Dataset dataset;
-        dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
-        dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
-        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
-        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+    public static void main(String[] args) throws FileNotFoundException {
+        run(new FSDatasetInstanceSingularizator.SIFTdataset());
+        System.gc();
+        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
+        System.gc();
+        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
+        System.gc();
+        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
+    }
+
+    private static void run(Dataset dataset) {
         int pivotCount = 256;
         String output = PrecomputedDistancesLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
         GZIPOutputStream outputStream = null;
@@ -72,7 +77,6 @@ public class EvalAndStoreObjectsToPivotsDists {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
         }
-
     }
 
 }
