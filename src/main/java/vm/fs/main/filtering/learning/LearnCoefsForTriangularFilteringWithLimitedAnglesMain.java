@@ -3,7 +3,7 @@ package vm.fs.main.filtering.learning;
 import java.util.ArrayList;
 import java.util.List;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.store.auxiliaryForDistBounding.TriangleInequalityWithLimitedAnglesCoefsStorageImpl;
+import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.metricspace.AbstractMetricSpace;
 import vm.metricspace.Dataset;
 import vm.metricspace.distance.DistanceFunctionInterface;
@@ -13,7 +13,7 @@ import vm.metricspace.distance.bounding.onepivot.learning.LearningTriangleInequa
  *
  * @author Vlada
  */
-public class LearnCoefsForTriangularFilteringWithLimitedAngles {
+public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
 
     public static void main(String[] args) {
         run(new FSDatasetInstanceSingularizator.SIFTdataset());
@@ -34,7 +34,7 @@ public class LearnCoefsForTriangularFilteringWithLimitedAngles {
         sampleOfDataset.removeAll(sampleOfQueries);
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
 
-        TriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new TriangleInequalityWithLimitedAnglesCoefsStorageImpl();
+        FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
         LearningTriangleInequalityWithLimitedAngles learning = new LearningTriangleInequalityWithLimitedAngles(metricSpace, df, pivots, sampleOfDataset, sampleOfQueries, storage, dataset.getDatasetName());
         learning.execute();
     }
