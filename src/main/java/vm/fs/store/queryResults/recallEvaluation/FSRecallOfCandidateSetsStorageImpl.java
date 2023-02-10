@@ -6,7 +6,6 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.DataTypeConvertor;
-import vm.datatools.Tools;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsStoreInterface;
 
@@ -61,7 +60,7 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
     public void storeRecallForQuery(Object queryObjId, float recall, Object... additionalParametersToStore) {
         TreeMap<QUERY_STATS, String> line = content.get(queryObjId.toString());
         if (line == null) {
-            LOG.log(Level.SEVERE, "Statistics not found for the query " + queryObjId.toString());
+            LOG.log(Level.SEVERE, "Statistics not found for the query {0}", queryObjId.toString());
         }
         line.put(QUERY_STATS.recall, Float.toString(recall));
         String candidateNNCount = DataTypeConvertor.objectsToString(additionalParametersToStore, ";");
