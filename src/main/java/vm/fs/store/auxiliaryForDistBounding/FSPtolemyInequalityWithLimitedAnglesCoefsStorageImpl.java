@@ -24,9 +24,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_PTOLEMAIOS_COEFS_WITH_LIMITED_ANGLES);
         folderFile.mkdirs();
         File ret = new File(folderFile, resultName);
-        if (ret.exists()) {
-            Logger.getLogger(FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.class.getName()).log(Level.WARNING, "The file already existed");
-        }
+        FSGlobal.askForAFileExistence(ret);
         LOG.log(Level.INFO, "File path: {0}", ret.getAbsolutePath());
         return ret;
     }
@@ -50,15 +48,15 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
             File resultFile = getFile(resultName);
             PrintStream err = System.err;
             System.setErr(new PrintStream(new FileOutputStream(resultFile, true)));
-            Tools.printMap(results);
+            Tools.printMapOfKeyFloatValues(results);
             System.setErr(err);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
     }
 
-    public String getResultName(String datasetName) {
-        return getResultDescription(datasetName, 100000, 128, 0.01f);
+    private String getResultName(String datasetName) {
+        return getResultDescription(datasetName, 100000, 128, 0f);
     }
 
 }
