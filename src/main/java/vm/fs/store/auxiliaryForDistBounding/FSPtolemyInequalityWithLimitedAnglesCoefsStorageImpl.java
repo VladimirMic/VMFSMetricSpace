@@ -1,12 +1,9 @@
 package vm.fs.store.auxiliaryForDistBounding;
 
 import java.awt.geom.Point2D;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +34,8 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     @Override
-    public String getResultDescription(String datasetName, int pivotSize, int sampleSetSize, int queriesSampleSize, float ratioOfSmallestDists) {
-        String ret = datasetName + "_" + pivotSize + "pivots_" + sampleSetSize + "samples1_" + queriesSampleSize + "samples2_" + (ratioOfSmallestDists * 100) + "percentSmallest.csv";
+    public String getResultDescription(String datasetName, int numberOfTetrahedrons, int pivotPairs, float ratioOfSmallestDists) {
+        String ret = datasetName + "__tetrahedrons_" + numberOfTetrahedrons + "__ratio_of_outliers_to_cut_" + ratioOfSmallestDists + "__pivot_pairs_" + pivotPairs + ".csv";
         LOG.log(Level.INFO, "File name: {0}", ret);
         return ret;
     }
@@ -50,16 +47,31 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     @Override
-    public void storeHull(String outputPath, String hullID, ConvexHull2DEuclid hullsForPivotPair) {
+    public void storeHull(String resultName, String hullID, ConvexHull2DEuclid hullsForPivotPair) {
         try {
+            File resultFile = getFile(resultName);
             PrintStream err = System.err;
-            System.setErr(new PrintStream(new FileOutputStream(outputPath, true)));
+            System.setErr(new PrintStream(new FileOutputStream(resultFile, true)));
             System.err.print(hullID + ";");
             System.err.println(hullsForPivotPair.toString());
             System.setErr(err);
+            System.setOut(new PrintStream(new FileOutputStream(resultFile.getAbsolutePath() + "_redable.csv", true)));
+            System.out.print(hullID);
+            System.out.println("");
+            hullsForPivotPair.printAsCoordinatesInColumns();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static PtolemaiosFilteringWithLimitedAnglesOrigProposal getLearnedInstanceTriangleInequalityWithLimitedAngles(String resultPreffixName, String datasetName) {
+        FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
+        String fileName = storage.getResultName(datasetName);
+        return storage.loadFromFile(resultPreffixName, fileName);
+    }
+
+    public String getResultName(String datasetName) {
+        return getResultDescription(datasetName, 100000, 128, 0.01f);
     }
 
 }
