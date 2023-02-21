@@ -11,14 +11,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.FSGlobal;
 import vm.metricspace.distance.bounding.twopivots.impl.PtolemaiosFilteringWithLimitedAnglesOrigProposal;
-import vm.metricspace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
 import vm.structures.ConvexHull2DEuclid;
+import vm.metricspace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesHullsStoreInterface;
 
 /**
  *
  * @author Vlada
  */
-public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements PtolemyInequalityWithLimitedAnglesCoefsStoreInterface {
+public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements PtolemyInequalityWithLimitedAnglesHullsStoreInterface {
 
     public static final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
 
