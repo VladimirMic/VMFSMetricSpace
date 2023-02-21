@@ -1,4 +1,4 @@
-package vm.fs.main.filtering.learning;
+package vm.fs.main.search.filtering.learning;
 
 import java.util.ArrayList;
 import java.util.List;
