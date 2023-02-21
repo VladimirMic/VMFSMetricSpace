@@ -17,9 +17,9 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.MetricSpacesStorageInterface;
-import vm.metricspace.dataToStringConvertors.MetricObjectDataToStringInterface;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.dataToStringConvertors.MetricObjectDataToStringInterface;
 
 /**
  *

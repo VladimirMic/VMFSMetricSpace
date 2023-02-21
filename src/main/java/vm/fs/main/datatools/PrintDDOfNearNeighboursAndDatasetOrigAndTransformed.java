@@ -9,11 +9,11 @@ import java.util.TreeSet;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.queryResults.GroundTruthEvaluator;
-import vm.metricspace.MetricDomainTools;
-import vm.metricspace.MetricSpacesStorageInterface;
-import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.dataToStringConvertors.impl.FloatVectorConvertor;
-import vm.metricspace.distance.DistanceFunctionInterface;
+import vm.metricSpace.MetricDomainTools;
+import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.dataToStringConvertors.impl.FloatVectorConvertor;
+import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
  *

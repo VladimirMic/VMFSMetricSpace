@@ -1,4 +1,4 @@
-package vm.fs.metricspace.distance.precomputedDistances;
+package vm.fs.metricSpace.distance.precomputedDistances;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.fs.FSGlobal;
-import vm.metricspace.distance.PrecomputedDistancesLoader;
+import vm.metricSpace.distance.PrecomputedDistancesLoader;
 
 /**
  *

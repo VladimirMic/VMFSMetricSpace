@@ -1,29 +1,27 @@
 package vm.fs.store.auxiliaryForDistBounding;
 
-import java.awt.geom.Point2D;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricspace.distance.bounding.twopivots.impl.PtolemaiosFilteringWithLimitedAnglesOrigProposal;
-import vm.structures.ConvexHull2DEuclid;
-import vm.metricspace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesHullsStoreInterface;
+import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaiosFilteringWithLimitedAnglesSimpleCoef;
+import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface2;
 
 /**
  *
- * @author Vlada
+ * @author xmic
  */
-public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements PtolemyInequalityWithLimitedAnglesHullsStoreInterface {
+public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements PtolemyInequalityWithLimitedAnglesCoefsStoreInterface2 {
 
     public static final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
 
     public File getFile(String resultName) {
-        File folderFile = new File(FSGlobal.AUXILIARY_FOR_PTOLEMAIOS_WITH_LIMITED_ANGLES);
+        File folderFile = new File(FSGlobal.AUXILIARY_FOR_PTOLEMAIOS_COEFS_WITH_LIMITED_ANGLES);
         folderFile.mkdirs();
         File ret = new File(folderFile, resultName);
         if (ret.exists()) {
@@ -40,34 +38,23 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         return ret;
     }
 
-    public PtolemaiosFilteringWithLimitedAnglesOrigProposal loadFromFile(String resultPreffixName, String resultName) {
-        File file = getFile(resultName);
-        Map<String, List<Point2D.Double>> hulls = ConvexHull2DEuclid.parsePivotsHulls(file.getAbsolutePath(), true);
-        return new PtolemaiosFilteringWithLimitedAnglesOrigProposal(resultPreffixName, hulls);
+    public PtolemaiosFilteringWithLimitedAnglesSimpleCoef loadFromFile(String resultPreffixName, String datasetName) {
+        File file = getFile(datasetName);
+        Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
+        return new PtolemaiosFilteringWithLimitedAnglesSimpleCoef(resultPreffixName, coefs);
     }
 
     @Override
-    public void storeHull(String resultName, String hullID, ConvexHull2DEuclid hullsForPivotPair) {
+    public void storeCoefficients(Map<String, float[]> results, String resultName) {
         try {
             File resultFile = getFile(resultName);
             PrintStream err = System.err;
             System.setErr(new PrintStream(new FileOutputStream(resultFile, true)));
-            System.err.print(hullID + ";");
-            System.err.println(hullsForPivotPair.toString());
+            Tools.printMap(results);
             System.setErr(err);
-            System.setOut(new PrintStream(new FileOutputStream(resultFile.getAbsolutePath() + "_redable.csv", true)));
-            System.out.print(hullID);
-            System.out.println("");
-            hullsForPivotPair.printAsCoordinatesInColumns();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
         }
-    }
-
-    public static PtolemaiosFilteringWithLimitedAnglesOrigProposal getLearnedInstanceTriangleInequalityWithLimitedAngles(String resultPreffixName, String datasetName) {
-        FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
-        String fileName = storage.getResultName(datasetName);
-        return storage.loadFromFile(resultPreffixName, fileName);
     }
 
     public String getResultName(String datasetName) {

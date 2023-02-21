@@ -2,10 +2,10 @@ package vm.fs.metricSpaceImpl;
 
 import java.util.AbstractMap;
 import java.util.logging.Logger;
-import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.distance.impl.L2OnFloatsArray;
-import vm.metricspace.distance.impl.Sapir3DistanceFunction;
-import vm.metricspace.distance.DistanceFunctionInterface;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.distance.impl.L2OnFloatsArray;
+import vm.metricSpace.distance.impl.Sapir3DistanceFunction;
+import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
  *

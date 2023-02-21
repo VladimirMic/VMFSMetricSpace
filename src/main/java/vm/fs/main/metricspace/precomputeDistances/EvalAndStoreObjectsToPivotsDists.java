@@ -9,10 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.metricspace.distance.precomputedDistances.PrecomputedDistancesLoaderImpl;
-import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.Dataset;
-import vm.metricspace.distance.DistanceFunctionInterface;
+import vm.fs.metricSpace.distance.precomputedDistances.PrecomputedDistancesLoaderImpl;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.Dataset;
+import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
  *

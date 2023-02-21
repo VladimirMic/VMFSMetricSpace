@@ -7,10 +7,10 @@ import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.queryResults.GroundTruthEvaluator;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
-import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.MetricSpacesStorageInterface;
-import vm.metricspace.dataToStringConvertors.SingularisedConvertors;
-import vm.metricspace.distance.DistanceFunctionInterface;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
+import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
  *

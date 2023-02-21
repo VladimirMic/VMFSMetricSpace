@@ -3,8 +3,8 @@ package vm.fs.dataset;
 import java.util.Map;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.metricspace.Dataset;
-import vm.metricspace.dataToStringConvertors.SingularisedConvertors;
+import vm.metricSpace.Dataset;
+import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
 
 /**
  *

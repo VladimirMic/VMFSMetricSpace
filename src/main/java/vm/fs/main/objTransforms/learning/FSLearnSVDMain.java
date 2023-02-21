@@ -7,7 +7,7 @@ import java.util.List;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.store.dataTransforms.TODOFSSVDStorageImpl;
-import vm.metricspace.dataToStringConvertors.SingularisedConvertors;
+import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
 import vm.objTransforms.learning.LearnSVD;
 import vm.objTransforms.storeLearned.SVDStoreInterface;
 

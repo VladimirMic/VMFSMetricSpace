@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.fs.FSGlobal;
-import vm.metricspace.dataToStringConvertors.SingularisedConvertors;
+import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
 import vm.objTransforms.storeLearned.SVDStoreInterface;
 
 /**

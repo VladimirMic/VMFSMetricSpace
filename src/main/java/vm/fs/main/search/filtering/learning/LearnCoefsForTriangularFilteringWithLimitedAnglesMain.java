@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
-import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.Dataset;
-import vm.metricspace.distance.DistanceFunctionInterface;
-import vm.metricspace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.Dataset;
+import vm.metricSpace.distance.DistanceFunctionInterface;
+import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles;
 
 /**
  *

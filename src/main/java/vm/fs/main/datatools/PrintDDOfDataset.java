@@ -4,11 +4,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.SortedMap;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.MetricDomainTools;
-import vm.metricspace.MetricSpacesStorageInterface;
-import vm.metricspace.Dataset;
-import vm.metricspace.distance.DistanceFunctionInterface;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.MetricDomainTools;
+import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.Dataset;
+import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
  *

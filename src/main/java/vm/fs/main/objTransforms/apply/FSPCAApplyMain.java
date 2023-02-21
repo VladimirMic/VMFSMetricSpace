@@ -5,9 +5,9 @@ import java.util.Iterator;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.store.dataTransforms.TODOFSSVDStorageImpl;
-import vm.metricspace.AbstractMetricSpace;
-import vm.metricspace.MetricSpacesStorageInterface;
-import vm.metricspace.dataToStringConvertors.SingularisedConvertors;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
 import vm.objTransforms.MetricObjectsParallelTransformerImpl;
 import vm.objTransforms.perform.PCAMetricObjectTransformer;
 
