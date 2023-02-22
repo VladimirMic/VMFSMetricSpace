@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.metricSpace.distance.precomputedDistances.PrecomputedDistancesLoaderImpl;
+import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
@@ -28,29 +29,29 @@ public class KNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(KNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
-        run(new FSDatasetInstanceSingularizator.SIFTdataset());
+        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
         System.gc();
         run(new FSDatasetInstanceSingularizator.MPEG7dataset());
         System.gc();
         run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
         System.gc();
-        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
+        run(new FSDatasetInstanceSingularizator.SIFTdataset());
     }
 
     private static void run(Dataset dataset) {
         int k = 100;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 512;
+        int pivotCount = 256;
         PrecomputedDistancesLoader pd = new PrecomputedDistancesLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
         List queries = dataset.getMetricQueryObjectsForTheSameDataset();
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
 
-        TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(pivotCount + "_pivots", dataset.getDatasetName());
+        TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName());
 //        TwoPivotsFiltering filter = new FourPointBasedFiltering(pivotCount + "_pivots");
 //        OnePivotFiltering filter = new TriangleInequality(pivotCount + "_pivots");
-//        OnePivotFiltering filter = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(pivotCount + "_pivots", dataset.getDatasetName());
+//        OnePivotFiltering filter = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName());
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
         SearchingAlgorithm alg = new KNNSearchWithTwoPivotFiltering(metricSpace, filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);

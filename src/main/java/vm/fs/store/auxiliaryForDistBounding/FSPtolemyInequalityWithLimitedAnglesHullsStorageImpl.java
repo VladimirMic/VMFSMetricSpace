@@ -64,7 +64,7 @@ public class FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl implements Pto
         }
     }
 
-    public static PtolemaiosFilteringWithLimitedAnglesOrigProposal getLearnedInstanceTriangleInequalityWithLimitedAngles(String resultPreffixName, String datasetName) {
+    public static PtolemaiosFilteringWithLimitedAnglesOrigProposal getLearnedInstance(String resultPreffixName, String datasetName) {
         FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl();
         String fileName = storage.getResultName(datasetName);
         return storage.loadFromFile(resultPreffixName, fileName);

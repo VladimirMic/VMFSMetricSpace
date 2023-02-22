@@ -20,11 +20,13 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
 
     public static final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
 
-    public File getFile(String resultName) {
+    public static File getFile(String resultName, boolean willBeDeleled) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_PTOLEMAIOS_COEFS_WITH_LIMITED_ANGLES);
         folderFile.mkdirs();
         File ret = new File(folderFile, resultName);
-        FSGlobal.askForAFileExistence(ret);
+        if (willBeDeleled) {
+            FSGlobal.askForAFileExistence(ret);
+        }
         LOG.log(Level.INFO, "File path: {0}", ret.getAbsolutePath());
         return ret;
     }
@@ -36,8 +38,10 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         return ret;
     }
 
-    public PtolemaiosFilteringWithLimitedAnglesSimpleCoef loadFromFile(String resultPreffixName, String datasetName) {
-        File file = getFile(datasetName);
+    public static PtolemaiosFilteringWithLimitedAnglesSimpleCoef getLearnedInstance(String resultPreffixName, String datasetName) {
+        FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
+        String fileName = storage.getResultName(datasetName);
+        File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
         return new PtolemaiosFilteringWithLimitedAnglesSimpleCoef(resultPreffixName, coefs);
     }
@@ -45,7 +49,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     @Override
     public void storeCoefficients(Map<String, float[]> results, String resultName) {
         try {
-            File resultFile = getFile(resultName);
+            File resultFile = getFile(resultName, true);
             PrintStream err = System.err;
             System.setErr(new PrintStream(new FileOutputStream(resultFile, true)));
             Tools.printMapOfKeyFloatValues(results);
@@ -56,7 +60,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     private String getResultName(String datasetName) {
-        return getResultDescription(datasetName, 100000, 128, 0f);
+        return getResultDescription(datasetName, 100000, 128, 0.25f / 100f);
     }
 
 }
