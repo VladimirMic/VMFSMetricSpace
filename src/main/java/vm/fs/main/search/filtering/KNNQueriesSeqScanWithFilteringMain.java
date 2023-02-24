@@ -1,5 +1,7 @@
 package vm.fs.main.search.filtering;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -42,9 +44,14 @@ public class KNNQueriesSeqScanWithFilteringMain {
         int k = 100;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 256;
+        int pivotCount = 512;
         PrecomputedDistancesLoader pd = new PrecomputedDistancesLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
+//        try {
+//            System.setOut(new PrintStream("h:\\Similarity_search\\Trials\\Ptolemaions_limited\\EFgetBD\\random_20dim_uniform_1m\\detailed2.csv"));
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(KNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         List queries = dataset.getMetricQueryObjectsForTheSameDataset();
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
 

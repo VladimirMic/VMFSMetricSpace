@@ -40,7 +40,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
 
     public static PtolemaiosFilteringWithLimitedAnglesSimpleCoef getLearnedInstance(String resultPreffixName, String datasetName) {
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
-        String fileName = storage.getResultName(datasetName);
+        String fileName = storage.getNameOfFileWithCoefs(datasetName);
         File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
         return new PtolemaiosFilteringWithLimitedAnglesSimpleCoef(resultPreffixName, coefs);
@@ -59,8 +59,8 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         }
     }
 
-    private String getResultName(String datasetName) {
-        return getResultDescription(datasetName, 100000, 128, 0.25f / 100f);
+    private String getNameOfFileWithCoefs(String datasetName) {
+        return getResultDescription(datasetName, 500000, 256, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.RATIO_OF_OUTLIERS_TO_CUT);
     }
 
 }
