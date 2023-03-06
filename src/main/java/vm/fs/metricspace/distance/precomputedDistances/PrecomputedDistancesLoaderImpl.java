@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.fs.FSGlobal;
-import vm.metricSpace.distance.PrecomputedDistancesLoader;
+import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedDistancesLoader;
 
 /**
  *

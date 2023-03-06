@@ -1,7 +1,5 @@
 package vm.fs.main.search.filtering;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -9,14 +7,13 @@ import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.metricSpace.distance.precomputedDistances.PrecomputedDistancesLoaderImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
-import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.PrecomputedDistancesLoader;
+import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedDistancesLoader;
 import vm.metricSpace.distance.bounding.twopivots.TwoPivotsFiltering;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.SearchingAlgorithm;
@@ -44,7 +41,7 @@ public class KNNQueriesSeqScanWithFilteringMain {
         int k = 100;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 512;
+        int pivotCount = 256;
         PrecomputedDistancesLoader pd = new PrecomputedDistancesLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
 //        try {

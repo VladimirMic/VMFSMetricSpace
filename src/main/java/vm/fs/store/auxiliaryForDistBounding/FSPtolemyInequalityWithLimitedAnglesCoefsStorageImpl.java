@@ -20,6 +20,8 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
 
     public static final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
 
+    public static final Integer PIVOTS_IN_TOTAL = 256;
+
     public static File getFile(String resultName, boolean willBeDeleled) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_PTOLEMAIOS_COEFS_WITH_LIMITED_ANGLES);
         folderFile.mkdirs();
@@ -32,8 +34,8 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     @Override
-    public String getResultDescription(String datasetName, int numberOfTetrahedrons, int pivotPairs, float ratioOfSmallestDists) {
-        String ret = datasetName + "__tetrahedrons_" + numberOfTetrahedrons + "__ratio_of_outliers_to_cut_" + ratioOfSmallestDists + "__pivot_pairs_" + pivotPairs + ".csv";
+    public String getResultDescription(String datasetName, int numberOfTetrahedrons, int pivots, float ratioOfSmallestDists) {
+        String ret = datasetName + "__tetrahedrons_" + numberOfTetrahedrons + "__ratio_of_outliers_to_cut_" + ratioOfSmallestDists + "__pivots_" + pivots + ".csv";
         LOG.log(Level.INFO, "File name: {0}", ret);
         return ret;
     }
@@ -60,7 +62,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     private String getNameOfFileWithCoefs(String datasetName) {
-        return getResultDescription(datasetName, 500000, 256, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.RATIO_OF_OUTLIERS_TO_CUT);
+        return getResultDescription(datasetName, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.NUMBER_OF_TETRAHEDRONS_FOR_LEARNING, PIVOTS_IN_TOTAL / 2, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.RATIO_OF_OUTLIERS_TO_CUT);
     }
 
 }

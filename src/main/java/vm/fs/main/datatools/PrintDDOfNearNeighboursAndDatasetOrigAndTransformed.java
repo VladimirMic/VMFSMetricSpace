@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.queryResults.GroundTruthEvaluator;
-import vm.metricSpace.MetricDomainTools;
+import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.MetricSpacesStorageInterface;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.dataToStringConvertors.impl.FloatVectorConvertor;
@@ -47,7 +47,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformed {
 
 //      find the same pairs in the transformed dataset and print corresponding distances
         List<Object> transformedObjects = metricSpacesStorage.getSampleOfDataset(transformedDatasetName, -1);
-        Map<Object, Object> metricObjectsAsIdObjectMap = MetricDomainTools.getMetricObjectsAsIdObjectMap(metricSpace, transformedObjects);
+        Map<Object, Object> metricObjectsAsIdObjectMap = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, transformedObjects);
         DistanceFunctionInterface distanceFunctionForTransformedDataset = metricSpace.getDistanceFunctionForDataset(transformedDatasetName);
         SortedMap<Float, Float> ddRandomSampleTransformed = evaluateDDForPairs(metricSpace, distanceFunctionForTransformedDataset, idsOfRandomPairs, metricObjectsAsIdObjectMap, transformedDistInterval);
         SortedMap<Float, Float> ddOfNNSampleTransformed = evaluateDDForPairs(metricSpace, distanceFunctionForTransformedDataset, idsOfNNPairs, metricObjectsAsIdObjectMap, transformedDistInterval);
@@ -74,7 +74,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformed {
                 distances.add(entry.getValue());
             }
         }
-        return MetricDomainTools.createDistanceDensityPlot(distances, distInterval);
+        return ToolsMetricDomain.createDistanceDensityPlot(distances, distInterval);
     }
 
     private static SortedMap<Float, Float> evaluateDDForPairs(AbstractMetricSpace metricSpace, DistanceFunctionInterface distanceFunction, List<Object[]> idsPairs, Map<Object, Object> metricObjects, float distInterval) {
@@ -87,7 +87,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformed {
             float distance = distanceFunction.getDistance(o1, o2);
             distances.add(distance);
         }
-        return MetricDomainTools.createDistanceDensityPlot(distances, distInterval);
+        return ToolsMetricDomain.createDistanceDensityPlot(distances, distInterval);
     }
 
     private static void printDDOfRandomAndNearNeighbours(String datasetName, float distInterval, SortedMap<Float, Float> ddRandomSample, SortedMap<Float, Float> ddOfNNSample) {
