@@ -1,7 +1,5 @@
-package vm.fs.main.datatools;
+package vm.fs.main.precomputeDistances;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Comparator;
@@ -12,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.store.precomputedDists.FSPrecomputedDistsStorageImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
@@ -52,7 +50,7 @@ public class PrintSampleOfSmallestDists {
         List<Object> sampleObjects = metricObjects.subList(0, SAMPLE_SET_SIZE);
         List<Object> queriesSamples = metricObjects.subList(SAMPLE_SET_SIZE, SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
 
-        Comparator<Map.Entry<String, Float>> comp = new Tools.MapByValueComparator<String>();
+        Comparator<Map.Entry<String, Float>> comp = new Tools.MapByValueComparator<>();
         TreeSet<Map.Entry<String, Float>> result = new TreeSet(comp);
         for (int i = 0; i < sampleObjects.size(); i++) {
             Object o = sampleObjects.get(i);
@@ -73,7 +71,7 @@ public class PrintSampleOfSmallestDists {
                 LOG.log(Level.INFO, "Processed object {0} out of {1}", new Object[]{i + 1, sampleObjects.size()});
             }
         }
-        FSPrecomputedDistsStorageImpl storage = new FSPrecomputedDistsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
+        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
         storage.storePrecomputedDistances(result);
     }
 

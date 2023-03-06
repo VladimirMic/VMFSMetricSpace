@@ -1,4 +1,4 @@
-package vm.fs.metricSpace.distance.precomputedDistances;
+package vm.fs.store.precomputedDists;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,15 +12,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.fs.FSGlobal;
-import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedDistancesLoader;
+import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedDistancesMatrixLoader;
 
 /**
  *
  * @author xmic
  */
-public class PrecomputedDistancesLoaderImpl extends PrecomputedDistancesLoader {
+public class FSPrecomputedDistancesMatrixLoaderImpl extends PrecomputedDistancesMatrixLoader {
 
-    private static final Logger LOG = Logger.getLogger(PrecomputedDistancesLoaderImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName());
 
     @Override
     public float[][] loadPrecomPivotsToObjectsDists(String datasetName, String pivotSetName, int pivotCount) {

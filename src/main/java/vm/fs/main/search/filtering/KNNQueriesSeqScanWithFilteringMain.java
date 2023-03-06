@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.metricSpace.distance.precomputedDistances.PrecomputedDistancesLoaderImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
@@ -13,7 +13,7 @@ import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageI
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedDistancesLoader;
+import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedDistancesMatrixLoader;
 import vm.metricSpace.distance.bounding.twopivots.TwoPivotsFiltering;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.SearchingAlgorithm;
@@ -42,7 +42,7 @@ public class KNNQueriesSeqScanWithFilteringMain {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         int pivotCount = 256;
-        PrecomputedDistancesLoader pd = new PrecomputedDistancesLoaderImpl();
+        PrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
 //        try {
 //            System.setOut(new PrintStream("h:\\Similarity_search\\Trials\\Ptolemaions_limited\\EFgetBD\\random_20dim_uniform_1m\\detailed2.csv"));

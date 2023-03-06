@@ -1,4 +1,4 @@
-package vm.fs.main.metricspace.precomputeDistances;
+package vm.fs.main.precomputeDistances;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.metricSpace.distance.precomputedDistances.PrecomputedDistancesLoaderImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
@@ -34,7 +34,7 @@ public class EvalAndStoreObjectsToPivotsDists {
 
     private static void run(Dataset dataset) {
         int pivotCount = 256;
-        String output = PrecomputedDistancesLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
+        String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
