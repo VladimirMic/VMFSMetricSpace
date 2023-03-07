@@ -41,7 +41,7 @@ public class KNNQueriesSeqScanWithFilteringMain {
         int k = 100;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 256;
+        int pivotCount = 512;
         PrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
 //        try {
@@ -52,7 +52,7 @@ public class KNNQueriesSeqScanWithFilteringMain {
         List queries = dataset.getMetricQueryObjectsForTheSameDataset();
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
 
-        TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName());
+        TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName(), pivotCount);
 //        TwoPivotsFiltering filter = new FourPointBasedFiltering(pivotCount + "_pivots");
 //        OnePivotFiltering filter = new TriangleInequality(pivotCount + "_pivots");
 //        OnePivotFiltering filter = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName());

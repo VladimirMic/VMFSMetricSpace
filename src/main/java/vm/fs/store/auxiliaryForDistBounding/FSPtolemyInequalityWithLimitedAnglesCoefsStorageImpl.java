@@ -21,7 +21,6 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
 
     public static final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
 
-    public static final Integer PIVOTS_IN_TOTAL = 256;
 
     public static File getFile(String resultName, boolean willBeDeleled) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_PTOLEMAIOS_COEFS_WITH_LIMITED_ANGLES);
@@ -41,9 +40,9 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         return ret;
     }
 
-    public static PtolemaiosFilteringWithLimitedAnglesSimpleCoef getLearnedInstance(String resultPreffixName, String datasetName) {
+    public static PtolemaiosFilteringWithLimitedAnglesSimpleCoef getLearnedInstance(String resultPreffixName, String datasetName, int pivotCount) {
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
-        String fileName = storage.getNameOfFileWithCoefs(datasetName);
+        String fileName = storage.getNameOfFileWithCoefs(datasetName, pivotCount);
         File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
         return new PtolemaiosFilteringWithLimitedAnglesSimpleCoef(resultPreffixName, coefs);
@@ -62,8 +61,8 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         }
     }
 
-    private String getNameOfFileWithCoefs(String datasetName) {
-        return getResultDescription(datasetName, PrintSampleOfSmallestDists.IMPLICIT_K, PIVOTS_IN_TOTAL, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.RATIO_OF_OUTLIERS_TO_CUT);
+    private String getNameOfFileWithCoefs(String datasetName, int pivotCount) {
+        return getResultDescription(datasetName, PrintSampleOfSmallestDists.IMPLICIT_K, pivotCount, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.RATIO_OF_OUTLIERS_TO_CUT);
     }
 
 }
