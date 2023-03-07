@@ -39,7 +39,7 @@ public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDist
     public void storePrecomputedDistances(TreeSet<Map.Entry<String, Float>> dists) {
         OutputStreamWriter w = null;
         try {
-            w = new OutputStreamWriter(new FileOutputStream(getFileForResults(), false));
+            w = new OutputStreamWriter(new FileOutputStream(getFileForResults(true), false));
             Iterator<Map.Entry<String, Float>> it = dists.iterator();
             while (it.hasNext()) {
                 Map.Entry<String, Float> next = it.next();
@@ -60,10 +60,12 @@ public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDist
         }
     }
 
-    private File getFileForResults() {
+    private File getFileForResults(boolean willBeDeleted) {
         String fileName = resultsName + "__sample_" + oSize + "__ queries_" + qSize + ".csv";
         File ret = new File(FSGlobal.SMALLEST_DISTANCES, fileName);
-        FSGlobal.askForAFileExistence(ret);
+        if (willBeDeleted) {
+            FSGlobal.askForAFileExistence(ret);
+        }
         return ret;
     }
 
@@ -71,7 +73,7 @@ public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDist
     public TreeSet<Map.Entry<String, Float>> loadPrecomputedDistances() {
         BufferedReader br = null;
         try {
-            File file = getFileForResults();
+            File file = getFileForResults(false);
             if (!file.exists()) {
                 throw new IllegalArgumentException("File with the precomputed distances does no exists for resultsName " + resultsName + ", o count" + oSize + ", q count " + qSize);
             }
@@ -79,12 +81,14 @@ public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDist
             TreeSet<Map.Entry<String, Float>> ret = new TreeSet(comp);
             br = new BufferedReader(new FileReader(file));
             try {
-                String line = br.readLine();
-                String[] split = line.split(";");
-                String key = split[0] + ";" + split[1];
-                float value = Float.parseFloat(split[2]);
-                AbstractMap.SimpleEntry<String, Float> e = new AbstractMap.SimpleEntry<>(key, value);
-                ret.add(e);
+                while (true) {
+                    String line = br.readLine();
+                    String[] split = line.split(";");
+                    String key = split[0] + ";" + split[1];
+                    float value = Float.parseFloat(split[2]);
+                    AbstractMap.SimpleEntry<String, Float> e = new AbstractMap.SimpleEntry<>(key, value);
+                    ret.add(e);
+                }
             } catch (NullPointerException ex) {
             }
             return ret;
