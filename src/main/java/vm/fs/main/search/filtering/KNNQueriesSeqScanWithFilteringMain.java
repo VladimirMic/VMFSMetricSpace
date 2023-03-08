@@ -30,46 +30,41 @@ public class KNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
 //        System.gc();
-//        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
+        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
         System.gc();
         run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
-        System.gc();
-        run(new FSDatasetInstanceSingularizator.SIFTdataset());
+//        System.gc();
+//        run(new FSDatasetInstanceSingularizator.SIFTdataset());
     }
 
     private static void run(Dataset dataset) {
         int k = 100;
-        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
-        DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 256;
-        PrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
-        float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
-//        try {
-//            System.setOut(new PrintStream("h:\\Similarity_search\\Trials\\Ptolemaions_limited\\EFgetBD\\random_20dim_uniform_1m\\detailed2.csv"));
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(KNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        List queries = dataset.getMetricQueryObjectsForTheSameDataset();
-        List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
+//        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
+//        DistanceFunctionInterface df = dataset.getDistanceFunction();
+        int pivotCount = 512;
+//        PrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
+//        float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
+//        List queries = dataset.getMetricQueryObjectsForTheSameDataset();
+//        List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
 
         TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName(), pivotCount);
 //        TwoPivotsFiltering filter = new FourPointBasedFiltering(pivotCount + "_pivots");
 //        OnePivotFiltering filter = new TriangleInequality(pivotCount + "_pivots");
 //        OnePivotFiltering filter = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName());
 
-        float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
-        SearchingAlgorithm alg = new KNNSearchWithTwoPivotFiltering(metricSpace, filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);
-//        SearchingAlgorithm alg = new KNNSearchWithOnePivotFiltering(metricSpace, filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
-        TreeSet[] results = alg.completeKnnSearchOfQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset());
-
-        LOG.log(Level.INFO, "Storing statistics of queries");
-        FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getDatasetName(), k, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName(), null);
-        statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries());
-        statsStorage.saveFile();
-
-        LOG.log(Level.INFO, "Storing results of queries");
-        FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
-        resultsStorage.storeQueryResults(metricSpace, queries, results, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName());
+//        float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
+//        SearchingAlgorithm alg = new KNNSearchWithTwoPivotFiltering(metricSpace, filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);
+////        SearchingAlgorithm alg = new KNNSearchWithOnePivotFiltering(metricSpace, filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
+//        TreeSet[] results = alg.completeKnnSearchOfQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset());
+//
+//        LOG.log(Level.INFO, "Storing statistics of queries");
+//        FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getDatasetName(), k, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName(), null);
+//        statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries());
+//        statsStorage.saveFile();
+//
+//        LOG.log(Level.INFO, "Storing results of queries");
+//        FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
+//        resultsStorage.storeQueryResults(metricSpace, queries, results, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName());
 
         LOG.log(Level.INFO, "Evaluating accuracy of queries");
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getDatasetName(), k, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName(), null);
