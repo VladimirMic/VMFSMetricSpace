@@ -31,9 +31,9 @@ public class KNNQueriesSeqScanWithFilteringMain {
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
 //        System.gc();
 //        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
-        System.gc();
-        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
-        System.gc();
+//        System.gc();
+//        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
+//        System.gc();
         run(new FSDatasetInstanceSingularizator.SIFTdataset());
     }
 
@@ -41,14 +41,9 @@ public class KNNQueriesSeqScanWithFilteringMain {
         int k = 100;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 256;
+        int pivotCount = 512;
         PrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
-//        try {
-//            System.setOut(new PrintStream("h:\\Similarity_search\\Trials\\Ptolemaions_limited\\EFgetBD\\random_20dim_uniform_1m\\detailed2.csv"));
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(KNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         List queries = dataset.getMetricQueryObjectsForTheSameDataset();
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
 

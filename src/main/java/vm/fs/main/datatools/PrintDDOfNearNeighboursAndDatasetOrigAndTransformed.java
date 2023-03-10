@@ -8,7 +8,7 @@ import java.util.SortedMap;
 import java.util.TreeSet;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.queryResults.GroundTruthEvaluator;
+import vm.evaluators.GroundTruthEvaluator;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.MetricSpacesStorageInterface;
 import vm.metricSpace.AbstractMetricSpace;
@@ -63,7 +63,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformed {
             metricObjects.remove(0);
         }
         GroundTruthEvaluator gte = new GroundTruthEvaluator(metricSpace, distanceFunction, queryObjects, k, null);
-        TreeSet<Map.Entry<Object, Float>>[] groundTruth = gte.processIteratorInParallel(metricObjects.iterator());
+        TreeSet<Map.Entry<Object, Float>>[] groundTruth = gte.evaluateIteratorInParallel(metricObjects.iterator());
         List<Float> distances = new ArrayList<>();
         for (int i = 0; i < groundTruth.length; i++) {
             TreeSet<Map.Entry<Object, Float>> evaluatedQuery = groundTruth[i];

@@ -5,7 +5,7 @@ import java.util.List;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
-import vm.queryResults.GroundTruthEvaluator;
+import vm.evaluators.GroundTruthEvaluator;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.MetricSpacesStorageInterface;
@@ -32,13 +32,9 @@ public class FSEvaluateGroundTruthMain {
         MetricSpacesStorageInterface spaceStorage = new FSMetricSpacesStorage(space, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
 
-        evaluateGroundTruth(space, distanceFunction, spaceStorage, groundTruthStorage, querySetName, datasetName, k);
-    }
-
-    public static void evaluateGroundTruth(AbstractMetricSpace space, DistanceFunctionInterface distanceFunction, MetricSpacesStorageInterface spaceStorage, QueryNearestNeighboursStoreInterface groundTruthStorage, String querySetName, String datasetName, int k) {
         List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);
         GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k, groundTruthStorage);
-        gte.processIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
+        gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
     }
 
 }
