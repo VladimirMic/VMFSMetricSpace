@@ -34,7 +34,7 @@ public class FSGHPSketchesPivotPairsStorageImpl implements GHPSketchingPivotPair
             w = new OutputStreamWriter(new FileOutputStream(getFileForResults(resultName, true), false));
             for (int i = 0; i < pivots.size(); i += 2) {
                 Object p1 = metricSpace.getIDOfMetricObject(pivots.get(i));
-                Object p2 = metricSpace.getIDOfMetricObject(pivots.get(i));
+                Object p2 = metricSpace.getIDOfMetricObject(pivots.get(i + 1));
                 w.write(p1 + ";" + p2 + "\n");
             }
             if (additionalInfoToStoreWithLearningSketching.length != 0) {

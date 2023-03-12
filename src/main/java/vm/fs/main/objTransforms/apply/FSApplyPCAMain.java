@@ -15,7 +15,7 @@ import vm.objTransforms.perform.PCAMetricObjectTransformer;
  *
  * @author Vlada
  */
-public class FSPCAApplyMain {
+public class FSApplyPCAMain {
 
     public static void main(String[] args) throws SQLException {
 //        String origDatasetName = "sift_1m";
