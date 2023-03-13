@@ -50,6 +50,5 @@ public class FSGlobal {
             }
         }
         LOG.log(Level.INFO, "File with the results created");
-
     }
 }

@@ -6,15 +6,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.AbstractMap;
-import java.util.Comparator;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import static vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl.LOG;
@@ -62,24 +57,20 @@ public class FSGHPSketchesPivotPairsStorageImpl implements GHPSketchingPivotPair
         return ret;
     }
 
-    public TreeSet<Map.Entry<String, Float>> loadPivotPairsIDs(String sketchesName) {
+    public List<String[]> loadPivotPairsIDs(String sketchesName) {
         BufferedReader br = null;
         try {
             File file = getFileForResults(sketchesName, false);
             if (!file.exists()) {
                 throw new IllegalArgumentException("File with pivot pairs does no exists. Sketches name " + sketchesName);
             }
-            Comparator<Map.Entry<String, Float>> comp = new Tools.MapByValueComparator<>();
-            TreeSet<Map.Entry<String, Float>> ret = new TreeSet(comp);
+            List<String[]> ret = new ArrayList<>();
             br = new BufferedReader(new FileReader(file));
             try {
                 while (true) {
                     String line = br.readLine();
                     String[] split = line.split(";");
-                    String key = split[0] + ";" + split[1];
-                    float value = Float.parseFloat(split[2]);
-                    AbstractMap.SimpleEntry<String, Float> e = new AbstractMap.SimpleEntry<>(key, value);
-                    ret.add(e);
+                    ret.add(split);
                 }
             } catch (NullPointerException ex) {
             }

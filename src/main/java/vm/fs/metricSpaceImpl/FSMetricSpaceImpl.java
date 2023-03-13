@@ -12,7 +12,7 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  * @author xmic
  * @param <T>
  */
-public class FSMetricSpaceImpl <T> extends AbstractMetricSpace<T> {
+public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
 
     private static final Logger LOG = Logger.getLogger(FSMetricSpaceImpl.class.getName());
 

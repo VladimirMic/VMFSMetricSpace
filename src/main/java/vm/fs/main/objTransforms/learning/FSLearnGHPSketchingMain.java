@@ -3,7 +3,7 @@ package vm.fs.main.objTransforms.learning;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.dataTransforms.FSGHPSketchesPivotPairsStorageImpl;
 import vm.metricSpace.Dataset;
-import vm.objTransforms.learning.LearningSketchingGHP;
+import vm.objTransforms.learning.LearnSketchingGHP;
 import vm.objTransforms.storeLearned.GHPSketchingPivotPairsStoreInterface;
 
 /**
@@ -27,7 +27,7 @@ public class FSLearnGHPSketchingMain {
 
     private static void run(Dataset dataset, GHPSketchingPivotPairsStoreInterface sketchingTechStorage, int[] sketchesLengths) {
         int sampleSize = 100000; // 100000
-        LearningSketchingGHP learn = new LearningSketchingGHP(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), sketchingTechStorage);
-        learn.execute(dataset.getDatasetName(), dataset.getDatasetName(), sampleSize, sketchesLengths, 0.5f);
+        LearnSketchingGHP learn = new LearnSketchingGHP(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), sketchingTechStorage);
+        learn.evaluate(dataset.getDatasetName(), dataset.getDatasetName(), sampleSize, sketchesLengths, 0.5f);
     }
 }

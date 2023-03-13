@@ -5,7 +5,7 @@ import java.util.List;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
-import vm.evaluators.GroundTruthEvaluator;
+import vm.evaluatorsToBeUsed.GroundTruthEvaluator;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.MetricSpacesStorageInterface;

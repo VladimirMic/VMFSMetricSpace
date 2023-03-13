@@ -8,6 +8,7 @@ import vm.fs.store.dataTransforms.TODOFSSVDStorageImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.MetricSpacesStorageInterface;
 import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
+import vm.objTransforms.MetricObjectTransformerInterface;
 import vm.objTransforms.MetricObjectsParallelTransformerImpl;
 import vm.objTransforms.perform.PCAMetricObjectTransformer;
 
@@ -32,9 +33,9 @@ public class FSApplyPCAMain {
         TODOFSSVDStorageImpl svdStorage = new TODOFSSVDStorageImpl(origDatasetName, sampleSetSize);
         float[][] vtMatrix = svdStorage.getVTMatrix(svdId);
         vtMatrix = vm.datatools.Tools.shrinkMatrix(vtMatrix, finalDimension, vtMatrix[0].length);
-        PCAMetricObjectTransformer pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(svdId), space);
+        MetricObjectTransformerInterface pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(svdId), space);
 
-        MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, spaceStorage, origDatasetName);
+        MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, spaceStorage, pca.getNameOfTransformedSetOfObjects(origDatasetName));
         transformDataset(origDatasetName, spaceStorage, parallelTransformerImpl, "Dataset with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + svdId + " to the length " + finalDimension);
         spaceStorage.updateDatasetSize(pca.getNameOfTransformedSetOfObjects(origDatasetName));
         transformPivots(origDatasetName, spaceStorage, parallelTransformerImpl, "Pivot set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + svdId + " to the length " + finalDimension);

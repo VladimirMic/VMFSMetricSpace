@@ -41,7 +41,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
      * @param metricSpace
      * @param dataSerializator
      */
-    public FSMetricSpacesStorage(AbstractMetricSpace metricSpace, MetricObjectDataToStringInterface<T> dataSerializator) {
+    public FSMetricSpacesStorage(AbstractMetricSpace<T> metricSpace, MetricObjectDataToStringInterface<T> dataSerializator) {
         this.metricSpace = metricSpace;
         this.dataSerializator = dataSerializator;
     }
@@ -147,7 +147,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     private File getFileForObjects(String folder, String fileName) {
         File f = new File(folder);
         f.mkdirs();
-        LOG.log(Level.INFO, "Folder: " + f.getAbsolutePath() + ", file: " + fileName);
+        LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
         return new File(f, fileName + ".gz");
     }
 
@@ -161,19 +161,20 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
      */
     @Override
     public void storePivots(List<Object> pivots, String pivotSetName, Object... additionalParamsToStoreWithNewPivotSet) {
-        GZIPOutputStream datasetOutputStream = null;
+        GZIPOutputStream os = null;
         try {
             File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName);
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
+            FSGlobal.askForAFileExistence(f);
+            os = new GZIPOutputStream(new FileOutputStream(f, false), true);
             for (Object metricObject : pivots) {
-                storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewPivotSet);
+                storeMetricObject(metricObject, os, additionalParamsToStoreWithNewPivotSet);
             }
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } finally {
             try {
-                datasetOutputStream.flush();
-                datasetOutputStream.close();
+                os.flush();
+                os.close();
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
@@ -193,7 +194,8 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         GZIPOutputStream datasetOutputStream = null;
         try {
             File f = getFileForObjects(FSGlobal.QUERY_FOLDER, querySetName);
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
+            FSGlobal.askForAFileExistence(f);
+            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, false), true);
             for (Object metricObject : queryObjs) {
                 storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewQuerySet);
             }
