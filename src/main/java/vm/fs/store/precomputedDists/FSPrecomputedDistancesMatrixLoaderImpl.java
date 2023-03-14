@@ -12,13 +12,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.fs.FSGlobal;
-import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedDistancesMatrixLoader;
+import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 
 /**
  *
  * @author xmic
  */
-public class FSPrecomputedDistancesMatrixLoaderImpl extends PrecomputedDistancesMatrixLoader {
+public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedDistancesMatrixLoader {
 
     private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName());
 

@@ -26,7 +26,7 @@ public class FSApplyGHPSketchingMain {
 
     private static void run(Dataset dataset) {
         GHPSketchingPivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
-        MetricSpacesStorageInterface storageForSketches = new FSMetricSpacesStorage(new FSMetricSpaceImpl<BitSet>(), SingularisedConvertors.LONG_VECTOR_SPACE);
+        MetricSpacesStorageInterface storageForSketches = new FSMetricSpacesStorage(new FSMetricSpaceImpl<>(), SingularisedConvertors.LONG_VECTOR_SPACE);
         TransformDataToGHPSketches evaluator = new TransformDataToGHPSketches(dataset, storageOfPivotPairs, storageForSketches);
         int[] sketchesLengths = new int[]{256, 192, 128, 64, 512};
         evaluator.createSketchesForDatasetPivotsAndQueries(sketchesLengths);

@@ -13,7 +13,7 @@ import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageI
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedDistancesMatrixLoader;
+import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.metricSpace.distance.bounding.twopivots.TwoPivotsFiltering;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.SearchingAlgorithm;
@@ -42,7 +42,7 @@ public class KNNQueriesSeqScanWithFilteringMain {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         int pivotCount = 512;
-        PrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
+        AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
         List queries = dataset.getMetricQueryObjectsForTheSameDataset();
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
