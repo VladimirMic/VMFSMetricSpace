@@ -27,7 +27,7 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
         List<float[]> retList = new ArrayList<>();
         File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount);
         if (!file.exists()) {
-            throw new IllegalArgumentException("File with the precomputed distances does no exists for datasetName " + datasetName + ", pivotSetName" + pivotSetName + ", pivotCount " + pivotCount);
+            throw new IllegalArgumentException("File with the precomputed distances does no exists for datasetName " + datasetName + ", pivotSetName " + pivotSetName + ", pivotCount " + pivotCount);
         }
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));

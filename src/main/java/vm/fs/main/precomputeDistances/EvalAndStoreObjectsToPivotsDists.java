@@ -23,17 +23,19 @@ public class EvalAndStoreObjectsToPivotsDists {
     public static final Logger LOGGER = Logger.getLogger(EvalAndStoreObjectsToPivotsDists.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
-        run(new FSDatasetInstanceSingularizator.SIFTdataset());
-        System.gc();
-        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
-        System.gc();
-        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
-        System.gc();
-        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
+//        run(new FSDatasetInstanceSingularizator.SIFTdataset());
+//        System.gc();
+//        run(new FSDatasetInstanceSingularizator.FSMPEG7dataset());
+//        System.gc();
+//        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
+//        System.gc();
+//        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
+//        System.gc();
+        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset());
     }
 
     private static void run(Dataset dataset) {
-        int pivotCount = 256;
+        int pivotCount = 512;
         String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
