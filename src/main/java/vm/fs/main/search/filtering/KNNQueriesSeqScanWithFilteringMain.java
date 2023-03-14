@@ -28,22 +28,22 @@ public class KNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(KNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
-//        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
-//        System.gc();
-//        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
-//        System.gc();
-//        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
-//        System.gc();
-//        run(new FSDatasetInstanceSingularizator.SIFTdataset());
-        System.gc();
         run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset());
+        System.gc();
+        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
+        System.gc();
+        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
+        System.gc();
+        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
+        System.gc();
+        run(new FSDatasetInstanceSingularizator.SIFTdataset());
     }
 
     private static void run(Dataset dataset) {
         int k = 100;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 256;
+        int pivotCount = 512;
         
         AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);

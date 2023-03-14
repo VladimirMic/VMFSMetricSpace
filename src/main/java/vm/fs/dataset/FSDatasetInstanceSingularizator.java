@@ -34,9 +34,9 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
-    public static class FSMPEG7dataset extends Dataset<Map<String, Object>> {
+    public static class MPEG7dataset extends Dataset<Map<String, Object>> {
 
-        public FSMPEG7dataset() {
+        public MPEG7dataset() {
             this.datasetName = "mpeg7_1m";
             this.metricSpace = new FSMetricSpaceImpl();
             this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.MPEG7_SPACE);
@@ -47,6 +47,14 @@ public class FSDatasetInstanceSingularizator {
 
         public DeCAF_GHP_50_256Dataset() {
             super("decaf_1m_GHP_50_256");
+        }
+
+    }
+
+    public static class DeCAF_GHP_50_64Dataset extends FSHammingSpaceDataset {
+
+        public DeCAF_GHP_50_64Dataset() {
+            super("decaf_1m_GHP_50_64");
         }
 
     }

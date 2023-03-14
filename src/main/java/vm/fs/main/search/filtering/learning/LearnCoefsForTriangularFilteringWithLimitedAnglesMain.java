@@ -18,7 +18,7 @@ public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
     public static void main(String[] args) {
         run(new FSDatasetInstanceSingularizator.SIFTdataset());
         System.gc();
-        run(new FSDatasetInstanceSingularizator.FSMPEG7dataset());
+        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
         System.gc();
         run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
         System.gc();
