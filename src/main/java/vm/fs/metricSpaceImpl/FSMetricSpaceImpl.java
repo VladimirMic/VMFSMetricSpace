@@ -6,6 +6,7 @@ import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.distance.impl.L2OnFloatsArray;
 import vm.metricSpace.distance.impl.Sapir3DistanceFunction;
 import vm.metricSpace.distance.DistanceFunctionInterface;
+import vm.metricSpace.distance.impl.HammingDistanceLongs;
 
 /**
  *
@@ -20,6 +21,9 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
     public DistanceFunctionInterface getDistanceFunctionForDataset(String datasetName, Object... params) {
         if (datasetName.contains("_PCA")) {
             return new L2OnFloatsArray();
+        }
+        if (datasetName.contains("_GHP_50_")) {
+            return new HammingDistanceLongs();
         }
         switch (datasetName) {
             case ("decaf_1m"):

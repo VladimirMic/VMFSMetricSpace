@@ -6,7 +6,6 @@ import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
-import vm.queryResults.recallEvaluation.RecallOfCandsSetsStoreInterface;
 
 /**
  *
@@ -15,17 +14,20 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsStoreInterface;
 public class FSEvaluateRecallsOfCandidateSetsMain {
 
     public static void main(String[] args) {
-        String groundTruthDatasetName = "decaf_1m";
+//        String groundTruthDatasetName = "decaf_1m";
 //        String groundTruthDatasetName = "decaf_1m_PCA256";
 //        String groundTruthDatasetName = "sift_1m";
+        String groundTruthDatasetName = "mpeg7_1m";
+//        String groundTruthDatasetName = "random_20dim_uniform_1m";
         String groundTruthQuerySetName = groundTruthDatasetName;
 
-        String candSetDataset = "decaf_1m_PCA256";
+        String candSetDatasetPrefix = groundTruthDatasetName + "_GHP_50_";
 //        String resultsDataset = "sift_1m_PCA4";
-        String candQuerySet = candSetDataset;
-        int k = 30;
-        Integer kCand = null; // null if dynamic, otherwise fixed number
-//        int[] kCands = new int[]{10, 15, 20, 25, 30, 40, 50};
+        String candQuerySet = candSetDatasetPrefix;
+        int k = 100;
+//        Integer kCand = null; // null if dynamic, otherwise fixed number
+        int[] kCands = new int[]{10000, 5000, 4000, 2500, 2000};
+        int[] sketchLengths = new int[]{512, 256, 192, 128, 64};
 //        int[] kCands = new int[]{30, 50, 100, 200, 500, 1000, 2000, 5000};
 
         int pcaLength = 256;
@@ -34,14 +36,18 @@ public class FSEvaluateRecallsOfCandidateSetsMain {
         int dataSampleCount = 100000;
         float percentile = 0.85f;
 
-//        for (int kCand : kCands) {
+        for (int sketchLength : sketchLengths) {
+            String candSetDataset = candSetDatasetPrefix + sketchLength;
+            candQuerySet = candSetDataset;
+            for (int kCand : kCands) {
 //        String resultName = "pure_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
 //        String resultName = "pure_double_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
 //        String resultName = "pure_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnDecreasingErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
-//            String resultName = "ground_truth";
-        String resultName = "simRel__PAPER6_kPCA100_involveUnknownRelation_false__rerank_false__PCA256_decideUsingFirst24_learnToleranceOn__queries100_dataSamples100000_kSearching30_percentile0.85";
-        evaluateRecallOfTheCandidateSet(groundTruthDatasetName, groundTruthQuerySetName, k, candSetDataset, candQuerySet, resultName, kCand);
-//        }
+                String resultName = "ground_truth";
+                evaluateRecallOfTheCandidateSet(groundTruthDatasetName, groundTruthQuerySetName, k, candSetDataset, candQuerySet, resultName, kCand);
+            }
+
+        }
     }
 
     public static final void evaluateRecallOfTheCandidateSet(String groundTruthDatasetName, String groundTruthQuerySetName, int groundTruthNNCount,
@@ -57,8 +63,9 @@ public class FSEvaluateRecallsOfCandidateSetsMain {
         attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.storing_result_name, resultSetName);
         attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_fixed_size, candidateNNCount.toString());
 
-        RecallOfCandsSetsStoreInterface recallStorage = new FSRecallOfCandidateSetsStorageImpl(attributesForFileName);
+        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(attributesForFileName);
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(groundTruthStorage, recallStorage);
         evaluator.evaluateAndStoreRecallsOfQueries(groundTruthDatasetName, groundTruthQuerySetName, groundTruthNNCount, candSetName, candSetQuerySetName, resultSetName, candidateNNCount);
+        recallStorage.saveFile();
     }
 }

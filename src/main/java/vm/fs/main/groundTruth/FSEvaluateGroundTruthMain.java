@@ -1,6 +1,5 @@
 package vm.fs.main.groundTruth;
 
-import java.sql.SQLException;
 import java.util.List;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
@@ -18,16 +17,25 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  */
 public class FSEvaluateGroundTruthMain {
 
-    public static void main(String[] args) throws SQLException {
-//        String datasetName = "random20uniform_1m";
+    public static void main(String[] args) {
+        String datasetName = "random_20dim_uniform_1m";
 //        String datasetName = "decaf_1m";
-        String datasetName = "sift_1m";
+//        String datasetName = "sift_1m";
 //        String datasetName = "mpeg7_1m";
+//
 //        String datasetName = "sift_1m_PCA100";
 //        String datasetName = "decaf_1m_PCA16";
+//        String datasetPrefix = "decaf_1m_GHP_50_";
+//        String datasetPrefix = "sift_1m_GHP_50_";
+//        String datasetPrefix = "random_20dim_uniform_1m_GHP_50_";
+//        String datasetPrefix = "mpeg7_1m_GHP_50_";
+//        int[] suffixes = new int[]{256, 128, 192, 64, 512};
+//        for (int suffix : suffixes) {
+//            String datasetName = datasetPrefix + suffix;
         String querySetName = datasetName;
         int k = 1000;
         AbstractMetricSpace space = new FSMetricSpaceImpl();
+
         DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);
         MetricSpacesStorageInterface spaceStorage = new FSMetricSpacesStorage(space, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
@@ -36,5 +44,6 @@ public class FSEvaluateGroundTruthMain {
         GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k, groundTruthStorage);
         gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
     }
+//    }
 
 }

@@ -60,11 +60,14 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
     public void storeRecallForQuery(Object queryObjId, float recall, Object... additionalParametersToStore) {
         TreeMap<QUERY_STATS, String> line = content.get(queryObjId.toString());
         if (line == null) {
-            LOG.log(Level.SEVERE, "Statistics not found for the query {0}", queryObjId.toString());
+            LOG.log(Level.INFO, "Statistics not found for the query {0}", queryObjId.toString());
+            line = new TreeMap<>();
+            line.put(QUERY_STATS.query_obj_id, queryObjId.toString());
+            content.put(queryObjId.toString(), line);
         }
         line.put(QUERY_STATS.recall, Float.toString(recall));
         String candidateNNCount = DataTypeConvertor.objectsToString(additionalParametersToStore, ";");
         line.put(QUERY_STATS.additional_stats, candidateNNCount);
     }
-
+  
 }
