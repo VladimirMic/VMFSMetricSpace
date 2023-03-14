@@ -19,11 +19,11 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  *
  * @author Vlada
  */
-public class PrintSampleOfSmallestDists {
+public class EvalAndStoreSampleOfSmallestDists {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
-    public static final Logger LOG = Logger.getLogger(PrintSampleOfSmallestDists.class.getName());
+    public static final Logger LOG = Logger.getLogger(EvalAndStoreSampleOfSmallestDists.class.getName());
     /**
      * Number of stored minimum distances
      */
@@ -31,13 +31,17 @@ public class PrintSampleOfSmallestDists {
 
     public static void main(String[] args) {
         Dataset dataset;
-        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+//        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+//        run(dataset);
+//        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
+//        run(dataset);
+//        dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
+//        run(dataset);
+//        dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
+//        run(dataset);
+        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset();
         run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
-        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
-        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
+        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset();
         run(dataset);
     }
 

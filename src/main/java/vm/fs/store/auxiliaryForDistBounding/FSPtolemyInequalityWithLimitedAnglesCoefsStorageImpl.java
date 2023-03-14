@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.fs.main.precomputeDistances.PrintSampleOfSmallestDists;
+import vm.fs.main.precomputeDistances.EvalAndStoreSampleOfSmallestDists;
 import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaiosFilteringWithLimitedAnglesSimpleCoef;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface2;
 
@@ -20,7 +20,6 @@ import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequality
 public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements PtolemyInequalityWithLimitedAnglesCoefsStoreInterface2 {
 
     public static final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
-
 
     public static File getFile(String resultName, boolean willBeDeleled) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_PTOLEMAIOS_COEFS_WITH_LIMITED_ANGLES);
@@ -49,7 +48,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     @Override
-    public void storeCoefficients(Map<String, float[]> results, String resultName) {
+    public void storeCoefficients(Map<Object, float[]> results, String resultName) {
         try {
             File resultFile = getFile(resultName, true);
             PrintStream err = System.err;
@@ -62,7 +61,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     private String getNameOfFileWithCoefs(String datasetName, int pivotCount) {
-        return getResultDescription(datasetName, PrintSampleOfSmallestDists.IMPLICIT_K, pivotCount, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.RATIO_OF_OUTLIERS_TO_CUT);
+        return getResultDescription(datasetName, EvalAndStoreSampleOfSmallestDists.IMPLICIT_K, pivotCount, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.RATIO_OF_OUTLIERS_TO_CUT);
     }
 
 }

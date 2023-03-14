@@ -31,6 +31,12 @@ public class FSLearnGHPSketchingMain {
         int sampleSize = 100000; // 100000
         LearnSketchingGHP learn = new LearnSketchingGHP(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), sketchingTechStorage);
         String datasetName = dataset.getDatasetName();
-        learn.evaluate(datasetName, datasetName, sampleSize, sketchesLengths, 0.5f);
+        // voluntary step and voluntary arguments start
+        FSPrecomputedDistancesMatrixLoaderImpl pd = new FSPrecomputedDistancesMatrixLoaderImpl();
+        float[][] dists = pd.loadPrecomPivotsToObjectsDists(datasetName, datasetName, 512);
+        Map<String, Integer> columnHeaders = pd.getColumnHeaders();
+        Map<String, Integer> rowHeaders = pd.getRowHeaders();
+        // voluntary step and voluntary arguments stop
+        learn.evaluate(datasetName, datasetName, sampleSize, sketchesLengths, 0.5f, dists, columnHeaders, rowHeaders);
     }
 }

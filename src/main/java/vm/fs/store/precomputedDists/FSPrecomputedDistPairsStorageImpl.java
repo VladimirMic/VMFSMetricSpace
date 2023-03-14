@@ -75,7 +75,7 @@ public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDist
         try {
             File file = getFileForResults(false);
             if (!file.exists()) {
-                throw new IllegalArgumentException("File with the precomputed distances does no exists for resultsName " + resultsName + ", o count" + oSize + ", q count " + qSize);
+                throw new Error("File with the precomputed distances does no exists for resultsName " + resultsName + ", o count" + oSize + ", q count " + qSize);
             }
             Comparator<Map.Entry<String, Float>> comp = new Tools.MapByValueComparator<>();
             TreeSet<Map.Entry<String, Float>> ret = new TreeSet(comp);

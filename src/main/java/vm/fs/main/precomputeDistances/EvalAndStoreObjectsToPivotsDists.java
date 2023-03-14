@@ -31,7 +31,7 @@ public class EvalAndStoreObjectsToPivotsDists {
 //        System.gc();
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
 //        System.gc();
-        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset());
+        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset());
     }
 
     private static void run(Dataset dataset) {
