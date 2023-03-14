@@ -23,11 +23,10 @@ import vm.search.impl.KNNSearchWithTwoPivotFiltering;
  *
  * @author Vlada
  */
-public class KNNQueriesSeqScanWithFilteringMain {
+public class FSKNNQueriesSeqScanWithFilteringMain {
 
-    private static final Logger LOG = Logger.getLogger(KNNQueriesSeqScanWithFilteringMain.class.getName());
-// jenom spustit - bude i s UB
-
+    private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
+// !jenom spustit - bude i s UB. Pak ostatni techniky, pak zkusit dalsi dataset - 192 bitu
     public static void main(String[] args) {
         run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset());
         System.gc();
