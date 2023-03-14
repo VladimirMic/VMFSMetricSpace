@@ -29,9 +29,9 @@ public class KNNQueriesSeqScanWithFilteringMain {
 // jenom spustit - bude i s UB
 
     public static void main(String[] args) {
-        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset());
-        System.gc();
         run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset());
+        System.gc();
+        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset());
         System.gc();
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
 //        System.gc();
