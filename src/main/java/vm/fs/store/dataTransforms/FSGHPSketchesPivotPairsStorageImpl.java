@@ -70,7 +70,9 @@ public class FSGHPSketchesPivotPairsStorageImpl implements GHPSketchingPivotPair
                 while (true) {
                     String line = br.readLine();
                     String[] split = line.split(";");
-                    ret.add(split);
+                    if (split.length == 2) {
+                        ret.add(split);
+                    }
                 }
             } catch (NullPointerException ex) {
             }
