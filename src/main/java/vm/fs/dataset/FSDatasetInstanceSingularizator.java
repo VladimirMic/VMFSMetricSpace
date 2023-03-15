@@ -59,6 +59,14 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
+    public static class DeCAF_GHP_50_128Dataset extends FSHammingSpaceDataset {
+
+        public DeCAF_GHP_50_128Dataset() {
+            super("decaf_1m_GHP_50_128");
+        }
+
+    }
+
     public static class DeCAF_GHP_50_64Dataset extends FSHammingSpaceDataset {
 
         public DeCAF_GHP_50_64Dataset() {

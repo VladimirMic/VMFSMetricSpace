@@ -5,6 +5,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
@@ -12,9 +13,8 @@ import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageI
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.metricSpace.distance.bounding.twopivots.TwoPivotsFiltering;
-import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaiosFiltering;
+import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.SearchingAlgorithm;
 import vm.search.impl.KNNSearchWithTwoPivotFiltering;
@@ -26,14 +26,8 @@ import vm.search.impl.KNNSearchWithTwoPivotFiltering;
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
-// !jenom spustit - bude i s UB. Pak ostatni techniky, pak zkusit dalsi dataset - 192 bitu
+
     public static void main(String[] args) {
-//        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset());
-//        System.gc();
-        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset());
-        System.gc();
-//        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset());
-//        System.gc();
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
 //        System.gc();
 //        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
@@ -41,6 +35,14 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
 //        System.gc();
 //        run(new FSDatasetInstanceSingularizator.SIFTdataset());
+//        System.gc();
+//        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset());
+//        System.gc();
+//        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset());
+//        System.gc();
+        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset());
+//        System.gc();
+//        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset());
     }
 
     private static void run(Dataset dataset) {
@@ -54,11 +56,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         List queries = dataset.getMetricQueryObjectsForTheSameDataset();
         List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
 
-//        TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName(), pivotCount);
+        TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName(), pivotCount);
 //        TwoPivotsFiltering filter = new FourPointBasedFiltering(pivotCount + "_pivots");
-        TwoPivotsFiltering filter = new PtolemaiosFiltering(pivotCount + "_pivots");
+//        TwoPivotsFiltering filter = new PtolemaiosFiltering(pivotCount + "_pivots");
 //        OnePivotFiltering filter = new TriangleInequality(pivotCount + "_pivots");
-//        OnePivotFiltering filter = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName());
+//        OnePivotFiltering filter = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(pivotCount + "_pivots", dataset.getDatasetName());
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
         SearchingAlgorithm alg = new KNNSearchWithTwoPivotFiltering(metricSpace, filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);

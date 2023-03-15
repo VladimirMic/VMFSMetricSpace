@@ -20,8 +20,8 @@ public class FSApplyGHPSketchingMain {
     public static void main(String[] args) {
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
         run(new FSDatasetInstanceSingularizator.SIFTdataset());
-        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
-        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
+//        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
+//        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
     }
 
     private static void run(Dataset dataset) {

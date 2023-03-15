@@ -43,7 +43,9 @@ public class EvalAndStoreSampleOfSmallestDists {
 //        run(dataset);
 //        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset();
 //        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset();
+//        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset();
+//        run(dataset);
+        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset();
         run(dataset);
     }
 

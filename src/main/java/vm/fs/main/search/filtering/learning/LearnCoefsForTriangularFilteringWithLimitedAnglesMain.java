@@ -16,13 +16,23 @@ import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequa
 public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
 
     public static void main(String[] args) {
-        run(new FSDatasetInstanceSingularizator.SIFTdataset());
-        System.gc();
-        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
-        System.gc();
-        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
-        System.gc();
-        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
+        Dataset dataset;
+//        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+//        run(dataset);
+//        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
+//        run(dataset);
+//        dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
+//        run(dataset);
+//        dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
+//        run(dataset);
+        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset();
+        run(dataset);
+        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset();
+        run(dataset);
+        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset();
+        run(dataset);
+        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset();
+        run(dataset);
     }
 
     private static void run(Dataset dataset) {

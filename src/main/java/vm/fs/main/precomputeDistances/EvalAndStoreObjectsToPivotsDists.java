@@ -31,11 +31,11 @@ public class EvalAndStoreObjectsToPivotsDists {
 //        System.gc();
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
 //        System.gc();
-        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset());
+        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset());
     }
 
     private static void run(Dataset dataset) {
-        int pivotCount = 256;
+        int pivotCount = 512;
         String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
