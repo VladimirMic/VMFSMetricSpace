@@ -1,6 +1,5 @@
 package vm.fs.main.datatools;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.SortedMap;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
@@ -16,7 +15,7 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  */
 public class PrintDDOfDataset {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args){
         Dataset decaf = new FSDatasetInstanceSingularizator.DeCAFDataset();
         String datasetName = decaf.getDatasetName();
         float distInterval = 2f;

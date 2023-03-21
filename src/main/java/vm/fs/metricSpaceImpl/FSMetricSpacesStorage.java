@@ -109,6 +109,9 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     }
 
     private void storeMetricObject(Object metricObject, GZIPOutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
+        if (metricObject == null) {
+            return;
+        }
         String id = metricSpace.getIDOfMetricObject(metricObject).toString();
         String data = dataSerializator.metricObjectDataToString((T) metricSpace.getDataOfMetricObject(metricObject));
         datasetOutputStream.write(id.getBytes());
@@ -123,7 +126,12 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         int ret = 0;
         try {
             File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName);
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
+            if (additionalParamsToStoreWithNewDataset.length > 0 && additionalParamsToStoreWithNewDataset[0] instanceof Boolean && additionalParamsToStoreWithNewDataset[0].equals(true)) {
+                FSGlobal.askForAFileExistence(f);
+                datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, false), true);
+            } else {
+                datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
+            }
             for (ret = 1; it.hasNext(); ret++) {
                 Object metricObject = it.next();
                 storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);

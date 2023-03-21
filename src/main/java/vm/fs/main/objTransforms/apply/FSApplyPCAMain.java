@@ -1,6 +1,5 @@
 package vm.fs.main.objTransforms.apply;
 
-import java.sql.SQLException;
 import java.util.Iterator;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
@@ -18,24 +17,24 @@ import vm.objTransforms.perform.PCAMetricObjectTransformer;
  */
 public class FSApplyPCAMain {
 
-    public static void main(String[] args) throws SQLException {
-        int sampleSetSize = 100000;
-        int[] finalDimension = new int[]{100, 128, 30, 4, 6, 72, 8};
-
-        Dataset dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
-
-        run(dataset, sampleSetSize, finalDimension);
+    public static void main(String[] args) {
+        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
     }
 
-    private static void run(Dataset dataset, int sampleSetSize, int... finalDimensions) {
+    private static void run(Dataset dataset) {
+        int sampleSetSize = 100000;
+//        int[] finalDimensions = new int[]{100, 128, 30, 4, 6, 72, 8}; // SIFT
+//        int[] finalDimensions = new int[]{20, 18, 16, 15, 12, 10, 8}; // Random 20
+        int[] finalDimensions = new int[]{256, 10, 12, 128, 1540, 16, 2387, 24, 32, 4, 8, 6, 670, 68, 8}; // DeCAF
+
         AbstractMetricSpace<float[]> space = dataset.getMetricSpace();
         MetricSpacesStorageInterface spaceStorage = dataset.getMetricSpacesStorage();
         String origDatasetName = dataset.getDatasetName();
         FSSVDStorageImpl svdStorage = new FSSVDStorageImpl(origDatasetName, sampleSetSize, false);
-        float[][] vtMatrix = svdStorage.getVTMatrix();
+        float[][] vtMatrixFull = svdStorage.getVTMatrix();
 
         for (int finalDimension : finalDimensions) {
-            vtMatrix = Tools.shrinkMatrix(vtMatrix, finalDimension, vtMatrix[0].length);
+            float[][] vtMatrix = Tools.shrinkMatrix(vtMatrixFull, finalDimension, vtMatrixFull[0].length);
             MetricObjectTransformerInterface pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(), space);
 
             MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, spaceStorage, pca.getNameOfTransformedSetOfObjects(origDatasetName));

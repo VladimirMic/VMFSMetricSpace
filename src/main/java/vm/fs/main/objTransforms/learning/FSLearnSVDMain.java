@@ -1,6 +1,5 @@
 package vm.fs.main.objTransforms.learning;
 
-import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ import vm.objTransforms.storeLearned.SVDStoreInterface;
  */
 public class FSLearnSVDMain {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         int sampleCount = 100000;
 //        int sampleCount = 1000;
 //        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);

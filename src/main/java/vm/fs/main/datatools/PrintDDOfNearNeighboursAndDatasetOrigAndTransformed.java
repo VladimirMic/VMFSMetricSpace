@@ -1,6 +1,5 @@
 package vm.fs.main.datatools;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  */
 public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformed {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         String datasetName;
         datasetName = "decaf_1m";
         float distInterval = 2f;
