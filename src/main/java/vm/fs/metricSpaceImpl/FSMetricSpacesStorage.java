@@ -287,8 +287,8 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
                     return null;
                 }
                 String[] split = line.split(":");
-                T transformed = (T) dataSerializator.parseDBString(split[1]);
-                AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(split[0], transformed);
+                T obj = (T) dataSerializator.parseString(split[1]);
+                AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(split[0], obj);
                 counter++;
                 return entry;
             } catch (IOException ex) {

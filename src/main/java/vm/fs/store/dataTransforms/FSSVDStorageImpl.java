@@ -1,13 +1,18 @@
 package vm.fs.store.dataTransforms;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import vm.fs.FSGlobal;
 import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
@@ -17,13 +22,14 @@ import vm.objTransforms.storeLearned.SVDStoreInterface;
  *
  * @author Vlada
  */
-public class TODOFSSVDStorageImpl implements SVDStoreInterface {
+public class FSSVDStorageImpl implements SVDStoreInterface {
 
-    private static final Logger LOG = Logger.getLogger(TODOFSSVDStorageImpl.class.getName());
-    private File output;
+    private static final Logger LOG = Logger.getLogger(FSSVDStorageImpl.class.getName());
+    private final File output;
+    private Map<String, String> fileContent = null;
 
-    public TODOFSSVDStorageImpl(String datasetName, int sampleCount) {
-        output = getFileWithSVD(datasetName, Integer.toString(sampleCount));
+    public FSSVDStorageImpl(String datasetName, int sampleCount, boolean willBeLearnt) {
+        output = getFileWithSVD(datasetName, sampleCount, willBeLearnt);
     }
 
     @Override
@@ -66,10 +72,32 @@ public class TODOFSSVDStorageImpl implements SVDStoreInterface {
         }
     }
 
-    private Map<String, String> fileContent = null;
-
     private Map<String, String> parseFile() {
-        // TODO
+        try {
+            Map<String, String> ret = new HashMap<>();
+            BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(output))));
+            String key = null;
+            StringBuilder value = new StringBuilder();
+            while (true) {
+                String line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                if (line.equals("Means") || line.equals("Singular values") || line.equals("matrixVT") || line.equals("matrixU")) {
+                    if (key != null) {
+                        ret.put(key, value.toString().trim());
+                    }
+                    key = line;
+                    value = new StringBuilder();
+                    continue;
+                }
+                value.append(line).append("\n");
+            }
+            ret.put(key, value.toString().trim());
+            return ret;
+        } catch (IOException ex) {
+            Logger.getLogger(FSSVDStorageImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
 
@@ -79,7 +107,7 @@ public class TODOFSSVDStorageImpl implements SVDStoreInterface {
             fileContent = parseFile();
         }
         String matrixAsString = fileContent.get("matrixVT");
-        return SingularisedConvertors.FLOAT_MATRIX_SPACE.parseDBString(matrixAsString);
+        return SingularisedConvertors.FLOAT_MATRIX_SPACE.parseString(matrixAsString);
     }
 
     @Override
@@ -88,7 +116,7 @@ public class TODOFSSVDStorageImpl implements SVDStoreInterface {
             fileContent = parseFile();
         }
         String matrixAsString = fileContent.get("matrixU");
-        return SingularisedConvertors.FLOAT_MATRIX_SPACE.parseDBString(matrixAsString);
+        return SingularisedConvertors.FLOAT_MATRIX_SPACE.parseString(matrixAsString);
     }
 
     @Override
@@ -97,7 +125,7 @@ public class TODOFSSVDStorageImpl implements SVDStoreInterface {
             fileContent = parseFile();
         }
         String matrixAsString = fileContent.get("Singular values");
-        return SingularisedConvertors.FLOAT_VECTOR_SPACE.parseDBString(matrixAsString);
+        return SingularisedConvertors.FLOAT_VECTOR_SPACE.parseString(matrixAsString);
     }
 
     @Override
@@ -106,15 +134,16 @@ public class TODOFSSVDStorageImpl implements SVDStoreInterface {
             fileContent = parseFile();
         }
         String matrixAsString = fileContent.get("Means");
-        return SingularisedConvertors.FLOAT_VECTOR_SPACE.parseDBString(matrixAsString);
+        return SingularisedConvertors.FLOAT_VECTOR_SPACE.parseString(matrixAsString);
     }
 
-    public final File getFileWithSVD(String datasetName, String sampleCount) {
-        File f = new File(FSGlobal.AUXILIARY_FOR_SVD_TRANSFORMS);
-        f.mkdirs();
+    public final File getFileWithSVD(String datasetName, int sampleCount, boolean willBeDeleted) {
         String fileName = datasetName + "_" + sampleCount;
-        LOG.log(Level.INFO, "Folder: " + f.getAbsolutePath() + ", file: " + fileName);
-        return new File(f, fileName + ".gz");
+        File ret = new File(FSGlobal.AUXILIARY_FOR_SVD_TRANSFORMS, fileName + ".gz");
+        if (willBeDeleted) {
+            FSGlobal.askForAFileExistence(ret);
+        }
+        return ret;
     }
 
 }

@@ -4,10 +4,10 @@ import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.fs.store.dataTransforms.TODOFSSVDStorageImpl;
-import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
+import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.store.dataTransforms.FSSVDStorageImpl;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.Dataset;
 import vm.objTransforms.learning.LearnSVD;
 import vm.objTransforms.storeLearned.SVDStoreInterface;
 
@@ -18,19 +18,12 @@ import vm.objTransforms.storeLearned.SVDStoreInterface;
 public class FSLearnSVDMain {
 
     public static void main(String[] args) throws SQLException {
-        String datasetName = "sift_1M";
-        datasetName = "decaf_1M";
         int sampleCount = 100000;
-//
-        FSMetricSpaceImpl<float[]> sourceMetricSpace = new FSMetricSpaceImpl<>();
-        FSMetricSpacesStorage metricSpaceStorage = new FSMetricSpacesStorage(sourceMetricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
-//
-        List<Object> sampleOfDataset = metricSpaceStorage.getSampleOfDataset(datasetName, sampleCount);
-//        List<Object> sampleOfDataset = getTrivialSampleDataset();
-        SVDStoreInterface pcaStorage = new TODOFSSVDStorageImpl(datasetName, sampleCount);
-
-        LearnSVD svd = new LearnSVD(sourceMetricSpace, pcaStorage, sampleOfDataset, datasetName, sampleCount);
-        svd.execute();
+//        int sampleCount = 1000;
+//        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);
+//        run(new FSDatasetInstanceSingularizator.DeCAFDataset(), sampleCount);
+        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform(), sampleCount);
+//        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);
     }
 
     private static final List<Object> getTrivialSampleDataset() {
@@ -38,5 +31,17 @@ public class FSLearnSVDMain {
         ret.add(new AbstractMap.SimpleEntry("1", new float[]{3, 2, 2}));
         ret.add(new AbstractMap.SimpleEntry("2", new float[]{2, 3, -2}));
         return ret;
+    }
+
+    private static void run(Dataset dataset, int sampleCount) {
+        String datasetName = dataset.getDatasetName();
+        AbstractMetricSpace sourceMetricSpace = dataset.getMetricSpace();
+//
+        List<Object> sampleOfDataset = dataset.getSampleOfDataset(sampleCount);
+//        List<Object> sampleOfDataset = getTrivialSampleDataset();
+        SVDStoreInterface pcaStorage = new FSSVDStorageImpl(datasetName, sampleCount, true);
+
+        LearnSVD svd = new LearnSVD(sourceMetricSpace, pcaStorage, sampleOfDataset, datasetName, sampleCount);
+        svd.execute();
     }
 }

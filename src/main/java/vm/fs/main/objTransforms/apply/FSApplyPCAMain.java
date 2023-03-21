@@ -2,12 +2,12 @@ package vm.fs.main.objTransforms.apply;
 
 import java.sql.SQLException;
 import java.util.Iterator;
-import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.fs.store.dataTransforms.TODOFSSVDStorageImpl;
+import vm.datatools.Tools;
+import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.store.dataTransforms.FSSVDStorageImpl;
 import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.Dataset;
 import vm.metricSpace.MetricSpacesStorageInterface;
-import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
 import vm.objTransforms.MetricObjectTransformerInterface;
 import vm.objTransforms.MetricObjectsParallelTransformerImpl;
 import vm.objTransforms.perform.PCAMetricObjectTransformer;
@@ -19,27 +19,31 @@ import vm.objTransforms.perform.PCAMetricObjectTransformer;
 public class FSApplyPCAMain {
 
     public static void main(String[] args) throws SQLException {
-//        String origDatasetName = "sift_1m";
-//        int finalDimension = 10;// 4, 8, 30, 72, 100, 128
-//        int svdId = 3;
-
-        String origDatasetName = "decaf_1m";
         int sampleSetSize = 100000;
-        int finalDimension = 24;// 4, 8, 10, 12, 16, 24, 32, 68, 670, 1540, 2387
-        int svdId = 6;
+        int[] finalDimension = new int[]{100, 128, 30, 4, 6, 72, 8};
 
-        AbstractMetricSpace<float[]> space = new FSMetricSpaceImpl();
-        FSMetricSpacesStorage spaceStorage = new FSMetricSpacesStorage(space, SingularisedConvertors.FLOAT_VECTOR_SPACE);
-        TODOFSSVDStorageImpl svdStorage = new TODOFSSVDStorageImpl(origDatasetName, sampleSetSize);
-        float[][] vtMatrix = svdStorage.getVTMatrix(svdId);
-        vtMatrix = vm.datatools.Tools.shrinkMatrix(vtMatrix, finalDimension, vtMatrix[0].length);
-        MetricObjectTransformerInterface pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(svdId), space);
+        Dataset dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
 
-        MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, spaceStorage, pca.getNameOfTransformedSetOfObjects(origDatasetName));
-        transformDataset(origDatasetName, spaceStorage, parallelTransformerImpl, "Dataset with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + svdId + " to the length " + finalDimension);
-        spaceStorage.updateDatasetSize(pca.getNameOfTransformedSetOfObjects(origDatasetName));
-        transformPivots(origDatasetName, spaceStorage, parallelTransformerImpl, "Pivot set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + svdId + " to the length " + finalDimension);
-        transformQueryObjects(origDatasetName, spaceStorage, parallelTransformerImpl, "Query set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + svdId + " to the length " + finalDimension);
+        run(dataset, sampleSetSize, finalDimension);
+    }
+
+    private static void run(Dataset dataset, int sampleSetSize, int... finalDimensions) {
+        AbstractMetricSpace<float[]> space = dataset.getMetricSpace();
+        MetricSpacesStorageInterface spaceStorage = dataset.getMetricSpacesStorage();
+        String origDatasetName = dataset.getDatasetName();
+        FSSVDStorageImpl svdStorage = new FSSVDStorageImpl(origDatasetName, sampleSetSize, false);
+        float[][] vtMatrix = svdStorage.getVTMatrix();
+
+        for (int finalDimension : finalDimensions) {
+            vtMatrix = Tools.shrinkMatrix(vtMatrix, finalDimension, vtMatrix[0].length);
+            MetricObjectTransformerInterface pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(), space);
+
+            MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, spaceStorage, pca.getNameOfTransformedSetOfObjects(origDatasetName));
+            transformDataset(origDatasetName, spaceStorage, parallelTransformerImpl, "Dataset with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalDimensions);
+            spaceStorage.updateDatasetSize(pca.getNameOfTransformedSetOfObjects(origDatasetName));
+            transformPivots(origDatasetName, spaceStorage, parallelTransformerImpl, "Pivot set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalDimensions);
+            transformQueryObjects(origDatasetName, spaceStorage, parallelTransformerImpl, "Query set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalDimensions);
+        }
     }
 
     private static void transformDataset(String origDatasetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {

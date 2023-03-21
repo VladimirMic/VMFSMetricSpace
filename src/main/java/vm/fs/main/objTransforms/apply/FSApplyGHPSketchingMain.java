@@ -1,6 +1,5 @@
 package vm.fs.main.objTransforms.apply;
 
-import java.util.BitSet;
 import vm.objTransforms.perform.TransformDataToGHPSketches;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
