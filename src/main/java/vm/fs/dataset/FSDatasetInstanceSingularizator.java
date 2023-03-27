@@ -43,6 +43,14 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
+    public static class DeCAF_PCA256Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA256Dataset() {
+            super("decaf_1m_PCA256");
+        }
+
+    }
+
     public static class DeCAF_GHP_50_256Dataset extends FSHammingSpaceDataset {
 
         public DeCAF_GHP_50_256Dataset() {
