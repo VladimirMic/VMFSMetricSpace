@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
-    public static final String ROOT_FOLDER_PATH = "h:\\Similarity_search\\";
-//    public static final String ROOT_FOLDER_PATH = "c:\\Data\\Similarity_search\\";
+//    public static final String ROOT_FOLDER_PATH = "h:\\Similarity_search\\";
+    public static final String ROOT_FOLDER_PATH = "c:\\Data\\Similarity_search\\";
 
     public static final String TRIALS_FOLDER = ROOT_FOLDER_PATH + "Trials\\";
 
@@ -34,7 +34,7 @@ public class FSGlobal {
     public static final String AUXILIARY_FOR_TRIANGULAR_FILTERING_WITH_LIMITED_ANGLES = AUXILIARY_FOR_DATA_FILTERING + "Triangle_ineq_with_limited_angles\\";
     public static final String AUXILIARY_FOR_PTOLEMAIOS_WITH_LIMITED_ANGLES = AUXILIARY_FOR_DATA_FILTERING + "Ptolemaios_limited_angles\\";
     public static final String AUXILIARY_FOR_PTOLEMAIOS_COEFS_WITH_LIMITED_ANGLES = AUXILIARY_FOR_DATA_FILTERING + "Ptolemaios_limited_angles\\Simple_coefs";
-    public static final String BINARY_SKETCHES = AUXILIARY_FOR_DATA_TRANSFORMS  + "Sketches\\" ;
+    public static final String BINARY_SKETCHES = AUXILIARY_FOR_DATA_TRANSFORMS + "Sketches\\";
 
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
