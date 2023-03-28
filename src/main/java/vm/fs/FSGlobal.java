@@ -17,6 +17,7 @@ public class FSGlobal {
     public static final String TRIALS_FOLDER = ROOT_FOLDER_PATH + "Trials\\";
 
     public static final String DATA_FOLDER = ROOT_FOLDER_PATH + "Dataset\\";
+    public static final String DATASET_MAPDB_FOLDER = DATA_FOLDER + "Map_DB\\";
     public static final String DATASET_FOLDER = DATA_FOLDER + "Dataset\\";
     public static final String PIVOT_FOLDER = DATA_FOLDER + "Pivot\\";
     public static final String QUERY_FOLDER = DATA_FOLDER + "Query\\";
@@ -42,13 +43,16 @@ public class FSGlobal {
         Object[] options = new String[]{"Yes", "No"};
         file.getParentFile().mkdirs();
         if (file.exists()) {
-            LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: " + file.getAbsolutePath());
+            LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0}", file.getAbsolutePath());
             String question = "File " + file.getName() + " at " + file.getAbsolutePath() + " already exists. Do you want to delete its content? Answer no causes immediate stop.";
-            int add = JOptionPane.showOptionDialog(null, question, "New query results?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
+            int add = JOptionPane.showOptionDialog(null, question, "New file?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
             if (add == 1) {
                 System.exit(1);
             }
+            file.delete();
+            LOG.log(Level.INFO, "File returned ({0})", file.getAbsolutePath());
+        } else {
+            LOG.log(Level.INFO, "File created ({0})", file.getAbsolutePath());
         }
-        LOG.log(Level.INFO, "File with the results created");
     }
 }
