@@ -46,7 +46,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformed {
 
 //      find the same pairs in the transformed dataset and print corresponding distances
         List<Object> transformedObjects = metricSpacesStorage.getSampleOfDataset(transformedDatasetName, -1);
-        Map<Object, Object> metricObjectsAsIdObjectMap = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, transformedObjects);
+        Map<Object, Object> metricObjectsAsIdObjectMap = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, transformedObjects, true);
         DistanceFunctionInterface distanceFunctionForTransformedDataset = metricSpace.getDistanceFunctionForDataset(transformedDatasetName);
         SortedMap<Float, Float> ddRandomSampleTransformed = evaluateDDForPairs(metricSpace, distanceFunctionForTransformedDataset, idsOfRandomPairs, metricObjectsAsIdObjectMap, transformedDistInterval);
         SortedMap<Float, Float> ddOfNNSampleTransformed = evaluateDDForPairs(metricSpace, distanceFunctionForTransformedDataset, idsOfNNPairs, metricObjectsAsIdObjectMap, transformedDistInterval);
@@ -81,8 +81,6 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformed {
         for (Object[] idsPair : idsPairs) {
             Object o1 = metricObjects.get(idsPair[0]);
             Object o2 = metricObjects.get(idsPair[1]);
-            o1 = metricSpace.getDataOfMetricObject(o1);
-            o2 = metricSpace.getDataOfMetricObject(o2);
             float distance = distanceFunction.getDistance(o1, o2);
             distances.add(distance);
         }

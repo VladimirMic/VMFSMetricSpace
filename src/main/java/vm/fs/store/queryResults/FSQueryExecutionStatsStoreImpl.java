@@ -158,8 +158,15 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         String fileName = path.toString() + ".csv";
         folder.mkdirs();
         LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{folder.getAbsolutePath(), fileName});
-        return new File(folder, fileName);
-
+        File ret = new File(folder, fileName);
+        if (!ret.exists()) {
+            try {
+                ret.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return ret;
     }
 
     private class FileNameAttributesComparator implements Comparator<DATA_NAMES_IN_FILE_NAME> {
