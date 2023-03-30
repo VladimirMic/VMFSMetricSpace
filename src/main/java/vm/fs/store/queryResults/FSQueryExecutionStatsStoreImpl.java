@@ -62,7 +62,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
      *
      * @param attributesForFileName: ground_truth_name,
      * ground_truth_query_set_name, ground_truth_nn_count, cand_set_name,
-     * cand_set_query_set_name, storing_result_name. Voluntary:
+     * storing_result_name. Voluntary: cand_set_query_set_name
      * cand_set_fixed_size
      */
     public FSQueryExecutionStatsStoreImpl(Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> attributesForFileName) {
@@ -81,7 +81,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
             treeMap.put(QUERY_STATS.query_execution_time, "null");
         }
         if (additionalParametersToStore != null && additionalParametersToStore.length != 0) {
-            String additionalStats = DataTypeConvertor.objectsToString(additionalParametersToStore, ";");
+            String additionalStats = DataTypeConvertor.objectsToString(additionalParametersToStore, ",");
             treeMap.put(QUERY_STATS.additional_stats, additionalStats);
         } else {
             treeMap.put(QUERY_STATS.additional_stats, "null");
