@@ -66,8 +66,12 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
             content.put(queryObjId.toString(), line);
         }
         line.put(QUERY_STATS.recall, Float.toString(recall));
-        String candidateNNCount = DataTypeConvertor.objectsToString(additionalParametersToStore, ";");
+        String candidateNNCount = DataTypeConvertor.objectsToString(additionalParametersToStore, ",");
+        if (line.containsKey(QUERY_STATS.additional_stats)) {
+            String prefix = line.get(QUERY_STATS.additional_stats);
+            candidateNNCount = prefix + ",," + candidateNNCount;
+        }
         line.put(QUERY_STATS.additional_stats, candidateNNCount);
     }
-  
+
 }

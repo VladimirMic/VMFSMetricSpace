@@ -11,8 +11,11 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
-    public static final String ROOT_FOLDER_PATH = "h:\\Similarity_search\\";
+    public static final Boolean UNIX = true;
+
+//    public static final String ROOT_FOLDER_PATH = "h:\\Similarity_search\\";
 //    public static final String ROOT_FOLDER_PATH = "c:\\Data\\Similarity_search\\";
+    public static final String ROOT_FOLDER_PATH = "Similarity_search\\";
 
     public static final String TRIALS_FOLDER = ROOT_FOLDER_PATH + "Trials\\";
 
@@ -39,8 +42,9 @@ public class FSGlobal {
 
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
-    public static void askForAFileExistence(File file) {
+    public static final void askForAFileExistence(File file) {
         Object[] options = new String[]{"Yes", "No"};
+        file = new File(checkUnixPath(file.getAbsolutePath()));
         file.getParentFile().mkdirs();
         if (file.exists()) {
             LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0}", file.getAbsolutePath());
@@ -55,4 +59,12 @@ public class FSGlobal {
             LOG.log(Level.INFO, "File created ({0})", file.getAbsolutePath());
         }
     }
+
+    public static final String checkUnixPath(String path) {
+        if (UNIX) {
+            return path.replace("\\", "/");
+        }
+        return path;
+    }
+
 }

@@ -25,6 +25,9 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
         if (datasetName.contains("_GHP_50_")) {
             return new HammingDistanceLongs();
         }
+        if (datasetName.contains("_GHP_80_")) {
+            return new HammingDistanceLongs();
+        }
         switch (datasetName) {
             case ("decaf_1m"):
             case ("sift_1m"):
