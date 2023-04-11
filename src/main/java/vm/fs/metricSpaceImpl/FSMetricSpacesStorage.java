@@ -153,10 +153,11 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     }
 
     private File getFileForObjects(String folder, String fileName) {
-        File f = new File(folder);
-        f.mkdirs();
+        String s = new File(folder, fileName + ".gz").getAbsolutePath();
+        File f = new File(FSGlobal.checkUnixPath(s));
+        f.getParentFile().mkdirs();
         LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
-        return new File(f, fileName + ".gz");
+        return f;
     }
 
     /**
