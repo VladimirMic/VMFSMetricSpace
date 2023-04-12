@@ -26,7 +26,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         folderFile.mkdirs();
         File ret = new File(folderFile, resultName);
         if (willBeDeleled) {
-            FSGlobal.askForAFileExistence(ret);
+            FSGlobal.checkFileExistence(ret);
         }
         LOG.log(Level.INFO, "File path: {0}", ret.getAbsolutePath());
         return ret;

@@ -139,9 +139,9 @@ public class FSSVDStorageImpl implements SVDStoreInterface {
 
     public final File getFileWithSVD(String datasetName, int sampleCount, boolean willBeDeleted) {
         String fileName = datasetName + "_" + sampleCount;
-        File ret = new File(FSGlobal.checkUnixPath(FSGlobal.AUXILIARY_FOR_SVD_TRANSFORMS), fileName + ".gz");
+        File ret = FSGlobal.checkFileExistence(new File(FSGlobal.AUXILIARY_FOR_SVD_TRANSFORMS, fileName + ".gz"));
         if (willBeDeleted) {
-            FSGlobal.askForAFileExistence(ret);
+            FSGlobal.checkFileExistence(ret);
         }
         return ret;
     }

@@ -11,11 +11,11 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
-    public static final Boolean UNIX = true;
+    public static final Boolean UNIX = false;
 
-//    public static final String ROOT_FOLDER_PATH = "h:\\Similarity_search\\";
+    public static final String ROOT_FOLDER_PATH = "h:\\Similarity_search\\";
 //    public static final String ROOT_FOLDER_PATH = "c:\\Data\\Similarity_search\\";
-    public static final String ROOT_FOLDER_PATH = "Similarity_search\\";
+//    public static final String ROOT_FOLDER_PATH = "Similarity_search\\";
 
     public static final String TRIALS_FOLDER = ROOT_FOLDER_PATH + "Trials\\";
 
@@ -42,11 +42,11 @@ public class FSGlobal {
 
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
-    public static final File askForAFileExistence(File file) {
+    public static final File checkFileExistence(File file, boolean willBeDeleted) {
         Object[] options = new String[]{"Yes", "No"};
         file = new File(checkUnixPath(file.getAbsolutePath()));
         file.getParentFile().mkdirs();
-        if (file.exists()) {
+        if (file.exists() && willBeDeleted) {
             LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0}", file.getAbsolutePath());
             String question = "File " + file.getName() + " at " + file.getAbsolutePath() + " already exists. Do you want to delete its content? Answer no causes immediate stop.";
             int add = JOptionPane.showOptionDialog(null, question, "New file?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
@@ -62,7 +62,11 @@ public class FSGlobal {
         return file;
     }
 
-    public static final String checkUnixPath(String path) {
+    public static final File checkFileExistence(File file) {
+        return checkFileExistence(file, true);
+    }
+
+    private static String checkUnixPath(String path) {
         if (UNIX) {
             return path.replace("\\", "/");
         }

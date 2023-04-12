@@ -64,7 +64,7 @@ public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDist
         String fileName = resultsName + "__sample_" + oSize + "__ queries_" + qSize + ".csv";
         File ret = new File(FSGlobal.SMALLEST_DISTANCES, fileName);
         if (willBeDeleted) {
-            FSGlobal.askForAFileExistence(ret);
+            FSGlobal.checkFileExistence(ret);
         }
         return ret;
     }

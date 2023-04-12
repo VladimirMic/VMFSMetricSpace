@@ -64,7 +64,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     }
 
     private Iterator<Object> getIteratorOfObjects(String folder, String file, Object... params) {
-        File f = getFileForObjects(folder, file);
+        File f = getFileForObjects(folder, file, false);
         if (!f.exists()) {
             throw new IllegalArgumentException("No file for objects " + f.getAbsolutePath() + " exists");
         }
@@ -93,7 +93,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     public void storeObjectToDataset(Object metricObject, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
         GZIPOutputStream datasetOutputStream = null;
         try {
-            File f = getFileForObjects(FSGlobal.checkUnixPath(FSGlobal.DATA_FOLDER), datasetName);
+            File f = getFileForObjects(FSGlobal.DATA_FOLDER, datasetName, false);
             datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
             storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
         } catch (IOException ex) {
@@ -125,9 +125,9 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         GZIPOutputStream datasetOutputStream = null;
         int ret = 0;
         try {
-            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName);
+            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
             if (additionalParamsToStoreWithNewDataset.length > 0 && additionalParamsToStoreWithNewDataset[0] instanceof Boolean && additionalParamsToStoreWithNewDataset[0].equals(true)) {
-                FSGlobal.askForAFileExistence(f);
+                FSGlobal.checkFileExistence(f);
                 datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, false), true);
             } else {
                 datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
@@ -152,10 +152,9 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         return ret;
     }
 
-    private File getFileForObjects(String folder, String fileName) {
-        String s = new File(folder, fileName + ".gz").getAbsolutePath();
-        File f = new File(FSGlobal.checkUnixPath(s));
-        f.getParentFile().mkdirs();
+    private File getFileForObjects(String folder, String fileName, boolean willBeDeleted) {
+        File f = new File(folder, fileName + ".gz");
+        f = FSGlobal.checkFileExistence(f, willBeDeleted);
         LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
         return f;
     }
@@ -172,8 +171,8 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     public void storePivots(List<Object> pivots, String pivotSetName, Object... additionalParamsToStoreWithNewPivotSet) {
         GZIPOutputStream os = null;
         try {
-            File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName);
-            FSGlobal.askForAFileExistence(f);
+            File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, true);
+            FSGlobal.checkFileExistence(f);
             os = new GZIPOutputStream(new FileOutputStream(f, false), true);
             for (Object metricObject : pivots) {
                 storeMetricObject(metricObject, os, additionalParamsToStoreWithNewPivotSet);
@@ -202,8 +201,8 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     public void storeQueryObjects(List<Object> queryObjs, String querySetName, Object... additionalParamsToStoreWithNewQuerySet) {
         GZIPOutputStream datasetOutputStream = null;
         try {
-            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, querySetName);
-            FSGlobal.askForAFileExistence(f);
+            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, querySetName, true);
+            FSGlobal.checkFileExistence(f);
             datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, false), true);
             for (Object metricObject : queryObjs) {
                 storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewQuerySet);
@@ -224,7 +223,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     public int getPrecomputedDatasetSize(String datasetName) {
         BufferedReader br = null;
         try {
-            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, datasetName + "_size.txt");
+            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, datasetName + "_size.txt", false);
             br = new BufferedReader(new FileReader(f));
             String line = br.readLine();
             return Integer.parseInt(line);
@@ -244,7 +243,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     public void updateDatasetSize(String datasetName, int count) {
         FileOutputStream os = null;
         try {
-            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt");
+            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", true);
             os = new FileOutputStream(f);
             byte[] bytes = Integer.toString(count).getBytes();
             os.write(bytes);

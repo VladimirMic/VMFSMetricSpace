@@ -52,7 +52,7 @@ public class FSGHPSketchesPivotPairsStorageImpl implements GHPSketchingPivotPair
     private File getFileForResults(String resultName, boolean willBeDeleted) {
         File ret = new File(FSGlobal.BINARY_SKETCHES, resultName + ".csv");
         if (willBeDeleted) {
-            FSGlobal.askForAFileExistence(ret);
+            FSGlobal.checkFileExistence(ret);
         }
         return ret;
     }
