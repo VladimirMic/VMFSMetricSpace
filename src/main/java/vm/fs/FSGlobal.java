@@ -42,7 +42,7 @@ public class FSGlobal {
 
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
-    public static final void askForAFileExistence(File file) {
+    public static final File askForAFileExistence(File file) {
         Object[] options = new String[]{"Yes", "No"};
         file = new File(checkUnixPath(file.getAbsolutePath()));
         file.getParentFile().mkdirs();
@@ -55,9 +55,11 @@ public class FSGlobal {
             }
             file.delete();
             LOG.log(Level.INFO, "File returned ({0})", file.getAbsolutePath());
+            return file;
         } else {
             LOG.log(Level.INFO, "File created ({0})", file.getAbsolutePath());
         }
+        return file;
     }
 
     public static final String checkUnixPath(String path) {

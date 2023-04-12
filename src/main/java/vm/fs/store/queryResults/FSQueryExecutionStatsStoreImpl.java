@@ -38,7 +38,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
     public static enum QUERY_STATS {
         query_obj_id, recall,
         cand_set_dynamic_size, query_execution_time,
-        additional_stats
+        additional_stats, error_on_dist
     }
 
     public FSQueryExecutionStatsStoreImpl(String groundTruthName, String groundTruthQuerySetName, int groundTruthNNCount,
@@ -232,6 +232,9 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
                 case "additional_stats": {
                     return QUERY_STATS.additional_stats;
                 }
+                case "error_on_dist": {
+                    return QUERY_STATS.error_on_dist;
+                }
             }
             return null;
         }
@@ -255,6 +258,9 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
                 }
                 case additional_stats: {
                     return "additional_stats";
+                }
+                case error_on_dist: {
+                    return "error_on_dist";
                 }
             }
             return "null";

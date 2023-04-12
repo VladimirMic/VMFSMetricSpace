@@ -7,13 +7,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.DataTypeConvertor;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
+import vm.queryResults.errorOnDistEvaluation.ErrorsOnDistStoreInterface;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsStoreInterface;
 
 /**
  *
  * @author Vlada
  */
-public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsStoreImpl implements RecallOfCandsSetsStoreInterface {
+public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsStoreImpl implements RecallOfCandsSetsStoreInterface, ErrorsOnDistStoreInterface {
 
     private static final Logger LOG = Logger.getLogger(FSRecallOfCandidateSetsStorageImpl.class.getName());
 
@@ -72,6 +73,24 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
             candidateNNCount = prefix + ",," + candidateNNCount;
         }
         line.put(QUERY_STATS.additional_stats, candidateNNCount);
+    }
+
+    @Override
+    public void storeErrorOnDistForQuery(Object queryObjId, float errorOnDist, Object... additionalParametersToStore) {
+        TreeMap<QUERY_STATS, String> line = content.get(queryObjId.toString());
+        if (line == null) {
+            LOG.log(Level.INFO, "Statistics not found for the query {0}", queryObjId.toString());
+            line = new TreeMap<>();
+            line.put(QUERY_STATS.query_obj_id, queryObjId.toString());
+            content.put(queryObjId.toString(), line);
+        }
+        line.put(QUERY_STATS.error_on_dist, Float.toString(errorOnDist));
+        String additional = DataTypeConvertor.objectsToString(additionalParametersToStore, ",");
+        if (line.containsKey(QUERY_STATS.additional_stats)) {
+            String prefix = line.get(QUERY_STATS.additional_stats);
+            additional = prefix + ",," + additional;
+        }
+        line.put(QUERY_STATS.additional_stats, additional);
     }
 
 }
