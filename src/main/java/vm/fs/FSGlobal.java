@@ -57,7 +57,7 @@ public class FSGlobal {
             LOG.log(Level.INFO, "File returned ({0})", file.getAbsolutePath());
             return file;
         } else {
-            LOG.log(Level.INFO, "File created ({0})", file.getAbsolutePath());
+            LOG.log(Level.INFO, "File pointed created ({0})", file.getAbsolutePath());
         }
         return file;
     }
