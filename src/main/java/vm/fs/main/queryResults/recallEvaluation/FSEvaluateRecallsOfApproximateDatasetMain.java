@@ -2,52 +2,47 @@ package vm.fs.main.queryResults.recallEvaluation;
 
 import java.util.HashMap;
 import java.util.Map;
+import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
+import vm.metricSpace.Dataset;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 
 /**
  *
  * @author Vlada
  */
-public class FSEvaluateRecallsOfCandidateSetsMain {
+public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static void main(String[] args) {
-//        String groundTruthDatasetName = "decaf_1m";
-//        String groundTruthDatasetName = "decaf_1m_PCA256";
-//        String groundTruthDatasetName = "sift_1m";
-        String groundTruthDatasetName = "mpeg7_1m";
-//        String groundTruthDatasetName = "random_20dim_uniform_1m";
-        String groundTruthQuerySetName = groundTruthDatasetName;
-
-        String candSetDatasetPrefix = groundTruthDatasetName + "_GHP_50_";
+        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+        Dataset[] approximatedDatasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.DeCAF_PCA16Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_PCA24Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_PCA46Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_PCA68Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_PCA128Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_PCA670Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_PCA1540Dataset()
+        };
 //        String resultsDataset = "sift_1m_PCA4";
-        String candQuerySet = candSetDatasetPrefix;
-        int k = 100;
+        int k = 30;
 //        Integer kCand = null; // null if dynamic, otherwise fixed number
-        int[] kCands = new int[]{10000, 5000, 4000, 2500, 2000};
-        int[] sketchLengths = new int[]{512, 256, 192, 128, 64};
-//        int[] kCands = new int[]{30, 50, 100, 200, 500, 1000, 2000, 5000};
+        int[] kCands = new int[]{30, 50, 75, 80, 100, 1000, 5000, 10000};
 
-        int pcaLength = 256;
-        int prefixLength = 24;
-        int querySampleCount = 100;
-        int dataSampleCount = 100000;
-        float percentile = 0.85f;
-
-        for (int sketchLength : sketchLengths) {
-            String candSetDataset = candSetDatasetPrefix + sketchLength;
-            candQuerySet = candSetDataset;
+        for (Dataset approximatedDataset : approximatedDatasets) {
             for (int kCand : kCands) {
 //        String resultName = "pure_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
 //        String resultName = "pure_double_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
 //        String resultName = "pure_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnDecreasingErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
                 String resultName = "ground_truth";
-                evaluateRecallOfTheCandidateSet(groundTruthDatasetName, groundTruthQuerySetName, k, candSetDataset, candQuerySet, resultName, kCand);
+                evaluateRecallOfTheCandidateSet(groundTruthDataset.getDatasetName(), groundTruthDataset.getDatasetName(), k, approximatedDataset.getDatasetName(), approximatedDataset.getDatasetName(), resultName, kCand);
             }
-
         }
+
     }
 
     public static final void evaluateRecallOfTheCandidateSet(String groundTruthDatasetName, String groundTruthQuerySetName, int groundTruthNNCount,

@@ -43,10 +43,98 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
+    public static class DeCAF_PCA8Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA8Dataset() {
+            super("decaf_1m_PCA8");
+        }
+
+    }
+
+    public static class DeCAF_PCA10Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA10Dataset() {
+            super("decaf_1m_PCA10");
+        }
+
+    }
+
+    public static class DeCAF_PCA12Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA12Dataset() {
+            super("decaf_1m_PCA12");
+        }
+
+    }
+
+    public static class DeCAF_PCA16Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA16Dataset() {
+            super("decaf_1m_PCA16");
+        }
+
+    }
+
+    public static class DeCAF_PCA24Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA24Dataset() {
+            super("decaf_1m_PCA24");
+        }
+
+    }
+
+    public static class DeCAF_PCA32Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA32Dataset() {
+            super("decaf_1m_PCA32");
+        }
+
+    }
+
+    public static class DeCAF_PCA46Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA46Dataset() {
+            super("decaf_1m_PCA46");
+        }
+
+    }
+
+    public static class DeCAF_PCA68Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA68Dataset() {
+            super("decaf_1m_PCA68");
+        }
+
+    }
+
+    public static class DeCAF_PCA128Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA128Dataset() {
+            super("decaf_1m_PCA128");
+        }
+
+    }
+
     public static class DeCAF_PCA256Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA256Dataset() {
             super("decaf_1m_PCA256");
+        }
+
+    }
+
+    public static class DeCAF_PCA670Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA670Dataset() {
+            super("decaf_1m_PCA670");
+        }
+
+    }
+
+    public static class DeCAF_PCA1540Dataset extends FSFloatVectorDataset {
+
+        public DeCAF_PCA1540Dataset() {
+            super("decaf_1m_PCA1540");
         }
 
     }
