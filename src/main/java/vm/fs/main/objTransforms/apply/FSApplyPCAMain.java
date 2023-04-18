@@ -25,7 +25,8 @@ public class FSApplyPCAMain {
         int sampleSetSize = 100000;
 //        int[] finalDimensions = new int[]{100, 128, 30, 4, 6, 72, 8}; // SIFT
 //        int[] finalDimensions = new int[]{20, 18, 16, 15, 12, 10, 8}; // Random 20
-        int[] finalDimensions = new int[]{10, 12, 128, 1540, 16, 46, 2387, 24, 256, 32, 4, 6, 670, 68, 8}; // DeCAF
+//        int[] finalDimensions = new int[]{10, 12, 128, 1540, 16, 46, 2387, 24, 256, 32, 4, 6, 670, 68, 8}; // DeCAF
+        int[] finalDimensions = new int[]{670}; // DeCAF
 
         AbstractMetricSpace<float[]> space = dataset.getMetricSpace();
         MetricSpacesStorageInterface spaceStorage = dataset.getMetricSpacesStorage();

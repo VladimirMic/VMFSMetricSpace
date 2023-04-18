@@ -31,7 +31,8 @@ public class FSEvaluateGroundTruthMain {
 //        String datasetPrefix = "random_20dim_uniform_1m_GHP_50_";
 //        String datasetPrefix = "mpeg7_1m_GHP_50_";
 //        int[] suffixes = new int[]{256, 128, 192, 64, 512};
-        int[] suffixes = new int[]{10, 12, 128, 1540, 16, 2387, 24, 256, 32, 670, 68, 8};;
+//        int[] suffixes = new int[]{10, 12, 128, 1540, 16, 2387, 24, 256, 32, 670, 68, 8};;
+        int[] suffixes = new int[]{670};;
         for (int suffix : suffixes) {
             String datasetName = datasetPrefix + suffix;
             String querySetName = datasetName;
