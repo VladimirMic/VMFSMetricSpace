@@ -159,13 +159,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         folder.mkdirs();
         LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{folder.getAbsolutePath(), fileName});
         File ret = new File(folder, fileName);
-//        if (!ret.exists()) {
-//            try {
-//                ret.createNewFile();
-//            } catch (IOException ex) {
-//                Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        ret = FSGlobal.checkFileExistence(ret, false);
         return ret;
     }
 

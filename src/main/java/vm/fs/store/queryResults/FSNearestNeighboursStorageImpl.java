@@ -35,8 +35,8 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
 
     private File getFileWithResults(String resultsName, String datasetName, String querySetName, boolean log) {
         File ret = new File(FSGlobal.RESULT_FOLDER, resultsName);
-        ret.mkdirs();
         ret = new File(ret, datasetName + "_" + querySetName + ".gz");
+        ret = FSGlobal.checkFileExistence(ret, false);
         if (log) {
             LOG.log(Level.INFO, "File for results: {0}", ret.getAbsolutePath());
         }

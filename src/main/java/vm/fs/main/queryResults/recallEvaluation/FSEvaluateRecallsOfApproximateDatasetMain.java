@@ -6,6 +6,7 @@ import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
+import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.Dataset;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 
@@ -16,9 +17,9 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static void main(String[] args) {
-        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+        Dataset groundTruthDataset = new M2DatasetInstanceSingularizator.DeCAF20MDataset();
         Dataset[] approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.DeCAF_PCA670Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF20M_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF_PCA16Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF_PCA24Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF_PCA32Dataset(),
@@ -32,8 +33,8 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 //        String resultsDataset = "sift_1m_PCA4";
         int k = 30;
 //        Integer kCand = null; // null if dynamic, otherwise fixed number
-//        int[] kCands = new int[]{30, 50, 75, 80, 100, 1000, 5000, 10000};
-        int[] kCands = new int[]{30, 50, 80, 100};
+        int[] kCands = new int[]{110, 120, 125, 130, 140, 150};
+//        int[] kCands = new int[]{30, 50, 80, 100};
 
         for (Dataset approximatedDataset : approximatedDatasets) {
             for (int kCand : kCands) {

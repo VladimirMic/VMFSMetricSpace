@@ -4,6 +4,7 @@ import java.util.Iterator;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.dataTransforms.FSSVDStorageImpl;
+import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.MetricSpacesStorageInterface;

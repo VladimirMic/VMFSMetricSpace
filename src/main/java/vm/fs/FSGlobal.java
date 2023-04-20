@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 public class FSGlobal {
 
 //    public static final String ROOT_FOLDER_PATH = "h:\\Similarity_search\\";
-//    public static final String ROOT_FOLDER_PATH = "c:\\Data\\Similarity_search\\";
-    public static final String ROOT_FOLDER_PATH = "Similarity_search/";
+    public static final String ROOT_FOLDER_PATH = "c:\\Data\\Similarity_search\\";
+//    public static final String ROOT_FOLDER_PATH = "Similarity_search/";
 
     public static final Boolean UNIX = ROOT_FOLDER_PATH.contains("/");
 
