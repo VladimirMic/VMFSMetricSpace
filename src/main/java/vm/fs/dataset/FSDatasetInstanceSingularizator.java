@@ -3,6 +3,7 @@ package vm.fs.dataset;
 import java.util.Map;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
+import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
 
@@ -179,12 +180,86 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
+    public static class LAION_100k_Dataset extends H5FloatVectorDataset {
+
+        public LAION_100k_Dataset() {
+            super("laion2B-en-clip768v2-n=100K.h5", 100000, 768);
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-clip768v2.h5";
+        }
+
+    }
+
+    public static class LAION_300k_Dataset extends H5FloatVectorDataset {
+
+        public LAION_300k_Dataset() {
+            super("laion2B-en-clip768v2-n=300K.h5", 300000, 768);
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-clip768v2.h5";
+        }
+
+    }
+
+    public static class LAION_10M_Dataset extends H5FloatVectorDataset {
+
+        public LAION_10M_Dataset() {
+            super("laion2B-en-clip768v2-n=10M.h5", 10000000, 768);
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-clip768v2.h5";
+        }
+
+    }
+
+    public static class LAION_30M_Dataset extends H5FloatVectorDataset {
+
+        public LAION_30M_Dataset() {
+            super("laion2B-en-clip768v2-n=30M.h5", 30000000, 768);
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-clip768v2.h5";
+        }
+
+    }
+
+    public static class LAION_100M_Dataset extends H5FloatVectorDataset {
+
+        public LAION_100M_Dataset() {
+            super("laion2B-en-clip768v2-n=100M.h5", 100000000, 768);
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-clip768v2.h5";
+        }
+
+    }
+
     private static class FSFloatVectorDataset extends Dataset<float[]> {
 
         public FSFloatVectorDataset(String datasetName) {
             this.datasetName = datasetName;
             this.metricSpace = new FSMetricSpaceImpl();
             this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+        }
+    }
+
+    private static class H5FloatVectorDataset extends Dataset<float[]> {
+
+        public H5FloatVectorDataset(String datasetName, int datasetSize, int vectorDimensionality) {
+            this.datasetName = datasetName;
+            this.metricSpace = new FSMetricSpaceImpl();
+            this.metricSpacesStorage = new H5MetricSpacesStorage(metricSpace, datasetSize, vectorDimensionality, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
     }
 

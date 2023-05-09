@@ -3,10 +3,12 @@ package vm.fs.metricSpaceImpl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,8 +32,8 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
 
     public static final Logger LOG = Logger.getLogger(FSMetricSpacesStorage.class.getName());
 
-    private final AbstractMetricSpace metricSpace;
-    private final MetricObjectDataToStringInterface<T> dataSerializator;
+    protected final AbstractMetricSpace metricSpace;
+    protected final MetricObjectDataToStringInterface<T> dataSerializator;
 
     /**
      * Methods metricSpace.getIDOfMetricObject and
@@ -39,11 +41,19 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
      * the "key-value" format
      *
      * @param metricSpace
-     * @param dataSerializator
+     * @param dataSerializator transforms T to string and vice versa
      */
     public FSMetricSpacesStorage(AbstractMetricSpace<T> metricSpace, MetricObjectDataToStringInterface<T> dataSerializator) {
         this.metricSpace = metricSpace;
         this.dataSerializator = dataSerializator;
+    }
+
+    /**
+     *
+     * @param dataSerializator transforms T to string and vice versa
+     */
+    public FSMetricSpacesStorage(MetricObjectDataToStringInterface<T> dataSerializator) {
+        this(new FSMetricSpaceImpl<T>(), dataSerializator);
     }
 
     @Override
@@ -63,7 +73,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         return Tools.getObjectsFromIterator(it);
     }
 
-    private Iterator<Object> getIteratorOfObjects(String folder, String file, Object... params) {
+    protected Iterator<Object> getIteratorOfObjects(String folder, String file, Object... params) {
         File f = getFileForObjects(folder, file, false);
         if (!f.exists()) {
             throw new IllegalArgumentException("No file for objects " + f.getAbsolutePath() + " exists");
@@ -72,11 +82,24 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         if (count < 0) {
             count = Integer.MAX_VALUE;
         }
+        return getIteratorOfObjects(f, count);
+    }
+
+    protected Iterator<Object> getIteratorOfObjects(File f, int count) {
+        BufferedReader br = null;
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));
+            br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));
             return new MetricObjectFileIterator(br, count);
         } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+            Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }
@@ -108,7 +131,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         }
     }
 
-    private void storeMetricObject(Object metricObject, GZIPOutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
+    protected void storeMetricObject(Object metricObject, OutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
         if (metricObject == null) {
             throw new IllegalArgumentException("Attempt to store null object as the metric object");
         }
@@ -152,7 +175,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         return ret;
     }
 
-    private File getFileForObjects(String folder, String fileName, boolean willBeDeleted) {
+    protected File getFileForObjects(String folder, String fileName, boolean willBeDeleted) {
         File f = new File(folder, fileName + ".gz");
         f = FSGlobal.checkFileExistence(f, willBeDeleted);
         LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
@@ -224,6 +247,9 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         BufferedReader br = null;
         try {
             File f = getFileForObjects(FSGlobal.QUERY_FOLDER, datasetName + "_size.txt", false);
+            if (!f.exists()) {
+                return -1;
+            }
             br = new BufferedReader(new FileReader(f));
             String line = br.readLine();
             return Integer.parseInt(line);
@@ -258,7 +284,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         }
     }
 
-    private class MetricObjectFileIterator<T> implements Iterator<Object> {
+    private class MetricObjectFileIterator<T> implements Iterator<AbstractMap.SimpleEntry<String, T>> {
 
         protected AbstractMap.SimpleEntry<String, T> nextObject;
         protected AbstractMap.SimpleEntry<String, T> currentObject;

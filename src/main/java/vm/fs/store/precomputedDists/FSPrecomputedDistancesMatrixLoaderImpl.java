@@ -72,7 +72,7 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
         File f = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER);
         f.mkdirs();
         File ret = new File(f, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
-        LOG.log(Level.INFO, "File for precumputed distances: " + ret.getAbsolutePath());
+        LOG.log(Level.INFO, "File for precumputed distances: {0}", ret.getAbsolutePath());
         return ret;
     }
 
