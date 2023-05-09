@@ -6,7 +6,7 @@ import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.distance.impl.L2OnFloatsArray;
 import vm.metricSpace.distance.impl.Sapir3DistanceFunction;
 import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.impl.DotProductOnFloatsArray;
+import vm.metricSpace.distance.impl.DotProductOnNormalisedFloatVectors;
 import vm.metricSpace.distance.impl.HammingDistanceLongs;
 
 /**
@@ -27,7 +27,7 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
             return new HammingDistanceLongs();
         }
         if (datasetName.contains("laion2B-en-clip768v2")) {
-            return new DotProductOnFloatsArray();
+            return new DotProductOnNormalisedFloatVectors();
         }
         switch (datasetName) {
             case ("decaf_1m"):

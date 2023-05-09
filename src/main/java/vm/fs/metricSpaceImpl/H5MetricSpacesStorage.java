@@ -75,7 +75,8 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         FloatBuffer fb = FloatBuffer.allocate(count * vectorDimensionality);
         FloatPointer pointer = new FloatPointer(fb);
         dataset.read(pointer, PredType.NATIVE_FLOAT());
-        return new H5MetricObjectFileIterator(pointer, f.getName(), vectorDimensionality, count);
+        String prefix = count == datasetSize ? "D" : "";
+        return new H5MetricObjectFileIterator(pointer, prefix, vectorDimensionality, count);
     }
 
     @Override
@@ -127,7 +128,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
             for (int i = 0; i < ret.length; i++) {
                 ret[i] = pointer.get(i + counter * dimensionality);
             }
-            AbstractMap.SimpleEntry<String, float[]> entry = new AbstractMap.SimpleEntry<>(fileName + counter, ret);
+            AbstractMap.SimpleEntry<String, float[]> entry = new AbstractMap.SimpleEntry<>(fileName + (counter + 1), ret);
             counter++;
             return entry;
         }
