@@ -37,7 +37,7 @@ public class FSApplyPCAMain {
 
         for (int finalDimension : finalDimensions) {
             float[][] vtMatrix = Tools.shrinkMatrix(vtMatrixFull, finalDimension, vtMatrixFull[0].length);
-            MetricObjectTransformerInterface pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(), space);
+            MetricObjectTransformerInterface pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(), space, space);
 
             MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, spaceStorage, pca.getNameOfTransformedSetOfObjects(origDatasetName));
             transformPivots(origDatasetName, spaceStorage, parallelTransformerImpl, "Pivot set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalDimensions);

@@ -156,8 +156,6 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         File folder = new File(FSGlobal.RESULT_FOLDER, treeMap.get(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.storing_result_name));
         folder = new File(folder, FSGlobal.RESULT_STATS_FOLDER);
         String fileName = path.toString() + ".csv";
-        folder.mkdirs();
-        LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{folder.getAbsolutePath(), fileName});
         File ret = new File(folder, fileName);
         ret = FSGlobal.checkFileExistence(ret, false);
         return ret;
