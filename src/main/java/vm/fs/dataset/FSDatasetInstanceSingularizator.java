@@ -4,7 +4,6 @@ import java.util.Map;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
-//import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
 
@@ -19,7 +18,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAFDataset() {
             super("decaf_1m");
         }
-
     }
 
     public static class DeCAF20M_PCA256Dataset extends FSFloatVectorDataset {
@@ -27,7 +25,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF20M_PCA256Dataset() {
             super("decaf_20m_PCA256");
         }
-
     }
 
     public static class RandomDataset20Uniform extends FSFloatVectorDataset {
@@ -66,7 +63,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA10Dataset() {
             super("decaf_1m_PCA10");
         }
-
     }
 
     public static class DeCAF_PCA12Dataset extends FSFloatVectorDataset {
@@ -74,7 +70,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA12Dataset() {
             super("decaf_1m_PCA12");
         }
-
     }
 
     public static class DeCAF_PCA16Dataset extends FSFloatVectorDataset {
@@ -82,7 +77,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA16Dataset() {
             super("decaf_1m_PCA16");
         }
-
     }
 
     public static class DeCAF_PCA24Dataset extends FSFloatVectorDataset {
@@ -90,7 +84,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA24Dataset() {
             super("decaf_1m_PCA24");
         }
-
     }
 
     public static class DeCAF_PCA32Dataset extends FSFloatVectorDataset {
@@ -98,7 +91,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA32Dataset() {
             super("decaf_1m_PCA32");
         }
-
     }
 
     public static class DeCAF_PCA46Dataset extends FSFloatVectorDataset {
@@ -106,7 +98,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA46Dataset() {
             super("decaf_1m_PCA46");
         }
-
     }
 
     public static class DeCAF_PCA68Dataset extends FSFloatVectorDataset {
@@ -114,7 +105,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA68Dataset() {
             super("decaf_1m_PCA68");
         }
-
     }
 
     public static class DeCAF_PCA128Dataset extends FSFloatVectorDataset {
@@ -122,7 +112,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA128Dataset() {
             super("decaf_1m_PCA128");
         }
-
     }
 
     public static class DeCAF_PCA256Dataset extends FSFloatVectorDataset {
@@ -130,7 +119,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA256Dataset() {
             super("decaf_1m_PCA256");
         }
-
     }
 
     public static class DeCAF_PCA670Dataset extends FSFloatVectorDataset {
@@ -138,7 +126,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA670Dataset() {
             super("decaf_1m_PCA670");
         }
-
     }
 
     public static class DeCAF_PCA1540Dataset extends FSFloatVectorDataset {
@@ -146,7 +133,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_PCA1540Dataset() {
             super("decaf_1m_PCA1540");
         }
-
     }
 
     public static class DeCAF_GHP_50_256Dataset extends FSHammingSpaceDataset {
@@ -154,7 +140,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_GHP_50_256Dataset() {
             super("decaf_1m_GHP_50_256");
         }
-
     }
 
     public static class DeCAF_GHP_50_192Dataset extends FSHammingSpaceDataset {
@@ -162,7 +147,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_GHP_50_192Dataset() {
             super("decaf_1m_GHP_50_192");
         }
-
     }
 
     public static class DeCAF_GHP_50_128Dataset extends FSHammingSpaceDataset {
@@ -170,7 +154,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_GHP_50_128Dataset() {
             super("decaf_1m_GHP_50_128");
         }
-
     }
 
     public static class DeCAF_GHP_50_64Dataset extends FSHammingSpaceDataset {
@@ -178,7 +161,6 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF_GHP_50_64Dataset() {
             super("decaf_1m_GHP_50_64");
         }
-
     }
 
     public static class LAION_100k_Dataset extends H5FloatVectorDataset {
@@ -191,7 +173,6 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySettName() {
             return "public-queries-10k-clip768v2.h5";
         }
-
     }
 
     public static class LAION_300k_Dataset extends H5FloatVectorDataset {
@@ -204,7 +185,6 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySettName() {
             return "public-queries-10k-clip768v2.h5";
         }
-
     }
 
     public static class LAION_10M_Dataset extends H5FloatVectorDataset {
@@ -217,7 +197,6 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySettName() {
             return "public-queries-10k-clip768v2.h5";
         }
-
     }
 
     public static class LAION_30M_Dataset extends H5FloatVectorDataset {
@@ -230,7 +209,6 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySettName() {
             return "public-queries-10k-clip768v2.h5";
         }
-
     }
 
     public static class LAION_100M_Dataset extends H5FloatVectorDataset {
@@ -243,7 +221,126 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySettName() {
             return "public-queries-10k-clip768v2.h5";
         }
+    }
 
+    public static class LAION_100k_PCA32Dataset extends H5FloatVectorDataset {
+
+        public LAION_100k_PCA32Dataset() {
+            super("laion2B-en-pca32v2-n=100K.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca32v2.h5";
+        }
+    }
+
+    public static class LAION_300k_PCA32Dataset extends H5FloatVectorDataset {
+
+        public LAION_300k_PCA32Dataset() {
+            super("laion2B-en-pca32v2-n=300K.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca32v2.h5";
+        }
+    }
+
+    public static class LAION_10M_PCA32Dataset extends H5FloatVectorDataset {
+
+        public LAION_10M_PCA32Dataset() {
+            super("laion2B-en-pca32v2-n=10M.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca32v2.h5";
+        }
+    }
+
+    public static class LAION_30M_PCA32Dataset extends H5FloatVectorDataset {
+
+        public LAION_30M_PCA32Dataset() {
+            super("laion2B-en-pca32v2-n=30M.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca32v2.h5";
+        }
+    }
+
+    public static class LAION_100M_PCA32Dataset extends H5FloatVectorDataset {
+
+        public LAION_100M_PCA32Dataset() {
+            super("laion2B-en-pca32v2-n=100M.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca32v2.h5";
+        }
+    }
+
+    public static class LAION_100k_PCA96Dataset extends H5FloatVectorDataset {
+
+        public LAION_100k_PCA96Dataset() {
+            super("laion2B-en-pca96v2-n=100K.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca96v2.h5";
+        }
+    }
+
+    public static class LAION_300k_PCA96Dataset extends H5FloatVectorDataset {
+
+        public LAION_300k_PCA96Dataset() {
+            super("laion2B-en-pca96v2-n=300K.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca96v2.h5";
+        }
+    }
+
+    public static class LAION_10M_PCA96Dataset extends H5FloatVectorDataset {
+
+        public LAION_10M_PCA96Dataset() {
+            super("laion2B-en-pca96v2-n=10M.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca96v2.h5";
+        }
+    }
+
+    public static class LAION_30M_PCA96Dataset extends H5FloatVectorDataset {
+
+        public LAION_30M_PCA96Dataset() {
+            super("laion2B-en-pca96v2-n=30M.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca96v2.h5";
+        }
+    }
+
+    public static class LAION_100M_PCA96Dataset extends H5FloatVectorDataset {
+
+        public LAION_100M_PCA96Dataset() {
+            super("laion2B-en-pca96v2-n=100M.h5");
+        }
+
+        @Override
+        public String getQuerySettName() {
+            return "public-queries-10k-pca96v2.h5";
+        }
     }
 
     private static class FSFloatVectorDataset extends Dataset<float[]> {

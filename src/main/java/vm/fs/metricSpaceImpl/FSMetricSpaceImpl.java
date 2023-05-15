@@ -26,7 +26,7 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
         if (datasetName.contains("_GHP_50_") || datasetName.contains("_GHP_80_")) {
             return new HammingDistanceLongs();
         }
-        if (datasetName.contains("laion2B-en-clip768v2")) {
+        if (datasetName.contains("laion2B-en")) {
             return new DotProductOnNormalisedFloatVectors();
         }
         switch (datasetName) {

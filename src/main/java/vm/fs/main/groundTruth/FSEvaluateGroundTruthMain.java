@@ -21,14 +21,24 @@ public class FSEvaluateGroundTruthMain {
 //            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100k_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_300k_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
         };
         for (Dataset dataset : datasets) {
             System.gc();
             String datasetName = dataset.getDatasetName();
             String querySetName = dataset.getQuerySettName();
-            int k = 1000; // 1000 for orig datasets, else 50000
+            int k = 50000; // 1000 for orig datasets, else 50000
             AbstractMetricSpace space = dataset.getMetricSpace();
 
             DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);

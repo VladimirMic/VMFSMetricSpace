@@ -1,14 +1,19 @@
 package vm.fs.metricSpaceImpl;
 
 import io.jhdf.HdfFile;
+import io.jhdf.api.Attribute;
 import io.jhdf.api.Dataset;
+import io.jhdf.api.Group;
+import io.jhdf.api.Node;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
@@ -64,12 +69,15 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
     @Override
     protected Iterator<Object> getIteratorOfObjects(File f, Object... params) {
         HdfFile hdfFile = new HdfFile(f.toPath());
-        Dataset dataset = hdfFile.getDatasetByPath("emb");
+        Node node = hdfFile.iterator().next();
+        String name = node.getName();
+        LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, f.getName()});
+        Dataset dataset = hdfFile.getDatasetByPath(name);
         int count = params.length > 0 && params[0] instanceof Integer ? (int) params[0] : Integer.MAX_VALUE;
         if (count < 0) {
             count = Integer.MAX_VALUE;
         }
-        String prefix = params[1].toString();
+        String prefix = params[params.length - 1].toString();
         return new H5MetricObjectFileIterator(hdfFile, dataset, prefix, count);
     }
 
