@@ -16,17 +16,16 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
 public class PrintDDOfDataset {
 
     public static void main(String[] args){
-        Dataset decaf = new FSDatasetInstanceSingularizator.DeCAFDataset();
-        String datasetName = decaf.getDatasetName();
+        Dataset dataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
+        String datasetName = dataset.getDatasetName();
         float distInterval = 2f;
 
 //      getHistogramsForRandomPairs
         int objCount = 100 * 1000;//100,000
         int distCount = 1000 * 1000;//1,000,000
-        SortedMap<Float, Float> ddRandomSample = createDDOfRandomSample(decaf, datasetName, objCount, distCount, distInterval, null);
+        SortedMap<Float, Float> ddRandomSample = createDDOfRandomSample(dataset, datasetName, objCount, distCount, distInterval, null);
 //      print
         printDD(datasetName, distInterval, ddRandomSample);
-
     }
 
     protected static SortedMap<Float, Float> createDDOfRandomSample(Dataset dataset, String datasetName, int objCount, int distCount, float distInterval, List<Object[]> examinedPairs) {

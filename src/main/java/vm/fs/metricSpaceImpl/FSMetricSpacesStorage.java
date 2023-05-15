@@ -78,17 +78,17 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         if (!f.exists()) {
             throw new IllegalArgumentException("No file for objects " + f.getAbsolutePath() + " exists");
         }
-        int count = params.length > 0 ? (int) params[0] : Integer.MAX_VALUE;
-        if (count < 0) {
-            count = Integer.MAX_VALUE;
-        }
-        return getIteratorOfObjects(f, count);
+        return getIteratorOfObjects(f, params);
     }
 
-    protected Iterator<Object> getIteratorOfObjects(File f, int count) {
+    protected Iterator<Object> getIteratorOfObjects(File f, Object... params) {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));
+            int count = params.length > 0 && params[0] instanceof Integer ? (int) params[0] : Integer.MAX_VALUE;
+            if (count < 0) {
+                count = Integer.MAX_VALUE;
+            }
             return new MetricObjectFileIterator(br, count);
         } catch (IOException ex) {
             Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);

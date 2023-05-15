@@ -1,22 +1,16 @@
 package vm.fs.metricSpaceImpl;
 
-//import ncsa.hdf.hdf5lib.H5;
-import java.io.BufferedReader;
+import io.jhdf.HdfFile;
+import io.jhdf.api.Dataset;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.FloatBuffer;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bytedeco.hdf5.DataSet;
-import org.bytedeco.hdf5.H5File;
-import org.bytedeco.hdf5.PredType;
-import static org.bytedeco.hdf5.global.hdf5.H5F_ACC_RDONLY;
-import org.bytedeco.javacpp.FloatPointer;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.metricSpace.AbstractMetricSpace;
@@ -30,13 +24,9 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     public static final Logger LOG = Logger.getLogger(H5MetricSpacesStorage.class.getName());
-    private int vectorDimensionality;
-    private int datasetSize;
 
-    public H5MetricSpacesStorage(AbstractMetricSpace<float[]> metricSpace, int datasetSize, int vectorDimensionality, MetricObjectDataToStringInterface dataSerializator) {
+    public H5MetricSpacesStorage(AbstractMetricSpace<float[]> metricSpace, MetricObjectDataToStringInterface dataSerializator) {
         super(metricSpace, dataSerializator);
-        this.vectorDimensionality = vectorDimensionality;
-        this.datasetSize = datasetSize;
     }
 
     public H5MetricSpacesStorage(MetricObjectDataToStringInterface dataSerializator) {
@@ -45,18 +35,21 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
 
     @Override
     public Iterator<Object> getObjectsFromDataset(String datasetName, Object... params) {
-        return getIteratorOfObjects(FSGlobal.DATASET_FOLDER, datasetName, datasetSize);
+        params = Tools.concatArrays(params, new Object[]{""});
+        return getIteratorOfObjects(FSGlobal.DATASET_FOLDER, datasetName, params);
     }
 
     @Override
     public List<Object> getPivots(String pivotSetName, Object... params) {
-        Iterator<Object> it = getIteratorOfObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, 512);
+        params = Tools.concatArrays(params, new Object[]{"P"});
+        Iterator<Object> it = getIteratorOfObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, params);
         return Tools.getObjectsFromIterator(it);
     }
 
     @Override
     public List<Object> getQueryObjects(String querySetName, Object... params) {
-        Iterator<Object> it = getIteratorOfObjects(FSGlobal.QUERY_FOLDER, querySetName, 10000);
+        params = Tools.concatArrays(params, new Object[]{"Q"});
+        Iterator<Object> it = getIteratorOfObjects(FSGlobal.QUERY_FOLDER, querySetName, params);
         return Tools.getObjectsFromIterator(it);
     }
 
@@ -69,14 +62,15 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
     }
 
     @Override
-    protected Iterator<Object> getIteratorOfObjects(File f, int count) {
-        H5File h5File = new H5File(f.getAbsolutePath(), H5F_ACC_RDONLY);
-        DataSet dataset = new DataSet(h5File.openDataSet("emb"));
-        FloatBuffer fb = FloatBuffer.allocate(count * vectorDimensionality);
-        FloatPointer pointer = new FloatPointer(fb);
-        dataset.read(pointer, PredType.NATIVE_FLOAT());
-        String prefix = count == datasetSize ? "D" : "";
-        return new H5MetricObjectFileIterator(pointer, prefix, vectorDimensionality, count);
+    protected Iterator<Object> getIteratorOfObjects(File f, Object... params) {
+        HdfFile hdfFile = new HdfFile(f.toPath());
+        Dataset dataset = hdfFile.getDatasetByPath("emb");
+        int count = params.length > 0 && params[0] instanceof Integer ? (int) params[0] : Integer.MAX_VALUE;
+        if (count < 0) {
+            count = Integer.MAX_VALUE;
+        }
+        String prefix = params[1].toString();
+        return new H5MetricObjectFileIterator(hdfFile, dataset, prefix, count);
     }
 
     @Override
@@ -93,24 +87,32 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
 
         protected AbstractMap.SimpleEntry<String, float[]> nextObject;
         protected AbstractMap.SimpleEntry<String, float[]> currentObject;
-        private final String fileName;
-        private final FloatPointer pointer;
-        private final int maxCount;
-        private final int dimensionality;
-        private int counter;
 
-        public H5MetricObjectFileIterator(FloatPointer pointer, String fileName, int dimensionality, int maxCount) {
-            this.pointer = pointer;
-            this.maxCount = maxCount;
-            this.dimensionality = dimensionality;
-            this.fileName = fileName;
-            counter = 0;
-            this.nextObject = nextStreamObject();
+        private final HdfFile hdfFile;
+        private final Dataset dataset;
+        private final int maxCount;
+        private final int[] vectorDimensions;
+        private final String prefixFoIDs;
+        private long[] counter;
+
+        private H5MetricObjectFileIterator(HdfFile hdfFile, Dataset dataset, String prefix, int maxCount) {
+            this.hdfFile = hdfFile;
+            this.dataset = dataset;
+            int[] storageDimensions = dataset.getDimensions();
+            this.maxCount = Math.min(maxCount, storageDimensions[0]);
+            this.vectorDimensions = new int[]{1, storageDimensions[1]};
+            this.prefixFoIDs = prefix;
+            counter = new long[]{0, 0};
+            nextObject = nextStreamObject();
         }
 
         @Override
         public boolean hasNext() {
-            return nextObject != null && counter <= maxCount;
+            boolean ret = nextObject != null;
+            if (!ret) {
+                hdfFile.close();
+            }
+            return ret;
         }
 
         @Override
@@ -124,13 +126,15 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         }
 
         private AbstractMap.SimpleEntry<String, float[]> nextStreamObject() {
-            float[] ret = new float[dimensionality];
-            for (int i = 0; i < ret.length; i++) {
-                ret[i] = pointer.get(i + counter * dimensionality);
+            if (counter[0] >= maxCount) {
+                return null;
             }
-            AbstractMap.SimpleEntry<String, float[]> entry = new AbstractMap.SimpleEntry<>(fileName + (counter + 1), ret);
-            counter++;
+            float[][] dataBuffer = (float[][]) dataset.getData(counter, vectorDimensions);
+            String id = prefixFoIDs + (counter[0] + 1);
+            AbstractMap.SimpleEntry<String, float[]> entry = new AbstractMap.SimpleEntry<>(id, dataBuffer[0]);
+            counter[0]++;
             return entry;
         }
     }
+
 }

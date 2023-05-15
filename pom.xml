@@ -61,20 +61,12 @@
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
-        <!--<dependency>
-            <groupId>org.hdfgroup</groupId>
-            <artifactId>hdf-java</artifactId>
-            <version>2.6.1</version>
-            <type>jar</type>
-        </dependency>-->
-        
         <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>hdf5-platform</artifactId>
-            <version>1.12.2-1.5.8</version>
+            <groupId>io.jhdf</groupId>
+            <artifactId>jhdf</artifactId>
+            <version>0.6.10</version>
             <type>jar</type>
         </dependency>
-        
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
