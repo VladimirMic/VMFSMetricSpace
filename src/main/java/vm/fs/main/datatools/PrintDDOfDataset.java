@@ -3,6 +3,7 @@ package vm.fs.main.datatools;
 import java.util.List;
 import java.util.SortedMap;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.m2.tools.Tools;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.MetricSpacesStorageInterface;
@@ -15,14 +16,14 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  */
 public class PrintDDOfDataset {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Dataset dataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
         String datasetName = dataset.getDatasetName();
-        float distInterval = 2f;
+        float distInterval = 1f / 100;
 
 //      getHistogramsForRandomPairs
-        int objCount = 100 * 1000;//100,000
-        int distCount = 1000 * 1000;//1,000,000
+        int objCount = 1000 * 1000;//100,000
+        int distCount = 1000 * 10000;//1,000,000
         SortedMap<Float, Float> ddRandomSample = createDDOfRandomSample(dataset, datasetName, objCount, distCount, distInterval, null);
 //      print
         printDD(datasetName, distInterval, ddRandomSample);
@@ -37,15 +38,18 @@ public class PrintDDOfDataset {
         return ToolsMetricDomain.createDistanceDensityPlot(metricSpace, metricObjects, df, distCount, distInterval, examinedPairs);
     }
 
-    private static void printDD(String datasetName, float distInterval, SortedMap<Float, Float> ddRandomSample) {
+    private static void printDD(String datasetName, float distInterval, SortedMap<Float, Float> histogram) {
         System.out.println(datasetName);
-        System.out.println("Distance;Density of random sample; Density of distances to near neighbours");
-        for (float dist = 0; true; dist += distInterval) {
-            float rand = ddRandomSample.containsKey(dist) ? ddRandomSample.get(dist) : 0;
-            System.out.println(dist + ";" + rand);
-            if (dist > ddRandomSample.lastKey()) {
-                break;
+        System.out.println("Distance;Density of random sample");
+        float lastDist = 0;
+        for (Float dist : histogram.keySet()) {
+            while (dist - lastDist > distInterval * 1.1d) {
+                lastDist += distInterval;
+                lastDist = Tools.round(lastDist, distInterval, false);
+                System.out.println(lastDist + ";" + 0);
             }
+            System.out.println(dist + ";" + histogram.get(dist));
+            lastDist = dist;
         }
     }
 

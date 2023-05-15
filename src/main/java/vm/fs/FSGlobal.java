@@ -11,10 +11,22 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
-    public static final String ROOT_FOLDER_PATH = "h:\\Similarity_search\\";
-//    public static final String ROOT_FOLDER_PATH = "c:\\Data\\Similarity_search\\";
-//    public static final String ROOT_FOLDER_PATH = "Similarity_search/";
+    private static String initRoot() {
+        String[] paths = new String[]{
+            "h:\\Similarity_search\\",
+            "Similarity_search/",
+            "c:\\Data\\Similarity_search\\"
+        };
+        for (String path : paths) {
+            File f = new File(path);
+            if (f.exists()) {
+                return path;
+            }
+        }
+        throw new IllegalArgumentException("Create the root file");
+    }
 
+    public static final String ROOT_FOLDER_PATH = initRoot();
     public static final Boolean UNIX = ROOT_FOLDER_PATH.contains("/");
 
     public static final String TRIALS_FOLDER = ROOT_FOLDER_PATH + "Trials\\";
