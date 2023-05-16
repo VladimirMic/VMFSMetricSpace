@@ -18,16 +18,12 @@ public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
-//            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(),
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-//            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
-//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
             new FSDatasetInstanceSingularizator.LAION_100k_PCA32Dataset(),
             new FSDatasetInstanceSingularizator.LAION_300k_PCA32Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_PCA32Dataset(),
             new FSDatasetInstanceSingularizator.LAION_30M_PCA32Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_PCA32Dataset(),
+            //
             new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset(),
             new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset(),
@@ -38,7 +34,7 @@ public class FSEvaluateGroundTruthMain {
             System.gc();
             String datasetName = dataset.getDatasetName();
             String querySetName = dataset.getQuerySettName();
-            int k = 50000; // 1000 for orig datasets, else 50000
+            int k = 10000; // 1000 for orig datasets, else 20000
             AbstractMetricSpace space = dataset.getMetricSpace();
 
             DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);
@@ -48,6 +44,7 @@ public class FSEvaluateGroundTruthMain {
             List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);
             GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k, groundTruthStorage);
             gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
+//            gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
         }
     }
 
