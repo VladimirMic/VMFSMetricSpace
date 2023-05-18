@@ -16,25 +16,16 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static void main(String[] args) {
-        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset();
+        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
         Dataset[] approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset()
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA16Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA24Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA32Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA46Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA68Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA128Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA256Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA670Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA1540Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
         };
-//        String resultsDataset = "sift_1m_PCA4";
-        int k = 30;
+        int k = 10;
 //        Integer kCand = null; // null if dynamic, otherwise fixed number
 //        int[] kCands = new int[]{110, 120, 125, 130, 140, 150};
-        int[] kCands = new int[]{30, 50, 80, 100};
+//        int[] kCands = new int[]{10, 30, 50, 80, 100};
+        int[] kCands = new int[]{10};
 
         for (Dataset approximatedDataset : approximatedDatasets) {
             for (int kCand : kCands) {
@@ -42,7 +33,8 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 //        String resultName = "pure_double_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
 //        String resultName = "pure_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnDecreasingErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
                 String resultName = "ground_truth";
-                evaluateRecallOfTheCandidateSet(groundTruthDataset.getDatasetName(), groundTruthDataset.getDatasetName(), k, approximatedDataset.getDatasetName(), approximatedDataset.getDatasetName(), resultName, kCand);
+                evaluateRecallOfTheCandidateSet(groundTruthDataset.getDatasetName(), groundTruthDataset.getQuerySettName(), k,
+                        approximatedDataset.getDatasetName(), approximatedDataset.getQuerySettName(), resultName, kCand);
             }
         }
 
