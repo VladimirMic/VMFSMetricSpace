@@ -17,10 +17,17 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static void main(String[] args) throws InterruptedException {
 
-        Thread.sleep(1000 * 80 * 60);
+//        Thread.sleep(1000 * 60 * 90);
         
-        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_300k_Dataset();
+        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100k_Dataset();
         Dataset[] approximatedDatasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_100k_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset()
+        };
+        run(groundTruthDataset, approximatedDatasets);
+        
+        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_300k_Dataset();
+        approximatedDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.LAION_300k_PCA32Dataset(),
             new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset()
         };
@@ -52,7 +59,8 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
         int k = 10;
 //        Integer kCand = null; // null if dynamic, otherwise fixed number
 //        int[] kCands = new int[]{110, 120, 125, 130, 140, 150};
-        int[] kCands = new int[]{10, 30, 50, 80, 100};
+//        int[] kCands = new int[]{10, 50, 100, 150, 200, 250};
+        int[] kCands = new int[]{150, 200, 250, 300, 400, 500};
 
         for (Dataset approximatedDataset : approximatedDatasets) {
             for (int kCand : kCands) {
