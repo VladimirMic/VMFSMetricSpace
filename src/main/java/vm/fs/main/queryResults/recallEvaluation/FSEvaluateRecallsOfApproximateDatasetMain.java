@@ -17,42 +17,44 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static void main(String[] args) throws InterruptedException {
 
-        Thread.sleep(1000 * 80 * 60);
-        
-        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_300k_Dataset();
+//        Thread.sleep(1000 * 80 * 60);
+
+        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100k_Dataset();
         Dataset[] approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_300k_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset()
         };
         run(groundTruthDataset, approximatedDatasets);
 
-        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset();
-        approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset()
-        };
-        run(groundTruthDataset, approximatedDatasets);
-
-        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_30M_Dataset();
-        approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_30M_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset()
-        };
-        run(groundTruthDataset, approximatedDatasets);
-
-        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
-        approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
-        };
-        run(groundTruthDataset, approximatedDatasets);
+//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_300k_Dataset();
+//        approximatedDatasets = new Dataset[]{
+//            new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset()
+//        };
+//        run(groundTruthDataset, approximatedDatasets);
+//
+//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset();
+//        approximatedDatasets = new Dataset[]{
+//            new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset()
+//        };
+//        run(groundTruthDataset, approximatedDatasets);
+//
+//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_30M_Dataset();
+//        approximatedDatasets = new Dataset[]{
+//            new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset()
+//        };
+//        run(groundTruthDataset, approximatedDatasets);
+//
+//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
+//        approximatedDatasets = new Dataset[]{
+//            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
+//        };
+//        run(groundTruthDataset, approximatedDatasets);
     }
 
     public static final void run(Dataset groundTruthDataset, Dataset... approximatedDatasets) {
         int k = 10;
 //        Integer kCand = null; // null if dynamic, otherwise fixed number
 //        int[] kCands = new int[]{110, 120, 125, 130, 140, 150};
-        int[] kCands = new int[]{10, 30, 50, 80, 100};
+        int[] kCands = new int[]{120};
 
         for (Dataset approximatedDataset : approximatedDatasets) {
             for (int kCand : kCands) {
