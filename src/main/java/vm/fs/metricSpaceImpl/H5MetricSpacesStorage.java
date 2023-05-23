@@ -1,19 +1,16 @@
 package vm.fs.metricSpaceImpl;
 
 import io.jhdf.HdfFile;
-import io.jhdf.api.Attribute;
 import io.jhdf.api.Dataset;
-import io.jhdf.api.Group;
 import io.jhdf.api.Node;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
@@ -67,7 +64,26 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
     }
 
     @Override
+
     protected Iterator<Object> getIteratorOfObjects(File f, Object... params) {
+        List<Object> listOfParams = Tools.arrayToList(params);
+        if (params.length > 0 && listOfParams.contains("P")) {
+            Iterator<Object> it = super.getIteratorOfObjects(f, params);
+            List<Object> objs = Tools.getObjectsFromIterator(it);
+            List<Object> ret = new ArrayList<>();
+            for (Object obj : objs) {
+                AbstractMap.Entry entry = (AbstractMap.Entry) obj;
+                String key = entry.getKey().toString();
+                AbstractMap.Entry entryP;
+                if (!key.startsWith("P")) {
+                    entryP = new AbstractMap.SimpleEntry("P" + entry.getKey().toString(), entry.getValue());
+                } else {
+                    entryP = entry;
+                }
+                ret.add(entryP);
+            }
+            return ret.iterator();
+        }
         HdfFile hdfFile = new HdfFile(f.toPath());
         Node node = hdfFile.iterator().next();
         String name = node.getName();
@@ -83,12 +99,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
 
     @Override
     protected void storeMetricObject(Object metricObject, OutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
-        if (metricObject == null) {
-            throw new IllegalArgumentException("Attempt to store null object as the metric object");
-        }
-        String id = metricSpace.getIDOfMetricObject(metricObject).toString();
-        String data = dataSerializator.metricObjectDataToString((float[]) metricSpace.getDataOfMetricObject(metricObject));
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        super.storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
     }
 
     private class H5MetricObjectFileIterator implements Iterator<Object> {

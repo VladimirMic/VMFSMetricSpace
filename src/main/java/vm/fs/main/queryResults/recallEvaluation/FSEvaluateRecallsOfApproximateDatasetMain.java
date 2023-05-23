@@ -23,38 +23,38 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
         Dataset[] approximatedDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset()
         };
+//        run(groundTruthDataset, approximatedDatasets);
+
+        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_300k_Dataset();
+        approximatedDatasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset()
+        };
+//        run(groundTruthDataset, approximatedDatasets);
+
+        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset();
+        approximatedDatasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset()
+        };
         run(groundTruthDataset, approximatedDatasets);
 
-//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_300k_Dataset();
-//        approximatedDatasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset()
-//        };
-//        run(groundTruthDataset, approximatedDatasets);
-//
-//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset();
-//        approximatedDatasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset()
-//        };
-//        run(groundTruthDataset, approximatedDatasets);
-//
-//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_30M_Dataset();
-//        approximatedDatasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset()
-//        };
-//        run(groundTruthDataset, approximatedDatasets);
-//
-//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
-//        approximatedDatasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
-//        };
-//        run(groundTruthDataset, approximatedDatasets);
+        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_30M_Dataset();
+        approximatedDatasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset()
+        };
+        run(groundTruthDataset, approximatedDatasets);
+
+        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
+        approximatedDatasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
+        };
+        run(groundTruthDataset, approximatedDatasets);
     }
 
     public static final void run(Dataset groundTruthDataset, Dataset... approximatedDatasets) {
         int k = 10;
 //        Integer kCand = null; // null if dynamic, otherwise fixed number
 //        int[] kCands = new int[]{110, 120, 125, 130, 140, 150};
-        int[] kCands = new int[]{120};
+        int[] kCands = new int[]{300, 350, 400, 500, 600};
 
         for (Dataset approximatedDataset : approximatedDatasets) {
             for (int kCand : kCands) {
@@ -62,8 +62,8 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 //        String resultName = "pure_double_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
 //        String resultName = "pure_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnDecreasingErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
                 String resultName = "ground_truth";
-                evaluateRecallOfTheCandidateSet(groundTruthDataset.getDatasetName(), groundTruthDataset.getQuerySettName(), k,
-                        approximatedDataset.getDatasetName(), approximatedDataset.getQuerySettName(), resultName, kCand);
+                evaluateRecallOfTheCandidateSet(groundTruthDataset.getDatasetName(), groundTruthDataset.getQuerySetName(), k,
+                        approximatedDataset.getDatasetName(), approximatedDataset.getQuerySetName(), resultName, kCand);
             }
         }
     }

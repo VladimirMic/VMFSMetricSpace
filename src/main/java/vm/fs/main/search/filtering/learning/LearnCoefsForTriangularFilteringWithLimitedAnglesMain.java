@@ -42,7 +42,7 @@ public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
         List sampleOfDataset = dataset.getSampleOfDataset(11000);
         List sampleOfQueries = new ArrayList(sampleOfDataset.subList(0, 1000));
         sampleOfDataset.removeAll(sampleOfQueries);
-        List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
+        List pivots = dataset.getPivots(pivotCount);
 
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
         LearningTriangleInequalityWithLimitedAngles learning = new LearningTriangleInequalityWithLimitedAngles(metricSpace, df, pivots, sampleOfDataset, sampleOfQueries, storage, dataset.getDatasetName());

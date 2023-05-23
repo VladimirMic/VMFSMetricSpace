@@ -39,7 +39,7 @@ public class EvalAndStoreObjectsToPivotsDists {
         String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
-        List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
+        List pivots = dataset.getPivots(pivotCount);
         Iterator objects = dataset.getMetricObjectsFromDataset();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         try {

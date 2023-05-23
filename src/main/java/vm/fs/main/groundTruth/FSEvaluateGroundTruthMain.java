@@ -33,7 +33,7 @@ public class FSEvaluateGroundTruthMain {
         for (Dataset dataset : datasets) {
             System.gc();
             String datasetName = dataset.getDatasetName();
-            String querySetName = dataset.getQuerySettName();
+            String querySetName = dataset.getQuerySetName();
             int k = 10000; // 1000 for orig datasets, else 20000
             AbstractMetricSpace space = dataset.getMetricSpace();
 

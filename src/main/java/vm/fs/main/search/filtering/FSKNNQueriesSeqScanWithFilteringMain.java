@@ -53,8 +53,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount);
-        List queries = dataset.getMetricQueryObjectsForTheSameDataset();
-        List pivots = dataset.getPivotsForTheSameDataset(pivotCount);
+        List queries = dataset.getMetricQueryObjects();
+        List pivots = dataset.getPivots(pivotCount);
 
         TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName(), pivotCount);
 //        TwoPivotsFiltering filter = new FourPointBasedFiltering(pivotCount + "_pivots");

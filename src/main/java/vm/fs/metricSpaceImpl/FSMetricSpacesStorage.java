@@ -91,14 +91,6 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
             return new MetricObjectFileIterator(br, count);
         } catch (IOException ex) {
             Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         return null;
     }
@@ -300,7 +292,15 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
 
         @Override
         public boolean hasNext() {
-            return nextObject != null && counter < maxCount;
+            boolean ret = nextObject != null && counter < maxCount;
+            if (!ret) {
+                try {
+                    br.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            return ret;
         }
 
         @Override

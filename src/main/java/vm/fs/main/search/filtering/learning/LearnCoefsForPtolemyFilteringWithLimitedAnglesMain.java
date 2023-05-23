@@ -47,7 +47,7 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
     private static void run(Dataset dataset) throws FileNotFoundException {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        List<Object> pivots = dataset.getPivotsForTheSameDataset(PIVOTS);
+        List<Object> pivots = dataset.getPivots(PIVOTS);
         PrecomputedPairsOfDistancesStoreInterface smallDistSample = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
 
