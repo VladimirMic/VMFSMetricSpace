@@ -55,16 +55,6 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         return Tools.getObjectsFromIterator(it);
     }
 
-    @Override
-    protected File getFileForObjects(String folder, String fileName, boolean willBeDeleted) {
-        File f = new File(folder, fileName);
-        f = FSGlobal.checkFileExistence(f, willBeDeleted);
-        LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
-        return f;
-    }
-
-    @Override
-
     protected Iterator<Object> getIteratorOfObjects(File f, Object... params) {
         List<Object> listOfParams = Tools.arrayToList(params);
         if (params.length > 0 && listOfParams.contains("P")) {

@@ -163,6 +163,23 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
+    public static class LAION_1M_SampleDataset extends FSFloatVectorDataset {
+
+        public LAION_1M_SampleDataset() {
+            super("laion2B-en-clip768v2-n=1M_sample.h5");
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "public-queries-10k-clip768v2.h5";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_2048pivots";
+        }
+    }
+
     public static class LAION_100k_Dataset extends H5FloatVectorDataset {
 
         public LAION_100k_Dataset() {
@@ -176,7 +193,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_768pivots.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_768pivots";
         }
     }
 
@@ -193,7 +210,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_768pivots.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_768pivots";
         }
     }
 
@@ -210,7 +227,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_768pivots.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_768pivots";
         }
     }
 
@@ -227,7 +244,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_768pivots.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_768pivots";
         }
     }
 
@@ -244,7 +261,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_768pivots.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_768pivots";
         }
     }
 
