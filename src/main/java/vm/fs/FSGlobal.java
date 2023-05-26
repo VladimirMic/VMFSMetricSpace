@@ -35,6 +35,7 @@ public class FSGlobal {
     public static final String DATASET_MAPDB_FOLDER = DATA_FOLDER + "Map_DB\\";
     public static final String DATASET_MVSTORAGE_FOLDER = DATA_FOLDER + "MV_storage\\";
     public static final String DATASET_FOLDER = DATA_FOLDER + "Dataset\\";
+    public static final String DATASET_METADATA = DATA_FOLDER + "Metadata\\";
     public static final String PIVOT_FOLDER = DATA_FOLDER + "Pivot\\";
     public static final String QUERY_FOLDER = DATA_FOLDER + "Query\\";
     public static final String PRECOMPUTED_DISTS_FOLDER = DATA_FOLDER + "DistsToPivots";
