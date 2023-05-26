@@ -15,6 +15,7 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
+ * TODO - paralelisation?!
  *
  * @author Vlada
  */
@@ -31,11 +32,11 @@ public class EvalAndStoreObjectsToPivotsDists {
 //        System.gc();
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
 //        System.gc();
-        run(new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset());
+        run(new FSDatasetInstanceSingularizator.LAION_1M_SampleDataset());
     }
 
     private static void run(Dataset dataset) {
-        int pivotCount = 512;
+        int pivotCount = 2048;
         String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();

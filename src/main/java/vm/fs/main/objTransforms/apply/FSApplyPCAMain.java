@@ -48,7 +48,7 @@ public class FSApplyPCAMain {
 
     private static void transformDataset(String origDatasetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
         Iterator<Object> it = spaceStorage.getObjectsFromDataset(origDatasetName);
-        parallelTransformerImpl.processIteratorInParallel(it, MetricSpacesStorageInterface.OBJECT_TYPE.DATASET_OBJECT, 16, additionalParameters);
+        parallelTransformerImpl.processIteratorInParallel(it, MetricSpacesStorageInterface.OBJECT_TYPE.DATASET_OBJECT, vm.javatools.Tools.PARALELISATION, additionalParameters);
     }
 
     private static void transformPivots(String pivotSetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
