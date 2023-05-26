@@ -167,7 +167,11 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
     }
 
     protected File getFileForObjects(String folder, String fileName, boolean willBeDeleted) {
-        File f = new File(folder, fileName + ".gz");
+        File f = new File(folder, fileName);
+        if (!f.exists() && fileName.contains(".h5")) {
+            fileName += ".gz";
+        }
+        f = new File(folder, fileName);
         f = FSGlobal.checkFileExistence(f, willBeDeleted);
         LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
         return f;
