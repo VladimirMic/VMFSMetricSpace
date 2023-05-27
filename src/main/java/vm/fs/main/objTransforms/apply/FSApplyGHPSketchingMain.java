@@ -17,17 +17,23 @@ import vm.objTransforms.storeLearned.GHPSketchingPivotPairsStoreInterface;
 public class FSApplyGHPSketchingMain {
 
     public static void main(String[] args) {
-//        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
-        run(new FSDatasetInstanceSingularizator.SIFTdataset());
-//        run(new FSDatasetInstanceSingularizator.MPEG7dataset());
-//        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
+        Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+        };
+        for (Dataset dataset : datasets) {
+            run(dataset);
+        }
     }
 
     private static void run(Dataset dataset) {
         GHPSketchingPivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         MetricSpacesStorageInterface storageForSketches = new FSMetricSpacesStorage(new FSMetricSpaceImpl<>(), SingularisedConvertors.LONG_VECTOR_SPACE);
-        TransformDataToGHPSketches evaluator = new TransformDataToGHPSketches(dataset, storageOfPivotPairs, storageForSketches);
-        int[] sketchesLengths = new int[]{256, 192, 128, 64, 512};
+        TransformDataToGHPSketches evaluator = new TransformDataToGHPSketches(dataset, storageOfPivotPairs, storageForSketches, 0.5f, -1);
+        int[] sketchesLengths = new int[]{256, 192, 384, 512};
         evaluator.createSketchesForDatasetPivotsAndQueries(sketchesLengths);
     }
 

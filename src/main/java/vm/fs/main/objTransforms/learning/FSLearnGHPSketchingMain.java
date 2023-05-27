@@ -18,10 +18,7 @@ public class FSLearnGHPSketchingMain {
         GHPSketchingPivotPairsStoreInterface sketchingTechStorage = new FSGHPSketchesPivotPairsStorageImpl();
         int[] sketchesLengths = new int[]{256, 192, 384, 512};
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_1M_SampleDataset(), //            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_1M_SampleDataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset, sketchingTechStorage, sketchesLengths);
@@ -30,9 +27,9 @@ public class FSLearnGHPSketchingMain {
     }
 
     private static void run(Dataset dataset, GHPSketchingPivotPairsStoreInterface sketchingTechStorage, int[] sketchesLengths) {
-        int sampleSize = 1000000; // 100k - 1M, depends od the size of data and dist comp. cost
+        int sampleSize = 1000; // 100k - 1M, depends od the size of data and dist comp. cost
         int pivotCount = 1024; // min 512, max 1024 - RAM and time grow with the second power of this param!
-        LearnSketchingGHP learn = new LearnSketchingGHP(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), sketchingTechStorage, pivotCount, 15000);
+        LearnSketchingGHP learn = new LearnSketchingGHP(dataset, sketchingTechStorage, pivotCount, 15000);
         String datasetName = dataset.getDatasetName();
         String pivotsName = dataset.getPivotSetName();
         // voluntary step and voluntary arguments - is the precomputed distances does not excist, that deals with it automatically
@@ -41,6 +38,6 @@ public class FSLearnGHPSketchingMain {
         Map<String, Integer> columnHeaders = pd.getColumnHeaders();
         Map<String, Integer> rowHeaders = pd.getRowHeaders();
         // voluntary step and voluntary arguments
-        learn.evaluate(datasetName, pivotsName, sampleSize, sketchesLengths, 0.5f, dists, columnHeaders, rowHeaders);
+        learn.evaluate(dataset, sampleSize, sketchesLengths, 0.5f, dists, columnHeaders, rowHeaders);
     }
 }

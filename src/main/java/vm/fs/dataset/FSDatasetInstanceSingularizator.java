@@ -176,7 +176,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_1536pivots";
+            return "laion2B-en-clip768v2-n=100M.h5_2048pivots";
         }
     }
 
@@ -193,7 +193,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_1536pivots";
+            return "laion2B-en-clip768v2-n=100M.h5_2048pivots";
         }
     }
 
@@ -210,7 +210,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_1536pivots";
+            return "laion2B-en-clip768v2-n=100M.h5_2048pivots";
         }
     }
 
@@ -227,7 +227,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_1536pivots";
+            return "laion2B-en-clip768v2-n=100M.h5_2048pivots";
         }
     }
 
@@ -244,7 +244,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_1536pivots";
+            return "laion2B-en-clip768v2-n=100M.h5_2048pivots";
         }
     }
 
@@ -261,7 +261,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_1536pivots";
+            return "laion2B-en-clip768v2-n=100M.h5_2048pivots";
         }
     }
 
