@@ -6,6 +6,7 @@ import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
+import vm.vmmvstore.VMMVStorage;
 
 /**
  *
@@ -48,6 +49,12 @@ public class FSDatasetInstanceSingularizator {
             this.metricSpace = new FSMetricSpaceImpl();
             this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.MPEG7_SPACE);
         }
+
+        @Override
+        public Map<Object, Object> getKeyValueStorage() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
     }
 
     public static class DeCAF_PCA8Dataset extends FSFloatVectorDataset {
@@ -552,6 +559,14 @@ public class FSDatasetInstanceSingularizator {
             this.metricSpace = new FSMetricSpaceImpl();
             this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
+
+        @Override
+        public Map<Object, Object> getKeyValueStorage() {
+            VMMVStorage storage = new VMMVStorage(datasetName, false);
+            Map keyValueStorage = storage.getKeyValueStorage();
+            return keyValueStorage;
+        }
+
     }
 
     private static class H5FloatVectorDataset extends Dataset<float[]> {
@@ -560,6 +575,11 @@ public class FSDatasetInstanceSingularizator {
             this.datasetName = datasetName;
             this.metricSpace = new FSMetricSpaceImpl();
             this.metricSpacesStorage = new H5MetricSpacesStorage(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+        }
+
+        public Map<Object, Object> getKeyValueStorage() {
+            H5MetricSpacesStorage storage = (H5MetricSpacesStorage) metricSpacesStorage;
+            return storage.getAsMap(datasetName);
         }
     }
 
@@ -570,6 +590,11 @@ public class FSDatasetInstanceSingularizator {
             this.metricSpace = new FSMetricSpaceImpl();
             this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.LONG_VECTOR_SPACE);
         }
+
+        public Map<Object, Object> getKeyValueStorage() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
     }
 
 }

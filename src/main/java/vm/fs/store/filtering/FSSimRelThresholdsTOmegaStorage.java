@@ -20,13 +20,13 @@ public class FSSimRelThresholdsTOmegaStorage implements SimRelEuclidThresholdsTO
     public static final Logger LOG = Logger.getLogger(FSSimRelThresholdsTOmegaStorage.class.getName());
 
     @Override
-    public void store(float[] thresholds, String datasetName, int querySampleCount, int dataSampleCount, int pcaLength, int kPCA) {
+    public void store(float[][] thresholds, String datasetName, int querySampleCount, int dataSampleCount, int pcaLength, int kPCA) {
         File f = getFile(datasetName, querySampleCount, dataSampleCount, pcaLength, kPCA, true);
         OutputStreamWriter w = null;
         try {
             w = new OutputStreamWriter(new FileOutputStream(f, false));
-            for (float threshold : thresholds) {
-                w.write(threshold + "\n");
+            for (int i = 0; i < thresholds[0].length; i++) {
+                w.write(thresholds[0][i] + ";" + thresholds[1][i] + "\n");
             }
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
@@ -42,12 +42,13 @@ public class FSSimRelThresholdsTOmegaStorage implements SimRelEuclidThresholdsTO
     }
 
     @Override
-    public float[] load(String datasetName, int querySampleCount, int dataSampleCount, int pcaLength, int kPCA) {
+    public float[][] load(String datasetName, int querySampleCount, int dataSampleCount, int pcaLength, int kPCA) {
         File file = getFile(datasetName, querySampleCount, dataSampleCount, pcaLength, kPCA, false);
-        List<String> values = Tools.parseCsv(file.getAbsolutePath(), 1, ";", true)[0];
-        float[] ret = new float[values.size()];
+        List<String>[] values = Tools.parseCsv(file.getAbsolutePath(), 1, ";", true);
+        float[][] ret = new float[2][values[0].size()];
         for (int i = 0; i < ret.length; i++) {
-            ret[i] = Float.parseFloat(values.get(i));
+            ret[0][i] = Float.parseFloat(values[0].get(i));
+            ret[1][i] = Float.parseFloat(values[1].get(i));
         }
         return ret;
     }

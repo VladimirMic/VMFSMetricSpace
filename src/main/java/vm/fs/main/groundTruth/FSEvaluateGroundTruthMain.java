@@ -18,15 +18,6 @@ public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_300k_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(),
-            //
-            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_512Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_300k_GHP_50_512Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(),
             new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset()
         };

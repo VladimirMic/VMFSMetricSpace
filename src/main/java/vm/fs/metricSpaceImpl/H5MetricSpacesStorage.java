@@ -7,10 +7,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.AbstractMap;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
@@ -55,23 +57,11 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         return Tools.getObjectsFromIterator(it);
     }
 
+    @Override
     protected Iterator<Object> getIteratorOfObjects(File f, Object... params) {
         List<Object> listOfParams = Tools.arrayToList(params);
         if (params.length > 0 && listOfParams.contains("P")) {
             Iterator<Object> it = super.getIteratorOfObjects(f, params);
-//            List<Object> objs = Tools.getObjectsFromIterator(it);
-//            List<Object> ret = new ArrayList<>();
-//            for (Object obj : objs) {
-//                AbstractMap.Entry entry = (AbstractMap.Entry) obj;
-//                String key = entry.getKey().toString();
-//                AbstractMap.Entry entryP;
-//                if (!key.startsWith("P")) {
-//                    entryP = new AbstractMap.SimpleEntry("P" + entry.getKey().toString(), entry.getValue());
-//                } else {
-//                    entryP = entry;
-//                }
-//                ret.add(entry);
-//            }
             return it;
         }
         HdfFile hdfFile = new HdfFile(f.toPath());
@@ -92,6 +82,17 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         super.storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
     }
 
+    public Map<Object, Object> getAsMap(String datasetName) {
+        File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
+        HdfFile hdfFile = new HdfFile(f.toPath());
+        Node node = hdfFile.iterator().next();
+        String name = node.getName();
+        LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, f.getName()});
+        Dataset dataset = hdfFile.getDatasetByPath(name);
+        VMH5StorageAsMap ret = new VMH5StorageAsMap(dataset);
+        return ret;
+    }
+
     private class H5MetricObjectFileIterator implements Iterator<Object> {
 
         protected AbstractMap.SimpleEntry<String, float[]> nextObject;
@@ -102,7 +103,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         private final int maxCount;
         private final int[] vectorDimensions;
         private final String prefixFoIDs;
-        private long[] counter;
+        private final long[] counter;
 
         private H5MetricObjectFileIterator(HdfFile hdfFile, Dataset dataset, String prefix, int maxCount) {
             this.hdfFile = hdfFile;
@@ -145,5 +146,87 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
             return entry;
         }
     }
+
+    private class VMH5StorageAsMap implements Map<Object, Object> {
+
+        private final Dataset dataset;
+        private final int[] dimensions;
+
+        public VMH5StorageAsMap(Dataset dataset) {
+            this.dataset = dataset;
+            dimensions = dataset.getDimensions();
+        }
+
+        @Override
+        public int size() {
+            return dimensions[0];
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return size() == 0;
+        }
+
+        @Override
+        public boolean containsKey(Object key) {
+            if (!(key instanceof Long) && !(key instanceof Integer)) {
+                return false;
+            }
+            int id = (int) key;
+            return id < size();
+        }
+
+        @Override
+        public boolean containsValue(Object value) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public float[] get(Object key) {
+            if (containsKey(key)) {
+                long[] shift = new long[]{(long) key, 0};
+                int[] vectorDimensions = new int[]{1, dimensions[1]};
+                float[][] dataBuffer = (float[][]) dataset.getData(shift, vectorDimensions);
+                return dataBuffer[0];
+            }
+            return null;
+        }
+
+        @Override
+        public Object put(Object key, Object value) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public Object remove(Object key) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void putAll(java.util.Map m) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void clear() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public Set keySet() {
+            System.out.println("Minimum is 0, maximum is " + size() + ". Use row index as the key");
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public Collection values() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public Set entrySet() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    };
 
 }
