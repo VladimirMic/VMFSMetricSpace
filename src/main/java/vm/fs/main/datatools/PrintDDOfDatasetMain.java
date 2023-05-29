@@ -3,7 +3,7 @@ package vm.fs.main.datatools;
 import java.util.List;
 import java.util.SortedMap;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.m2.tools.Tools;
+import vm.math.Tools;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.MetricSpacesStorageInterface;
@@ -14,7 +14,7 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  *
  * @author xmic
  */
-public class PrintDDOfDataset {
+public class PrintDDOfDatasetMain {
 
     public static void main(String[] args) {
         Dataset dataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();

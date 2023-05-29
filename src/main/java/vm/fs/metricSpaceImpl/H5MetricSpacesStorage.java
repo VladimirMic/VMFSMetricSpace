@@ -59,20 +59,20 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         List<Object> listOfParams = Tools.arrayToList(params);
         if (params.length > 0 && listOfParams.contains("P")) {
             Iterator<Object> it = super.getIteratorOfObjects(f, params);
-            List<Object> objs = Tools.getObjectsFromIterator(it);
-            List<Object> ret = new ArrayList<>();
-            for (Object obj : objs) {
-                AbstractMap.Entry entry = (AbstractMap.Entry) obj;
-                String key = entry.getKey().toString();
-                AbstractMap.Entry entryP;
-                if (!key.startsWith("P")) {
-                    entryP = new AbstractMap.SimpleEntry("P" + entry.getKey().toString(), entry.getValue());
-                } else {
-                    entryP = entry;
-                }
-                ret.add(entryP);
-            }
-            return ret.iterator();
+//            List<Object> objs = Tools.getObjectsFromIterator(it);
+//            List<Object> ret = new ArrayList<>();
+//            for (Object obj : objs) {
+//                AbstractMap.Entry entry = (AbstractMap.Entry) obj;
+//                String key = entry.getKey().toString();
+//                AbstractMap.Entry entryP;
+//                if (!key.startsWith("P")) {
+//                    entryP = new AbstractMap.SimpleEntry("P" + entry.getKey().toString(), entry.getValue());
+//                } else {
+//                    entryP = entry;
+//                }
+//                ret.add(entry);
+//            }
+            return it;
         }
         HdfFile hdfFile = new HdfFile(f.toPath());
         Node node = hdfFile.iterator().next();

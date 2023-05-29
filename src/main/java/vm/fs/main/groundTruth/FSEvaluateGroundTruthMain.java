@@ -18,17 +18,17 @@ public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100k_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_300k_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_PCA32Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA32Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_384Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_300k_GHP_50_384Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(),
             //
-            new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_512Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_300k_GHP_50_512Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset()
         };
         for (Dataset dataset : datasets) {
             System.gc();
@@ -44,7 +44,6 @@ public class FSEvaluateGroundTruthMain {
             List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);
             GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k, groundTruthStorage);
             gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
-//            gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
         }
     }
 

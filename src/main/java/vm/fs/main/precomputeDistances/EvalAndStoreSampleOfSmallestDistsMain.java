@@ -19,11 +19,11 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  *
  * @author Vlada
  */
-public class EvalAndStoreSampleOfSmallestDists {
+public class EvalAndStoreSampleOfSmallestDistsMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
-    public static final Logger LOG = Logger.getLogger(EvalAndStoreSampleOfSmallestDists.class.getName());
+    public static final Logger LOG = Logger.getLogger(EvalAndStoreSampleOfSmallestDistsMain.class.getName());
     /**
      * Number of stored minimum distances
      */

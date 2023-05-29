@@ -27,7 +27,7 @@ public class FSLearnGHPSketchingMain {
     }
 
     private static void run(Dataset dataset, GHPSketchingPivotPairsStoreInterface sketchingTechStorage, int[] sketchesLengths) {
-        int sampleSize = 1000; // 100k - 1M, depends od the size of data and dist comp. cost
+        int sampleSize = 1000000; // 100k - 1M, depends od the size of data and dist comp. cost
         int pivotCount = 1024; // min 512, max 1024 - RAM and time grow with the second power of this param!
         LearnSketchingGHP learn = new LearnSketchingGHP(dataset, sketchingTechStorage, pivotCount, 15000);
         String datasetName = dataset.getDatasetName();

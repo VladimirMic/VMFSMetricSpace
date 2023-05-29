@@ -19,9 +19,9 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  *
  * @author Vlada
  */
-public class EvalAndStoreObjectsToPivotsDists {
+public class EvalAndStoreObjectsToPivotsDistsMain {
 
-    public static final Logger LOGGER = Logger.getLogger(EvalAndStoreObjectsToPivotsDists.class.getName());
+    public static final Logger LOGGER = Logger.getLogger(EvalAndStoreObjectsToPivotsDistsMain.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
 //        run(new FSDatasetInstanceSingularizator.SIFTdataset());
