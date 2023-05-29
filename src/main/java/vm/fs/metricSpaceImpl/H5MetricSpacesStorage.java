@@ -151,10 +151,12 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
 
         private final Dataset dataset;
         private final int[] dimensions;
+        private final int[] vectorDimensions;
 
         public VMH5StorageAsMap(Dataset dataset) {
             this.dataset = dataset;
             dimensions = dataset.getDimensions();
+            vectorDimensions = new int[]{1, dimensions[1]};
         }
 
         @Override
@@ -169,10 +171,14 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
 
         @Override
         public boolean containsKey(Object key) {
-            if (!(key instanceof Long) && !(key instanceof Integer)) {
+            int id;
+            if (key instanceof String) {
+                id = Integer.parseInt(key.toString());
+            } else if (!(key instanceof Long) && !(key instanceof Integer)) {
                 return false;
+            } else {
+                id = (int) key;
             }
-            int id = (int) key;
             return id < size();
         }
 
@@ -184,11 +190,13 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         @Override
         public float[] get(Object key) {
             if (containsKey(key)) {
-                long[] shift = new long[]{(long) key, 0};
-                int[] vectorDimensions = new int[]{1, dimensions[1]};
+                long x = Long.parseLong(key.toString());
+                x -= 1;
+                long[] shift = new long[]{x, 0};
                 float[][] dataBuffer = (float[][]) dataset.getData(shift, vectorDimensions);
                 return dataBuffer[0];
             }
+
             return null;
         }
 
