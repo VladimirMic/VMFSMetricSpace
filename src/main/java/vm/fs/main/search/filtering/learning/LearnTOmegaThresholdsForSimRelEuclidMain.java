@@ -14,9 +14,6 @@ public class LearnTOmegaThresholdsForSimRelEuclidMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA256Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF20M_PCA256Dataset(),
-            //
             new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset(),
             new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset(),
@@ -28,7 +25,7 @@ public class LearnTOmegaThresholdsForSimRelEuclidMain {
 
     private static void run(Dataset<float[]> pcaDataset) {
         /* the name of the PCA-shortened dataset */
-        int kPCA = 125;
+        int kPCA = 300;
         /* number of query objects to learn t(\Omega) thresholds. We use different objects than the pivots tested. */
         int querySampleCount = 200;//200
         /* size of the data sample to learn t(\Omega) thresholds, SISAP: 100K */

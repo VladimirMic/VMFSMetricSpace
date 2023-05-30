@@ -282,6 +282,11 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySetName() {
             return "public-queries-10k-pca32v2.h5";
         }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca32v2-n=100M.h5";
+        }
     }
 
     public static class LAION_300k_PCA32Dataset extends H5FloatVectorDataset {
@@ -293,6 +298,11 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public String getQuerySetName() {
             return "public-queries-10k-pca32v2.h5";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca32v2-n=100M.h5";
         }
     }
 
@@ -306,6 +316,11 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySetName() {
             return "public-queries-10k-pca32v2.h5";
         }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca32v2-n=100M.h5";
+        }
     }
 
     public static class LAION_30M_PCA32Dataset extends H5FloatVectorDataset {
@@ -317,6 +332,11 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public String getQuerySetName() {
             return "public-queries-10k-pca32v2.h5";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca32v2-n=100M.h5";
         }
     }
 
@@ -330,9 +350,14 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySetName() {
             return "public-queries-10k-pca32v2.h5";
         }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca32v2-n=100M.h5";
+        }
     }
 
-    public static class LAION_100k_PCA96Dataset extends FSHammingSpaceDataset {
+    public static class LAION_100k_PCA96Dataset extends H5FloatVectorDataset {
 
         public LAION_100k_PCA96Dataset() {
             super("laion2B-en-pca96v2-n=100K.h5");
@@ -341,6 +366,11 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public String getQuerySetName() {
             return "public-queries-10k-pca96v2.h5";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca96v2-n=100M.h5";
         }
     }
 
@@ -354,6 +384,11 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySetName() {
             return "public-queries-10k-pca96v2.h5";
         }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca96v2-n=100M.h5";
+        }
     }
 
     public static class LAION_10M_PCA96Dataset extends H5FloatVectorDataset {
@@ -366,6 +401,12 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySetName() {
             return "public-queries-10k-pca96v2.h5";
         }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca96v2-n=100M.h5";
+        }
+
     }
 
     public static class LAION_30M_PCA96Dataset extends H5FloatVectorDataset {
@@ -378,6 +419,11 @@ public class FSDatasetInstanceSingularizator {
         public String getQuerySetName() {
             return "public-queries-10k-pca96v2.h5";
         }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca96v2-n=100M.h5";
+        }
     }
 
     public static class LAION_100M_PCA96Dataset extends H5FloatVectorDataset {
@@ -389,6 +435,11 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public String getQuerySetName() {
             return "public-queries-10k-pca96v2.h5";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-pca96v2-n=100M.h5";
         }
     }
 
@@ -577,6 +628,7 @@ public class FSDatasetInstanceSingularizator {
             this.metricSpacesStorage = new H5MetricSpacesStorage(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
 
+        @Override
         public Map<Object, Object> getKeyValueStorage() {
             H5MetricSpacesStorage storage = (H5MetricSpacesStorage) metricSpacesStorage;
             return storage.getAsMap(datasetName);
@@ -591,6 +643,7 @@ public class FSDatasetInstanceSingularizator {
             this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.LONG_VECTOR_SPACE);
         }
 
+        @Override
         public Map<Object, Object> getKeyValueStorage() {
             throw new UnsupportedOperationException("Not supported yet.");
         }

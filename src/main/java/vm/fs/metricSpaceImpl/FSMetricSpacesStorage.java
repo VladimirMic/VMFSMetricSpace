@@ -190,7 +190,6 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         GZIPOutputStream os = null;
         try {
             File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, true);
-            FSGlobal.checkFileExistence(f);
             os = new GZIPOutputStream(new FileOutputStream(f, false), true);
             for (Object metricObject : pivots) {
                 storeMetricObject(metricObject, os, additionalParamsToStoreWithNewPivotSet);

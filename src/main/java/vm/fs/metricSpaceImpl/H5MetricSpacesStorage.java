@@ -196,7 +196,6 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
                 float[][] dataBuffer = (float[][]) dataset.getData(shift, vectorDimensions);
                 return dataBuffer[0];
             }
-
             return null;
         }
 
