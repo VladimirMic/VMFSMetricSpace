@@ -29,17 +29,19 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
 
     private static final Logger LOG = Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName());
 
-    private File getFileWithResults(String resultsName, String datasetName, String querySetName) {
-        return getFileWithResults(resultsName, datasetName, querySetName, true);
-    }
+    private String lastString = null;
+    private File lastFile = null;
 
-    private File getFileWithResults(String resultsName, String datasetName, String querySetName, boolean log) {
+    private File getFileWithResults(String resultsName, String datasetName, String querySetName) {
+        String concat = resultsName + datasetName + querySetName;
+        if (concat.equals(lastString)) {
+            return lastFile;
+        }
         File ret = new File(FSGlobal.RESULT_FOLDER, resultsName);
         ret = new File(ret, datasetName + "_" + querySetName + ".gz");
         ret = FSGlobal.checkFileExistence(ret, false);
-        if (log) {
-            LOG.log(Level.INFO, "File for results: {0}", ret.getAbsolutePath());
-        }
+        lastString = concat;
+        lastFile = ret;
         return ret;
     }
 
@@ -77,7 +79,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
                 checkAndAskForResultsExistence(datasetName, querySetName, resultsName);
             }
             ask = false;
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(getFileWithResults(resultsName, datasetName, querySetName, false), true), true);
+            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(getFileWithResults(resultsName, datasetName, querySetName), true), true);
             String queryId = queryObjectID.toString();
             store(datasetOutputStream, queryId, queryResults);
         } catch (IOException ex) {

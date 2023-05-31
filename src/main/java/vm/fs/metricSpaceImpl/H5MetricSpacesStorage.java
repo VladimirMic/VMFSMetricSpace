@@ -179,7 +179,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
             } else {
                 id = (int) key;
             }
-            return id < size();
+            return id <= size();
         }
 
         @Override

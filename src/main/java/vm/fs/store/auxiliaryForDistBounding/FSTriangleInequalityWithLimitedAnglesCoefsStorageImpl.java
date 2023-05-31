@@ -39,7 +39,7 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
         }
     }
 
-    public File getFile(String resultName) {
+    private File getFile(String resultName) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_TRIANGULAR_FILTERING_WITH_LIMITED_ANGLES);
         folderFile.mkdirs();
         File ret = new File(folderFile, resultName);
@@ -51,8 +51,8 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
     }
 
     @Override
-    public String getResultDescription(String datasetName, int pivotSize, int sampleSetSize, int queriesSampleSize, float ratioOfSmallestDists) {
-        String ret = datasetName + "_" + pivotSize + "pivots_" + sampleSetSize + "samples1_" + queriesSampleSize + "samples2_" + (ratioOfSmallestDists * 100) + "percentSmallest.csv";
+    public String getResultDescription(String datasetName, int pivotsCount, int sampleSetSize, int queriesSampleSize, float ratioOfSmallestDists) {
+        String ret = datasetName + "_" + pivotsCount + "pivots_" + sampleSetSize + "samples1_" + queriesSampleSize + "samples2_" + (ratioOfSmallestDists * 100) + "percentSmallest.csv";
         LOG.log(Level.INFO, "File name: {0}", ret);
         return ret;
     }
@@ -62,9 +62,9 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
         return new TriangleInequalityWithLimitedAngles(resultPreffixName, values);
     }
 
-    public static TriangleInequalityWithLimitedAngles getLearnedInstanceTriangleInequalityWithLimitedAngles(String resultPreffixName, String datasetName) {
+    public static TriangleInequalityWithLimitedAngles getLearnedInstanceTriangleInequalityWithLimitedAngles(String resultPreffixName, int pivotsCount, int sampleSetSize, int queriesSampleSize, float ratioOfSmallestDists, String datasetName) {
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
-        String fileName = storage.getResultDescription(datasetName, 2560, 10000, 1000, RATIO_OF_SMALLEST_DISTS);
+        String fileName = storage.getResultDescription(datasetName, pivotsCount, sampleSetSize, queriesSampleSize, RATIO_OF_SMALLEST_DISTS);
         fileName = storage.getFile(fileName).getAbsolutePath();
         return storage.loadFromFile(resultPreffixName, fileName);
     }

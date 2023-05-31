@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +72,9 @@ public class FSVoronoiPartitioningStorage implements StorageLearnedVoronoiPartit
         File f = getFileForFSVoronoiStorage(datasetName, origPivotCount, false);
         SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
         Map<Object, TreeSet<Object>> ret = new HashMap<>();
-        for (Map.Entry<String, String[]> entry : keyValueMap.entrySet()) {
+        Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, String[]> entry = it.next();
             Object[] values = entry.getValue();
             List<Object> list = Tools.arrayToList(values);
             list.remove(0);

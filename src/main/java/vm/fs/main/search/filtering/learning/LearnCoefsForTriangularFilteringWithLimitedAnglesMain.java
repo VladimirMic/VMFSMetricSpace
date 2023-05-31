@@ -16,29 +16,23 @@ import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequa
 public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
 
     public static void main(String[] args) {
-        Dataset dataset;
-//        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
-//        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset();
-        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset();
-        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset();
-        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset();
-        run(dataset);
+        Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+        };
+
+        for (Dataset dataset : datasets) {
+            run(dataset);
+        }
     }
 
     private static void run(Dataset dataset) {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 2560;
+        int pivotCount = 2048;
         List sampleOfDataset = dataset.getSampleOfDataset(11000);
         List sampleOfQueries = new ArrayList(sampleOfDataset.subList(0, 1000));
         sampleOfDataset.removeAll(sampleOfQueries);
