@@ -64,5 +64,4 @@ public class FSSecondaryFilteringWithSketchesStorage implements SecondaryFilteri
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
     }
-
 }

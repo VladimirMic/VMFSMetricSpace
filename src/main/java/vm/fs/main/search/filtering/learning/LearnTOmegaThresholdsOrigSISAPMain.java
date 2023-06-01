@@ -1,12 +1,8 @@
 package vm.fs.main.search.filtering.learning;
 
-import java.util.List;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.metricSpace.Dataset;
 import vm.fs.store.filtering.FSSimRelThresholdsTOmegaStorage;
-import vm.search.SearchingAlgorithm;
-import vm.search.impl.SimRelSeqScanKNNCandSet;
-import vm.simRel.impl.learn.SimRelEuclideanPCAForLearning;
 import vm.simRel.impl.learn.ThresholdsTOmegaEvaluator;
 import vm.simRel.impl.learn.storeLearnt.SimRelEuclidThresholdsTOmegaStorage;
 
@@ -51,23 +47,23 @@ public class LearnTOmegaThresholdsOrigSISAPMain {
         evaluator.learnTOmegaThresholds(pcaDataset, simRelStorage, dataSampleCount, pcaLength, FSSimRelThresholdsTOmegaStorage.PERCENTILES);
     }
 
-    // IS paper: pcaDataset, 100, 100000, 256, 100, 0.85f
-    private static float[] learnTOmegaThresholdsOrig(Dataset pcaDataset, int querySampleCount, int dataSampleCount, int pcaLength, int kPCA, float percentileWrong) {
-        List<Object> querySamples = pcaDataset.getPivots(querySampleCount);
-        List<Object> sampleOfDataset = pcaDataset.getSampleOfDataset(dataSampleCount);
-        SimRelEuclideanPCAForLearning simRelLearn = new SimRelEuclideanPCAForLearning(pcaLength);
-        SearchingAlgorithm alg = new SimRelSeqScanKNNCandSet(simRelLearn, kPCA, true);
-
-        simRelLearn.resetLearning(pcaLength);
-        for (int i = 0; i < querySamples.size(); i++) {
-            Object queryObj = querySamples.get(i);
-            simRelLearn.resetCounters(pcaLength);
-            alg.candSetKnnSearch(pcaDataset.getMetricSpace(), queryObj, kPCA, sampleOfDataset.iterator());
-            System.out.println("Learning tresholds with the query obj" + (i + 1));
-        }
-        int idx = SimRelEuclidThresholdsTOmegaStorage.percentileToArrayIdx(percentileWrong);
-        float[] ret = simRelLearn.getDiffWhenWrong(percentileWrong)[idx];
-        return ret;
-    }
+//    // IS paper: pcaDataset, 100, 100000, 256, 100, 0.85f
+//    private static float[] learnTOmegaThresholdsOrig(Dataset pcaDataset, int querySampleCount, int dataSampleCount, int pcaLength, int kPCA, float percentileWrong) {
+//        List<Object> querySamples = pcaDataset.getPivots(querySampleCount);
+//        List<Object> sampleOfDataset = pcaDataset.getSampleOfDataset(dataSampleCount);
+//        SimRelEuclideanPCAForLearning simRelLearn = new SimRelEuclideanPCAForLearning(pcaLength);
+//        SearchingAlgorithm alg = new SimRelSeqScanKNNCandSet(simRelLearn, kPCA, true);
+//
+//        simRelLearn.resetLearning(pcaLength);
+//        for (int i = 0; i < querySamples.size(); i++) {
+//            Object queryObj = querySamples.get(i);
+//            simRelLearn.resetCounters(pcaLength);
+//            alg.candSetKnnSearch(pcaDataset.getMetricSpace(), queryObj, kPCA, sampleOfDataset.iterator());
+//            System.out.println("Learning tresholds with the query obj" + (i + 1));
+//        }
+//        int idx = SimRelEuclidThresholdsTOmegaStorage.percentileToArrayIdx(percentileWrong);
+//        float[] ret = simRelLearn.getDiffWhenWrong(percentileWrong)[idx];
+//        return ret;
+//    }
 
 }
