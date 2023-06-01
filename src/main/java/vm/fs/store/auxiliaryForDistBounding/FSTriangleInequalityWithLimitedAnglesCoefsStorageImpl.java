@@ -20,7 +20,7 @@ import vm.metricSpace.distance.bounding.onepivot.storeLearned.TriangleInequality
  */
 public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements TriangleInequalityWithLimitedAnglesCoefsStoreInterface {
 
-    public static final Logger LOG = Logger.getLogger(FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
+    public final Logger LOG = Logger.getLogger(FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
 
     @Override
     public void storeCoefficients(Map<Object, Float> results, String resultName) {

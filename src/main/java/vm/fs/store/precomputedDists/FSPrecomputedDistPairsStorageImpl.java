@@ -23,7 +23,7 @@ import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDist
  */
 public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDistancesStoreInterface {
 
-    public static final Logger LOG = Logger.getLogger(FSPrecomputedDistPairsStorageImpl.class.getName());
+    public final Logger LOG = Logger.getLogger(FSPrecomputedDistPairsStorageImpl.class.getName());
 
     private final String resultsName;
     private final int oSize;

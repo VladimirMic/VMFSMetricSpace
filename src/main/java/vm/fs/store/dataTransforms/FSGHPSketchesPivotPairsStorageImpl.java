@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.FSGlobal;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
-import static vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl.LOG;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.objTransforms.storeLearned.GHPSketchingPivotPairsStoreInterface;
 
@@ -21,6 +20,8 @@ import vm.objTransforms.storeLearned.GHPSketchingPivotPairsStoreInterface;
  * @author Vlada
  */
 public class FSGHPSketchesPivotPairsStorageImpl implements GHPSketchingPivotPairsStoreInterface {
+
+    private final Logger LOG = Logger.getLogger(FSGHPSketchesPivotPairsStorageImpl.class.getName());
 
     @Override
     public void storeSketching(String resultName, AbstractMetricSpace<Object> metricSpace, List<Object> pivots, Object... additionalInfoToStoreWithLearningSketching) {

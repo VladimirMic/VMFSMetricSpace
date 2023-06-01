@@ -21,7 +21,7 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  */
 public class EvalAndStoreObjectsToPivotsDistsMain {
 
-    public static final Logger LOGGER = Logger.getLogger(EvalAndStoreObjectsToPivotsDistsMain.class.getName());
+    public static final Logger LOG = Logger.getLogger(EvalAndStoreObjectsToPivotsDistsMain.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
 //        run(new FSDatasetInstanceSingularizator.SIFTdataset());
@@ -37,7 +37,7 @@ public class EvalAndStoreObjectsToPivotsDistsMain {
 
     private static void run(Dataset dataset) {
         int pivotCount = 2048;
-        String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount).getAbsolutePath();
+        String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount, true).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         List pivots = dataset.getPivots(pivotCount);
@@ -67,17 +67,17 @@ public class EvalAndStoreObjectsToPivotsDistsMain {
                 }
                 outputStream.write('\n');
                 if (i % 10000 == 0) {
-                    LOGGER.log(Level.INFO, "Evaluated {0} objects", i);
+                    LOG.log(Level.INFO, "Evaluated {0} objects", i);
                 }
             }
         } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            LOG.log(Level.SEVERE, null, ex);
         } finally {
             try {
                 outputStream.flush();
                 outputStream.close();
             } catch (IOException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                LOG.log(Level.SEVERE, null, ex);
             }
         }
     }

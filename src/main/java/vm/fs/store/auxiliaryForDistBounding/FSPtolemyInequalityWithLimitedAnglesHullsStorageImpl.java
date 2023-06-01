@@ -20,7 +20,7 @@ import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequality
  */
 public class FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl implements PtolemyInequalityWithLimitedAnglesHullsStoreInterface {
 
-    public static final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl.class.getName());
+    public final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesHullsStorageImpl.class.getName());
 
     public File getFile(String resultName) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_PTOLEMAIOS_WITH_LIMITED_ANGLES);

@@ -20,12 +20,12 @@ import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDis
  */
 public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedDistancesMatrixLoader {
 
-    private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName());
+    private final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName());
 
     @Override
     public float[][] loadPrecomPivotsToObjectsDists(String datasetName, String pivotSetName, int pivotCount) {
         List<float[]> retList = new ArrayList<>();
-        File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount);
+        File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount, false);
         if (!file.exists()) {
             return null;
         }
@@ -68,11 +68,11 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
 
     }
 
-    public final static File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount) {
+    public final static File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount, boolean willBeDeleted) {
         File f = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER);
         f.mkdirs();
         File ret = new File(f, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
-        LOG.log(Level.INFO, "File for precumputed distances: {0}", ret.getAbsolutePath());
+        FSGlobal.checkFileExistence(f, willBeDeleted);
         return ret;
     }
 

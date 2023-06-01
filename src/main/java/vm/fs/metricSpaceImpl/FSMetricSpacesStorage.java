@@ -29,7 +29,7 @@ import vm.metricSpace.dataToStringConvertors.MetricObjectDataToStringInterface;
  */
 public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
 
-    public static final Logger LOG = Logger.getLogger(FSMetricSpacesStorage.class.getName());
+    public final Logger LOG = Logger.getLogger(FSMetricSpacesStorage.class.getName());
 
     protected final AbstractMetricSpace metricSpace;
     protected final MetricObjectDataToStringInterface<T> dataSerializator;

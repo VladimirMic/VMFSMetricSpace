@@ -27,7 +27,7 @@ import vm.metricSpace.dataToStringConvertors.MetricObjectDataToStringInterface;
 public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    public static final Logger LOG = Logger.getLogger(H5MetricSpacesStorage.class.getName());
+    public final Logger LOG = Logger.getLogger(H5MetricSpacesStorage.class.getName());
 
     public H5MetricSpacesStorage(AbstractMetricSpace<float[]> metricSpace, MetricObjectDataToStringInterface dataSerializator) {
         super(metricSpace, dataSerializator);

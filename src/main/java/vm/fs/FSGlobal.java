@@ -49,6 +49,8 @@ public class FSGlobal {
 
     public static final String AUXILIARY_FOR_DATA_FILTERING = ROOT_FOLDER_PATH + "Auxiliary_for_filtering\\";
     public static final String VORONOI_PARTITIONING_STORAGE = AUXILIARY_FOR_DATA_FILTERING + "Voronoi_partitioning\\";
+    public static final String SECONDARY_FILTERING_WITH_SKETCHES_AUXILIARY = AUXILIARY_FOR_DATA_FILTERING + "Secondary_filtering_with_sk_auxiliary\\";
+    public static final String SECONDARY_FILTERING_WITH_SKETCHES_FINAL_MAPPING = AUXILIARY_FOR_DATA_FILTERING + "Secondary_filtering_with_sk_mapping\\";
 
     public static final String SMALLEST_DISTANCES = AUXILIARY_FOR_DATA_FILTERING + "Smallest_distances";
     public static final String AUXILIARY_FOR_TRIANGULAR_FILTERING_WITH_LIMITED_ANGLES = AUXILIARY_FOR_DATA_FILTERING + "Triangle_ineq_with_limited_angles\\";

@@ -24,7 +24,7 @@ import vm.queryResults.QueryExecutionStatsStoreInterface;
  */
 public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInterface {
 
-    private static final Logger LOG = Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName());
+    private final Logger LOG = Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName());
     protected final StatsAttributesComparator statsComp = new StatsAttributesComparator();
     private final File output;
     protected final Map<String, TreeMap<QUERY_STATS, String>> content;

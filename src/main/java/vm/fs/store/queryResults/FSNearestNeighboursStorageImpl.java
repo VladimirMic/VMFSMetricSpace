@@ -27,7 +27,7 @@ import vm.queryResults.QueryNearestNeighboursStoreInterface;
  */
 public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreInterface {
 
-    private static final Logger LOG = Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName());
+    private final Logger LOG = Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName());
 
     private String lastString = null;
     private File lastFile = null;

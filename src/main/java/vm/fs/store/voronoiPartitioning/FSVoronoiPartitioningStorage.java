@@ -24,7 +24,7 @@ import vm.metricSpace.voronoiPartitioning.StorageLearnedVoronoiPartitioningInter
  */
 public class FSVoronoiPartitioningStorage implements StorageLearnedVoronoiPartitioningInterface {
 
-    public static final Logger LOG = Logger.getLogger(FSVoronoiPartitioningStorage.class.getName());
+    public final Logger LOG = Logger.getLogger(FSVoronoiPartitioningStorage.class.getName());
 
     @Override
     public void store(Map<Object, SortedSet<Object>> mapping, String datasetName, int origPivotCount) {

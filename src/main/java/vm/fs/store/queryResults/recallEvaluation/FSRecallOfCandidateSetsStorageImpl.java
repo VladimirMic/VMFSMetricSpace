@@ -16,7 +16,7 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsStoreInterface;
  */
 public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsStoreImpl implements RecallOfCandsSetsStoreInterface, ErrorsOnDistStoreInterface {
 
-    private static final Logger LOG = Logger.getLogger(FSRecallOfCandidateSetsStorageImpl.class.getName());
+    private final Logger LOG = Logger.getLogger(FSRecallOfCandidateSetsStorageImpl.class.getName());
 
     /**
      *

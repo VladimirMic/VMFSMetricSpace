@@ -16,7 +16,7 @@ import vm.metricSpace.distance.impl.HammingDistanceLongs;
  */
 public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
 
-    private static final Logger LOG = Logger.getLogger(FSMetricSpaceImpl.class.getName());
+    private final Logger LOG = Logger.getLogger(FSMetricSpaceImpl.class.getName());
 
     @Override
     public DistanceFunctionInterface getDistanceFunctionForDataset(String datasetName, Object... params) {

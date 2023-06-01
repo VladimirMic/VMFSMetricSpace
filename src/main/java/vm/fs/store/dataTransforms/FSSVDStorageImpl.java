@@ -24,7 +24,7 @@ import vm.objTransforms.storeLearned.SVDStoreInterface;
  */
 public class FSSVDStorageImpl implements SVDStoreInterface {
 
-    private static final Logger LOG = Logger.getLogger(FSSVDStorageImpl.class.getName());
+    private final Logger LOG = Logger.getLogger(FSSVDStorageImpl.class.getName());
     private final File output;
     private Map<String, String> fileContent = null;
 

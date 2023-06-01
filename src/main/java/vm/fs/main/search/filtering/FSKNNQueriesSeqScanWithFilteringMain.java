@@ -13,7 +13,7 @@ import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageI
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.bounding.twopivots.TwoPivotsFiltering;
+import vm.metricSpace.distance.bounding.twopivots.TwoPivotsFilter;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.SearchingAlgorithm;
@@ -56,9 +56,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         List queries = dataset.getMetricQueryObjects();
         List pivots = dataset.getPivots(pivotCount);
 
-        TwoPivotsFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName(), pivotCount);
-//        TwoPivotsFiltering filter = new FourPointBasedFiltering(pivotCount + "_pivots");
-//        TwoPivotsFiltering filter = new PtolemaiosFiltering(pivotCount + "_pivots");
+        TwoPivotsFilter filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName(), pivotCount);
+//        TwoPivotsFilter filter = new FourPointBasedFiltering(pivotCount + "_pivots");
+//        TwoPivotsFilter filter = new PtolemaiosFiltering(pivotCount + "_pivots");
 //        OnePivotFiltering filter = new TriangleInequality(pivotCount + "_pivots");
 //        OnePivotFiltering filter = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(pivotCount + "_pivots", dataset.getDatasetName());
 
