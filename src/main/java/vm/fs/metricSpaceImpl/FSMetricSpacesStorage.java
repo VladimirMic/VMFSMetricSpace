@@ -173,7 +173,6 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         }
         f = new File(folder, fileName);
         f = FSGlobal.checkFileExistence(f, willBeDeleted);
-        LOG.log(Level.INFO, "Folder: {0}, file: {1}", new Object[]{f.getAbsolutePath(), fileName});
         return f;
     }
 

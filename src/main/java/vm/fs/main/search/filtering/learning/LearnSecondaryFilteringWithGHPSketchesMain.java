@@ -20,19 +20,18 @@ import vm.metricSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringW
 public class LearnSecondaryFilteringWithGHPSketchesMain {
 
     public static final Logger LOG = Logger.getLogger(LearnSecondaryFilteringWithGHPSketchesMain.class.getName());
-
     public static void main(String[] args) {
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
         };
         Dataset[] sketchesDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset()
+            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_128Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset()
         };
         float[] distIntervalsForPX = new float[]{
             2,
@@ -50,14 +49,13 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
             2f,
             2f
         };
-        int sketchLength = 256;
-        for (int i = 0; i < sketchesDatasets.length; i++) {
+        int sketchLength = 512;
+        for (int i = 1; i < sketchesDatasets.length; i++) {
             Dataset fullDataset = fullDatasets[i];
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
             float maxDistOnFullDataset = maxDistsOnFullDataset[i];
             run(fullDataset, sketchesDataset, distIntervalForPX, sketchLength, maxDistOnFullDataset);
-            System.exit(0);
         }
     }
 
