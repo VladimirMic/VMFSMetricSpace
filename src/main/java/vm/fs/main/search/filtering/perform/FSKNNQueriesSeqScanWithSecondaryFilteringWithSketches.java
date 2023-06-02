@@ -40,17 +40,20 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
         int sketchLength = 256;
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset()
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset()
         };
         float[] distIntervalsForPX = new float[]{
             2,
             0.004f,
+            0.004f
         };
-        for (int i = 1; i < sketchesDatasets.length; i++) {
+        for (int i = 2; i < sketchesDatasets.length; i++) {
             Dataset fullDataset = fullDatasets[i];
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
@@ -59,7 +62,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
     }
 
     private static void run(Dataset fullDataset, Dataset sketchesDataset, float distIntervalForPX, float pCum, int sketchLength) {
-        int k = 100;
+        int k = 10;
         AbstractMetricSpace metricSpace = fullDataset.getMetricSpace();
         DistanceFunctionInterface df = fullDataset.getDistanceFunction();
 
