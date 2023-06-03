@@ -16,8 +16,10 @@ import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.fs.store.voronoiPartitioning.FSVoronoiPartitioningStorage;
+import vm.javatools.Tools;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
+import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.nopivot.impl.SecondaryFilteringWithSketches;
 import vm.metricSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
@@ -40,7 +42,7 @@ public class FSVoronoiPlusSecondaryWithSketches {
     private static final Logger LOG = Logger.getLogger(FSVoronoiPlusSecondaryWithSketches.class.getName());
 
     public static void main(String[] args) {
-        float pCum = 0.7f;
+        float pCum = 0.5f;
         int sketchLength = 256;
         int pivotCount = 2048;
         Dataset[] fullDatasets = new Dataset[]{
@@ -61,14 +63,13 @@ public class FSVoronoiPlusSecondaryWithSketches {
         int[] voronoiK = new int[]{
             400000,
             1000000,
-            400000
+            3000000
         };
-        for (int i = 1; i < sketchesDatasets.length; i++) {
+        for (int i = 2; i < sketchesDatasets.length; i++) {
             Dataset fullDataset = fullDatasets[i];
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
             run(fullDataset, sketchesDataset, distIntervalForPX, pCum, sketchLength, pivotCount, voronoiK[i]);
-            System.exit(0);
         }
     }
 
@@ -85,24 +86,22 @@ public class FSVoronoiPlusSecondaryWithSketches {
 
         AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, false, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
         SecondaryFilteringWithSketchesStoreInterface secondaryFilteringStorage = new FSSecondaryFilteringWithSketchesStorage();
-        SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches("Voronoi_plus", fullDataset.getDatasetName(), sketchesDataset, secondaryFilteringStorage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
+        SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches("Voronoi" + voronoiK + "_pCum" + pCum, fullDataset.getDatasetName(), sketchesDataset, secondaryFilteringStorage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
 
         SearchingAlgorithm secondaryWithSketches = new KNNSearchWithSketchSecondaryFiltering(fullDataset, filter, sketchingTechnique);
 
         List queries = fullDataset.getMetricQueryObjects();
 
         Map keyValueStorage = fullDataset.getKeyValueStorage();
+//        Map keyValueStorage = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, fullDataset.getMetricObjectsFromDataset(), true);
+
+        
         TreeSet[] results = new TreeSet[queries.size()];
         for (int i = 0; i < queries.size(); i++) {
             Object query = queries.get(i);
             List candSetKnnSearch = voronoi.candSetKnnSearch(metricSpace, query, voronoiK, null);
             results[i] = secondaryWithSketches.completeKnnSearch(metricSpace, query, k, candSetKnnSearch.iterator(), keyValueStorage);
         }
-
-        LOG.log(Level.INFO, "Storing statistics of queries");
-        FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(fullDataset.getDatasetName(), fullDataset.getQuerySetName(), k, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), filter.getTechFullName(), null);
-        statsStorage.storeStatsForQueries(secondaryWithSketches.getDistCompsPerQueries(), secondaryWithSketches.getTimesPerQueries());
-        statsStorage.saveFile();
 
         LOG.log(Level.INFO, "Storing results of queries");
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
