@@ -16,10 +16,8 @@ import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.fs.store.voronoiPartitioning.FSVoronoiPartitioningStorage;
-import vm.javatools.Tools;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.nopivot.impl.SecondaryFilteringWithSketches;
 import vm.metricSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
@@ -77,12 +75,11 @@ public class FSVoronoiPlusSecondaryWithSketches {
         int k = 10;
         AbstractMetricSpace metricSpace = fullDataset.getMetricSpace();
         DistanceFunctionInterface df = fullDataset.getDistanceFunction();
+        StorageLearnedVoronoiPartitioningInterface voronoiPartitioningStorage = new FSVoronoiPartitioningStorage();
+        SearchingAlgorithm voronoi = new VoronoiPartitionsCandSetIdentifier(fullDataset, voronoiPartitioningStorage, pivotCountUsedForVoronoiLearning);
 
         GHPSketchingPivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         List pivots = fullDataset.getPivots(-1);
-
-        StorageLearnedVoronoiPartitioningInterface voronoiPartitioningStorage = new FSVoronoiPartitioningStorage();
-        SearchingAlgorithm voronoi = new VoronoiPartitionsCandSetIdentifier(fullDataset, voronoiPartitioningStorage, pivotCountUsedForVoronoiLearning);
 
         AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, false, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
         SecondaryFilteringWithSketchesStoreInterface secondaryFilteringStorage = new FSSecondaryFilteringWithSketchesStorage();
@@ -95,13 +92,16 @@ public class FSVoronoiPlusSecondaryWithSketches {
         Map keyValueStorage = fullDataset.getKeyValueStorage();
 //        Map keyValueStorage = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, fullDataset.getMetricObjectsFromDataset(), true);
 
-        
         TreeSet[] results = new TreeSet[queries.size()];
         for (int i = 0; i < queries.size(); i++) {
             Object query = queries.get(i);
             List candSetKnnSearch = voronoi.candSetKnnSearch(metricSpace, query, voronoiK, null);
             results[i] = secondaryWithSketches.completeKnnSearch(metricSpace, query, k, candSetKnnSearch.iterator(), keyValueStorage);
         }
+        LOG.log(Level.INFO, "Storing statistics of queries");
+        FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(fullDataset.getDatasetName(), fullDataset.getQuerySetName(), k, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), filter.getTechFullName(), null);
+        statsStorage.storeStatsForQueries(secondaryWithSketches.getDistCompsPerQueries(), secondaryWithSketches.getTimesPerQueries());
+        statsStorage.saveFile();
 
         LOG.log(Level.INFO, "Storing results of queries");
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
