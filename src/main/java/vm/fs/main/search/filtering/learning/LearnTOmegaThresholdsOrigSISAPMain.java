@@ -25,7 +25,7 @@ public class LearnTOmegaThresholdsOrigSISAPMain {
                     new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset(),
                     new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
         };
-        for (int i = 0; i < pcaDatasets.length; i++) {
+        for (int i = 1; i < pcaDatasets.length; i++) {
             Dataset pcaDataset = pcaDatasets[i];
             Dataset fullDataset = fullDatasets[i];
             run(pcaDataset);
@@ -36,7 +36,7 @@ public class LearnTOmegaThresholdsOrigSISAPMain {
 
     private static void run(Dataset<float[]> pcaDataset) {
         /* the name of the PCA-shortened dataset */
-        int kPCA = 300;// DeCAF 100
+        int kPCA = 500;// DeCAF 100
         /* number of query objects to learn t(\Omega) thresholds. We use different objects than the pivots tested. */
         int querySampleCount = 100;//200
         /* size of the data sample to learn t(\Omega) thresholds, IS: 1M */
