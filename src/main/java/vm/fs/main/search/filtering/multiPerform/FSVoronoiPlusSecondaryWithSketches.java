@@ -35,6 +35,7 @@ import vm.search.impl.VoronoiPartitionsCandSetIdentifier;
  *
  * @author Vlada
  */
+@Deprecated // very slow on big data
 public class FSVoronoiPlusSecondaryWithSketches {
 
     private static final Logger LOG = Logger.getLogger(FSVoronoiPlusSecondaryWithSketches.class.getName());
@@ -83,7 +84,7 @@ public class FSVoronoiPlusSecondaryWithSketches {
 
         AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, false, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
         SecondaryFilteringWithSketchesStoreInterface secondaryFilteringStorage = new FSSecondaryFilteringWithSketchesStorage();
-        SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches("Voronoi" + voronoiK + "_pCum" + pCum, fullDataset.getDatasetName(), sketchesDataset, secondaryFilteringStorage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
+        SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches("Voronoi" + voronoiK + "_pCum_" + pCum + "_sketchLength_" + sketchLength, fullDataset.getDatasetName(), sketchesDataset, secondaryFilteringStorage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
 
         SearchingAlgorithm secondaryWithSketches = new KNNSearchWithSketchSecondaryFiltering(fullDataset, filter, sketchingTechnique);
 

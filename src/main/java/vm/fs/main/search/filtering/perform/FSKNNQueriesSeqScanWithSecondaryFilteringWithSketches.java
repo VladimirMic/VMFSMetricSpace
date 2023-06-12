@@ -36,28 +36,32 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches.class.getName());
 
     public static void main(String[] args) {
-        float pCum = 0.75f;
+        float pCum = 0.55f;
         int sketchLength = 256;
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset()
         };
         float[] distIntervalsForPX = new float[]{
             2,
             0.004f,
+            0.004f,
             0.004f
         };
-        for (int i = 2; i < sketchesDatasets.length; i++) {
+        for (int i = 3; i < sketchesDatasets.length; i++) {
             Dataset fullDataset = fullDatasets[i];
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
             run(fullDataset, sketchesDataset, distIntervalForPX, pCum, sketchLength);
+            System.exit(0);
         }
     }
 
@@ -71,7 +75,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
         AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, false, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
 
         SecondaryFilteringWithSketchesStoreInterface storage = new FSSecondaryFilteringWithSketchesStorage();
-        SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches("", fullDataset.getDatasetName(), sketchesDataset, storage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
+        SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches(pCum + "_pCum"  + sketchLength + "_skLength", fullDataset.getDatasetName(), sketchesDataset, storage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
 
         SearchingAlgorithm alg = new KNNSearchWithSketchSecondaryFiltering(fullDataset, filter, sketchingTechnique);
 

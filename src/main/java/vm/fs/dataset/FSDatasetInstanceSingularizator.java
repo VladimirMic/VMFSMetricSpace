@@ -6,7 +6,7 @@ import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
-import vm.vmmvstore.VMMVStorage;
+import vm.fs.metricSpaceImpl.VMMVStorage;
 
 /**
  *

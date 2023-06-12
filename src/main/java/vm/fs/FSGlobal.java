@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 public class FSGlobal {
 
     private static String initRoot() {
+//        return "h:\\TMP\\Similarity_search\\";
         String[] paths = new String[]{
             "h:\\Similarity_search\\",
             "Similarity_search/",
