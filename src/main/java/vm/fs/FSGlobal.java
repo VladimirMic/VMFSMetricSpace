@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
+    private static final Boolean ASK_FOR_EXISTENCE = false;
+
     private static String initRoot() {
 //        return "h:\\TMP\\Similarity_search\\";
         String[] paths = new String[]{
@@ -27,12 +29,12 @@ public class FSGlobal {
         throw new IllegalArgumentException("Create the root file");
     }
 
-    private static String root = initRoot();
-    public static final Boolean UNIX = root.contains("/");
+    public static final String ROOT = initRoot();
+    public static final Boolean UNIX = ROOT.contains("/");
 
-    public static final String TRIALS_FOLDER = root + "Trials\\";
+    public static final String TRIALS_FOLDER = ROOT + "Trials\\";
 
-    public static final String DATA_FOLDER = root + "Dataset\\";
+    public static final String DATA_FOLDER = ROOT + "Dataset\\";
     public static final String DATASET_MAPDB_FOLDER = DATA_FOLDER + "Map_DB\\";
     public static final String DATASET_MVSTORAGE_FOLDER = DATA_FOLDER + "MV_storage\\";
     public static final String DATASET_FOLDER = DATA_FOLDER + "Dataset\\";
@@ -41,14 +43,14 @@ public class FSGlobal {
     public static final String QUERY_FOLDER = DATA_FOLDER + "Query\\";
     public static final String PRECOMPUTED_DISTS_FOLDER = DATA_FOLDER + "DistsToPivots";
 
-    public static final String RESULT_FOLDER = root + "Results\\";
+    public static final String RESULT_FOLDER = ROOT + "Results\\";
     public static final String RESULT_STATS_FOLDER = "Processed_stats\\";
     public static final String GROUND_TRUTH_FOLDER = RESULT_FOLDER + "Ground_truth\\";
 
-    public static final String AUXILIARY_FOR_DATA_TRANSFORMS = root + "Auxiliary_for_transforms\\";
+    public static final String AUXILIARY_FOR_DATA_TRANSFORMS = ROOT + "Auxiliary_for_transforms\\";
     public static final String AUXILIARY_FOR_SVD_TRANSFORMS = AUXILIARY_FOR_DATA_TRANSFORMS + "SVD\\";
 
-    public static final String AUXILIARY_FOR_DATA_FILTERING = root + "Auxiliary_for_filtering\\";
+    public static final String AUXILIARY_FOR_DATA_FILTERING = ROOT + "Auxiliary_for_filtering\\";
     public static final String VORONOI_PARTITIONING_STORAGE = AUXILIARY_FOR_DATA_FILTERING + "Voronoi_partitioning\\";
     public static final String SECONDARY_FILTERING_WITH_SKETCHES_AUXILIARY = AUXILIARY_FOR_DATA_FILTERING + "Secondary_filtering_with_sk_auxiliary\\";
     public static final String SECONDARY_FILTERING_WITH_SKETCHES_FINAL_MAPPING = AUXILIARY_FOR_DATA_FILTERING + "Secondary_filtering_with_sk_mapping\\";
@@ -63,15 +65,11 @@ public class FSGlobal {
 
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
-    public static void setRoot(String root) {
-        FSGlobal.root = root;
-    }
-
     public static final File checkFileExistence(File file, boolean willBeDeleted) {
         Object[] options = new String[]{"Yes", "No"};
         file = new File(checkUnixPath(file.getAbsolutePath()));
         file.getParentFile().mkdirs();
-        if (file.exists() && willBeDeleted) {
+        if (file.exists() && willBeDeleted && ASK_FOR_EXISTENCE) {
             LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0}", file.getAbsolutePath());
             String question = "File " + file.getName() + " at " + file.getAbsolutePath() + " already exists. Do you want to delete its content? Answer no causes immediate stop.";
             int add = JOptionPane.showOptionDialog(null, question, "New file?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
