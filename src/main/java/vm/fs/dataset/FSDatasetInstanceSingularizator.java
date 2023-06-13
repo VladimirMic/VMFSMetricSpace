@@ -635,7 +635,7 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
-    private static class FSHammingSpaceDataset extends Dataset<long[]> {
+    public static class FSHammingSpaceDataset extends Dataset<long[]> {
 
         public FSHammingSpaceDataset(String datasetName) {
             this.datasetName = datasetName;
