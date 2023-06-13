@@ -603,7 +603,7 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    private static class FSFloatVectorDataset extends Dataset<float[]> {
+    public static class FSFloatVectorDataset extends Dataset<float[]> {
 
         public FSFloatVectorDataset(String datasetName) {
             this.datasetName = datasetName;

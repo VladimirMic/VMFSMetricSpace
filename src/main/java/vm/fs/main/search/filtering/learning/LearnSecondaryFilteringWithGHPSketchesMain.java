@@ -20,6 +20,7 @@ import vm.metricSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringW
 public class LearnSecondaryFilteringWithGHPSketchesMain {
 
     public static final Logger LOG = Logger.getLogger(LearnSecondaryFilteringWithGHPSketchesMain.class.getName());
+
     public static void main(String[] args) {
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
@@ -59,7 +60,7 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
         }
     }
 
-    private static void run(Dataset fullDataset, Dataset sketchesDataset, float distIntervalForPX, int sketchLength, float maxDistOnFullDataset) {
+    public static final void run(Dataset fullDataset, Dataset sketchesDataset, float distIntervalForPX, int sketchLength, float maxDistOnFullDataset) {
         SecondaryFilteringWithSketchesStoreInterface storage = new FSSecondaryFilteringWithSketchesStorage();
         //iDim file
         File fileOutputForIDim = new File(FSGlobal.SECONDARY_FILTERING_WITH_SKETCHES_AUXILIARY,
