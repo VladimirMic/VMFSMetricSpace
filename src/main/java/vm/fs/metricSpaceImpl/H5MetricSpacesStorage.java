@@ -58,7 +58,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
     }
 
     @Override
-    protected Iterator<Object> getIteratorOfObjects(File f, Object... params) {
+    public Iterator<Object> getIteratorOfObjects(File f, Object... params) {
         List<Object> listOfParams = Tools.arrayToList(params);
         if (params.length > 0 && listOfParams.contains("P")) {
             Iterator<Object> it = super.getIteratorOfObjects(f, params);

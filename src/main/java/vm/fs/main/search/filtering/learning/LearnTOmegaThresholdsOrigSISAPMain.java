@@ -29,8 +29,6 @@ public class LearnTOmegaThresholdsOrigSISAPMain {
             Dataset pcaDataset = pcaDatasets[i];
             Dataset fullDataset = fullDatasets[i];
             run(pcaDataset);
-//            float[] learnTOmegaThresholdsOrig = learnTOmegaThresholdsOrig(pcaDataset, 100, 100000, 256, 100, 0.85f);
-//            Tools.printArray(learnTOmegaThresholdsOrig, "\n");
         }
     }
 

@@ -80,7 +80,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         return getIteratorOfObjects(f, params);
     }
 
-    protected Iterator<Object> getIteratorOfObjects(File f, Object... params) {
+    public Iterator<Object> getIteratorOfObjects(File f, Object... params) {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));

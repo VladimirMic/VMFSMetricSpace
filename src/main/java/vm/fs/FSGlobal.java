@@ -27,12 +27,12 @@ public class FSGlobal {
         throw new IllegalArgumentException("Create the root file");
     }
 
-    public static final String ROOT_FOLDER_PATH = initRoot();
-    public static final Boolean UNIX = ROOT_FOLDER_PATH.contains("/");
+    private static String root = initRoot();
+    public static final Boolean UNIX = root.contains("/");
 
-    public static final String TRIALS_FOLDER = ROOT_FOLDER_PATH + "Trials\\";
+    public static final String TRIALS_FOLDER = root + "Trials\\";
 
-    public static final String DATA_FOLDER = ROOT_FOLDER_PATH + "Dataset\\";
+    public static final String DATA_FOLDER = root + "Dataset\\";
     public static final String DATASET_MAPDB_FOLDER = DATA_FOLDER + "Map_DB\\";
     public static final String DATASET_MVSTORAGE_FOLDER = DATA_FOLDER + "MV_storage\\";
     public static final String DATASET_FOLDER = DATA_FOLDER + "Dataset\\";
@@ -41,14 +41,14 @@ public class FSGlobal {
     public static final String QUERY_FOLDER = DATA_FOLDER + "Query\\";
     public static final String PRECOMPUTED_DISTS_FOLDER = DATA_FOLDER + "DistsToPivots";
 
-    public static final String RESULT_FOLDER = ROOT_FOLDER_PATH + "Results\\";
+    public static final String RESULT_FOLDER = root + "Results\\";
     public static final String RESULT_STATS_FOLDER = "Processed_stats\\";
     public static final String GROUND_TRUTH_FOLDER = RESULT_FOLDER + "Ground_truth\\";
 
-    public static final String AUXILIARY_FOR_DATA_TRANSFORMS = ROOT_FOLDER_PATH + "Auxiliary_for_transforms\\";
+    public static final String AUXILIARY_FOR_DATA_TRANSFORMS = root + "Auxiliary_for_transforms\\";
     public static final String AUXILIARY_FOR_SVD_TRANSFORMS = AUXILIARY_FOR_DATA_TRANSFORMS + "SVD\\";
 
-    public static final String AUXILIARY_FOR_DATA_FILTERING = ROOT_FOLDER_PATH + "Auxiliary_for_filtering\\";
+    public static final String AUXILIARY_FOR_DATA_FILTERING = root + "Auxiliary_for_filtering\\";
     public static final String VORONOI_PARTITIONING_STORAGE = AUXILIARY_FOR_DATA_FILTERING + "Voronoi_partitioning\\";
     public static final String SECONDARY_FILTERING_WITH_SKETCHES_AUXILIARY = AUXILIARY_FOR_DATA_FILTERING + "Secondary_filtering_with_sk_auxiliary\\";
     public static final String SECONDARY_FILTERING_WITH_SKETCHES_FINAL_MAPPING = AUXILIARY_FOR_DATA_FILTERING + "Secondary_filtering_with_sk_mapping\\";
@@ -62,6 +62,10 @@ public class FSGlobal {
     public static final String SIMREL_TOMEGA_THRESHOLDS = AUXILIARY_FOR_DATA_FILTERING + "SimRel_tOmega_thresholds\\";
 
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
+
+    public static void setRoot(String root) {
+        FSGlobal.root = root;
+    }
 
     public static final File checkFileExistence(File file, boolean willBeDeleted) {
         Object[] options = new String[]{"Yes", "No"};
