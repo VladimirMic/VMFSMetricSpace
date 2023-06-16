@@ -30,9 +30,8 @@ public class EvalAndStoreObjectsToPivotsDistsMain {
 //        System.gc();
 //        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
 //        System.gc();
-//        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
-//        System.gc();
-        run(new FSDatasetInstanceSingularizator.LAION_1M_SampleDataset());
+        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
+        System.gc();
     }
 
     private static void run(Dataset dataset) {
