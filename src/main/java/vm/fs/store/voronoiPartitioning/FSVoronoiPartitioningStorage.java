@@ -23,9 +23,9 @@ import vm.metricSpace.voronoiPartitioning.StorageLearnedVoronoiPartitioningInter
  * @author Vlada
  */
 public class FSVoronoiPartitioningStorage implements StorageLearnedVoronoiPartitioningInterface {
-
+    
     public final Logger LOG = Logger.getLogger(FSVoronoiPartitioningStorage.class.getName());
-
+    
     @Override
     public void store(Map<Object, SortedSet<Object>> mapping, String datasetName, int origPivotCount) {
         if (mapping == null || mapping.isEmpty()) {
@@ -57,16 +57,16 @@ public class FSVoronoiPartitioningStorage implements StorageLearnedVoronoiPartit
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
-
+        
     }
-
+    
     public File getFileForFSVoronoiStorage(String datasetName, int pivotCount, boolean willBeDeleted) {
         String name = datasetName + "_" + pivotCount + "pivots.csv.gz";
         File ret = new File(FSGlobal.VORONOI_PARTITIONING_STORAGE, name);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
     }
-
+    
     @Override
     public Map<Object, TreeSet<Object>> load(String datasetName, int origPivotCount) {
         File f = getFileForFSVoronoiStorage(datasetName, origPivotCount, false);
@@ -80,7 +80,8 @@ public class FSVoronoiPartitioningStorage implements StorageLearnedVoronoiPartit
             list.remove(0);
             ret.put(entry.getKey(), new TreeSet(list));
         }
+        LOG.log(Level.INFO, "The Voronoi partitioning has {0} non empty cells", ret.size());
         return ret;
     }
-
+    
 }
