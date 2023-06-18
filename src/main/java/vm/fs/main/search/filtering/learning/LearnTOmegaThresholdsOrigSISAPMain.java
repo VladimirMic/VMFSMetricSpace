@@ -13,21 +13,15 @@ import vm.simRel.impl.learn.storeLearnt.SimRelEuclidThresholdsTOmegaStorage;
 public class LearnTOmegaThresholdsOrigSISAPMain {
 
     public static void main(String[] args) {
-        Dataset[] fullDatasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.DeCAFDataset(), //            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
-                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-                    new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
-                    new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
-        };
         Dataset[] pcaDatasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.DeCAF_PCA256Dataset(), //            new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset(),
-                    new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset(),
-                    new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset(),
-                    new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
+            //            new FSDatasetInstanceSingularizator.DeCAF_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
         };
         for (int i = 1; i < pcaDatasets.length; i++) {
             Dataset pcaDataset = pcaDatasets[i];
-            Dataset fullDataset = fullDatasets[i];
             run(pcaDataset);
         }
     }
@@ -63,5 +57,4 @@ public class LearnTOmegaThresholdsOrigSISAPMain {
 //        float[] ret = simRelLearn.getDiffWhenWrong(percentileWrong)[idx];
 //        return ret;
 //    }
-
 }
