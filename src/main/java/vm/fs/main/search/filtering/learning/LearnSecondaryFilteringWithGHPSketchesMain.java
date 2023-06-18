@@ -24,12 +24,14 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
     public static void main(String[] args) {
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
             new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset()
