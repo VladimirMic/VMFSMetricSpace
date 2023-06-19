@@ -35,7 +35,7 @@ public class FSApplyGHPSketchingMain {
         TransformDataToGHPSketches evaluator = new TransformDataToGHPSketches(dataset, storageOfPivotPairs, storageForSketches, 0.5f, -1);
         int[] sketchesLengths = new int[]{192, 384, 512};
 //        int[] sketchesLengths = new int[]{256};
-        evaluator.createSketchesForDatasetPivotsAndQueries(sketchesLengths);
+        evaluator.createSketchesForDatasetPivotsAndQueries(sketchesLengths, null);
     }
 
 }
