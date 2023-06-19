@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,6 +30,15 @@ import vm.queryResults.QueryNearestNeighboursStoreInterface;
 public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreInterface {
 
     private final Logger LOG = Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName());
+    private final boolean compress;
+
+    public FSNearestNeighboursStorageImpl() {
+        this(true);
+    }
+
+    public FSNearestNeighboursStorageImpl(boolean compress) {
+        this.compress = compress;
+    }
 
     private String lastString = null;
     private File lastFile = null;
@@ -38,7 +49,9 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             return lastFile;
         }
         File ret = new File(FSGlobal.RESULT_FOLDER, resultsName);
-        ret = new File(ret, datasetName + "_" + querySetName + ".gz");
+        String n = datasetName + "_" + querySetName;
+        n += compress ? ".gz" : ".csv";
+        ret = new File(ret, n);
         ret = FSGlobal.checkFileExistence(ret, false);
         lastString = concat;
         lastFile = ret;
@@ -47,23 +60,27 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
 
     @Override
     public void storeQueryResults(List<Object> queryObjectsIDs, TreeSet<Map.Entry<Object, Float>>[] queryResults, String datasetName, String querySetName, String resultsName) {
-        GZIPOutputStream datasetOutputStream = null;
+        OutputStream os = null;
         try {
-            checkAndAskForResultsExistence(datasetName, querySetName, resultsName);
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(getFileWithResults(resultsName, datasetName, querySetName), false), true);
+            File file = getFileWithResults(resultsName, datasetName, querySetName);
+            FSGlobal.checkFileExistence(file, true);
+            os = new FileOutputStream(file, false);
+            if (compress) {
+                os = new GZIPOutputStream(os, true);
+            }
             for (int i = 0; i < queryObjectsIDs.size(); i++) {
                 if (queryResults[i] == null) {
                     continue;
                 }
                 String queryId = queryObjectsIDs.get(i).toString();
-                store(datasetOutputStream, queryId, queryResults[i]);
+                store(os, queryId, queryResults[i]);
             }
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } finally {
             try {
-                datasetOutputStream.flush();
-                datasetOutputStream.close();
+                os.flush();
+                os.close();
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
@@ -73,39 +90,30 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
 
     @Override
     public void storeQueryResult(Object queryObjectID, TreeSet<Map.Entry<Object, Float>> queryResults, String datasetName, String querySetName, String resultsName) {
-        GZIPOutputStream datasetOutputStream = null;
+        OutputStream os = null;
         try {
+            File file = null;
             if (ask) {
-                checkAndAskForResultsExistence(datasetName, querySetName, resultsName);
+                file = getFileWithResults(resultsName, datasetName, querySetName);
+                FSGlobal.checkFileExistence(file, true);
             }
             ask = false;
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(getFileWithResults(resultsName, datasetName, querySetName), true), true);
+            os = new FileOutputStream(file, true);
+            if (compress) {
+                os = new GZIPOutputStream(os, true);
+            }
             String queryId = queryObjectID.toString();
-            store(datasetOutputStream, queryId, queryResults);
+            store(os, queryId, queryResults);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } finally {
             try {
-                datasetOutputStream.flush();
-                datasetOutputStream.close();
+                os.flush();
+                os.close();
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    public void checkAndAskForResultsExistence(String datasetName, String querySetName, String resultsName) {
-        File fileForResults = getFileWithResults(resultsName, datasetName, querySetName);
-        Object[] options = new String[]{"Yes", "No"};
-        if (fileForResults.exists()) {
-            LOG.log(Level.WARNING, "Asking for a question, waiting for the reply");
-            String question = "Storing space for result set " + resultsName + " on the dataset " + datasetName + " and query set " + querySetName + " already exists. Do you want to delete results in it? Answer no causes immediate stop.";
-            int add = JOptionPane.showOptionDialog(null, question, "New query results?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
-            if (add == 1) {
-                System.exit(1);
-            }
-        }
-        LOG.log(Level.INFO, "File with the results created");
     }
 
     @Override
@@ -117,7 +125,11 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
                 LOG.log(Level.SEVERE, "The file with the results does not exist: {0}", file.getAbsolutePath());
                 return ret;
             }
-            BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));
+            InputStream s = new FileInputStream(file);
+            if (compress) {
+                s = new GZIPInputStream(s);
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(s));
             String line = br.readLine();
             while (line != null) {
                 String[] pairsOfNearestNeighbours = line.split(";");
@@ -141,7 +153,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         return null;
     }
 
-    private void store(GZIPOutputStream datasetOutputStream, String queryId, TreeSet<Map.Entry<Object, Float>> queryResult) throws IOException {
+    private void store(OutputStream os, String queryId, TreeSet<Map.Entry<Object, Float>> queryResult) throws IOException {
         StringBuilder buffer = new StringBuilder(queryResult.size() * 16);
         buffer.append(queryId);
         buffer.append(";");
@@ -153,8 +165,8 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             buffer.append(nn.getValue().toString());
             buffer.append(";");
         }
-        datasetOutputStream.write(buffer.toString().getBytes());
-        datasetOutputStream.write('\n');
+        os.write(buffer.toString().getBytes());
+        os.write('\n');
     }
 
 }
