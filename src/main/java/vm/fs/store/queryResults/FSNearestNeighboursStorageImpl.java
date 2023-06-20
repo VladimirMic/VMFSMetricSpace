@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import javax.swing.JOptionPane;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
@@ -149,6 +148,9 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     }
 
     private void store(OutputStream os, String queryId, TreeSet<Map.Entry<Object, Float>> queryResult) throws IOException {
+        if (!compress && queryId.startsWith("Q")) {
+            queryId = queryId.substring(1);
+        }
         StringBuilder buffer = new StringBuilder(queryResult.size() * 16);
         if (!compress) {
             buffer.append(queryId);
@@ -164,7 +166,9 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             buffer.append(nn.getValue().toString());
             buffer.append(";");
         }
-        os.write(buffer.toString().getBytes());
+        String s = buffer.toString();
+        s = s.substring(0, s.length() - 1);
+        os.write(s.getBytes());
         os.write('\n');
     }
 
