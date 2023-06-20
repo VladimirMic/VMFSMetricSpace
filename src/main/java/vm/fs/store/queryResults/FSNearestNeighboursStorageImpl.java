@@ -155,6 +155,10 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
 
     private void store(OutputStream os, String queryId, TreeSet<Map.Entry<Object, Float>> queryResult) throws IOException {
         StringBuilder buffer = new StringBuilder(queryResult.size() * 16);
+        if (!compress) {
+            buffer.append(queryId);
+            buffer.append(":");
+        }
         buffer.append(queryId);
         buffer.append(";");
         Iterator<Map.Entry<Object, Float>> it = queryResult.iterator();
