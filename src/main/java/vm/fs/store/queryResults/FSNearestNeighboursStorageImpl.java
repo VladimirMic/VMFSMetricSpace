@@ -152,12 +152,10 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             queryId = queryId.substring(1);
         }
         StringBuilder buffer = new StringBuilder(queryResult.size() * 16);
-        if (!compress) {
+        if (compress) {
             buffer.append(queryId);
-            buffer.append(":");
+            buffer.append(";");
         }
-        buffer.append(queryId);
-        buffer.append(";");
         Iterator<Map.Entry<Object, Float>> it = queryResult.iterator();
         while (it.hasNext()) {
             Map.Entry<Object, Float> nn = it.next();
