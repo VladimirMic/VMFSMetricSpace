@@ -36,19 +36,19 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches.class.getName());
 
     public static void main(String[] args) {
-        float pCum = 0.5f;
-        int sketchLength = 256;
+        float[] pCums = new float[]{0.5f, 0.55f, 0.6f};
+        int sketchLength = 384;
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(),
             new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset()
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset()
         };
         float[] distIntervalsForPX = new float[]{
             2,
@@ -56,12 +56,15 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
             0.004f,
             0.004f
         };
-        String pivotPairsFileName = "laion2B-en-clip768v2-n=1M_sample.h5_GHP_50_" + sketchLength;
-        for (int i = 1; i < sketchesDatasets.length; i++) {
-            Dataset fullDataset = fullDatasets[i];
-            Dataset sketchesDataset = sketchesDatasets[i];
-            float distIntervalForPX = distIntervalsForPX[i];
-            run(fullDataset, sketchesDataset, distIntervalForPX, pCum, sketchLength, pivotPairsFileName);
+        for (float pCum : pCums) {
+            for (int i = 1; i < sketchesDatasets.length; i++) {
+                String pivotPairsFileName = "laion2B-en-clip768v2-n=1M_sample.h5_GHP_50_" + sketchLength;
+                Dataset fullDataset = fullDatasets[i];
+                Dataset sketchesDataset = sketchesDatasets[i];
+                float distIntervalForPX = distIntervalsForPX[i];
+                run(fullDataset, sketchesDataset, distIntervalForPX, pCum, sketchLength, pivotPairsFileName);
+                System.gc();
+            }
         }
     }
 
