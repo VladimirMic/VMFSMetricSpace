@@ -56,7 +56,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
             0.004f,
             0.004f
         };
-        for (int i = 3; i < sketchesDatasets.length; i++) {
+        for (int i = 1; i < sketchesDatasets.length; i++) {
             Dataset fullDataset = fullDatasets[i];
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
@@ -71,7 +71,8 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
 
         GHPSketchingPivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         List pivots = fullDataset.getPivots(-1);
-        AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, false, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
+        AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
+//        AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, pivotPairsFileName, new FSGHPSketchesPivotPairsStorageImpl()(), additionalInfo);
 
         SecondaryFilteringWithSketchesStoreInterface storage = new FSSecondaryFilteringWithSketchesStorage();
         SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches(pCum + "_pCum"  + sketchLength + "_skLength", fullDataset.getDatasetName(), sketchesDataset, storage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
