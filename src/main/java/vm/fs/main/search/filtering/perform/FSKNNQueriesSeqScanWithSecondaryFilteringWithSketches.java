@@ -56,26 +56,31 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
             0.004f,
             0.004f
         };
+        String pivotPairsFileName = "laion2B-en-clip768v2-n=1M_sample.h5_GHP_50_" + sketchLength;
         for (int i = 1; i < sketchesDatasets.length; i++) {
             Dataset fullDataset = fullDatasets[i];
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
-            run(fullDataset, sketchesDataset, distIntervalForPX, pCum, sketchLength);
+            run(fullDataset, sketchesDataset, distIntervalForPX, pCum, sketchLength, pivotPairsFileName);
         }
     }
 
-    private static void run(Dataset fullDataset, Dataset sketchesDataset, float distIntervalForPX, float pCum, int sketchLength) {
+    private static void run(Dataset fullDataset, Dataset sketchesDataset, float distIntervalForPX, float pCum, int sketchLength, String pivotPairsFileName) {
         int k = 10;
         AbstractMetricSpace metricSpace = fullDataset.getMetricSpace();
         DistanceFunctionInterface df = fullDataset.getDistanceFunction();
 
         GHPSketchingPivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         List pivots = fullDataset.getPivots(-1);
-        AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
-//        AbstractObjectToSketchTransformator sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, pivotPairsFileName, new FSGHPSketchesPivotPairsStorageImpl()(), additionalInfo);
+        AbstractObjectToSketchTransformator sketchingTechnique;
+        if (pivotPairsFileName == null) {
+            sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
+        } else {
+            sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, pivotPairsFileName, storageOfPivotPairs);
+        }
 
         SecondaryFilteringWithSketchesStoreInterface storage = new FSSecondaryFilteringWithSketchesStorage();
-        SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches(pCum + "_pCum"  + sketchLength + "_skLength", fullDataset.getDatasetName(), sketchesDataset, storage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
+        SecondaryFilteringWithSketches filter = new SecondaryFilteringWithSketches(pCum + "_pCum" + sketchLength + "_skLength", fullDataset.getDatasetName(), sketchesDataset, storage, pCum, LearningSecondaryFilteringWithSketches.SKETCHES_SAMPLE_COUNT_FOR_IDIM_PX, LearningSecondaryFilteringWithSketches.DISTS_COMPS_FOR_SK_IDIM_AND_PX, distIntervalForPX);
 
         SearchingAlgorithm alg = new KNNSearchWithSketchSecondaryFiltering(fullDataset, filter, sketchingTechnique);
 
