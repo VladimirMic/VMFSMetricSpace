@@ -36,7 +36,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches.class.getName());
 
     public static void main(String[] args) {
-        float pCum = 0.55f;
+        float pCum = 0.5f;
         int sketchLength = 256;
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
@@ -61,7 +61,6 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
             run(fullDataset, sketchesDataset, distIntervalForPX, pCum, sketchLength);
-            System.exit(0);
         }
     }
 
