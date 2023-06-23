@@ -35,13 +35,13 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
         approximatedDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.LAION_10M_PCA96Dataset()
         };
-        run(groundTruthDataset, approximatedDatasets);
+//        run(groundTruthDataset, approximatedDatasets);
 
         groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_30M_Dataset();
         approximatedDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.LAION_30M_PCA96Dataset()
         };
-        run(groundTruthDataset, approximatedDatasets);
+//        run(groundTruthDataset, approximatedDatasets);
 
         groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
         approximatedDatasets = new Dataset[]{
@@ -54,7 +54,7 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
         int k = 10;
 //        Integer kCand = null; // null if dynamic, otherwise fixed number
 //        int[] kCands = new int[]{110, 120, 125, 130, 140, 150};
-        int[] kCands = new int[]{300, 350, 400, 500, 600};
+        int[] kCands = new int[]{700, 800, 900, 1000};
 
         for (Dataset approximatedDataset : approximatedDatasets) {
             for (int kCand : kCands) {
