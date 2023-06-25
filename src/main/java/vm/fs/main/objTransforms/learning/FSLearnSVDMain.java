@@ -17,11 +17,11 @@ import vm.objTransforms.storeLearned.SVDStoreInterface;
 public class FSLearnSVDMain {
 
     public static void main(String[] args) {
-        int sampleCount = 100000;
-//        int sampleCount = 1000;
+//        int sampleCount = 100000;
+        int sampleCount = 500000;
 //        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset(), sampleCount);
-        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform(), sampleCount);
+        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset(), sampleCount);
 //        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);
     }
 

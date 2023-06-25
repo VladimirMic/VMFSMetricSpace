@@ -36,8 +36,8 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches.class.getName());
 
     public static void main(String[] args) {
-        float[] pCums = new float[]{0.5f, 0.55f, 0.6f};
-        int sketchLength = 512;
+        float[] pCums = new float[]{0.45f, 0.5f, 0.55f, 0.6f};
+        int sketchLength = 192;
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_Dataset(),
@@ -46,9 +46,9 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset()
         };
         float[] distIntervalsForPX = new float[]{
             2,
