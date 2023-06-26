@@ -21,7 +21,7 @@ public class FSLearnSVDMain {
         int sampleCount = 500000;
 //        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);
 //        run(new FSDatasetInstanceSingularizator.DeCAFDataset(), sampleCount);
-        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset(), sampleCount);
+        run(new FSDatasetInstanceSingularizator.LAION_1M_SampleDataset(), sampleCount);
 //        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);
     }
 

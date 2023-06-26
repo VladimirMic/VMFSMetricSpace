@@ -170,22 +170,22 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
-//    public static class LAION_1M_SampleDataset extends FSFloatVectorDataset {
-//
-//        public LAION_1M_SampleDataset() {
-//            super("laion2B-en-clip768v2-n=1M_sample.h5");
-//        }
-//
-//        @Override
-//        public String getQuerySetName() {
-//            return "public-queries-10k-clip768v2.h5";
-//        }
-//
-//        @Override
-//        public String getPivotSetName() {
-//            return "laion2B-en-clip768v2-n=100M.h5_20000pivots";
-//        }
-//    }
+    public static class LAION_1M_SampleDataset extends FSFloatVectorDataset {
+
+        public LAION_1M_SampleDataset() {
+            super("laion2B-en-clip768v2-n=1M_sample.h5");
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "public-queries-10k-clip768v2.h5";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_20000pivots";
+        }
+    }
 
     public static class LAION_100k_Dataset extends H5FloatVectorDataset {
 
