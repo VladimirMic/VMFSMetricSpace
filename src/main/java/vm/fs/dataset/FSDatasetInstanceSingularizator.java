@@ -442,6 +442,22 @@ public class FSDatasetInstanceSingularizator {
             return "laion2B-en-pca96v2-n=100M.h5";
         }
     }
+    public static class LAION_100M_PCA256Dataset extends FSFloatVectorDataset {
+
+        public LAION_100M_PCA256Dataset() {
+            super("laion2B-en-clip768v2-n=100M.h5_PCA256");
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_PCA256";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_PCA256";
+        }
+    }
 
     public static class LAION_100k_GHP_50_192Dataset extends FSHammingSpaceDataset {
 

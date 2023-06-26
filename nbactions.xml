@@ -12,8 +12,8 @@
             <properties>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMain</exec.mainClass>
-                <exec.vmArgs>-Xmx31g</exec.vmArgs>
+                <exec.mainClass>vm.fs.main.groundTruth.FSEvaluateGroundTruthMain</exec.mainClass>
+                <exec.vmArgs>-Xmx94g</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
         </action>
@@ -30,8 +30,8 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
-                <exec.mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMain</exec.mainClass>
-                <exec.vmArgs>-Xmx31g -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
+                <exec.mainClass>vm.fs.main.groundTruth.FSEvaluateGroundTruthMain</exec.mainClass>
+                <exec.vmArgs>-Xmx94g -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
         </action>
@@ -47,8 +47,8 @@
             <properties>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMain</exec.mainClass>
-                <exec.vmArgs>-Xmx31g</exec.vmArgs>
+                <exec.mainClass>vm.fs.main.groundTruth.FSEvaluateGroundTruthMain</exec.mainClass>
+                <exec.vmArgs>-Xmx94g</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
         </action>

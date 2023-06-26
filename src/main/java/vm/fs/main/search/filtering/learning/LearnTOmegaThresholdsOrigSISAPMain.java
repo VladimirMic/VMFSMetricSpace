@@ -3,7 +3,6 @@ package vm.fs.main.search.filtering.learning;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.metricSpace.Dataset;
 import vm.fs.store.filtering.FSSimRelThresholdsTOmegaStorage;
-import vm.javatools.Tools;
 import vm.simRel.impl.learn.ThresholdsTOmegaEvaluator;
 import vm.simRel.impl.learn.storeLearnt.SimRelEuclidThresholdsTOmegaStorage;
 
@@ -16,7 +15,7 @@ public class LearnTOmegaThresholdsOrigSISAPMain {
     public static void main(String[] args) {
         Dataset[] pcaDatasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.DeCAF_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
         };
         for (int i = 0; i < pcaDatasets.length; i++) {
             Dataset pcaDataset = pcaDatasets[i];
@@ -26,7 +25,7 @@ public class LearnTOmegaThresholdsOrigSISAPMain {
 
     private static void run(Dataset<float[]> pcaDataset) {
         /* the name of the PCA-shortened dataset */
-        int kPCA = 1000;// DeCAF 100
+        int kPCA = 100;// DeCAF 100
         /* number of query objects to learn t(\Omega) thresholds. We use different objects than the pivots tested. */
         int querySampleCount = 100;//200
         /* size of the data sample to learn t(\Omega) thresholds, IS: 1M */

@@ -18,11 +18,9 @@ public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
-            System.gc();
             String datasetName = dataset.getDatasetName();
             String querySetName = dataset.getQuerySetName();
             int k = 10000; // 1000 for orig datasets, else 20000
