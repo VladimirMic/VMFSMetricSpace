@@ -5,10 +5,12 @@
 package vm.fs.main.search.filtering.learning;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.filtering.FSSimRelThresholdsTOmegaStorage;
 import vm.fs.store.voronoiPartitioning.FSVoronoiPartitioningStorage;
@@ -59,7 +61,8 @@ public class LearnTOmegaThresholdsForSimRelCranberry {
         AbstractMetricSpace<float[]> pcaDatasetMetricSpace = pcaDataset.getMetricSpace();
         List<Object> fullQuerySamples = fullDataset.getPivots(querySampleCount);
         Map<Object, Object> pcaQueryObjectsMap = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(pcaDatasetMetricSpace, pcaDataset.getPivots(-1), false);
-        Map<Object, Object> pcaAllObjectsMap = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(pcaDatasetMetricSpace, pcaDataset.getMetricObjectsFromDataset(), false);
+        List<Object> pcaObjects = Tools.getObjectsFromIterator(pcaDataset.getMetricObjectsFromDataset());
+        Map<Object, Object> pcaAllObjectsMap = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(pcaDatasetMetricSpace, pcaObjects, false);
 
         SimRelEuclideanPCAForLearning simRelLearn = new SimRelEuclideanPCAForLearning(pcaLength);
 
