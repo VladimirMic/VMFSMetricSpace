@@ -285,7 +285,8 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca32v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
+
         }
     }
 
@@ -302,7 +303,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca32v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
         }
     }
 
@@ -319,7 +320,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca32v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
         }
     }
 
@@ -331,7 +332,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "public-queries-10k-pca32v2.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
         }
 
         @Override
@@ -353,7 +354,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca32v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
         }
     }
 
@@ -370,7 +371,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca96v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
         }
     }
 
@@ -387,7 +388,8 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca96v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
+
         }
     }
 
@@ -404,7 +406,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca96v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
         }
 
     }
@@ -422,7 +424,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca96v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
         }
     }
 
@@ -439,9 +441,10 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca96v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
         }
     }
+
     public static class LAION_100M_PCA256Dataset extends FSFloatVectorDataset {
 
         public LAION_100M_PCA256Dataset() {
@@ -456,6 +459,40 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public String getPivotSetName() {
             return "laion2B-en-clip768v2-n=100M.h5_PCA256";
+        }
+    }
+
+    public static class LAION_100M_PCA256Prefixes24Dataset extends FSFloatVectorDataset {
+
+        public LAION_100M_PCA256Prefixes24Dataset() {
+            super("laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256");
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256";
+        }
+    }
+
+    public static class LAION_100M_PCA256Prefixes32Dataset extends FSFloatVectorDataset {
+
+        public LAION_100M_PCA256Prefixes32Dataset() {
+            super("laion2B-en-clip768v2-n=100M.h5_PCA_pref32of256");
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_PCA_pref32of256";
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_PCA_pref32of256";
         }
     }
 

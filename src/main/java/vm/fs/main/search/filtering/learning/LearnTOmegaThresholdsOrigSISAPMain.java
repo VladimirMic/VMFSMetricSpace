@@ -15,10 +15,9 @@ public class LearnTOmegaThresholdsOrigSISAPMain {
     public static void main(String[] args) {
         Dataset[] pcaDatasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.DeCAF_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset()
         };
-        for (int i = 0; i < pcaDatasets.length; i++) {
-            Dataset pcaDataset = pcaDatasets[i];
+        for (Dataset pcaDataset : pcaDatasets) {
             run(pcaDataset);
         }
     }
