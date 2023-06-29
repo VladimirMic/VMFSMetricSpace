@@ -18,14 +18,14 @@ import vm.objTransforms.perform.PCAPrefixMetricObjectTransformer;
  */
 public class FSApplyPCAMain {
 
-    public static final int PREFFIX_TO_STORE = 32;
+    public static final Integer PREFFIX_TO_STORE = null;
 
     public static void main(String[] args) {
-        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset());
+//        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset());
         System.gc();
         run(new FSDatasetInstanceSingularizator.LAION_30M_Dataset());
         System.gc();
-        run(new FSDatasetInstanceSingularizator.LAION_10M_Dataset());
+//        run(new FSDatasetInstanceSingularizator.LAION_10M_Dataset());
         System.gc();
     }
 
@@ -46,7 +46,7 @@ public class FSApplyPCAMain {
             float[][] vtMatrix = Tools.shrinkMatrix(vtMatrixFull, finalDimension, vtMatrixFull[0].length);
 
             MetricObjectTransformerInterface pca;
-            if (PREFFIX_TO_STORE > 0) {
+            if (PREFFIX_TO_STORE != null && PREFFIX_TO_STORE > 0) {
                 pca = new PCAPrefixMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(), space, space, PREFFIX_TO_STORE);
             } else {
                 pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(), space, space);
@@ -56,7 +56,10 @@ public class FSApplyPCAMain {
             transformPivots(dataset.getPivotSetName(), spaceStorage, parallelTransformerImpl, "Pivot set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalFullDimensions);
             transformQueryObjects(dataset.getQuerySetName(), spaceStorage, parallelTransformerImpl, "Query set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalFullDimensions);
             transformDataset(origDatasetName, spaceStorage, parallelTransformerImpl, "Dataset with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalFullDimensions);
-            spaceStorage.updateDatasetSize(pca.getNameOfTransformedSetOfObjects(origDatasetName, false));
+            try {
+                spaceStorage.updateDatasetSize(pca.getNameOfTransformedSetOfObjects(origDatasetName, false));
+            } catch (Exception e) {
+            }
         }
     }
 

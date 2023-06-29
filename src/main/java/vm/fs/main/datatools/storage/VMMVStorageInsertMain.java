@@ -20,7 +20,7 @@ public class VMMVStorageInsertMain {
 //        if (args.length > 0) {
 //            dataset = new M2DatasetInstanceSingularizator.DeCAF20MDataset();
 //        } else {
-            dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
+            dataset = new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset();
 //        }
         VMMVStorage storage = new VMMVStorage(dataset.getDatasetName(), true);
         storage.insertObjects(dataset.getMetricObjectsFromDataset(), dataset.getMetricSpace());

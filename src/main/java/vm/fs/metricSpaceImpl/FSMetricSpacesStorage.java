@@ -170,7 +170,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         File f = new File(folder, fileName);
         f = FSGlobal.checkFileExistence(f, false);
         if (!f.exists()) {
-                LOG.log(Level.INFO, "File on the path {0} does not exist. Trying to add suffix .gz. The params are: folder: {1}, fileName: {2}", new Object[]{f.getAbsolutePath(), folder, fileName});
+            LOG.log(Level.INFO, "File on the path {0} does not exist. Trying to add suffix .gz. The params are: folder: {1}, fileName: {2}", new Object[]{f.getAbsolutePath(), folder, fileName});
             fileName += ".gz";
         }
         f = new File(folder, fileName);

@@ -64,7 +64,7 @@ public class FSSimRelThresholdsTOmegaStorage extends SimRelEuclidThresholdsTOmeg
     @Override
     public float[][] load(String datasetName) {
         File file = getFile(datasetName, false);
-        List<String>[] values = Tools.parseCsv(file.getAbsolutePath(), 14, ";", false);
+        List<String>[] values = Tools.parseCsv(file.getAbsolutePath(), PERCENTILES.length, ";", false);
         float[][] ret = new float[14][values[0].size()];
         for (int i = 0; i < ret[0].length; i++) {
             for (int j = 0; j < 14; j++) {
