@@ -63,19 +63,31 @@ public class FSApplyPCAMain {
         }
     }
 
-    public static void transformDataset(String origDatasetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
+    private static void transformDataset(String origDatasetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
         Iterator<Object> it = spaceStorage.getObjectsFromDataset(origDatasetName);
         parallelTransformerImpl.processIteratorInParallel(it, MetricSpacesStorageInterface.OBJECT_TYPE.DATASET_OBJECT, vm.javatools.Tools.PARALELISATION, additionalParameters);
     }
 
-    public static void transformPivots(String pivotSetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
+    private static void transformPivots(String pivotSetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
         Iterator<Object> it = spaceStorage.getPivots(pivotSetName).iterator();
         parallelTransformerImpl.processIteratorSequentially(it, MetricSpacesStorageInterface.OBJECT_TYPE.PIVOT_OBJECT, additionalParameters);
     }
 
-    public static void transformQueryObjects(String querySetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
+    private static void transformQueryObjects(String querySetName, MetricSpacesStorageInterface spaceStorage, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
         Iterator<Object> it = spaceStorage.getQueryObjects(querySetName).iterator();
         parallelTransformerImpl.processIteratorSequentially(it, MetricSpacesStorageInterface.OBJECT_TYPE.QUERY_OBJECT, additionalParameters);
+    }
+
+    public static void transformDataset(Iterator<Object> dataIterator, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
+        parallelTransformerImpl.processIteratorInParallel(dataIterator, MetricSpacesStorageInterface.OBJECT_TYPE.DATASET_OBJECT, vm.javatools.Tools.PARALELISATION, additionalParameters);
+    }
+
+    public static void transformPivots(Iterator<Object> pivotIterator, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
+        parallelTransformerImpl.processIteratorSequentially(pivotIterator, MetricSpacesStorageInterface.OBJECT_TYPE.PIVOT_OBJECT, additionalParameters);
+    }
+
+    public static void transformQueryObjects(Iterator<Object> queriesIterator, MetricObjectsParallelTransformerImpl parallelTransformerImpl, Object... additionalParameters) {
+        parallelTransformerImpl.processIteratorSequentially(queriesIterator, MetricSpacesStorageInterface.OBJECT_TYPE.QUERY_OBJECT, additionalParameters);
     }
 
 }
