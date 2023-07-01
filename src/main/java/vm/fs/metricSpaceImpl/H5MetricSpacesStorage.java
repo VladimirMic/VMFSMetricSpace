@@ -69,6 +69,9 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
             Iterator<Object> it = super.getIteratorOfObjects(f, params);
             return it;
         }
+        if (!f.exists()) {
+            LOG.log(Level.SEVERE, "The file does not exists!");
+        }
         HdfFile hdfFile = new HdfFile(f.toPath());
         Node node = hdfFile.iterator().next();
         String name = node.getName();
