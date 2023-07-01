@@ -470,12 +470,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=30M.h5_PCA256";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA256";
         }
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=30M.h5_PCA256";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA256";
         }
     }
 
@@ -485,15 +485,6 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=100M.h5_PCA256");
         }
 
-        @Override
-        public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA256";
-        }
-
-        @Override
-        public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA256";
-        }
     }
 
     public static class LAION_100M_PCA256Prefixes24Dataset extends FSFloatVectorDataset {
@@ -502,15 +493,6 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256");
         }
 
-        @Override
-        public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256";
-        }
-
-        @Override
-        public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256";
-        }
     }
 
     public static class LAION_100M_PCA256Prefixes32Dataset extends FSFloatVectorDataset {
@@ -536,12 +518,31 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=100k.h5_GHP_50_192");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+        }
     }
 
     public static class LAION_300k_GHP_50_192Dataset extends FSHammingSpaceDataset {
 
         public LAION_300k_GHP_50_192Dataset() {
             super("laion2B-en-clip768v2-n=300k.h5_GHP_50_192");
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
         }
 
     }
@@ -552,12 +553,31 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_192");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+        }
     }
 
     public static class LAION_30M_GHP_50_192Dataset extends FSHammingSpaceDataset {
 
         public LAION_30M_GHP_50_192Dataset() {
             super("laion2B-en-clip768v2-n=30M.h5_GHP_50_192");
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
         }
 
     }
@@ -576,6 +596,16 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=100k.h5_GHP_50_256");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+        }
+
     }
 
     public static class LAION_300k_GHP_50_256Dataset extends FSHammingSpaceDataset {
@@ -584,12 +614,31 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=300k.h5_GHP_50_256");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+        }
     }
 
     public static class LAION_10M_GHP_50_256Dataset extends FSHammingSpaceDataset {
 
         public LAION_10M_GHP_50_256Dataset() {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_256");
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
         }
 
     }
@@ -600,6 +649,15 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=30M.h5_GHP_50_256");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+        }
     }
 
     public static class LAION_100M_GHP_50_256Dataset extends FSHammingSpaceDataset {
@@ -616,6 +674,16 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=100k.h5_GHP_50_384");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+        }
+
     }
 
     public static class LAION_300k_GHP_50_384Dataset extends FSHammingSpaceDataset {
@@ -624,6 +692,15 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=300k.h5_GHP_50_384");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+        }
     }
 
     public static class LAION_10M_GHP_50_384Dataset extends FSHammingSpaceDataset {
@@ -632,12 +709,32 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_384");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+        }
+
     }
 
     public static class LAION_30M_GHP_50_384Dataset extends FSHammingSpaceDataset {
 
         public LAION_30M_GHP_50_384Dataset() {
             super("laion2B-en-clip768v2-n=30M.h5_GHP_50_384");
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
         }
 
     }
@@ -656,12 +753,32 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=100k.h5_GHP_50_512");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+        }
+
     }
 
     public static class LAION_300k_GHP_50_512Dataset extends FSHammingSpaceDataset {
 
         public LAION_300k_GHP_50_512Dataset() {
             super("laion2B-en-clip768v2-n=300k.h5_GHP_50_512");
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
         }
 
     }
@@ -672,12 +789,32 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_512");
         }
 
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+        }
+
     }
 
     public static class LAION_30M_GHP_50_512Dataset extends FSHammingSpaceDataset {
 
         public LAION_30M_GHP_50_512Dataset() {
-            super("laion2B-en-clip768v2-n=30M.h5_GHP_50_512");
+            super("laion2B-en-clip768v2-n=30M.h5_GHP_50_512.gz");
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+        }
+
+        @Override
+        public String getQuerySetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
         }
 
     }
