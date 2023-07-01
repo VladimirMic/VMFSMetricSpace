@@ -24,17 +24,19 @@ public class FSSimRelThresholdsTOmegaStorage extends SimRelEuclidThresholdsTOmeg
     private final int kPCA;
     private final Integer voronoiPivotsCount;
     private final Integer voronoiK;
+    private final Object[] additionalParams;
 
     public FSSimRelThresholdsTOmegaStorage(int querySampleCount, int pcaLength, int kPCA, int sampleSize) {
         this(querySampleCount, pcaLength, kPCA, null, sampleSize);
     }
 
-    public FSSimRelThresholdsTOmegaStorage(int querySampleCount, int pcaLength, int kPCA, Integer voronoiPivotsCount, Integer voronoiK) {
+    public FSSimRelThresholdsTOmegaStorage(int querySampleCount, int pcaLength, int kPCA, Integer voronoiPivotsCount, Integer voronoiK, Object... additionalParams) {
         this.querySampleCount = querySampleCount;
         this.pcaLength = pcaLength;
         this.kPCA = kPCA;
         this.voronoiPivotsCount = voronoiPivotsCount;
         this.voronoiK = voronoiK;
+        this.additionalParams = additionalParams;
     }
 
     @Override
@@ -75,8 +77,13 @@ public class FSSimRelThresholdsTOmegaStorage extends SimRelEuclidThresholdsTOmeg
     }
 
     private File getFile(String datasetName, boolean willBeDeleted) {
-        String name = datasetName;
-        name += "_q" + querySampleCount + "voronoiP" + voronoiPivotsCount + "_voronoiK" + voronoiK + "_pcaLength" + pcaLength + "_kPCA" + kPCA + ".csv";
+        String name;
+        if (additionalParams.length > 0 && additionalParams[0] instanceof String) {
+            name = additionalParams[0].toString();
+        } else {
+            name = datasetName;
+            name += "_q" + querySampleCount + "voronoiP" + voronoiPivotsCount + "_voronoiK" + voronoiK + "_pcaLength" + pcaLength + "_kPCA" + kPCA + ".csv";
+        }
         File ret = new File(FSGlobal.SIMREL_TOMEGA_THRESHOLDS, name);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
