@@ -94,6 +94,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         File f;
         if (FSGlobal.ROOT.equals("h:\\Similarity_search\\") && datasetName.equals("laion2B-en-clip768v2-n=100M.h5")) {
             f = new File("c:\\Dataset_tmp\\laion2B-en-clip768v2-n=100M.h5");
+            f = FSGlobal.checkFileExistence(f, false);
         } else {
             f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
         }
