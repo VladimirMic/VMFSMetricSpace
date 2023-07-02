@@ -285,7 +285,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000";
 
         }
     }
@@ -303,7 +303,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000";
         }
     }
 
@@ -320,7 +320,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000";
         }
     }
 
@@ -332,7 +332,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000";
         }
 
         @Override
@@ -354,7 +354,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000";
         }
     }
 
@@ -371,7 +371,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000";
         }
     }
 
@@ -388,7 +388,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000";
 
         }
     }
@@ -406,7 +406,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000";
         }
 
     }
@@ -424,7 +424,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000";
         }
     }
 
@@ -441,7 +441,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA96_20000";
         }
     }
 
@@ -520,12 +520,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
         }
     }
 
@@ -537,12 +537,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
         }
 
     }
@@ -555,12 +555,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
         }
     }
 
@@ -572,12 +572,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
         }
 
     }
@@ -598,12 +598,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
         }
 
     }
@@ -616,12 +616,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
         }
     }
 
@@ -633,12 +633,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
         }
 
     }
@@ -651,12 +651,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
         }
     }
 
@@ -676,12 +676,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
         }
 
     }
@@ -694,12 +694,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
         }
     }
 
@@ -711,12 +711,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
         }
 
     }
@@ -729,12 +729,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
         }
 
     }
@@ -755,12 +755,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
         }
 
     }
@@ -773,12 +773,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
         }
 
     }
@@ -791,12 +791,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
         }
 
     }
@@ -804,17 +804,17 @@ public class FSDatasetInstanceSingularizator {
     public static class LAION_30M_GHP_50_512Dataset extends FSHammingSpaceDataset {
 
         public LAION_30M_GHP_50_512Dataset() {
-            super("laion2B-en-clip768v2-n=30M.h5_GHP_50_512.gz");
+            super("laion2B-en-clip768v2-n=30M.h5_GHP_50_512");
         }
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
         }
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512.gz";
+            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
         }
 
     }

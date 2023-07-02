@@ -41,8 +41,6 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
             0.004f,
             0.004f,
             0.004f,
-            0.004f,
-            0.004f,
             0.004f
         };
         float[] maxDistsOnFullDataset = new float[]{
