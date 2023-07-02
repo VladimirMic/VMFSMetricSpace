@@ -74,7 +74,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         LOG.log(Level.INFO, "Storing results of queries");
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
-        resultsStorage.storeQueryResults(metricSpace, queries, results, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName());
+        resultsStorage.storeQueryResults(metricSpace, queries, results, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName());
 
         LOG.log(Level.INFO, "Evaluating accuracy of queries");
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getDatasetName(), k, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName(), null);
