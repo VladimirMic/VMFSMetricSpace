@@ -66,7 +66,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             if (compress) {
                 os = new GZIPOutputStream(os, true);
             }
-            for (int i = 0; i < queryObjectsIDs.size(); i++) {
+            for (int i = 0; i < Math.min(queryObjectsIDs.size(), queryResults.length); i++) {
                 if (queryResults[i] == null) {
                     continue;
                 }
