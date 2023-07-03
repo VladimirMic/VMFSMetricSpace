@@ -51,12 +51,13 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
             2f
         };
         int sketchLength = 512;
-        for (int i = 4; i < sketchesDatasets.length; i++) {
+        for (int i = 2; i < sketchesDatasets.length; i++) {
             Dataset fullDataset = fullDatasets[i];
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
             float maxDistOnFullDataset = maxDistsOnFullDataset[i];
             run(fullDataset, sketchesDataset, distIntervalForPX, sketchLength, maxDistOnFullDataset);
+            break;
         }
     }
 
