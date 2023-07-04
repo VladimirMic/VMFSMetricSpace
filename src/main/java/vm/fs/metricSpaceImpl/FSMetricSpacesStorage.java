@@ -149,7 +149,7 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
             for (ret = 1; it.hasNext(); ret++) {
                 Object metricObject = it.next();
                 storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
-                if (ret % 10000 == 0) {
+                if (ret % 50000 == 0) {
                     LOG.log(Level.INFO, "Stored {0} metric objects", ret);
                 }
             }
