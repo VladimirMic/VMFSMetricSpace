@@ -30,13 +30,17 @@ public class FSSimRelThresholdsTOmegaStorage extends SimRelEuclidThresholdsTOmeg
         this(querySampleCount, pcaLength, kPCA, null, sampleSize);
     }
 
-    public FSSimRelThresholdsTOmegaStorage(int querySampleCount, int pcaLength, int kPCA , Integer voronoiPivotsCount, Integer voronoiK, Object... additionalParams) {
+    public FSSimRelThresholdsTOmegaStorage(int querySampleCount, int pcaLength, int kPCA, Integer voronoiPivotsCount, Integer voronoiK, Object... additionalParams) {
         this.querySampleCount = querySampleCount;
         this.pcaLength = pcaLength;
         this.kPCA = kPCA;
         this.voronoiPivotsCount = voronoiPivotsCount;
         this.voronoiK = voronoiK;
         this.additionalParams = additionalParams;
+    }
+
+    public FSSimRelThresholdsTOmegaStorage(String fileName) {
+        this(-1, -1, -1, null, -1, fileName);
     }
 
     @Override
