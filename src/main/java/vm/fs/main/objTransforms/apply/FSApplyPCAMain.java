@@ -23,9 +23,9 @@ public class FSApplyPCAMain {
     public static void main(String[] args) {
 //        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset());
         System.gc();
-//        run(new FSDatasetInstanceSingularizator.LAION_30M_Dataset());
+        run(new FSDatasetInstanceSingularizator.LAION_30M_Dataset());
         System.gc();
-        run(new FSDatasetInstanceSingularizator.LAION_10M_Dataset());
+//        run(new FSDatasetInstanceSingularizator.LAION_10M_Dataset());
         System.gc();
     }
 
