@@ -7,7 +7,7 @@ import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
@@ -18,7 +18,7 @@ public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_30M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
             String datasetName = dataset.getDatasetName();
@@ -27,7 +27,7 @@ public class FSEvaluateGroundTruthMain {
             AbstractMetricSpace space = dataset.getMetricSpace();
 
             DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);
-            MetricSpacesStorageInterface spaceStorage = dataset.getMetricSpacesStorage();
+            AbstractMetricSpacesStorage spaceStorage = dataset.getMetricSpacesStorage();
             QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
 
             List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);

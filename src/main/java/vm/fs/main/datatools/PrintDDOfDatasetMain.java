@@ -6,7 +6,7 @@ import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.math.Tools;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 
@@ -33,7 +33,7 @@ public class PrintDDOfDatasetMain {
         return createDDOfRandomSample(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), dataset.getDistanceFunction(), datasetName, objCount, distCount, distInterval, examinedPairs);
     }
 
-    protected static SortedMap<Float, Float> createDDOfRandomSample(AbstractMetricSpace metricSpace, MetricSpacesStorageInterface metricSpacesStorage, DistanceFunctionInterface df, String datasetName, int objCount, int distCount, float distInterval, List<Object[]> examinedPairs) {
+    protected static SortedMap<Float, Float> createDDOfRandomSample(AbstractMetricSpace metricSpace, AbstractMetricSpacesStorage metricSpacesStorage, DistanceFunctionInterface df, String datasetName, int objCount, int distCount, float distInterval, List<Object[]> examinedPairs) {
         List<Object> metricObjects = metricSpacesStorage.getSampleOfDataset(datasetName, objCount);
         return ToolsMetricDomain.createDistanceDensityPlot(metricSpace, metricObjects, df, distCount, distInterval, examinedPairs);
     }

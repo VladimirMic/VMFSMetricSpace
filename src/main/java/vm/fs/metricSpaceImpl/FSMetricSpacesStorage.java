@@ -19,7 +19,7 @@ import java.util.zip.GZIPOutputStream;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.dataToStringConvertors.MetricObjectDataToStringInterface;
 
 /**
@@ -27,7 +27,7 @@ import vm.metricSpace.dataToStringConvertors.MetricObjectDataToStringInterface;
  * @author xmic
  * @param <T>
  */
-public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
+public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
 
     public final Logger LOG = Logger.getLogger(FSMetricSpacesStorage.class.getName());
 
@@ -172,9 +172,9 @@ public class FSMetricSpacesStorage<T> extends MetricSpacesStorageInterface {
         if (!f.exists()) {
             LOG.log(Level.INFO, "File on the path {0} does not exist. Trying to add suffix .gz. The params are: folder: {1}, fileName: {2}", new Object[]{f.getAbsolutePath(), folder, fileName});
             fileName += ".gz";
+            f = new File(folder, fileName);
+            f = FSGlobal.checkFileExistence(f, willBeDeleted);
         }
-        f = new File(folder, fileName);
-        f = FSGlobal.checkFileExistence(f, willBeDeleted);
         return f;
     }
 

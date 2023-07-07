@@ -9,7 +9,7 @@ import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.evaluatorsToBeUsed.GroundTruthEvaluator;
 import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.MetricSpacesStorageInterface;
+import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.dataToStringConvertors.impl.FloatVectorConvertor;
 import vm.metricSpace.distance.DistanceFunctionInterface;
@@ -30,7 +30,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
 
         AbstractMetricSpace metricSpace = new FSMetricSpaceImpl<>();
         DistanceFunctionInterface distanceFunction = metricSpace.getDistanceFunctionForDataset(datasetName);
-        MetricSpacesStorageInterface metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, new FloatVectorConvertor());
+        AbstractMetricSpacesStorage metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, new FloatVectorConvertor());
 
 //      getHistogramsForRandomAndNearestNeighbours
         int objCount = 100 * 1000;//100,000
@@ -55,7 +55,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         printDDOfRandomAndNearNeighbours(transformedDatasetName, transformedDistInterval, ddRandomSampleTransformed, ddOfNNSampleTransformed);
     }
 
-    private static SortedMap<Float, Float> createDDOfNNSample(AbstractMetricSpace metricSpace, MetricSpacesStorageInterface metricSpacesStorage, DistanceFunctionInterface distanceFunction, String datasetName, int queryObjCount, int sampleCount, int k, float distInterval, List<Object[]> idsOfNNPairs) {
+    private static SortedMap<Float, Float> createDDOfNNSample(AbstractMetricSpace metricSpace, AbstractMetricSpacesStorage metricSpacesStorage, DistanceFunctionInterface distanceFunction, String datasetName, int queryObjCount, int sampleCount, int k, float distInterval, List<Object[]> idsOfNNPairs) {
         List<Object> queryObjects = metricSpacesStorage.getSampleOfDataset(datasetName, queryObjCount);
         List<Object> metricObjects = metricSpacesStorage.getSampleOfDataset(datasetName, sampleCount + queryObjCount);
         for (int i = 0; i < queryObjCount; i++) {
