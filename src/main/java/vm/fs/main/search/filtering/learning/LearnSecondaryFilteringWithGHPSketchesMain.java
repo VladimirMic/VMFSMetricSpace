@@ -30,11 +30,11 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
             new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
         };
         Dataset[] sketchesDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_512Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset()
+            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset()
         };
         float[] distIntervalsForPX = new float[]{
             2,
@@ -50,8 +50,8 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
             2f,
             2f
         };
-        int sketchLength = 512;
-        for (int i = 3; i < sketchesDatasets.length; i++) {
+        int sketchLength = 256;
+        for (int i = 2; i < sketchesDatasets.length; i++) {
             Dataset fullDataset = fullDatasets[i];
             Dataset sketchesDataset = sketchesDatasets[i];
             float distIntervalForPX = distIntervalsForPX[i];
