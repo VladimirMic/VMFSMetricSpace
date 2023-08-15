@@ -40,8 +40,8 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
     @Override
     public Iterator<Object> getObjectsFromDataset(String datasetName, Object... params) {
         params = Tools.concatArrays(params, new Object[]{""});
-        if (FSGlobal.ROOT.equals("h:\\Similarity_search\\") && datasetName.equals("laion2B-en-clip768v2-n=100M.h5")) {
-            File file = new File("c:\\Dataset_tmp\\laion2B-en-clip768v2-n=100M.h5");
+        if (FSGlobal.ROOT.equals("h:\\Similarity_search\\") && datasetName.startsWith("laion2B-en-clip768v2-n=")) {
+            File file = new File("c:\\Dataset_tmp\\" + datasetName);
             FSGlobal.checkFileExistence(file, false);
             return getIteratorOfObjects(file, params);
         }
@@ -92,8 +92,8 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
 
     public Map<Object, Object> getAsMap(String datasetName) {
         File f;
-        if (FSGlobal.ROOT.equals("h:\\Similarity_search\\") && datasetName.equals("laion2B-en-clip768v2-n=100M.h5")) {
-            f = new File("c:\\Dataset_tmp\\laion2B-en-clip768v2-n=100M.h5");
+        if (FSGlobal.ROOT.equals("h:\\Similarity_search\\") && datasetName.startsWith("laion2B-en-clip768v2-n")) {
+            f = new File("c:\\Dataset_tmp\\" + datasetName);
             f = FSGlobal.checkFileExistence(f, false);
         } else {
             f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);

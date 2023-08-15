@@ -170,10 +170,13 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
         File f = new File(folder, fileName);
         f = FSGlobal.checkFileExistence(f, false);
         if (!f.exists()) {
-            LOG.log(Level.INFO, "File on the path {0} does not exist. Trying to add suffix .gz. The params are: folder: {1}, fileName: {2}", new Object[]{f.getAbsolutePath(), folder, fileName});
             fileName += ".gz";
-            f = new File(folder, fileName);
-            f = FSGlobal.checkFileExistence(f, willBeDeleted);
+            File fGZ = new File(folder, fileName);
+            fGZ = FSGlobal.checkFileExistence(fGZ, willBeDeleted);
+            if (!fGZ.exists() && !willBeDeleted) {
+                LOG.log(Level.WARNING, "File on the path {0} does not exist. The params are: folder: {1}, fileName: {2}. Returning zipped file: ", new Object[]{f.getAbsolutePath(), folder, fileName, fGZ.getName()});
+            }
+            return fGZ;
         }
         return f;
     }
@@ -187,7 +190,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
      * and its data
      */
     @Override
-    public void storePivots(List<Object> pivots, String pivotSetName, Object... additionalParamsToStoreWithNewPivotSet) {
+    public void storePivots(List<Object> pivots, String pivotSetName, Object... additionalParamsToStoreWithNewPivotSet
+    ) {
         GZIPOutputStream os = null;
         try {
             File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, true);
@@ -216,7 +220,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
      * and its data
      */
     @Override
-    public void storeQueryObjects(List<Object> queryObjs, String querySetName, Object... additionalParamsToStoreWithNewQuerySet) {
+    public void storeQueryObjects(List<Object> queryObjs, String querySetName, Object... additionalParamsToStoreWithNewQuerySet
+    ) {
         GZIPOutputStream datasetOutputStream = null;
         try {
             File f = getFileForObjects(FSGlobal.QUERY_FOLDER, querySetName, true);
@@ -238,7 +243,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     }
 
     @Override
-    public int getPrecomputedDatasetSize(String datasetName) {
+    public int getPrecomputedDatasetSize(String datasetName
+    ) {
         BufferedReader br = null;
         try {
             File f = getFileForObjects(FSGlobal.QUERY_FOLDER, datasetName + "_size.txt", false);
@@ -261,7 +267,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     }
 
     @Override
-    public void updateDatasetSize(String datasetName, int count) {
+    public void updateDatasetSize(String datasetName, int count
+    ) {
         FileOutputStream os = null;
         try {
             File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", true);
