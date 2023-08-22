@@ -40,7 +40,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
     @Override
     public Iterator<Object> getObjectsFromDataset(String datasetName, Object... params) {
         params = Tools.concatArrays(params, new Object[]{""});
-        if (FSGlobal.ROOT.equals("h:\\Similarity_search\\") && datasetName.startsWith("laion2B-en-clip768v2-n=")) {
+        if (FSGlobal.ROOT.equals("h:\\Similarity_search\\") && datasetName.startsWith("laion2B-en-clip768v2-n=") && (datasetName.contains("10M") || datasetName.contains("100M"))) {
             File file = new File("c:\\Dataset_tmp\\" + datasetName);
             FSGlobal.checkFileExistence(file, false);
             return getIteratorOfObjects(file, params);

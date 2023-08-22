@@ -4,6 +4,7 @@ import java.util.Map;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.dataTransforms.FSGHPSketchesPivotPairsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
+import vm.javatools.Tools;
 import vm.metricSpace.Dataset;
 import vm.objTransforms.learning.LearnSketchingGHP;
 import vm.objTransforms.storeLearned.GHPSketchingPivotPairsStoreInterface;
@@ -16,7 +17,7 @@ public class FSLearnGHPSketchingMain {
 
     public static void main(String[] args) {
         GHPSketchingPivotPairsStoreInterface sketchingTechStorage = new FSGHPSketchesPivotPairsStorageImpl();
-        int[] sketchesLengths = new int[]{512, 384, 192};
+        int[] sketchesLengths = new int[]{384, 1024};
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
         };

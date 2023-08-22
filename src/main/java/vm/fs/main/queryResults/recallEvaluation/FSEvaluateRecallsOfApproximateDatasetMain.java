@@ -33,28 +33,31 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 //
         groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset();
         approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset()
         };
         run(groundTruthDataset, approximatedDatasets);
 
         groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_30M_Dataset();
         approximatedDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(),
+////            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset()
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset()
         };
         run(groundTruthDataset, approximatedDatasets);
 
         groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
         approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset()
         };
         run(groundTruthDataset, approximatedDatasets);
     }
