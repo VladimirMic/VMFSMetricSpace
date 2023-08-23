@@ -25,23 +25,20 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
     public static final Integer PIVOTS = 256;
 
     public static void main(String[] args) throws IOException {
-        Dataset dataset;
-//        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset();
-//        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset();
-        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset();
-        run(dataset);
+        Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
+//            new FSDatasetInstanceSingularizator.SIFTdataset(),
+//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
+        };
+        for (Dataset dataset : datasets) {
+            run(dataset);
+        }
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {
@@ -54,7 +51,7 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
         List<Object> sampleObjectsAndQueries = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
         TreeSet<Map.Entry<String, Float>> smallDistsOfSampleObjectsAndQueries = smallDistSample.loadPrecomputedDistances();
 
-        LearningPtolemyInequalityWithLimitedAngles learning = new LearningPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, smallDistsOfSampleObjectsAndQueries, storage, dataset.getDatasetName());
+        LearningPtolemyInequalityWithLimitedAngles learning = new LearningPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, smallDistsOfSampleObjectsAndQueries, storage, dataset.getDatasetName());
         learning.execute();
     }
 }

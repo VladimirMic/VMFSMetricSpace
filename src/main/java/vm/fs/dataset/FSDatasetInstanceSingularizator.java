@@ -173,7 +173,7 @@ public class FSDatasetInstanceSingularizator {
     public static class LAION_1M_SampleDataset extends FSFloatVectorDataset {
 
         public LAION_1M_SampleDataset() {
-            super("laion2B-en-clip768v2-n=1M_sample.h5");
+            super("laion2B-en-clip768v2-n=1M_sample.h5.gz");
         }
 
         @Override

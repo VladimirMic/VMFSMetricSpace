@@ -30,23 +30,22 @@ public class EvalAndStoreSampleOfSmallestDistsMain {
     public static final Integer IMPLICIT_K = 40000;
 
     public static void main(String[] args) {
-        Dataset dataset;
-//        dataset = new FSDatasetInstanceSingularizator.DeCAFDataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.SIFTdataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.MPEG7dataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.RandomDataset20Uniform();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset();
-//        run(dataset);
-//        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset();
-//        run(dataset);
-        dataset = new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset();
-        run(dataset);
+        Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.SIFTdataset(),
+//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset()
+        };
+        for (Dataset dataset : datasets) {
+            run(dataset);
+        }
     }
 
     private static void run(Dataset dataset) {

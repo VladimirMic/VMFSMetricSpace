@@ -11,13 +11,13 @@ import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.fs.main.precomputeDistances.EvalAndStoreSampleOfSmallestDistsMain;
 import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaiosFilteringWithLimitedAnglesSimpleCoef;
-import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface2;
+import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
 
 /**
  *
  * @author xmic
  */
-public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements PtolemyInequalityWithLimitedAnglesCoefsStoreInterface2 {
+public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements PtolemyInequalityWithLimitedAnglesCoefsStoreInterface {
 
     public static final Logger LOG = Logger.getLogger(FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.class.getName());
 
@@ -31,15 +31,15 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     @Override
-    public String getResultDescription(String datasetName, int numberOfTetrahedrons, int pivots, float ratioOfSmallestDists) {
-        String ret = datasetName + "__tetrahedrons_" + numberOfTetrahedrons + "__ratio_of_outliers_to_cut_" + ratioOfSmallestDists + "__pivots_" + pivots + ".csv";
+    public String getResultDescription(String datasetName, int smallestDists, int sampleOCount, int sampleQcount, int pivots, boolean allPivotPairs) {
+        String ret = datasetName + "__smallestDists_" + smallestDists + "_sampleOCount" + sampleOCount + "_sampleQcount" + sampleQcount + "__pivots_" + pivots + "__allPivotPairs_" + allPivotPairs + ".csv";
         LOG.log(Level.INFO, "File name: {0}", ret);
         return ret;
     }
 
-    public static PtolemaiosFilteringWithLimitedAnglesSimpleCoef getLearnedInstance(String resultPreffixName, String datasetName, int pivotCount) {
+    public static PtolemaiosFilteringWithLimitedAnglesSimpleCoef getLearnedInstance(String resultPreffixName, String datasetName, int pivotCount, boolean allPivotPairs) {
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
-        String fileName = storage.getNameOfFileWithCoefs(datasetName, pivotCount);
+        String fileName = storage.getNameOfFileWithCoefs(datasetName, pivotCount, allPivotPairs);
         File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
         return new PtolemaiosFilteringWithLimitedAnglesSimpleCoef(resultPreffixName, coefs);
@@ -58,8 +58,8 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         }
     }
 
-    private String getNameOfFileWithCoefs(String datasetName, int pivotCount) {
-        return getResultDescription(datasetName, EvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K, pivotCount, PtolemaiosFilteringWithLimitedAnglesSimpleCoef.RATIO_OF_OUTLIERS_TO_CUT);
+    public String getNameOfFileWithCoefs(String datasetName, int pivotCount, boolean allPivotPairs) {
+        return getResultDescription(datasetName, EvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K,  EvalAndStoreSampleOfSmallestDistsMain.SAMPLE_SET_SIZE,  EvalAndStoreSampleOfSmallestDistsMain.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
     }
 
 }

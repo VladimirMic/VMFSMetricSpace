@@ -24,14 +24,16 @@ public class EvalAndStoreObjectsToPivotsDistsMain {
     public static final Logger LOG = Logger.getLogger(EvalAndStoreObjectsToPivotsDistsMain.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
-//        run(new FSDatasetInstanceSingularizator.SIFTdataset());
-//        System.gc();
-//        run(new FSDatasetInstanceSingularizator.FSMPEG7dataset());
-//        System.gc();
-//        run(new FSDatasetInstanceSingularizator.RandomDataset20Uniform());
-//        System.gc();
-        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
-        System.gc();
+        Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
+//            new FSDatasetInstanceSingularizator.SIFTdataset(),
+//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+        };
+        for (Dataset dataset : datasets) {
+            run(dataset);
+            System.gc();
+        }
     }
 
     private static void run(Dataset dataset) {
