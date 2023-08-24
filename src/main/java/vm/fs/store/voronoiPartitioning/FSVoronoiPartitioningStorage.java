@@ -34,7 +34,7 @@ public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInt
         }
         GZIPOutputStream os = null;
         try {
-            File file = getFileForFSVoronoiStorage(datasetName, origPivotCount, true);
+            File file = getFile(datasetName, origPivotCount, true);
             os = new GZIPOutputStream(new FileOutputStream(file, false), true);
             for (Map.Entry<Object, SortedSet<Object>> cell : mapping.entrySet()) {
                 String pivotID = cell.getKey().toString();
@@ -60,7 +60,7 @@ public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInt
         
     }
     
-    public File getFileForFSVoronoiStorage(String datasetName, int pivotCount, boolean willBeDeleted) {
+    public File getFile(String datasetName, int pivotCount, boolean willBeDeleted) {
         String name = datasetName + "_" + pivotCount + "pivots.csv.gz";
         File ret = new File(FSGlobal.VORONOI_PARTITIONING_STORAGE, name);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
@@ -69,7 +69,7 @@ public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInt
     
     @Override
     public Map<Object, TreeSet<Object>> load(String datasetName, int origPivotCount) {
-        File f = getFileForFSVoronoiStorage(datasetName, origPivotCount, false);
+        File f = getFile(datasetName, origPivotCount, false);
         SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
         Map<Object, TreeSet<Object>> ret = new HashMap<>();
         Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();

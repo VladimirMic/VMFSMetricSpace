@@ -52,6 +52,7 @@ public class FSGlobal {
 
     public static final String AUXILIARY_FOR_DATA_FILTERING = ROOT + "Auxiliary_for_filtering\\";
     public static final String VORONOI_PARTITIONING_STORAGE = AUXILIARY_FOR_DATA_FILTERING + "Voronoi_partitioning\\";
+    public static final String GRAPPLE_PARTITIONING_STORAGE = AUXILIARY_FOR_DATA_FILTERING + "GRAPPLE_partitioning\\";
     public static final String SECONDARY_FILTERING_WITH_SKETCHES_AUXILIARY = AUXILIARY_FOR_DATA_FILTERING + "Secondary_filtering_with_sk_auxiliary\\";
     public static final String SECONDARY_FILTERING_WITH_SKETCHES_FINAL_MAPPING = AUXILIARY_FOR_DATA_FILTERING + "Secondary_filtering_with_sk_mapping\\";
 
