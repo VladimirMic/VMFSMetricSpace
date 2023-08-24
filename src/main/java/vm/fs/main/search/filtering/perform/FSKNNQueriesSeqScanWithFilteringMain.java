@@ -57,7 +57,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount);
         List queries = dataset.getMetricQueryObjects();
-        queries = queries.subList(0, 200);;
+        queries = queries.subList(0, 20);;
         List pivots = dataset.getPivots(pivotCount);
         if (poDists == null || poDists.length == 0) {
             pd = ToolsMetricDomain.evaluateMatrixOfDistances(dataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df);

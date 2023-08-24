@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.voronoiPartitioning.StorageLearnedVoronoiPartitioningInterface;
+import vm.metricSpace.datasetPartitioning.StorageDatasetPartitionsInterface;
 
 /**
  *
  * @author Vlada
  */
-public class FSVoronoiPartitioningStorage implements StorageLearnedVoronoiPartitioningInterface {
+public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInterface {
     
     public final Logger LOG = Logger.getLogger(FSVoronoiPartitioningStorage.class.getName());
     

@@ -4,7 +4,7 @@ import java.util.List;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.voronoiPartitioning.FSVoronoiPartitioningStorage;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.voronoiPartitioning.VoronoiPartitioning;
+import vm.metricSpace.datasetPartitioning.impl.VoronoiPartitioning;
 
 /**
  *
@@ -30,7 +30,7 @@ public class FSVoronoiPartitioningMain {
         List<Object> pivots = dataset.getPivots(-1);
         VoronoiPartitioning vp = new VoronoiPartitioning(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
-        vp.splitByVoronoi(dataset.getMetricObjectsFromDataset(), dataset.getDatasetName(), pivotCount, storage);
+        vp.splitByVoronoi(dataset.getMetricObjectsFromDataset(), dataset.getDatasetName(), storage, pivotCount);
     }
 
 }
