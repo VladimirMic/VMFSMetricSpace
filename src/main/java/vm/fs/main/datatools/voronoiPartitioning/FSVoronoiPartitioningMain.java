@@ -30,7 +30,7 @@ public class FSVoronoiPartitioningMain {
         List<Object> pivots = dataset.getPivots(-1);
         VoronoiPartitioning vp = new VoronoiPartitioning(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
-        vp.splitByVoronoi(dataset.getMetricObjectsFromDataset(), dataset.getDatasetName(), storage, pivotCount);
+        vp.partitionObjects(dataset.getMetricObjectsFromDataset(), dataset.getDatasetName(), storage, pivotCount);
     }
 
 }
