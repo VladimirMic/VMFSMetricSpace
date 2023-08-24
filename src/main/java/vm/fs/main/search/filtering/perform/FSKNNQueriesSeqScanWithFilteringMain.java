@@ -31,9 +31,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset()
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            //            new FSDatasetInstanceSingularizator.SIFTdataset(),
+        //            new FSDatasetInstanceSingularizator.SIFTdataset(),
         //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
         //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
         //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
