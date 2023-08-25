@@ -5,6 +5,15 @@
 package vm.fs.store.voronoiPartitioning;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 
 /**
@@ -18,6 +27,27 @@ public class FSGRAPPLEPartitioningStorage extends FSVoronoiPartitioningStorage {
         String name = datasetName + "_" + pivotCount + "pivots.csv.gz";
         File ret = new File(FSGlobal.GRAPPLE_PARTITIONING_STORAGE, name);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
+        return ret;
+    }
+
+    @Override
+    public Map<Object, TreeSet<Object>> load(String datasetName, int origPivotCount) {
+        File f = getFile(datasetName, origPivotCount, false);
+        SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
+        Map<Object, TreeSet<Object>> ret = new HashMap<>();
+        Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, String[]> entry = it.next();
+            String[] values = entry.getValue();
+            List<String> list = new ArrayList();
+            for (int i = 1; i < values.length; i++) {
+                String value = values[i];
+                int idx = value.indexOf(",");
+                list.add(value.substring(0, idx));
+            }
+            ret.put(entry.getKey(), new TreeSet(list));
+        }
+        LOG.log(Level.INFO, "The Voronoi partitioning has {0} non empty cells", ret.size());
         return ret;
     }
 
