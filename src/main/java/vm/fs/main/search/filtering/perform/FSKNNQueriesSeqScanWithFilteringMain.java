@@ -31,8 +31,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset()
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset()
+//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
         //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
         //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
@@ -85,9 +85,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         resultsStorage.storeQueryResults(metricSpace, queries, results, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName());
 
         LOG.log(Level.INFO, "Evaluating accuracy of queries");
-        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getDatasetName(), k, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName(), null);
+        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), null);
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(new FSNearestNeighboursStorageImpl(), recallStorage);
-        evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getDatasetName(), k, dataset.getDatasetName(), dataset.getDatasetName(), filter.getTechFullName(), k);
+        evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), k);
         recallStorage.saveFile();
     }
 
