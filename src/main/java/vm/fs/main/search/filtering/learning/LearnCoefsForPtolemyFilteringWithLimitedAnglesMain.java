@@ -22,19 +22,19 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
-    public static final Integer PIVOTS = 256;
+    public static final Integer PIVOTS = 512;
 
     public static void main(String[] args) throws IOException {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-//            new FSDatasetInstanceSingularizator.SIFTdataset(),
-//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
+            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
