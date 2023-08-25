@@ -30,7 +30,7 @@ public class FSVoronoiPartitioningMain {
 
     private static void run(Dataset dataset) {
         int pivotCount = 256;
-        List<Object> pivots = dataset.getPivots(-1);
+        List<Object> pivots = dataset.getPivots(pivotCount);
         VoronoiPartitioning vp = new VoronoiPartitioning(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
         vp.partitionObjects(dataset.getMetricObjectsFromDataset(), dataset.getDatasetName(), storage, pivotCount);
