@@ -42,17 +42,11 @@ public class FSGRAPPLEPartitioningMain {
     }
 
     private static void run(Dataset dataset) {
-        int pivotCount = 512;
-        try {
-            System.setOut(new PrintStream(new FileOutputStream("h:\\Similarity_search\\Auxiliary_for_filtering\\GRAPPLE_partitioning\\" + dataset.getDatasetName() + "_" + pivotCount + "err.csv", false)));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GRAPPLEPartitioning.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        int pivotCount = 256;
         List<Object> pivots = dataset.getPivots(pivotCount);
         PtolemaiosFilteringWithLimitedAnglesSimpleCoef filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset.getDatasetName(), pivotCount, LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
         AbstractDatasetPartitioning partitioning = new GRAPPLEPartitioning(filter, dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSGRAPPLEPartitioningStorage storage = new FSGRAPPLEPartitioningStorage();
         partitioning.partitionObjects(dataset.getMetricObjectsFromDataset(), dataset.getDatasetName(), storage, pivotCount);
-        System.out.flush();
     }
 }
