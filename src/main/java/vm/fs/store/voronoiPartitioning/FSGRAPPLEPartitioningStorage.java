@@ -15,6 +15,8 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
+import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
+import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning.ObjectMetadata;
 
 /**
  *
@@ -39,11 +41,10 @@ public class FSGRAPPLEPartitioningStorage extends FSVoronoiPartitioningStorage {
         while (it.hasNext()) {
             Map.Entry<String, String[]> entry = it.next();
             String[] values = entry.getValue();
-            List<String> list = new ArrayList();
+            List<GRAPPLEPartitioning.ObjectMetadata> list = new ArrayList();
             for (int i = 1; i < values.length; i++) {
-                String value = values[i];
-                int idx = value.indexOf(",");
-                list.add(value.substring(0, idx));
+                String value = values[i];                
+                list.add(GRAPPLEPartitioning.getObjectMetadataInstance(value));
             }
             ret.put(entry.getKey(), new TreeSet(list));
         }

@@ -75,7 +75,7 @@ public class VMMVStorage<T> {
     @SuppressWarnings("FinalizeDeclaration")
     protected void finalize() throws Throwable {
         super.finalize();
-        storage.close();
+//        storage.close();
     }
 
 }

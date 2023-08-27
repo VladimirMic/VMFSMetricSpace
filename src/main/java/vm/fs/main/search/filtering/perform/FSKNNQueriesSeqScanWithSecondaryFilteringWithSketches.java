@@ -89,7 +89,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
 
         List queries = fullDataset.getMetricQueryObjects();
 
-        TreeSet[] results = alg.completeKnnSearchOfQuerySet(metricSpace, queries, k, fullDataset.getMetricObjectsFromDataset());
+        TreeSet[] results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, fullDataset.getMetricObjectsFromDataset());
 
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(fullDataset.getDatasetName(), fullDataset.getQuerySetName(), k, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), filter.getTechFullName(), null);
