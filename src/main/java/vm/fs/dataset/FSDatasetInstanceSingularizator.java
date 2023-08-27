@@ -898,8 +898,7 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public Map<Object, Object> getKeyValueStorage() {
             VMMVStorage storage = new VMMVStorage(datasetName, false);
-            Map keyValueStorage = storage.getKeyValueStorage();
-            return keyValueStorage;
+            return storage.getKeyValueStorage();
         }
 
     }

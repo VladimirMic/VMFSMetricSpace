@@ -22,6 +22,7 @@ public class EvaluateQuerySetWithPartitioningAlgorithm {
 
     public static void main(String[] args) {
         int k = 100;
+        int kCandSetMaxSize = 50000;
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset()
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
@@ -35,15 +36,15 @@ public class EvaluateQuerySetWithPartitioningAlgorithm {
 
         for (Dataset dataset : datasets) {
             SearchingAlgorithm alg = getGRAPPLEAlgorithm(dataset);
-            evaluate(alg, dataset, k);
+            evaluate(alg, dataset, k, kCandSetMaxSize);
         }
     }
 
-    private static void evaluate(SearchingAlgorithm alg, Dataset dataset, int k) {
+    private static void evaluate(SearchingAlgorithm alg, Dataset dataset, int k, int kCandSetMaxSize) {
         FSRecallOfCandidateSetsStorageImpl statsStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
         AlgorithmEvaluator evaluator = new AlgorithmEvaluator(alg, statsStorage, resultsStorage, statsStorage, statsStorage);
-        evaluator.evaluate(dataset, dataset.getMetricQueryObjects(), k, alg.getResultName());
+        evaluator.evaluate(dataset, dataset.getMetricQueryObjects(), k, kCandSetMaxSize, alg.getResultName());
     }
 
     private static SearchingAlgorithm getGRAPPLEAlgorithm(Dataset dataset) {
