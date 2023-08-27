@@ -24,7 +24,7 @@ import vm.queryResults.QueryExecutionStatsStoreInterface;
  */
 public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInterface {
 
-    private final Logger LOG = Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(FSQueryExecutionStatsStoreImpl.class.getName());
     protected final StatsAttributesComparator statsComp = new StatsAttributesComparator();
     private final File output;
     protected final Map<String, TreeMap<QUERY_STATS, String>> content;
@@ -89,7 +89,8 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         content.put(treeMap.get(QUERY_STATS.query_obj_id), treeMap);
     }
 
-    public void saveFile() {
+    @Override
+    public void save() {
         BufferedWriter bw = null;
         try {
             FileOutputStream datasetOutputStream = new FileOutputStream(output, false);

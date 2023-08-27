@@ -18,8 +18,8 @@ import vm.metricSpace.distance.bounding.twopivots.TwoPivotsFilter;
 import vm.metricSpace.distance.bounding.twopivots.learning.LearningPtolemyInequalityWithLimitedAngles;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
-import vm.search.SearchingAlgorithm;
-import vm.search.impl.KNNSearchWithTwoPivotFiltering;
+import vm.search.algorithm.SearchingAlgorithm;
+import vm.search.algorithm.impl.KNNSearchWithTwoPivotFiltering;
 
 /**
  *
@@ -78,7 +78,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), null);
         statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries());
-        statsStorage.saveFile();
+        statsStorage.save();
 
         LOG.log(Level.INFO, "Storing results of queries");
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
@@ -88,7 +88,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), null);
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(new FSNearestNeighboursStorageImpl(), recallStorage);
         evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), k);
-        recallStorage.saveFile();
+        recallStorage.save();
     }
 
 }

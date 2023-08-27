@@ -93,4 +93,9 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
         line.put(QUERY_STATS.additional_stats, additional);
     }
 
+    @Override
+    public void save() {
+        super.save();
+    }
+
 }
