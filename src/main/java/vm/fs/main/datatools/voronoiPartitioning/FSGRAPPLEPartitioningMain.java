@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
-import vm.fs.store.voronoiPartitioning.FSGRAPPLEPartitioningStorage;
+import vm.fs.store.partitioning.FSGRAPPLEPartitioningStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.datasetPartitioning.AbstractDatasetPartitioning;
 import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;

@@ -2,7 +2,7 @@ package vm.fs.main.datatools.voronoiPartitioning;
 
 import java.util.List;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.store.voronoiPartitioning.FSVoronoiPartitioningStorage;
+import vm.fs.store.partitioning.FSVoronoiPartitioningStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.datasetPartitioning.impl.VoronoiPartitioning;
 

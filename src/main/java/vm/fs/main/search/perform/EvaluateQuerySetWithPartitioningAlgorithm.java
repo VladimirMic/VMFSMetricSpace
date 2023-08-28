@@ -7,7 +7,7 @@ package vm.fs.main.search.perform;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
-import vm.fs.store.voronoiPartitioning.FSGRAPPLEPartitioningStorage;
+import vm.fs.store.partitioning.FSGRAPPLEPartitioningStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.datasetPartitioning.StorageDatasetPartitionsInterface;
 import vm.search.AlgorithmEvaluator;

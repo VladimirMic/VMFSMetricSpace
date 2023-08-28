@@ -1,4 +1,4 @@
-package vm.fs.store.voronoiPartitioning;
+package vm.fs.store.partitioning;
 
 import java.io.File;
 import java.io.FileOutputStream;
