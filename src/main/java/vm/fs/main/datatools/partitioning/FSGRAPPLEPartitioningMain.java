@@ -2,14 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.main.datatools.voronoiPartitioning;
+package vm.fs.main.datatools.partitioning;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.partitioning.FSGRAPPLEPartitioningStorage;

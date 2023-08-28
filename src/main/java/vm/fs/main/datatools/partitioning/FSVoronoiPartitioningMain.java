@@ -1,4 +1,4 @@
-package vm.fs.main.datatools.voronoiPartitioning;
+package vm.fs.main.datatools.partitioning;
 
 import java.util.List;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
