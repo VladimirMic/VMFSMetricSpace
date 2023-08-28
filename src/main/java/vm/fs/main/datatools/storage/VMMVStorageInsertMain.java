@@ -16,12 +16,18 @@ public class VMMVStorageInsertMain {
     public static final Logger LOG = Logger.getLogger(VMMVStorageInsertMain.class.getName());
 
     public static void main(String[] args) {
-        Dataset dataset;
-//        if (args.length > 0) {
-//            dataset = new M2DatasetInstanceSingularizator.DeCAF20MDataset();
-//        } else {
-            dataset = new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset();
-//        }
+        Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+        };
+        for (Dataset dataset : datasets) {
+            run(dataset);
+        }
+    }
+
+    private static void run(Dataset dataset) {
         VMMVStorage storage = new VMMVStorage(dataset.getDatasetName(), true);
         storage.insertObjects(dataset.getMetricObjectsFromDataset(), dataset.getMetricSpace());
         LOG.log(Level.INFO, "Finished. Stored {0} objects", storage.size());

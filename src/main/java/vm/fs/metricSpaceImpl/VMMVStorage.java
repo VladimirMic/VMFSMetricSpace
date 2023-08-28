@@ -41,9 +41,10 @@ public class VMMVStorage<T> {
         if (!file.exists() && !willBeDeleted) {
             LOG.log(Level.SEVERE, "The file {0} does not exists. Cannot read.", file.getAbsolutePath());
         }
-        MVStore.Builder ret = new MVStore.Builder().fileName(file.getAbsolutePath()).compress();
+        MVStore.Builder ret = new MVStore.Builder().fileName(file.getAbsolutePath()).compressHigh();
         if (!willBeDeleted) {
-            ret.readOnly();
+            ret = ret.readOnly();
+            ret = ret.autoCommitDisabled();
         }
         return ret.open();
     }
@@ -78,11 +79,5 @@ public class VMMVStorage<T> {
         return getKeyValueStorage().size();
     }
 
-    @Override
-    @SuppressWarnings("FinalizeDeclaration")
-    protected void finalize() throws Throwable {
-        super.finalize();
-        storage.close();
-    }
 
 }

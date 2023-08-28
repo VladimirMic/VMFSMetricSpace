@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
-import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning.ObjectMetadata;
 
 /**
  *
