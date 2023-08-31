@@ -18,30 +18,30 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
 public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
-       Tools.sleep(15);
        Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.DeCAF_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(),
 
 //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(),
 
 //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset()
         };
         for (Dataset dataset : datasets) {
             String datasetName = dataset.getDatasetName();
             String querySetName = dataset.getQuerySetName();
-            int k = 10000; // 1000 for orig datasets, else 20000
+            int k = 30; // 1000 for orig datasets, else 20000
             AbstractMetricSpace space = dataset.getMetricSpace();
 
             DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);
@@ -50,8 +50,8 @@ public class FSEvaluateGroundTruthMain {
 
             List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);
             GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k, groundTruthStorage);
-            gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
-//            gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
+//            gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
+            gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
             System.gc();
         }
     }
