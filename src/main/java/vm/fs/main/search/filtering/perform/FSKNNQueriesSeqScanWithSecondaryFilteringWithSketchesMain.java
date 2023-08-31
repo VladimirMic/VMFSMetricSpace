@@ -31,9 +31,9 @@ import vm.search.algorithm.impl.KNNSearchWithSketchSecondaryFiltering;
  *
  * @author Vlada
  */
-public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches {
+public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
 
-    private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithSecondaryFilteringWithSketches.class.getName());
+    private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain.class.getName());
 
     public static void main(String[] args) {
         float[] pCums = new float[]{0.45f, 0.5f, 0.55f, 0.6f};
