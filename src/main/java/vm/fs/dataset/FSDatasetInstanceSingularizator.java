@@ -189,13 +189,19 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_100k_Dataset extends H5FloatVectorDataset {
 
-        public LAION_100k_Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_100k_Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=100K.h5");
+            this.publicQueries = publicQueries;
         }
 
         @Override
         public String getQuerySetName() {
-            return "public-queries-10k-clip768v2.h5";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5";
+            }
+            return "private-queries-10k-clip768v2.h5";
         }
 
         @Override
@@ -206,13 +212,19 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_300k_Dataset extends H5FloatVectorDataset {
 
-        public LAION_300k_Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_300k_Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=300K.h5");
+            this.publicQueries = publicQueries;
         }
 
         @Override
         public String getQuerySetName() {
-            return "public-queries-10k-clip768v2.h5";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5";
+            }
+            return "private-queries-10k-clip768v2.h5";
         }
 
         @Override
@@ -223,13 +235,19 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_10M_Dataset extends H5FloatVectorDataset {
 
-        public LAION_10M_Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_10M_Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=10M.h5");
+            this.publicQueries = publicQueries;
         }
 
         @Override
         public String getQuerySetName() {
-            return "public-queries-10k-clip768v2.h5";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5";
+            }
+            return "private-queries-10k-clip768v2.h5";
         }
 
         @Override
@@ -240,13 +258,19 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_30M_Dataset extends H5FloatVectorDataset {
 
-        public LAION_30M_Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_30M_Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=30M.h5");
+            this.publicQueries = publicQueries;
         }
 
         @Override
         public String getQuerySetName() {
-            return "public-queries-10k-clip768v2.h5";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5";
+            }
+            return "private-queries-10k-clip768v2.h5";
         }
 
         @Override
@@ -257,13 +281,19 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_100M_Dataset extends H5FloatVectorDataset {
 
-        public LAION_100M_Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_100M_Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=100M.h5");
+            this.publicQueries = publicQueries;
         }
 
         @Override
         public String getQuerySetName() {
-            return "public-queries-10k-clip768v2.h5";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5";
+            }
+            return "private-queries-10k-clip768v2.h5";
         }
 
         @Override

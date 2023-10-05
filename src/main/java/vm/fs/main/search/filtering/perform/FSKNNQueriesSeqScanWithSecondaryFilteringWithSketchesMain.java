@@ -38,11 +38,12 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
     public static void main(String[] args) {
         float[] pCums = new float[]{0.45f, 0.5f, 0.55f, 0.6f};
         int sketchLength = 192;
+        boolean publicQueries = false;
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),

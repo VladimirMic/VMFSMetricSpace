@@ -16,12 +16,13 @@ import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequa
 public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
 
     public static void main(String[] args) {
+        boolean publicQueries = false;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
         };
 
         for (Dataset dataset : datasets) {

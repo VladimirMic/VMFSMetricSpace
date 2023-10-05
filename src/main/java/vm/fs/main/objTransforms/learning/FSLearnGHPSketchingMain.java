@@ -18,7 +18,7 @@ public class FSLearnGHPSketchingMain {
         GHPSketchingPivotPairsStoreInterface sketchingTechStorage = new FSGHPSketchesPivotPairsStorageImpl();
         int[] sketchesLengths = new int[]{384, 1024};
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true)
         };
         for (Dataset dataset : datasets) {
             run(dataset, sketchingTechStorage, sketchesLengths);

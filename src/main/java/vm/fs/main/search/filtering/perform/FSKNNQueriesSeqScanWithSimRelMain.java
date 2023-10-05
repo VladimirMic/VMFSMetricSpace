@@ -40,7 +40,8 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
     public static final Boolean INVOLVE_OBJS_UNKNOWN_RELATION = true;
 
     public static void main(String[] args) {
-        Dataset fullDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset();
+        boolean publicQueries = false;
+        Dataset fullDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries);
         Dataset pcaDataset = new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset();
 //        Dataset fullDataset = new M2DatasetInstanceSingularizator.DeCAF20MDataset();
 //        Dataset pcaDataset = new FSDatasetInstanceSingularizator.DeCAF20M_PCA256Dataset();

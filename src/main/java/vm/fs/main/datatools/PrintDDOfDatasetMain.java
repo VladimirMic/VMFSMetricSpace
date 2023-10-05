@@ -17,13 +17,13 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
 public class PrintDDOfDatasetMain {
 
     public static void main(String[] args) {
-        Dataset dataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset();
+        Dataset dataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true);
         String datasetName = dataset.getDatasetName();
         float distInterval = 1f / 100;
 
 //      getHistogramsForRandomPairs
-        int objCount = 1000 * 1000;//100,000
-        int distCount = 1000 * 10000;//1,000,000
+        int objCount = 1000 * 1000;//1,000,000
+        int distCount = 1000 * 10000;//10,000,000
         SortedMap<Float, Float> ddRandomSample = createDDOfRandomSample(dataset, datasetName, objCount, distCount, distInterval, null);
 //      print
         printDD(datasetName, distInterval, ddRandomSample);

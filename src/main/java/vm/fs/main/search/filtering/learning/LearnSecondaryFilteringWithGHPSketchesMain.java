@@ -22,12 +22,13 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
     public static final Logger LOG = Logger.getLogger(LearnSecondaryFilteringWithGHPSketchesMain.class.getName());
 
     public static void main(String[] args) {
+        boolean publicQueries = false;
         Dataset[] fullDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),

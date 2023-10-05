@@ -21,11 +21,12 @@ public class FSApplyPCAMain {
     public static final Integer PREFFIX_TO_STORE = 24;
 
     public static void main(String[] args) {
-//        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset());
+        boolean publicQueries = false;
+//        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries));
         System.gc();
-        run(new FSDatasetInstanceSingularizator.LAION_30M_Dataset());
+        run(new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries));
         System.gc();
-//        run(new FSDatasetInstanceSingularizator.LAION_10M_Dataset());
+//        run(new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries));
         System.gc();
     }
 
@@ -51,8 +52,10 @@ public class FSApplyPCAMain {
             } else {
                 pca = new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(), metricSpage, metricSpage);
             }
-
-            MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, spaceStorage, pca.getNameOfTransformedSetOfObjects(origDatasetName, false));
+            String newDatasetName = pca.getNameOfTransformedSetOfObjects(origDatasetName, false);
+            String newQuerySetName = pca.getNameOfTransformedSetOfObjects(dataset.getQuerySetName(), false);
+            String newPivotsName = pca.getNameOfTransformedSetOfObjects(dataset.getPivotSetName(), false);
+            MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, spaceStorage, newDatasetName, newQuerySetName, newPivotsName);
             transformPivots(dataset.getPivotSetName(), spaceStorage, parallelTransformerImpl, "Pivot set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalDimension);
             transformQueryObjects(dataset.getQuerySetName(), spaceStorage, parallelTransformerImpl, "Query set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalDimension);
             transformDataset(origDatasetName, spaceStorage, parallelTransformerImpl, "Dataset with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + sampleSetSize + " to the length " + finalDimension);

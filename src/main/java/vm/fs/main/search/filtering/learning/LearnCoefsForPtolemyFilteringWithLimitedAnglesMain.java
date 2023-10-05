@@ -27,7 +27,7 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
     public static void main(String[] args) throws IOException {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),

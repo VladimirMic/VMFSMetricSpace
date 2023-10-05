@@ -24,7 +24,7 @@ public class FSGRAPPLEPartitioningMain {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true)
 //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
         //            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
         //            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(),

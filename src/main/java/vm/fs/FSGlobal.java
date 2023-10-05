@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
-    private static final Boolean ASK_FOR_EXISTENCE = true;
+    private static final Boolean ASK_FOR_EXISTENCE = false;
 
     private static String initRoot() {
 //        return "h:\\TMP\\Similarity_search\\";
