@@ -47,9 +47,9 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries)
         };
         float[] distIntervalsForPX = new float[]{
             2,

@@ -595,8 +595,11 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_10M_GHP_50_192Dataset extends FSHammingSpaceDataset {
 
-        public LAION_10M_GHP_50_192Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_10M_GHP_50_192Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_192");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -606,14 +609,20 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_192";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_192";
         }
     }
 
     public static class LAION_30M_GHP_50_192Dataset extends FSHammingSpaceDataset {
 
-        public LAION_30M_GHP_50_192Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_30M_GHP_50_192Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=30M.h5_GHP_50_192");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -623,15 +632,29 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_192";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_192";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_192";
         }
 
     }
 
     public static class LAION_100M_GHP_50_192Dataset extends FSHammingSpaceDataset {
 
-        public LAION_100M_GHP_50_192Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_100M_GHP_50_192Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=100M.h5_GHP_50_192");
+            this.publicQueries = publicQueries;
+        }
+
+        @Override
+        public String getQuerySetName() {
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_192";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_192";
         }
 
     }
@@ -673,8 +696,11 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_10M_GHP_50_256Dataset extends FSHammingSpaceDataset {
 
-        public LAION_10M_GHP_50_256Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_10M_GHP_50_256Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_256");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -684,15 +710,21 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_256";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_256";
         }
 
     }
 
     public static class LAION_30M_GHP_50_256Dataset extends FSHammingSpaceDataset {
 
-        public LAION_30M_GHP_50_256Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_30M_GHP_50_256Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=30M.h5_GHP_50_256");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -702,14 +734,28 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_256";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_256";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_256";
         }
     }
 
     public static class LAION_100M_GHP_50_256Dataset extends FSHammingSpaceDataset {
 
-        public LAION_100M_GHP_50_256Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_100M_GHP_50_256Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=100M.h5_GHP_50_256");
+            this.publicQueries = publicQueries;
+        }
+
+        @Override
+        public String getQuerySetName() {
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_256";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_256";
         }
 
     }
@@ -751,8 +797,11 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_10M_GHP_50_384Dataset extends FSHammingSpaceDataset {
 
-        public LAION_10M_GHP_50_384Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_10M_GHP_50_384Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_384");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -762,15 +811,21 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_384";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_384";
         }
 
     }
 
     public static class LAION_10M_GHP_50_1024Dataset extends FSHammingSpaceDataset {
 
-        public LAION_10M_GHP_50_1024Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_10M_GHP_50_1024Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_1024");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -780,15 +835,21 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_1024";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_1024";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_1024";
         }
 
     }
 
     public static class LAION_30M_GHP_50_384Dataset extends FSHammingSpaceDataset {
 
-        public LAION_30M_GHP_50_384Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_30M_GHP_50_384Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=30M.h5_GHP_50_384");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -798,15 +859,21 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_384";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_384";
         }
 
     }
 
     public static class LAION_30M_GHP_50_1024Dataset extends FSHammingSpaceDataset {
 
-        public LAION_30M_GHP_50_1024Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_30M_GHP_50_1024Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=30M.h5_GHP_50_1024");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -816,23 +883,47 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_1024";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_1024";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_1024";
         }
 
     }
 
     public static class LAION_100M_GHP_50_384Dataset extends FSHammingSpaceDataset {
 
-        public LAION_100M_GHP_50_384Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_100M_GHP_50_384Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=100M.h5_GHP_50_384");
+            this.publicQueries = publicQueries;
         }
 
+        @Override
+        public String getQuerySetName() {
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_384";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_384";
+        }
     }
 
     public static class LAION_100M_GHP_50_1024Dataset extends FSHammingSpaceDataset {
 
-        public LAION_100M_GHP_50_1024Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_100M_GHP_50_1024Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=100M.h5_GHP_50_1024");
+            this.publicQueries = publicQueries;
+        }
+
+        @Override
+        public String getQuerySetName() {
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_1024";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_1024";
         }
 
     }
@@ -875,8 +966,11 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_10M_GHP_50_512Dataset extends FSHammingSpaceDataset {
 
-        public LAION_10M_GHP_50_512Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_10M_GHP_50_512Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=10M.h5_GHP_50_512");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -886,15 +980,21 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_512";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_512";
         }
 
     }
 
     public static class LAION_30M_GHP_50_512Dataset extends FSHammingSpaceDataset {
 
-        public LAION_30M_GHP_50_512Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_30M_GHP_50_512Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=30M.h5_GHP_50_512");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -904,15 +1004,29 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_512";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_512";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_512";
         }
 
     }
 
     public static class LAION_100M_GHP_50_512Dataset extends FSHammingSpaceDataset {
 
-        public LAION_100M_GHP_50_512Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_100M_GHP_50_512Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=100M.h5_GHP_50_512");
+            this.publicQueries = publicQueries;
+        }
+
+        @Override
+        public String getQuerySetName() {
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_512";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_512";
         }
 
     }
