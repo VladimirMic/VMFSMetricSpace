@@ -135,7 +135,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
                         continue;
                     }
                     String[] idDistPair = nearestNeighbourPair.split(":");
-                    nearestNeighbours.add(new AbstractMap.SimpleEntry<>(idDistPair[0], Float.parseFloat(idDistPair[1])));
+                    nearestNeighbours.add(new AbstractMap.SimpleEntry<>(idDistPair[0], Float.valueOf(idDistPair[1])));
                 }
                 ret.put(queryObjId, nearestNeighbours);
                 line = br.readLine();
