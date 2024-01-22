@@ -19,7 +19,6 @@ public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
         boolean publicQueries = true;
-        Tools.sleep(60 * 10);
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),

@@ -1,10 +1,12 @@
 package vm.fs.metricSpaceImpl;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -243,11 +245,10 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     }
 
     @Override
-    public int getPrecomputedDatasetSize(String datasetName
-    ) {
+    public int getPrecomputedDatasetSize(String datasetName) {
         BufferedReader br = null;
         try {
-            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, datasetName + "_size.txt", false);
+            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", false);
             if (!f.exists()) {
                 return -1;
             }
@@ -264,6 +265,25 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
             }
         }
         return -1;
+    }
+
+    public void evaluateAndStoreNumberOfObjectsInDataset(String datasetName) {
+        Iterator<Object> it = getObjectsFromDataset(datasetName);
+        int i;
+        for (i = 0; it.hasNext(); i++) {
+            it.next();
+            if (i % 100000 == 0) {
+                Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.INFO, "Read {0} objects", i);
+            }
+        }
+        File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", false);
+        FSGlobal.checkFileExistence(f, true);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+            bw.write(Integer.toString(i));
+            bw.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

@@ -14,7 +14,6 @@ public class FSGlobal {
     private static final Boolean ASK_FOR_EXISTENCE = true;
 
     private static String initRoot() {
-//        return "h:\\TMP\\Similarity_search\\";
         String[] paths = new String[]{
             "h:\\Similarity_search\\",
             "Similarity_search/",

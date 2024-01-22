@@ -22,12 +22,13 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
-    public static final Integer PIVOTS = 512;
+    public static final Integer PIVOTS = 256;
 
     public static void main(String[] args) throws IOException {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(true),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
