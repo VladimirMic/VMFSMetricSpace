@@ -32,7 +32,7 @@ public class LearnSecondaryFilteringWithGHPSketchesMain {
         };
         Dataset[] sketchesDatasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_384Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100k_GHP_50_384Dataset(publicQueries),
             new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
             new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(publicQueries),
             new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries)

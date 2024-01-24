@@ -362,12 +362,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000";
+            return "public-queries-10k-pca32v2.h5";
         }
 
         @Override
         public String getPivotSetName() {
-            return "laion2B-en-pca32v2-n=100M.h5";
+            return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000";
         }
     }
 
@@ -762,8 +762,11 @@ public class FSDatasetInstanceSingularizator {
 
     public static class LAION_100k_GHP_50_384Dataset extends FSHammingSpaceDataset {
 
-        public LAION_100k_GHP_50_384Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_100k_GHP_50_384Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=100k.h5_GHP_50_384");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -773,15 +776,21 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_384";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_384";
         }
 
     }
 
     public static class LAION_300k_GHP_50_384Dataset extends FSHammingSpaceDataset {
 
-        public LAION_300k_GHP_50_384Dataset() {
+        private final boolean publicQueries;
+
+        public LAION_300k_GHP_50_384Dataset(boolean publicQueries) {
             super("laion2B-en-clip768v2-n=300k.h5_GHP_50_384");
+            this.publicQueries = publicQueries;
         }
 
         @Override
@@ -791,8 +800,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=100M.h5_GHP_50_384";
+            if (publicQueries) {
+                return "public-queries-10k-clip768v2.h5_GHP_50_384";
+            }
+            return "private-queries-10k-clip768v2.h5_GHP_50_384";
         }
+
     }
 
     public static class LAION_10M_GHP_50_384Dataset extends FSHammingSpaceDataset {

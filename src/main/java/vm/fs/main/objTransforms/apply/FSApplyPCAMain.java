@@ -18,24 +18,25 @@ import vm.objTransforms.perform.PCAPrefixMetricObjectTransformer;
  */
 public class FSApplyPCAMain {
 
-    public static final Integer PREFFIX_TO_STORE = 24;
+    public static final Integer PREFFIX_TO_STORE = -1;
 
     public static void main(String[] args) {
         boolean publicQueries = false;
 //        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries));
         System.gc();
-        run(new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries));
+//        run(new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries));
+        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
         System.gc();
 //        run(new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries));
         System.gc();
     }
 
     private static void run(Dataset dataset) {
-        int sampleSetSize = 500000;
+        int sampleSetSize = 100000;
 //        int[] finalDimensions = new int[]{100, 128, 30, 4, 6, 72, 8}; // SIFT
 //        int[] finalDimensions = new int[]{20, 18, 16, 15, 12, 10, 8}; // Random 20
 //        int[] finalDimensions = new int[]{10, 12, 128, 1540, 16, 46, 2387, 24, 256, 32, 4, 6, 670, 68, 8}; // DeCAF
-        int[] finalFullDimensions = new int[]{256}; // DeCAF
+        int[] finalFullDimensions = new int[]{46, 128, 256, 670}; // DeCAF
 
         AbstractMetricSpace<float[]> metricSpage = dataset.getMetricSpace();
         AbstractMetricSpacesStorage spaceStorage = dataset.getMetricSpacesStorage();
