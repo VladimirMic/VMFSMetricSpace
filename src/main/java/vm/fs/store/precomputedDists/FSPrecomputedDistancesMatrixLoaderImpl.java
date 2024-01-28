@@ -28,6 +28,7 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
         List<float[]> retList = new ArrayList<>();
         File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount, false);
         if (!file.exists()) {
+            LOG.log(Level.WARNING, "No precomputed distances found for dataset {0} pivot set {1} and {2} pivots", new Object[]{datasetName, pivotSetName, pivotCount});
             return null;
         }
         try {

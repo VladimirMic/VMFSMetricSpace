@@ -23,19 +23,20 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
     public static final Integer PIVOTS = 256;
+    public static final Boolean ALL_PIVOT_PAIRS = LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS;
 
     public static void main(String[] args) throws IOException {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(true),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -52,7 +53,7 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
         List<Object> sampleObjectsAndQueries = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
         TreeSet<Map.Entry<String, Float>> smallDistsOfSampleObjectsAndQueries = smallDistSample.loadPrecomputedDistances();
 
-        LearningPtolemyInequalityWithLimitedAngles learning = new LearningPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, smallDistsOfSampleObjectsAndQueries, storage, dataset.getDatasetName());
+        LearningPtolemyInequalityWithLimitedAngles learning = new LearningPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, smallDistsOfSampleObjectsAndQueries, storage, dataset.getDatasetName(), ALL_PIVOT_PAIRS);
         learning.execute();
     }
 }

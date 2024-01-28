@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.fs.main.precomputeDistances.EvalAndStoreSampleOfSmallestDistsMain;
-import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaiosFilteringWithLimitedAnglesSimpleCoef;
+import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
+import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
 
 /**
@@ -37,12 +37,12 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         return ret;
     }
 
-    public static PtolemaiosFilteringWithLimitedAnglesSimpleCoef getLearnedInstance(String resultPreffixName, String datasetName, int pivotCount, boolean allPivotPairs) {
+    public static DataDependentGeneralisedPtolemaicFiltering getLearnedInstance(String resultPreffixName, String datasetName, int pivotCount, boolean allPivotPairs) {
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
         String fileName = storage.getNameOfFileWithCoefs(datasetName, pivotCount, allPivotPairs);
         File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
-        return new PtolemaiosFilteringWithLimitedAnglesSimpleCoef(resultPreffixName, coefs);
+        return new DataDependentGeneralisedPtolemaicFiltering(resultPreffixName, coefs);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     public String getNameOfFileWithCoefs(String datasetName, int pivotCount, boolean allPivotPairs) {
-        return getResultDescription(datasetName, EvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K,  EvalAndStoreSampleOfSmallestDistsMain.SAMPLE_SET_SIZE,  EvalAndStoreSampleOfSmallestDistsMain.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
+        return getResultDescription(datasetName, FSEvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K,  FSEvalAndStoreSampleOfSmallestDistsMain.SAMPLE_SET_SIZE,  FSEvalAndStoreSampleOfSmallestDistsMain.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
     }
 
 }

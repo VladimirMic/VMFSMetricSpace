@@ -24,21 +24,23 @@ public class EvalAndStoreObjectsToPivotsDistsMain {
     public static final Logger LOG = Logger.getLogger(EvalAndStoreObjectsToPivotsDistsMain.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
+        boolean publicQueries = true;
+        int pivotCount = 256;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
-//            new FSDatasetInstanceSingularizator.SIFTdataset(),
-//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
-        };
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
+            //            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),};
         for (Dataset dataset : datasets) {
-            run(dataset);
+            run(dataset, pivotCount);
             System.gc();
         }
     }
 
-    private static void run(Dataset dataset) {
-        int pivotCount = 2048;
-        String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getDatasetName(), pivotCount, true).getAbsolutePath();
+    private static void run(Dataset dataset, int pivotCount) {
+        String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount, true).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         List pivots = dataset.getPivots(pivotCount);

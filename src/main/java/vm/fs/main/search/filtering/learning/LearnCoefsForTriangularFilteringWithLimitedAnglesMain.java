@@ -15,14 +15,23 @@ import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequa
  */
 public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
 
+    public static final Integer SAMPLE_O_COUNT = 10000;
+    public static final Integer SAMPLE_Q_COUNT = 1000;
+
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+//            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
         };
 
         for (Dataset dataset : datasets) {
@@ -33,9 +42,9 @@ public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
     private static void run(Dataset dataset) {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        int pivotCount = 2048;
-        List sampleOfDataset = dataset.getSampleOfDataset(11000);
-        List sampleOfQueries = new ArrayList(sampleOfDataset.subList(0, 1000));
+        int pivotCount = 256;
+        List sampleOfDataset = dataset.getSampleOfDataset(SAMPLE_O_COUNT + SAMPLE_Q_COUNT);
+        List sampleOfQueries = new ArrayList(sampleOfDataset.subList(0, SAMPLE_Q_COUNT));
         sampleOfDataset.removeAll(sampleOfQueries);
         List pivots = dataset.getPivots(pivotCount);
 

@@ -14,24 +14,25 @@ import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
+import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
 
 /**
  *
  * @author Vlada
  */
-public class EvalAndStoreSampleOfSmallestDistsMain {
+public class FSEvalAndStoreSampleOfSmallestDistsMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
-    public static final Logger LOG = Logger.getLogger(EvalAndStoreSampleOfSmallestDistsMain.class.getName());
+    public static final Logger LOG = Logger.getLogger(FSEvalAndStoreSampleOfSmallestDistsMain.class.getName());
     /**
      * Number of stored minimum distances
      */
-    public static final Integer IMPLICIT_K = 40000;
+    public static final Integer IMPLICIT_K = (int) (RATIO_OF_SMALLEST_DISTS * SAMPLE_SET_SIZE * SAMPLE_QUERY_SET_SIZE);
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(true),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
 //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(true),
 //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),

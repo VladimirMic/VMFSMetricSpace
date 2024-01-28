@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequalityWithLimitedAngles;
+import vm.metricSpace.distance.bounding.onepivot.impl.DataDependentMetricFiltering;
 import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
 import vm.metricSpace.distance.bounding.onepivot.storeLearned.TriangleInequalityWithLimitedAnglesCoefsStoreInterface;
 
@@ -57,12 +57,12 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
         return ret;
     }
 
-    public TriangleInequalityWithLimitedAngles loadFromFile(String resultPreffixName, String path) {
+    public DataDependentMetricFiltering loadFromFile(String resultPreffixName, String path) {
         SortedMap<String, Float> values = Tools.parseCsvMapStringFloat(path);
-        return new TriangleInequalityWithLimitedAngles(resultPreffixName, values);
+        return new DataDependentMetricFiltering(resultPreffixName, values);
     }
 
-    public static TriangleInequalityWithLimitedAngles getLearnedInstanceTriangleInequalityWithLimitedAngles(String resultPreffixName, int pivotsCount, int sampleSetSize, int queriesSampleSize, float ratioOfSmallestDists, String datasetName) {
+    public static DataDependentMetricFiltering getLearnedInstanceTriangleInequalityWithLimitedAngles(String resultPreffixName, int pivotsCount, int sampleSetSize, int queriesSampleSize, String datasetName) {
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
         String fileName = storage.getResultDescription(datasetName, pivotsCount, sampleSetSize, queriesSampleSize, RATIO_OF_SMALLEST_DISTS);
         fileName = storage.getFile(fileName).getAbsolutePath();
