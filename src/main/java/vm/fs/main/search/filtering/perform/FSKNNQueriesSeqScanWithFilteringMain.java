@@ -41,19 +41,19 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
 
         int pivotCount = 256;
         int k = 30;
 
         for (Dataset dataset : datasets) {
-            BoundsOnDistanceEstimation[] filters = initTestedFilters(pivotCount, dataset.getDatasetName(), k);
+            BoundsOnDistanceEstimation[] filters = initTestedFilters(pivotCount, dataset, k);
             for (BoundsOnDistanceEstimation filter : filters) {
                 run(dataset, filter, pivotCount, k);
                 System.gc();
@@ -103,24 +103,25 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         recallStorage.save();
     }
 
-    private static BoundsOnDistanceEstimation[] initTestedFilters(int pivotCount, String datasetName, int k) {
+    private static BoundsOnDistanceEstimation[] initTestedFilters(int pivotCount, Dataset dataset, int k) {
         String namePrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots_" + k + "NN";
         OnePivotFilter metricFiltering = new TriangleInequality(namePrefix);
         OnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(namePrefix,
                 pivotCount,
                 LearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_O_COUNT,
                 LearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_Q_COUNT,
-                datasetName
+                dataset
         );
         TwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(namePrefix);
         TwoPivotsFilter ptolemaicFiltering = new PtolemaiosFiltering(namePrefix);
         TwoPivotsFilter dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(
                 namePrefix,
-                datasetName,
+                dataset,
                 pivotCount,
                 LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
-        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
-//        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{fourPointPropertyBased, ptolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
     }
 
 }

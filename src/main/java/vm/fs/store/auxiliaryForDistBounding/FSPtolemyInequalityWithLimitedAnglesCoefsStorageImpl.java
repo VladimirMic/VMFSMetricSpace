@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
+import vm.metricSpace.Dataset;
+import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
 
@@ -37,12 +41,30 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         return ret;
     }
 
-    public static DataDependentGeneralisedPtolemaicFiltering getLearnedInstance(String resultPreffixName, String datasetName, int pivotCount, boolean allPivotPairs) {
+    public static DataDependentGeneralisedPtolemaicFiltering getLearnedInstance(String resultPreffixName, Dataset dataset, int pivotCount, boolean allPivotPairs) {
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
-        String fileName = storage.getNameOfFileWithCoefs(datasetName, pivotCount, allPivotPairs);
+        String fileName = storage.getNameOfFileWithCoefs(dataset.getDatasetName(), pivotCount, allPivotPairs);
         File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
-        return new DataDependentGeneralisedPtolemaicFiltering(resultPreffixName, coefs);
+        List pivots = dataset.getPivots(pivotCount);
+        List pivotIDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), dataset.getMetricSpace());
+        float[][][] coefsToArrays = transformsCoefsToArrays(coefs, pivotIDs);
+        return new DataDependentGeneralisedPtolemaicFiltering(resultPreffixName, coefsToArrays);
+    }
+
+    private static float[][][] transformsCoefsToArrays(Map<String, float[]> coefs, List pivotIDs) {
+        Iterator<String> it = coefs.keySet().iterator();
+        float[][][] ret = new float[pivotIDs.size()][pivotIDs.size()][4];
+        while (it.hasNext()) {
+            String key = it.next();
+            String[] pivots = key.split("-");
+            int idx1 = pivotIDs.indexOf(pivots[0]);
+            int idx2 = pivotIDs.indexOf(pivots[1]);
+            int min = Math.min(idx1, idx2);
+            int max = Math.max(idx1, idx2);
+            ret[min][max] = coefs.get(key);
+        }
+        return ret;
     }
 
     @Override
@@ -59,7 +81,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     public String getNameOfFileWithCoefs(String datasetName, int pivotCount, boolean allPivotPairs) {
-        return getResultDescription(datasetName, FSEvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K,  FSEvalAndStoreSampleOfSmallestDistsMain.SAMPLE_SET_SIZE,  FSEvalAndStoreSampleOfSmallestDistsMain.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
+        return getResultDescription(datasetName, FSEvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K, FSEvalAndStoreSampleOfSmallestDistsMain.SAMPLE_SET_SIZE, FSEvalAndStoreSampleOfSmallestDistsMain.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
     }
 
 }
