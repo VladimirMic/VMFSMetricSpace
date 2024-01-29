@@ -41,8 +41,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
@@ -69,7 +69,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount);
         List queries = dataset.getMetricQueryObjects();
-        queries = queries.subList(0, 1000);;
+        queries = queries.subList(0, 1000);
         List pivots = dataset.getPivots(pivotCount);
         if (poDists == null || poDists.length == 0) {
             pd = ToolsMetricDomain.evaluateMatrixOfDistances(dataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df);
@@ -104,7 +104,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     }
 
     private static BoundsOnDistanceEstimation[] initTestedFilters(int pivotCount, Dataset dataset, int k) {
-        String namePrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots_" + k + "NN";
+        String namePrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots_" + k + "NN_SortedP";
         OnePivotFilter metricFiltering = new TriangleInequality(namePrefix);
         OnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(namePrefix,
                 pivotCount,
@@ -119,9 +119,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 dataset,
                 pivotCount,
                 LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
-//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
-//        return new BoundsOnDistanceEstimation[]{fourPointPropertyBased, ptolemaicFiltering};
-        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering, fourPointPropertyBased, ptolemaicFiltering};
     }
 
 }
