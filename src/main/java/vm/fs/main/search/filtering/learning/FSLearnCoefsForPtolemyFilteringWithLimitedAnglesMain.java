@@ -18,7 +18,7 @@ import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDist
  *
  * @author Vlada
  */
-public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
+public class FSLearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
@@ -30,13 +30,13 @@ public class LearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
 //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
-            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
+//            new FSDatasetInstanceSingularizator.SIFTdataset(),
+//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);

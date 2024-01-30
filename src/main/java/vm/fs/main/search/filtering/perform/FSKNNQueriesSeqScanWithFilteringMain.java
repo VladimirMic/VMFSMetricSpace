@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.main.search.filtering.learning.LearnCoefsForTriangularFilteringWithLimitedAnglesMain;
+import vm.fs.main.search.filtering.learning.FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
@@ -41,10 +41,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+//            new FSDatasetInstanceSingularizator.SIFTdataset(),
+//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
@@ -79,7 +79,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
         SearchingAlgorithm alg;
         if (filter instanceof TwoPivotsFilter) {
-            alg = new KNNSearchWithTwoPivotFiltering(metricSpace, (TwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df, LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
+            alg = new KNNSearchWithTwoPivotFiltering(metricSpace, (TwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);
         } else if (filter instanceof OnePivotFilter) {
             alg = new KNNSearchWithOnePivotFiltering(metricSpace, (OnePivotFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
         } else {
@@ -101,6 +101,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(new FSNearestNeighboursStorageImpl(), recallStorage);
         evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), k);
         recallStorage.save();
+        
+//        System.out.println("tLB: " + KNNSearchWithTwoPivotFiltering.tLB);
+//        System.out.println("oSearch: " + KNNSearchWithTwoPivotFiltering.oSearch);
+//        System.out.println("t3: " + KNNSearchWithTwoPivotFiltering.t3);
+//        System.out.println("tDistComps: " + KNNSearchWithTwoPivotFiltering.tDistComps);
     }
 
     private static BoundsOnDistanceEstimation[] initTestedFilters(int pivotCount, Dataset dataset, int k) {
@@ -108,8 +113,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         OnePivotFilter metricFiltering = new TriangleInequality(namePrefix);
         OnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(namePrefix,
                 pivotCount,
-                LearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_O_COUNT,
-                LearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_Q_COUNT,
+                FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_O_COUNT,
+                FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_Q_COUNT,
                 dataset
         );
         TwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(namePrefix);
@@ -119,8 +124,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 dataset,
                 pivotCount,
                 LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
-//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering};
-        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering, fourPointPropertyBased, ptolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
     }
 
 }

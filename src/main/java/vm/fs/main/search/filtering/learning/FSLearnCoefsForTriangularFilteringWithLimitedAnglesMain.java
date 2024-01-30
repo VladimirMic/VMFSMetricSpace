@@ -13,7 +13,7 @@ import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequa
  *
  * @author Vlada
  */
-public class LearnCoefsForTriangularFilteringWithLimitedAnglesMain {
+public class FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain {
 
     public static final Integer SAMPLE_O_COUNT = 10000;
     public static final Integer SAMPLE_Q_COUNT = 1000;

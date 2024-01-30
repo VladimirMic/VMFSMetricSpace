@@ -13,7 +13,7 @@ import vm.metricSpace.Dataset;
  *
  * @author Vlada
  */
-public class CheckDatasetFilesConsistency {
+public class FSCheckDatasetFilesConsistency {
 
     public static void main(String[] args) {
         boolean publicQueries = true;

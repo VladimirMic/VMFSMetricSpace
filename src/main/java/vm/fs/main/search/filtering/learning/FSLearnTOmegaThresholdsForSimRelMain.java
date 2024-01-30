@@ -10,7 +10,7 @@ import vm.simRel.impl.learn.storeLearnt.SimRelEuclidThresholdsTOmegaStorage;
  *
  * @author Vlada
  */
-public class LearnTOmegaThresholdsForSimRelMain {
+public class FSLearnTOmegaThresholdsForSimRelMain {
 
     public static void main(String[] args) {
         Dataset[] pcaDatasets = new Dataset[]{

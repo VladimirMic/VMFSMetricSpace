@@ -17,9 +17,9 @@ import vm.metricSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringW
  *
  * @author Vlada
  */
-public class LearnSecondaryFilteringWithGHPSketchesMain {
+public class FSLearnSecondaryFilteringWithGHPSketchesMain {
 
-    public static final Logger LOG = Logger.getLogger(LearnSecondaryFilteringWithGHPSketchesMain.class.getName());
+    public static final Logger LOG = Logger.getLogger(FSLearnSecondaryFilteringWithGHPSketchesMain.class.getName());
 
     public static void main(String[] args) {
         boolean publicQueries = false;
