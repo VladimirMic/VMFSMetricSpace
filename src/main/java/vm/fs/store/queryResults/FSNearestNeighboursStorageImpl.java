@@ -42,13 +42,16 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     private String lastString = null;
     private File lastFile = null;
 
-    private File getFileWithResults(String resultsName, String datasetName, String querySetName, boolean willBeDeleted) {
-        String concat = resultsName + datasetName + querySetName;
+    private File getFileWithResults(String resultsName, String datasetName, String querySetName, Integer k, boolean willBeDeleted) {
+        String concat = resultsName + datasetName + querySetName + k;
         if (concat.equals(lastString)) {
             return lastFile;
         }
         File ret = new File(FSGlobal.RESULT_FOLDER, resultsName);
         String n = datasetName + "_" + querySetName;
+        if (k != null) {
+            n += "_" + k;
+        }
         n += compress ? ".gz" : ".csv";
         ret = new File(ret, n);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
@@ -58,10 +61,10 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     }
 
     @Override
-    public void storeQueryResults(List<Object> queryObjectsIDs, TreeSet<Map.Entry<Object, Float>>[] queryResults, String datasetName, String querySetName, String resultsName) {
+    public void storeQueryResults(List<Object> queryObjectsIDs, TreeSet<Map.Entry<Object, Float>>[] queryResults, Integer k, String datasetName, String querySetName, String resultsName) {
         OutputStream os = null;
         try {
-            File file = getFileWithResults(resultsName, datasetName, querySetName, true);
+            File file = getFileWithResults(resultsName, datasetName, querySetName, k, true);
             os = new FileOutputStream(file, false);
             if (compress) {
                 os = new GZIPOutputStream(os, true);
@@ -87,10 +90,10 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     private boolean ask = true;
 
     @Override
-    public void storeQueryResult(Object queryObjectID, TreeSet<Map.Entry<Object, Float>> queryResults, String datasetName, String querySetName, String resultsName) {
+    public void storeQueryResult(Object queryObjectID, TreeSet<Map.Entry<Object, Float>> queryResults, Integer k, String datasetName, String querySetName, String resultsName) {
         OutputStream os = null;
         try {
-            File file = getFileWithResults(resultsName, datasetName, querySetName, ask);
+            File file = getFileWithResults(resultsName, datasetName, querySetName, k, ask);
             ask = false;
             os = new FileOutputStream(file, true);
             if (compress) {
@@ -111,10 +114,10 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     }
 
     @Override
-    public Map<String, TreeSet<Map.Entry<Object, Float>>> getQueryResultsForDataset(String queryResultsName, String datasetName, String querySetName) {
+    public Map<String, TreeSet<Map.Entry<Object, Float>>> getQueryResultsForDataset(String queryResultsName, String datasetName, String querySetName, Integer k) {
         try {
             Map<String, TreeSet<Map.Entry<Object, Float>>> ret = new HashMap<>();
-            File file = getFileWithResults(queryResultsName, datasetName, querySetName, false);
+            File file = getFileWithResults(queryResultsName, datasetName, querySetName, k, false);
             if (!file.exists()) {
                 LOG.log(Level.SEVERE, "The file with the results does not exist: {0}", file.getAbsolutePath());
                 return ret;

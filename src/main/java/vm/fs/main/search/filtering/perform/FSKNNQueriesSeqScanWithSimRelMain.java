@@ -136,7 +136,7 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
             time += System.currentTimeMillis();
             alg.incTime(queryObjId, time);
             if (STORE_RESULTS) {
-                resultsStorage.storeQueryResult(queryObjId, rerankCandidateSet, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), resultName);
+                resultsStorage.storeQueryResult(queryObjId, rerankCandidateSet, k, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), resultName);
             }
             long[] earlyStopsPerCoords = (long[]) alg.getSimRelStatsOfLastExecutedQuery();
             String earlyStopsPerCoordsString = DataTypeConvertor.longToString(earlyStopsPerCoords, ",");
@@ -156,7 +156,7 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
             recallStorage.save();
             LOG.log(Level.INFO, "Evaluating error on distance");
             ErrorOnDistEvaluator eodEvaluator = new ErrorOnDistEvaluator(resultsStorage, recallStorage);
-            eodEvaluator.evaluateAndStoreErrorsOnDist(fullDataset.getDatasetName(), fullDataset.getQuerySetName(), k, pcaDataset.getDatasetName(), pcaDataset.getQuerySetName(), resultName);
+            eodEvaluator.evaluateAndStoreErrorsOnDist(fullDataset.getDatasetName(), fullDataset.getQuerySetName(), k, pcaDataset.getDatasetName(), pcaDataset.getQuerySetName(), resultName, k);
             recallStorage.save();
         }
     }

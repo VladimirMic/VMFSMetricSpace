@@ -18,17 +18,20 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
-import vm.metricSpace.distance.bounding.onepivot.OnePivotFilter;
+import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
-import vm.metricSpace.distance.bounding.twopivots.TwoPivotsFilter;
+import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
+import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
+import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
-import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaiosFiltering;
+import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.learning.LearningPtolemyInequalityWithLimitedAngles;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.algorithm.SearchingAlgorithm;
 import vm.search.algorithm.impl.KNNSearchWithOnePivotFiltering;
-import vm.search.algorithm.impl.KNNSearchWithTwoPivotFiltering;
+import vm.search.algorithm.impl.KNNSearchWithGenericTwoPivotFiltering;
+import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
 
 /**
  *
@@ -41,10 +44,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
-//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-//            new FSDatasetInstanceSingularizator.SIFTdataset(),
-//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
@@ -53,35 +56,60 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         int k = 30;
 
         for (Dataset dataset : datasets) {
-            BoundsOnDistanceEstimation[] filters = initTestedFilters(pivotCount, dataset, k);
+            List pivots = dataset.getPivots(pivotCount);
+            BoundsOnDistanceEstimation[] filters = initTestedFilters(pivots, dataset, k);
             for (BoundsOnDistanceEstimation filter : filters) {
-                run(dataset, filter, pivotCount, k);
+                run(dataset, filter, pivots, k);
                 System.gc();
             }
         }
+//        KNNSearchWithOnePivotFiltering.SORT_PIVOTS = false;
+//        LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS = false;
+//        for (Dataset dataset : datasets) {
+//            List pivots = dataset.getPivots(pivotCount);
+//            BoundsOnDistanceEstimation[] filters = initTestedFilters(pivots, dataset, k);
+//            for (BoundsOnDistanceEstimation filter : filters) {
+//                run(dataset, filter, pivots, k);
+//                System.gc();
+//            }
+//        }
     }
 
-    private static void run(Dataset dataset, BoundsOnDistanceEstimation filter, int pivotCount, int k) {
+    private static void run(Dataset dataset, BoundsOnDistanceEstimation filter, List pivots, int k) {
         int maxObjectsCount = -1;
+        int pivotCount = pivots.size();
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
 
         AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount);
+
         List queries = dataset.getMetricQueryObjects();
         queries = queries.subList(0, 1000);
-        List pivots = dataset.getPivots(pivotCount);
+//        
+//        Map tmp = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(dataset.getMetricSpace(), queries, false);
+//        Object q82_539_735 = tmp.get("Q300");
+//        Object q47_741_071 = tmp.get("Q6");
+//        Object q41_278_457 = tmp.get("Q680");
+//        Object q34_206_871 = tmp.get("Q207");
+//        queries.clear();
+//        queries.add(q82_539_735);
+//        queries.add(q47_741_071);
+//        queries.add(q41_278_457);
+//        queries.add(q34_206_871);
+//
         if (poDists == null || poDists.length == 0) {
             pd = ToolsMetricDomain.evaluateMatrixOfDistances(dataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df);
             poDists = pd.loadPrecomPivotsToObjectsDists(null, null, -1);
         }
-
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
         SearchingAlgorithm alg;
-        if (filter instanceof TwoPivotsFilter) {
-            alg = new KNNSearchWithTwoPivotFiltering(metricSpace, (TwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);
-        } else if (filter instanceof OnePivotFilter) {
-            alg = new KNNSearchWithOnePivotFiltering(metricSpace, (OnePivotFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
+        if (filter instanceof AbstractPtolemaicBasedFiltering) {
+            alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
+        } else if (filter instanceof AbstractTwoPivotsFilter) {
+            alg = new KNNSearchWithGenericTwoPivotFiltering(metricSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);
+        } else if (filter instanceof AbstractOnePivotFilter) {
+            alg = new KNNSearchWithOnePivotFiltering(metricSpace, (AbstractOnePivotFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
         } else {
             throw new IllegalArgumentException("What a weird algorithm ... This is for the pivot filtering, uh?");
         }
@@ -94,39 +122,46 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         LOG.log(Level.INFO, "Storing results of queries");
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
-        resultsStorage.storeQueryResults(metricSpace, queries, results, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName());
+        resultsStorage.storeQueryResults(metricSpace, queries, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName());
 
         LOG.log(Level.INFO, "Evaluating accuracy of queries");
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), null);
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(new FSNearestNeighboursStorageImpl(), recallStorage);
         evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), k);
         recallStorage.save();
-        
-//        System.out.println("tLB: " + KNNSearchWithTwoPivotFiltering.tLB);
-//        System.out.println("oSearch: " + KNNSearchWithTwoPivotFiltering.oSearch);
-//        System.out.println("t3: " + KNNSearchWithTwoPivotFiltering.t3);
-//        System.out.println("tDistComps: " + KNNSearchWithTwoPivotFiltering.tDistComps);
+
+//        System.out.println("tLB: " + KNNSearchWithGenericTwoPivotFiltering.tLB);
+//        System.out.println("oSearch: " + KNNSearchWithGenericTwoPivotFiltering.oSearch);
+//        System.out.println("t3: " + KNNSearchWithGenericTwoPivotFiltering.t3);
+//        System.out.println("tDistComps: " + KNNSearchWithGenericTwoPivotFiltering.tDistComps);
     }
 
-    private static BoundsOnDistanceEstimation[] initTestedFilters(int pivotCount, Dataset dataset, int k) {
-        String namePrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots_" + k + "NN_SortedP";
-        OnePivotFilter metricFiltering = new TriangleInequality(namePrefix);
-        OnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(namePrefix,
+    private static BoundsOnDistanceEstimation[] initTestedFilters(List pivots, Dataset dataset, int k) {
+        int pivotCount = pivots.size();
+        List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
+        String namePrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots_" + k + "NN";
+        if (KNNSearchWithOnePivotFiltering.SORT_PIVOTS) {
+            namePrefix += "_SortedP";
+        }
+        AbstractOnePivotFilter metricFiltering = new TriangleInequality(namePrefix);
+        AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(namePrefix,
                 pivotCount,
                 FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_O_COUNT,
                 FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_Q_COUNT,
                 dataset
         );
-        TwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(namePrefix);
-        TwoPivotsFilter ptolemaicFiltering = new PtolemaiosFiltering(namePrefix);
-        TwoPivotsFilter dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(
+        AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(namePrefix);
+        AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFiltering(namePrefix, pivotsData, dataset.getDistanceFunction());
+        AbstractPtolemaicBasedFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(
                 namePrefix,
                 dataset,
                 pivotCount,
                 LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
         return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }
 
 }

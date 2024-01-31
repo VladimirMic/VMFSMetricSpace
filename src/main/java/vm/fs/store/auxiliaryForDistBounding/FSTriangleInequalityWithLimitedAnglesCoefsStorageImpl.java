@@ -30,7 +30,7 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
     @Override
     public void storeCoefficients(Map<Object, Float> results, String resultName) {
         try {
-            File resultFile = getFile(resultName);
+            File resultFile = getFile(resultName, true);
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(resultFile, false))) {
                 for (Map.Entry<Object, Float> entry : results.entrySet()) {
                     String pivotID = entry.getKey().toString();
@@ -44,14 +44,10 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
         }
     }
 
-    private File getFile(String resultName) {
+    private File getFile(String resultName, boolean willBeDeleted) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_TRIANGULAR_FILTERING_WITH_LIMITED_ANGLES);
-        folderFile.mkdirs();
         File ret = new File(folderFile, resultName);
-        if (ret.exists()) {
-            Logger.getLogger(FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.class.getName()).log(Level.WARNING, "The file already existed");
-        }
-        LOG.log(Level.INFO, "File path: {0}", ret.getAbsolutePath());
+        FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
     }
 
@@ -65,7 +61,7 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
     public static DataDependentMetricFiltering getLearnedInstanceTriangleInequalityWithLimitedAngles(String resultPreffixName, int pivotsCount, int sampleSetSize, int queriesSampleSize, Dataset dataset) {
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
         String fileName = storage.getResultDescription(dataset.getDatasetName(), pivotsCount, sampleSetSize, queriesSampleSize, RATIO_OF_SMALLEST_DISTS);
-        fileName = storage.getFile(fileName).getAbsolutePath();
+        fileName = storage.getFile(fileName, false).getAbsolutePath();
         SortedMap<String, Float> coefsForPivots = Tools.parseCsvMapStringFloat(fileName);
         float[] coefsArray = getCoefsForPivots(dataset.getPivots(pivotsCount), dataset.getMetricSpace(), coefsForPivots);
         return new DataDependentMetricFiltering(resultPreffixName, coefsArray);
