@@ -59,7 +59,7 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
         List<Object> sampleObjects = metricObjects.subList(0, SAMPLE_SET_SIZE);
         List<Object> queriesSamples = metricObjects.subList(SAMPLE_SET_SIZE, SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
 
-        Comparator<Map.Entry<String, Float>> comp = new Tools.MapByValueComparator<>();
+        Comparator<Map.Entry<String, Float>> comp = new Tools.MapByFloatValueComparator<>();
         TreeSet<Map.Entry<String, Float>> result = new TreeSet(comp);
         for (int i = 0; i < sampleObjects.size(); i++) {
             Object o = sampleObjects.get(i);

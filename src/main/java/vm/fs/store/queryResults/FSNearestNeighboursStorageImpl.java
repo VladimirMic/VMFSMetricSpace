@@ -131,7 +131,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             while (line != null) {
                 String[] pairsOfNearestNeighbours = line.split(";");
                 String queryObjId = pairsOfNearestNeighbours[0];
-                TreeSet<Map.Entry<Object, Float>> nearestNeighbours = new TreeSet<>(new Tools.MapByValueComparator());
+                TreeSet<Map.Entry<Object, Float>> nearestNeighbours = new TreeSet<>(new Tools.MapByFloatValueComparator());
                 for (int i = 1; i < pairsOfNearestNeighbours.length; i++) {
                     String nearestNeighbourPair = pairsOfNearestNeighbours[i];
                     if (nearestNeighbourPair.isEmpty()) {

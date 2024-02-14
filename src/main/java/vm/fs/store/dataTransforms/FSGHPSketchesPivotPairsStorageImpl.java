@@ -18,13 +18,14 @@ import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 /**
  *
  * @author Vlada
+ * @param <T>
  */
-public class FSGHPSketchesPivotPairsStorageImpl implements PivotPairsStoreInterface {
+public class FSGHPSketchesPivotPairsStorageImpl<T> implements PivotPairsStoreInterface<T> {
 
     private static final Logger LOG = Logger.getLogger(FSGHPSketchesPivotPairsStorageImpl.class.getName());
 
     @Override
-    public void storeSketching(String resultName, AbstractMetricSpace<Object> metricSpace, List<Object> pivots, Object... additionalInfoToStoreWithLearningSketching) {
+    public void storePivotPairs(String resultName, AbstractMetricSpace<T> metricSpace, List<Object> pivots, Object... additionalInfoToStoreWithLearningSketching) {
         OutputStreamWriter w = null;
         try {
             w = new OutputStreamWriter(new FileOutputStream(getFileForResults(resultName, true), false));
