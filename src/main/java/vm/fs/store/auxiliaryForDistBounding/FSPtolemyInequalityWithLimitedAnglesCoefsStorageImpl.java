@@ -15,9 +15,7 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningPtolemyInequalityWithLimitedAngles;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
-import vm.search.algorithm.impl.KNNSearchWithOnePivotFiltering;
 
 /**
  *
@@ -47,9 +45,9 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
         String fileName = storage.getNameOfFileWithCoefs(dataset.getDatasetName(), pivotCount, allPivotPairs);
         File file = getFile(fileName, false);
-        if (KNNSearchWithOnePivotFiltering.SORT_PIVOTS && (!LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS || !allPivotPairs)) {
-            throw new IllegalArgumentException("If the pivots are sorted, then the code needs coefficients for all pivot pairs. The params, though, are inconsistent: KNNSearchWithOnePivotFiltering.SORT_PIVOTS: " + KNNSearchWithOnePivotFiltering.SORT_PIVOTS + ", LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS (used in the algorithm init): " + LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS + ", allPivotPairs (used to init file): " + allPivotPairs);
-        }
+//        if (KNNSearchWithOnePivotFiltering.SORT_PIVOTS && (!LearningCoefsForPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS || !allPivotPairs)) {
+//            throw new IllegalArgumentException("If the pivots are sorted, then the code needs coefficients for all pivot pairs. The params, though, are inconsistent: KNNSearchWithOnePivotFiltering.SORT_PIVOTS: " + KNNSearchWithOnePivotFiltering.SORT_PIVOTS + ", LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS (used in the algorithm init): " + LearningCoefsForPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS + ", allPivotPairs (used to init file): " + allPivotPairs);
+//        }
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
         List pivots = dataset.getPivots(pivotCount);
         List pivotIDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), dataset.getMetricSpace());

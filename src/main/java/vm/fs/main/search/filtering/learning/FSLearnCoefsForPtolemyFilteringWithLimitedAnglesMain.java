@@ -11,7 +11,7 @@ import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningPtolemyInequalityWithLimitedAngles;
+import vm.metricSpace.distance.bounding.twopivots.learning.LearningCoefsForPtolemyInequalityWithLimitedAngles;
 import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
 
 /**
@@ -23,7 +23,7 @@ public class FSLearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
     public static final Integer PIVOTS = 256;
-    public static final Boolean ALL_PIVOT_PAIRS = LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS;
+    public static final Boolean ALL_PIVOT_PAIRS = true;
 
     public static void main(String[] args) throws IOException {
         Dataset[] datasets = new Dataset[]{
@@ -53,7 +53,7 @@ public class FSLearnCoefsForPtolemyFilteringWithLimitedAnglesMain {
         List<Object> sampleObjectsAndQueries = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
         TreeSet<Map.Entry<String, Float>> smallDistsOfSampleObjectsAndQueries = smallDistSample.loadPrecomputedDistances();
 
-        LearningPtolemyInequalityWithLimitedAngles learning = new LearningPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, smallDistsOfSampleObjectsAndQueries, storage, dataset.getDatasetName(), ALL_PIVOT_PAIRS);
+        LearningCoefsForPtolemyInequalityWithLimitedAngles learning = new LearningCoefsForPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, smallDistsOfSampleObjectsAndQueries, storage, dataset.getDatasetName(), ALL_PIVOT_PAIRS);
         learning.execute();
     }
 }

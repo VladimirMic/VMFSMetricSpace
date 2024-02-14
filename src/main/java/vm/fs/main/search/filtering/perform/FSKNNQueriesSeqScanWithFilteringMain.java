@@ -22,10 +22,9 @@ import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
 import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
 import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningPtolemyInequalityWithLimitedAngles;
+import vm.metricSpace.distance.bounding.twopivots.learning.LearningCoefsForPtolemyInequalityWithLimitedAngles;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.algorithm.SearchingAlgorithm;
@@ -47,9 +46,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.DeCAFDataset()
+        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
 
         int pivotCount = 256;
@@ -63,16 +62,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 System.gc();
             }
         }
-//        KNNSearchWithOnePivotFiltering.SORT_PIVOTS = false;
-//        LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS = false;
-//        for (Dataset dataset : datasets) {
-//            List pivots = dataset.getPivots(pivotCount);
-//            BoundsOnDistanceEstimation[] filters = initTestedFilters(pivots, dataset, k);
-//            for (BoundsOnDistanceEstimation filter : filters) {
-//                run(dataset, filter, pivots, k);
-//                System.gc();
-//            }
-//        }
+        KNNSearchWithOnePivotFiltering.SORT_PIVOTS = false;
+
     }
 
     private static void run(Dataset dataset, BoundsOnDistanceEstimation filter, List pivots, int k) {
@@ -130,8 +121,6 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), k);
         recallStorage.save();
 
-//        System.out.println("tLB: " + KNNSearchWithGenericTwoPivotFiltering.tLB);
-//        System.out.println("oSearch: " + KNNSearchWithGenericTwoPivotFiltering.oSearch);
 //        System.out.println("t3: " + KNNSearchWithGenericTwoPivotFiltering.t3);
 //        System.out.println("tDistComps: " + KNNSearchWithGenericTwoPivotFiltering.tDistComps);
     }
@@ -152,16 +141,14 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         );
         AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(namePrefix);
         AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFiltering(namePrefix, pivotsData, dataset.getDistanceFunction());
-        AbstractPtolemaicBasedFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(
-                namePrefix,
+        AbstractPtolemaicBasedFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(namePrefix,
                 dataset,
-                pivotCount,
-                LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
+                pivotCount, true);
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
-        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
-//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }
 
 }

@@ -12,7 +12,7 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.datasetPartitioning.AbstractDatasetPartitioning;
 import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningPtolemyInequalityWithLimitedAngles;
+import vm.metricSpace.distance.bounding.twopivots.learning.LearningCoefsForPtolemyInequalityWithLimitedAngles;
 
 /**
  *
@@ -40,7 +40,7 @@ public class FSGRAPPLEPartitioningMain {
     private static void run(Dataset dataset) {
         int pivotCount = 256;
         List<Object> pivots = dataset.getPivots(pivotCount);
-        DataDependentGeneralisedPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset, pivotCount, LearningPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
+        DataDependentGeneralisedPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset, pivotCount, LearningCoefsForPtolemyInequalityWithLimitedAngles.ALL_PIVOT_PAIRS);
         AbstractDatasetPartitioning partitioning = new GRAPPLEPartitioning(filter, dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSGRAPPLEPartitioningStorage storage = new FSGRAPPLEPartitioningStorage();
         partitioning.partitionObjects(dataset.getMetricObjectsFromDataset(), dataset.getDatasetName(), storage, pivotCount);
