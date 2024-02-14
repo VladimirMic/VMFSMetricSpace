@@ -8,7 +8,7 @@ import vm.fs.store.dataTransforms.FSGHPSketchesPivotPairsStorageImpl;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
-import vm.objTransforms.storeLearned.GHPSketchingPivotPairsStoreInterface;
+import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 
 /**
  *
@@ -32,7 +32,7 @@ public class FSApplyGHPSketchingMain {
 
     private static void run(Dataset dataset) {
         AbstractMetricSpacesStorage storageForSketches = new FSMetricSpacesStorage(new FSMetricSpaceImpl<>(), SingularisedConvertors.LONG_VECTOR_SPACE);
-        GHPSketchingPivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
+        PivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         TransformDataToGHPSketches evaluator = new TransformDataToGHPSketches(dataset, storageOfPivotPairs, storageForSketches, 0.5f, -1);
 //        int[] sketchesLengths = new int[]{192, 256};
         int[] sketchesLengths = new int[]{512};

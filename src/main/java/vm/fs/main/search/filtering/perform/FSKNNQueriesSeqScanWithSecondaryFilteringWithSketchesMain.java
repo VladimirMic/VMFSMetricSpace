@@ -22,10 +22,10 @@ import vm.metricSpace.distance.bounding.nopivot.learning.LearningSecondaryFilter
 import vm.metricSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringWithSketchesStoreInterface;
 import vm.objTransforms.objectToSketchTransformators.AbstractObjectToSketchTransformator;
 import vm.objTransforms.objectToSketchTransformators.SketchingGHP;
-import vm.objTransforms.storeLearned.GHPSketchingPivotPairsStoreInterface;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.algorithm.SearchingAlgorithm;
 import vm.search.algorithm.impl.KNNSearchWithSketchSecondaryFiltering;
+import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 
 /**
  *
@@ -74,7 +74,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
         AbstractMetricSpace metricSpace = fullDataset.getMetricSpace();
         DistanceFunctionInterface df = fullDataset.getDistanceFunction();
 
-        GHPSketchingPivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
+        PivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         List pivots = fullDataset.getPivots(-1);
         AbstractObjectToSketchTransformator sketchingTechnique;
         if (pivotPairsFileName == null) {

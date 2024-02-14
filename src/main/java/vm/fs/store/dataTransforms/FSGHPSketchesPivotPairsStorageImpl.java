@@ -13,15 +13,15 @@ import java.util.logging.Logger;
 import vm.fs.FSGlobal;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.AbstractMetricSpace;
-import vm.objTransforms.storeLearned.GHPSketchingPivotPairsStoreInterface;
+import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 
 /**
  *
  * @author Vlada
  */
-public class FSGHPSketchesPivotPairsStorageImpl implements GHPSketchingPivotPairsStoreInterface {
+public class FSGHPSketchesPivotPairsStorageImpl implements PivotPairsStoreInterface {
 
-    private final Logger LOG = Logger.getLogger(FSGHPSketchesPivotPairsStorageImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(FSGHPSketchesPivotPairsStorageImpl.class.getName());
 
     @Override
     public void storeSketching(String resultName, AbstractMetricSpace<Object> metricSpace, List<Object> pivots, Object... additionalInfoToStoreWithLearningSketching) {
@@ -50,7 +50,7 @@ public class FSGHPSketchesPivotPairsStorageImpl implements GHPSketchingPivotPair
         }
     }
 
-    private File getFileForResults(String sketchesName, boolean willBeDeleted) {
+    protected File getFileForResults(String sketchesName, boolean willBeDeleted) {
         File ret = new File(FSGlobal.BINARY_SKETCHES, sketchesName + ".csv");
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
@@ -62,7 +62,7 @@ public class FSGHPSketchesPivotPairsStorageImpl implements GHPSketchingPivotPair
         try {
             File file = getFileForResults(sketchesName, false);
             if (!file.exists()) {
-                throw new IllegalArgumentException("File with pivot pairs does no exists. Sketches name " + sketchesName);
+                throw new IllegalArgumentException("File with pivot pairs does no exists. File with name: " + sketchesName);
             }
             List<String[]> ret = new ArrayList<>();
             br = new BufferedReader(new FileReader(file));
