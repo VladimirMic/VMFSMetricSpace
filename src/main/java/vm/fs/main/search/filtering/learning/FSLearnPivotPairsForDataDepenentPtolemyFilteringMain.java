@@ -1,0 +1,56 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package vm.fs.main.search.filtering.learning;
+
+import java.util.List;
+import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
+import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain.PIVOTS;
+import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain.SAMPLE_QUERY_SET_SIZE;
+import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain.SAMPLE_SET_SIZE;
+import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
+import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.Dataset;
+import vm.metricSpace.distance.DistanceFunctionInterface;
+import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
+import vm.metricSpace.distance.bounding.twopivots.learning.LearningPivotPairsForPtolemyInequalityWithLimitedAngles;
+
+/**
+ *
+ * @author au734419
+ */
+public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
+
+    public static void main(String[] args) {
+        Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+        //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
+        //            new FSDatasetInstanceSingularizator.SIFTdataset(),
+        //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+        //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+        //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
+        //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
+        //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
+        };
+        for (Dataset dataset : datasets) {
+            run(dataset);
+        }
+    }
+
+    private static void run(Dataset dataset) {
+        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
+        DistanceFunctionInterface df = dataset.getDistanceFunction();
+        List<Object> pivots = dataset.getPivots(PIVOTS);
+
+        DataDependentGeneralisedPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(null, dataset, pivots.size(), true);
+
+        List<Object> sampleObjectsAndQueries = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
+
+        LearningPivotPairsForPtolemyInequalityWithLimitedAngles learning = new LearningPivotPairsForPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, FSEvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K, filter, dataset.getDatasetName());
+        learning.execute();
+    }
+}

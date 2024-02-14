@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.main.search.filtering.learning.FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain;
+import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
@@ -24,7 +24,6 @@ import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFilterin
 import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
 import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningCoefsForPtolemyInequalityWithLimitedAngles;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.algorithm.SearchingAlgorithm;
@@ -77,18 +76,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         List queries = dataset.getMetricQueryObjects();
         queries = queries.subList(0, 1000);
-//        
-//        Map tmp = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(dataset.getMetricSpace(), queries, false);
-//        Object q82_539_735 = tmp.get("Q300");
-//        Object q47_741_071 = tmp.get("Q6");
-//        Object q41_278_457 = tmp.get("Q680");
-//        Object q34_206_871 = tmp.get("Q207");
-//        queries.clear();
-//        queries.add(q82_539_735);
-//        queries.add(q47_741_071);
-//        queries.add(q41_278_457);
-//        queries.add(q34_206_871);
-//
+
         if (poDists == null || poDists.length == 0) {
             pd = ToolsMetricDomain.evaluateMatrixOfDistances(dataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df);
             poDists = pd.loadPrecomPivotsToObjectsDists(null, null, -1);
@@ -135,8 +123,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         AbstractOnePivotFilter metricFiltering = new TriangleInequality(namePrefix);
         AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(namePrefix,
                 pivotCount,
-                FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_O_COUNT,
-                FSLearnCoefsForTriangularFilteringWithLimitedAnglesMain.SAMPLE_Q_COUNT,
+                FSLearnCoefsForDataDepenentMetricFilteringMain.SAMPLE_O_COUNT,
+                FSLearnCoefsForDataDepenentMetricFilteringMain.SAMPLE_Q_COUNT,
                 dataset
         );
         AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(namePrefix);
