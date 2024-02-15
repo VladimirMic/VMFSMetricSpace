@@ -24,6 +24,7 @@ import vm.metricSpace.distance.bounding.twopivots.learning.LearningPivotPairsFor
  *
  * @author au734419
  */
+@Deprecated
 public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
 
     public static void main(String[] args) {
