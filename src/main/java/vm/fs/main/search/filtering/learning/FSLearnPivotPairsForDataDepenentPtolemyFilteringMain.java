@@ -5,6 +5,8 @@
 package vm.fs.main.search.filtering.learning;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain.PIVOTS;
@@ -28,14 +30,14 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
-            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
+//            new FSDatasetInstanceSingularizator.SIFTdataset(),
+//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -52,6 +54,10 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
         List<Object> sampleObjectsAndQueries = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
         FSDataDependentPtolemyInequalityPivotPairsStorageImpl storage = new FSDataDependentPtolemyInequalityPivotPairsStorageImpl();
         LearningPivotPairsForPtolemyInequalityWithLimitedAngles learning = new LearningPivotPairsForPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, FSEvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K, filter, dataset.getDatasetName(), storage);
-        learning.execute();
+        try {
+            learning.execute();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FSLearnPivotPairsForDataDepenentPtolemyFilteringMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
