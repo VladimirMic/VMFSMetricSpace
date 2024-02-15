@@ -12,13 +12,10 @@ import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
-import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningPivotPairsForPtolemyInequalityWithLimitedAngles;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
-import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 
 /**
  *
@@ -44,7 +41,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         return ret;
     }
 
-    public static DataDependentGeneralisedPtolemaicFiltering getLearnedInstance(String resultPreffixName, Dataset dataset, int pivotCount, PivotPairsStoreInterface storageOfPivotPairs) {
+    public static DataDependentGeneralisedPtolemaicFiltering getLearnedInstance(String resultPreffixName, Dataset dataset, int pivotCount) {
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storageOfCoefs = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
         String fileName = storageOfCoefs.getNameOfFileWithCoefs(dataset.getDatasetName(), pivotCount, true);
         File file = getFile(fileName, false);
@@ -52,12 +49,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         List pivots = dataset.getPivots(pivotCount);
         List pivotIDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), dataset.getMetricSpace());
         float[][][] coefsToArrays = transformsCoefsToArrays(coefs, pivotIDs);
-        List pivotPairs = null;
-        if (storageOfPivotPairs != null) {
-            String nameOfFileWithPivotPairs = LearningPivotPairsForPtolemyInequalityWithLimitedAngles.getNameOfFile(dataset.getDatasetName(), pivotCount, FSLearnCoefsForDataDepenentPtolemyFilteringMain.SAMPLE_QUERY_SET_SIZE, FSLearnCoefsForDataDepenentPtolemyFilteringMain.SAMPLE_SET_SIZE);
-            pivotPairs = storageOfPivotPairs.loadPivotPairsIDs(nameOfFileWithPivotPairs);
-        }
-        return new DataDependentGeneralisedPtolemaicFiltering(resultPreffixName, coefsToArrays, pivotPairs);
+        return new DataDependentGeneralisedPtolemaicFiltering(resultPreffixName, coefsToArrays);
     }
 
     private static float[][][] transformsCoefsToArrays(Map<String, float[]> coefs, List pivotIDs) {
