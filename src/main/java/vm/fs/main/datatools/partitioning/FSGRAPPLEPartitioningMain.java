@@ -40,7 +40,7 @@ public class FSGRAPPLEPartitioningMain {
     private static void run(Dataset dataset) {
         int pivotCount = 256;
         List<Object> pivots = dataset.getPivots(pivotCount);
-        DataDependentGeneralisedPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset, pivotCount, true);
+        DataDependentGeneralisedPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset, pivotCount, null);
         AbstractDatasetPartitioning partitioning = new GRAPPLEPartitioning(filter, dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSGRAPPLEPartitioningStorage storage = new FSGRAPPLEPartitioningStorage();
         partitioning.partitionObjects(dataset.getMetricObjectsFromDataset(), dataset.getDatasetName(), storage, pivotCount);

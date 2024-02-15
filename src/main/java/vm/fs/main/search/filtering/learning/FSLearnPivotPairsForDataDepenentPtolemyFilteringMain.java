@@ -30,10 +30,10 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            new FSDatasetInstanceSingularizator.MPEG7dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
-//            new FSDatasetInstanceSingularizator.SIFTdataset(),
-//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
@@ -49,7 +49,7 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         List<Object> pivots = dataset.getPivots(PIVOTS);
 
-        DataDependentGeneralisedPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(null, dataset, pivots.size(), true);
+        DataDependentGeneralisedPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(null, dataset, pivots.size(), null);
 
         List<Object> sampleObjectsAndQueries = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
         FSDataDependentPtolemyInequalityPivotPairsStorageImpl storage = new FSDataDependentPtolemyInequalityPivotPairsStorageImpl();

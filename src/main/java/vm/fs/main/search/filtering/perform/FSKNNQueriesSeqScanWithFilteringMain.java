@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
+import vm.fs.store.auxiliaryForDistBounding.FSDataDependentPtolemyInequalityPivotPairsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
@@ -43,9 +44,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.DeCAFDataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
@@ -131,12 +132,14 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFiltering(namePrefix, pivotsData, dataset.getDistanceFunction());
         AbstractPtolemaicBasedFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(namePrefix,
                 dataset,
-                pivotCount, true);
+                pivotCount,
+                new FSDataDependentPtolemyInequalityPivotPairsStorageImpl()
+        );
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
-//        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
-        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }
 
 }
