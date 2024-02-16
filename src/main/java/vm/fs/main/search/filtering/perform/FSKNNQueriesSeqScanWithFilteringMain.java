@@ -43,9 +43,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            new FSDatasetInstanceSingularizator.SIFTdataset()
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.MPEG7dataset()
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
@@ -61,8 +61,6 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 System.gc();
             }
         }
-        KNNSearchWithOnePivotFiltering.SORT_PIVOTS = false;
-
     }
 
     private static void run(Dataset dataset, BoundsOnDistanceEstimation filter, List pivots, int k) {
