@@ -42,7 +42,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.SIFTdataset()
