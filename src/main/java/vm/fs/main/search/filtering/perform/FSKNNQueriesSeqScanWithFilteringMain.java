@@ -45,9 +45,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.MPEG7dataset()
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
 
         int pivotCount = 256;
@@ -131,8 +131,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 dataset,
                 pivotCount
         );
-//        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
-        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering};
+//        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
