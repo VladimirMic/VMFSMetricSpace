@@ -41,6 +41,7 @@ public class FSGlobal {
     public static final String PIVOT_FOLDER = DATA_FOLDER + "Pivot\\";
     public static final String QUERY_FOLDER = DATA_FOLDER + "Query\\";
     public static final String PRECOMPUTED_DISTS_FOLDER = DATA_FOLDER + "DistsToPivots";
+    public static final String PRECOMPUTED_PIVOT_PERMUTATIONS_FOLDER = DATA_FOLDER + "PivotPermutations";
 
     public static final String RESULT_FOLDER = ROOT + "Result\\";
     public static final String RESULT_STATS_FOLDER = "Processed_stats\\";
