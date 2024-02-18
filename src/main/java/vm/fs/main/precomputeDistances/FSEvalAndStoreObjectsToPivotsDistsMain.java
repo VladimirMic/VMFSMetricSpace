@@ -40,7 +40,8 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
     }
 
     private static void run(Dataset dataset, int pivotCount) {
-        String output = FSPrecomputedDistancesMatrixLoaderImpl.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount, true).getAbsolutePath();
+        FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
+        String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount, true).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         List pivots = dataset.getPivots(pivotCount);

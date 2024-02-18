@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.fs.FSGlobal;
+import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 
 /**
@@ -20,11 +21,13 @@ import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDis
  */
 public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedDistancesMatrixLoader {
 
-    private final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName());
 
     @Override
-    public float[][] loadPrecomPivotsToObjectsDists(String datasetName, String pivotSetName, int pivotCount) {
+    public float[][] loadPrecomPivotsToObjectsDists(Dataset dataset, int pivotCount) {
         List<float[]> retList = new ArrayList<>();
+        String datasetName = dataset.getDatasetName();
+        String pivotSetName = dataset.getPivotSetName();
         File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount, false);
         if (!file.exists()) {
             LOG.log(Level.WARNING, "No precomputed distances found for dataset {0} pivot set {1} and {2} pivots", new Object[]{datasetName, pivotSetName, pivotCount});
@@ -61,7 +64,8 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
             for (int i = 0; i < retList.size(); i++) {
                 ret[i] = retList.get(i);
             }
-            return ret;
+        checkOrdersOfPivots(dataset.getPivots(pivotCount), dataset.getMetricSpace());
+        return ret;
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
@@ -69,9 +73,12 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
 
     }
 
-    public final static File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount, boolean willBeDeleted) {
+    public File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount, boolean willBeDeleted) {
         File ret = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
         FSGlobal.checkFileExistence(ret, willBeDeleted);
+        if (!willBeDeleted && !ret.exists()) {
+            LOG.log(Level.WARNING, "File with precomputed distances does not exist: {0}", ret.getAbsolutePath());
+        }
         return ret;
     }
 

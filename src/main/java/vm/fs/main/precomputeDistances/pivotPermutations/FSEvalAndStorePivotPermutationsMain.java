@@ -4,8 +4,6 @@
  */
 package vm.fs.main.precomputeDistances.pivotPermutations;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -18,12 +16,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.datatools.Tools;
-import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
+import vm.fs.store.precomputedDists.permutations.FSPrecomputedPivotPermutationsLoaderImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
  *
@@ -33,8 +30,9 @@ public class FSEvalAndStorePivotPermutationsMain {
 
     public static void main(String[] args) {
         boolean publicQueries = true;
+        int pivotCount = 256;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
@@ -42,23 +40,23 @@ public class FSEvalAndStorePivotPermutationsMain {
             new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
         };
         for (Dataset dataset : datasets) {
-            run(dataset);
+            run(dataset, pivotCount);
             System.gc();
         }
 
     }
 
-    private static void run(Dataset dataset) {
+    private static void run(Dataset dataset, int pivotCount) {
         FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
-        float[][] distsToPivots = loader.loadPrecomPivotsToObjectsDists(dataset.getDatasetName(), dataset.getPivotSetName());
+        float[][] distsToPivots = loader.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
         Map<Object, Integer> rowHeaders = loader.getRowHeaders();
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
-        List pivots = dataset.getPivots(-1);
+        List pivots = dataset.getPivots(pivotCount);
         String[] pivotIDs = checkPivots(metricSpace, loader.getColumnHeaders(), pivots);
         Iterator it = dataset.getMetricObjectsFromDataset();
         SortedSet<AbstractMap.SimpleEntry<Integer, Float>> pivotPermutation = new TreeSet<>(new Tools.MapByFloatValueComparator<>());
 
-        String output = deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivots.size(), true).getAbsolutePath();
+        String output = new FSPrecomputedPivotPermutationsLoaderImpl().deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivots.size(), true).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         try {
             outputStream = new GZIPOutputStream(new FileOutputStream(output), true);
@@ -69,7 +67,7 @@ public class FSEvalAndStorePivotPermutationsMain {
                 outputStream.write(';');
             }
             outputStream.write('\n');
-            while (it.hasNext()) {
+            for (int i = 0; it.hasNext(); i++) {
                 pivotPermutation.clear();
                 Object o = it.next();
                 String oId = metricSpace.getIDOfMetricObject(o).toString();
@@ -85,11 +83,17 @@ public class FSEvalAndStorePivotPermutationsMain {
                     float dist = dists[pIdx];
                     pivotPermutation.add(new AbstractMap.SimpleEntry<>(pIdx, dist));
                 }
+                StringBuilder sb = new StringBuilder();
                 for (AbstractMap.SimpleEntry<Integer, Float> entry : pivotPermutation) {
-                    String s = entry.getKey() + ";";
-                    outputStream.write(s.getBytes());
+                    sb.append(entry.getKey()).append(";");
                 }
+                String s = sb.toString();
+                s = s.substring(0, s.length() - 1);
+                outputStream.write(s.getBytes());
                 outputStream.write('\n');
+                if (i % 50000 == 0) {
+                    Logger.getLogger(FSEvalAndStorePivotPermutationsMain.class.getName()).log(Level.INFO, "Put down {0} permutations", i);
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(FSEvalAndStorePivotPermutationsMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,7 +112,7 @@ public class FSEvalAndStorePivotPermutationsMain {
         for (int i = 0; i < pivots.size(); i++) {
             Object pId = metricSpace.getIDOfMetricObject(pivots.get(i));
             Integer idx = columnHeaders.get(pId);
-            if (i != idx) {
+            if (idx == null || i != idx) {
                 throw new IllegalArgumentException("Wrong order of pivots: " + i + ", " + idx);
             }
             ret[i] = pId.toString();
@@ -116,9 +120,4 @@ public class FSEvalAndStorePivotPermutationsMain {
         return ret;
     }
 
-    private static File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount, boolean willBeDeleted) {
-        File ret = new File(FSGlobal.PRECOMPUTED_PIVOT_PERMUTATIONS_FOLDER, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
-        FSGlobal.checkFileExistence(ret, willBeDeleted);
-        return ret;
-    }
 }

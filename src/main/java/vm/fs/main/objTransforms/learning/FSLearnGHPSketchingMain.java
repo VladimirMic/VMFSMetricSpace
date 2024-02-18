@@ -30,11 +30,9 @@ public class FSLearnGHPSketchingMain {
         int sampleSize = 1000000; // 100k - 1M, depends od the size of data and dist comp. cost
         int pivotCount = 1024; // min 512, max 1024 - RAM and time grow with the second power of this param!
         LearnSketchingGHP learn = new LearnSketchingGHP(dataset, sketchingTechStorage, pivotCount, 15000);
-        String datasetName = dataset.getDatasetName();
-        String pivotsName = dataset.getPivotSetName();
         // voluntary step and voluntary arguments - is the precomputed distances does not excist, that deals with it automatically
         FSPrecomputedDistancesMatrixLoaderImpl pd = new FSPrecomputedDistancesMatrixLoaderImpl();
-        float[][] dists = pd.loadPrecomPivotsToObjectsDists(datasetName, pivotsName, pivotCount);
+        float[][] dists = pd.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
         Map<Object, Integer> columnHeaders = pd.getColumnHeaders();
         Map<Object, Integer> rowHeaders = pd.getRowHeaders();
         // voluntary step and voluntary arguments
