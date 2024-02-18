@@ -83,12 +83,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         }
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
-        FSPrecomputedPivotPermutationsLoaderImpl ppLoader = new FSPrecomputedPivotPermutationsLoaderImpl();
-        int[][] oPivotPermutations = ppLoader.loadPivotPermutations(dataset, pivotCount);
-
+        
         SearchingAlgorithm alg;
         if (filter instanceof AbstractPtolemaicBasedFiltering) {
-            alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df, oPivotPermutations);
+            alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
         } else if (filter instanceof AbstractTwoPivotsFilter) {
             alg = new KNNSearchWithGenericTwoPivotFiltering(metricSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);
         } else if (filter instanceof AbstractOnePivotFilter) {
