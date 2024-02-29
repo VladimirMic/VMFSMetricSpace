@@ -19,6 +19,8 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
+import vm.metricSpace.distance.bounding.nopivot.NoPivotFilter;
+import vm.metricSpace.distance.bounding.nopivot.impl.TrivialIneffectiveBound;
 import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
 import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
@@ -49,7 +51,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         };
 
         int pivotCount = 256;
@@ -137,9 +140,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 dataset,
                 pivotCount
         );
+        AbstractOnePivotFilter trivial = new TrivialIneffectiveBound(namePrefix);
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
-        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{trivial};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }

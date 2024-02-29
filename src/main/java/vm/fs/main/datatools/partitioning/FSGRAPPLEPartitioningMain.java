@@ -12,7 +12,6 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.datasetPartitioning.AbstractDatasetPartitioning;
 import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningCoefsForPtolemyInequalityWithLimitedAngles;
 
 /**
  *
@@ -23,8 +22,9 @@ public class FSGRAPPLEPartitioningMain {
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
 //            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true)
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true)
 //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
         //            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(),
         //            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(),

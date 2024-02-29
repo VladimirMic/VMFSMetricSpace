@@ -4,7 +4,6 @@ import java.util.List;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.evaluatorsToBeUsed.GroundTruthEvaluator;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.javatools.Tools;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
@@ -20,24 +19,24 @@ public class FSEvaluateGroundTruthMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            //            new FSDatasetInstanceSingularizator.LAION_100M_PCA96Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-            
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(publicQueries),
-
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+        //            
+        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(publicQueries),
+        //
+        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries)
         };
         for (Dataset dataset : datasets) {
             String datasetName = dataset.getDatasetName();

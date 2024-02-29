@@ -21,12 +21,13 @@ public class FSLearnCoefsForDataDepenentMetricFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+            //            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
 //            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),

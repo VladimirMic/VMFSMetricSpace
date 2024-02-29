@@ -29,10 +29,10 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.SIFTdataset(),
+//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
 //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_64Dataset(),

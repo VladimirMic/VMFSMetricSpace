@@ -32,7 +32,8 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
 //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(true),
 //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
