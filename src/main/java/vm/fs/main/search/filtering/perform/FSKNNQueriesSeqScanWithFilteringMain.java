@@ -10,7 +10,6 @@ import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFil
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
-import vm.fs.store.precomputedDists.permutations.FSPrecomputedPivotPermutationsLoaderImpl;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
@@ -19,7 +18,6 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
-import vm.metricSpace.distance.bounding.nopivot.NoPivotFilter;
 import vm.metricSpace.distance.bounding.nopivot.impl.TrivialIneffectiveBound;
 import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
@@ -50,9 +48,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         };
 
         int pivotCount = 256;
@@ -65,8 +63,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 run(dataset, filter, pivots, k);
                 System.gc();
             }
+            pd = null;
         }
     }
+
+    private static AbstractPrecomputedDistancesMatrixLoader pd;
+    private static float[][] poDists = null;
 
     private static void run(Dataset dataset, BoundsOnDistanceEstimation filter, List pivots, int k) {
         int maxObjectsCount = -1;
@@ -74,8 +76,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
 
-        AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
-        float[][] poDists = pd.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
+        if (pd == null) {
+            pd = new FSPrecomputedDistancesMatrixLoaderImpl();
+            poDists = pd.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
+        }
 
         List queries = dataset.getMetricQueryObjects();
         queries = queries.subList(0, 1000);
@@ -86,7 +90,6 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         }
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
-        
         SearchingAlgorithm alg;
         if (filter instanceof AbstractPtolemaicBasedFiltering) {
             alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
@@ -125,6 +128,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         if (KNNSearchWithOnePivotFiltering.SORT_PIVOTS) {
             namePrefix += "_SortedP";
         }
+        namePrefix += "_seq";
         AbstractOnePivotFilter metricFiltering = new TriangleInequality(namePrefix);
         AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(namePrefix,
                 pivotCount,
@@ -144,8 +148,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
-        return new BoundsOnDistanceEstimation[]{trivial};
-//        return new BoundsOnDistanceEstimation[]{metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{trivial};
+        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }
 

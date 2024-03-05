@@ -19,6 +19,7 @@ public class FSEvaluateGroundTruthMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
+//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
             new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
@@ -41,7 +42,7 @@ public class FSEvaluateGroundTruthMain {
         for (Dataset dataset : datasets) {
             String datasetName = dataset.getDatasetName();
             String querySetName = dataset.getQuerySetName();
-            int k = 1000; // 1000 for orig datasets, else 20000
+            int k = 30; // 1000 for orig datasets, else 20000
             AbstractMetricSpace space = dataset.getMetricSpace();
 
             DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);
