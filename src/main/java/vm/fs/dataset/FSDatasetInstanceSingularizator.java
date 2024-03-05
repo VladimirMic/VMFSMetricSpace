@@ -28,10 +28,94 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
+    public static class RandomDataset10Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset10Uniform() {
+            super("random_10dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset15Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset15Uniform() {
+            super("random_15dim_uniform_1M");
+        }
+    }
+
     public static class RandomDataset20Uniform extends FSFloatVectorDataset {
 
         public RandomDataset20Uniform() {
             super("random_20dim_uniform_1m");
+        }
+    }
+
+    public static class RandomDataset25Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset25Uniform() {
+            super("random_25dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset30Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset30Uniform() {
+            super("random_30dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset35Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset35Uniform() {
+            super("random_35dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset40Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset40Uniform() {
+            super("random_40dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset50Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset50Uniform() {
+            super("random_50dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset60Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset60Uniform() {
+            super("random_60dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset70Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset70Uniform() {
+            super("random_70dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset80Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset80Uniform() {
+            super("random_80dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset90Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset90Uniform() {
+            super("random_90dim_uniform_1M");
+        }
+    }
+
+    public static class RandomDataset100Uniform extends FSFloatVectorDataset {
+
+        public RandomDataset100Uniform() {
+            super("random_100dim_uniform_1M");
         }
     }
 
