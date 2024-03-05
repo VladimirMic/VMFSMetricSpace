@@ -44,7 +44,7 @@ public class FSLearnCoefsForDataDepenentPtolemyFilteringMain {
         }
     }
 
-    private static void run(Dataset dataset) throws FileNotFoundException {
+    public static void run(Dataset dataset) throws FileNotFoundException {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         List<Object> pivots = dataset.getPivots(PIVOTS);

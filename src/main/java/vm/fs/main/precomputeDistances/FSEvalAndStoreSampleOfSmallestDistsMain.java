@@ -51,7 +51,7 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
         }
     }
 
-    private static void run(Dataset dataset) {
+    public static void run(Dataset dataset) {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
 
         DistanceFunctionInterface df = dataset.getDistanceFunction();

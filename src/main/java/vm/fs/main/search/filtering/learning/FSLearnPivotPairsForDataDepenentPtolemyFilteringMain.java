@@ -7,7 +7,6 @@ package vm.fs.main.search.filtering.learning;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain.PIVOTS;
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain.SAMPLE_QUERY_SET_SIZE;

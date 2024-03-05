@@ -19,7 +19,7 @@ public class FSEvaluateGroundTruthMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+            //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
             new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
@@ -40,21 +40,25 @@ public class FSEvaluateGroundTruthMain {
         //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries)
         };
         for (Dataset dataset : datasets) {
-            String datasetName = dataset.getDatasetName();
-            String querySetName = dataset.getQuerySetName();
-            int k = 30; // 1000 for orig datasets, else 20000
-            AbstractMetricSpace space = dataset.getMetricSpace();
-
-            DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);
-            AbstractMetricSpacesStorage spaceStorage = dataset.getMetricSpacesStorage();
-            QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
-
-            List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);
-            GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k, groundTruthStorage);
-            gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
-//            gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
-            System.gc();
+            run(dataset);
         }
+    }
+
+    public static void run(Dataset dataset) {
+        String datasetName = dataset.getDatasetName();
+        String querySetName = dataset.getQuerySetName();
+        int k = 1000; // 1000 for orig datasets, else 20000
+        AbstractMetricSpace space = dataset.getMetricSpace();
+
+        DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);
+        AbstractMetricSpacesStorage spaceStorage = dataset.getMetricSpacesStorage();
+        QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
+
+        List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);
+        GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k, groundTruthStorage);
+        gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
+//            gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
+        System.gc();
     }
 
 }

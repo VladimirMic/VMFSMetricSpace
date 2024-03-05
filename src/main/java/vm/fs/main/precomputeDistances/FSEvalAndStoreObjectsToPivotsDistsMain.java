@@ -23,9 +23,10 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
 
     public static final Logger LOG = Logger.getLogger(FSEvalAndStoreObjectsToPivotsDistsMain.class.getName());
 
+    public static final Integer PIVOT_COUNT = 256;
+
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
-        int pivotCount = 256;
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
@@ -36,12 +37,12 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
             new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
-            run(dataset, pivotCount);
+            run(dataset, PIVOT_COUNT);
             System.gc();
         }
     }
 
-    private static void run(Dataset dataset, int pivotCount) {
+    public static void run(Dataset dataset, int pivotCount) {
         FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
         String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount, true).getAbsolutePath();
         GZIPOutputStream outputStream = null;
