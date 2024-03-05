@@ -7,7 +7,7 @@ import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.store.dataTransforms.FSGHPSketchesPivotPairsStorageImpl;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.dataToStringConvertors.SingularisedConvertors;
+import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 
 /**

@@ -22,7 +22,7 @@ import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.dataToStringConvertors.MetricObjectDataToStringInterface;
+import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
 
 /**
  *

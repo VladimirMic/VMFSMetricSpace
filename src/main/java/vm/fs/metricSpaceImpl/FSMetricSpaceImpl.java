@@ -7,7 +7,6 @@ import vm.metricSpace.distance.impl.L2OnFloatsArray;
 import vm.metricSpace.distance.impl.Sapir3DistanceFunction;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.impl.CosineDistance;
-import vm.metricSpace.distance.impl.DotProduct;
 import vm.metricSpace.distance.impl.HammingDistanceLongs;
 
 /**
