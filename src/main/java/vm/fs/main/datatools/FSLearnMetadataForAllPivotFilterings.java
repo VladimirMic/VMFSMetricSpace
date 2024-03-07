@@ -13,7 +13,6 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain;
-import vm.fs.main.search.filtering.learning.FSLearnSecondaryFilteringWithGHPSketchesMain;
 import vm.metricSpace.Dataset;
 
 /**
@@ -26,7 +25,7 @@ public class FSLearnMetadataForAllPivotFilterings {
 
     public static void main(String[] args) throws FileNotFoundException {
         Dataset[] datasets = {
-            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
+//            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
             new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
             new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
             new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),

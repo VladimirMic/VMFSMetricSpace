@@ -44,13 +44,25 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+            //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+            //            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
         };
 
         int pivotCount = 256;
@@ -100,7 +112,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         } else {
             throw new IllegalArgumentException("What a weird algorithm ... This is for the pivot filtering, uh?");
         }
-        TreeSet[] results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(maxObjectsCount));
+        TreeSet[] results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(maxObjectsCount), 1);
 
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), null);
@@ -116,9 +128,6 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(new FSNearestNeighboursStorageImpl(), recallStorage);
         evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), k);
         recallStorage.save();
-
-//        System.out.println("t3: " + KNNSearchWithGenericTwoPivotFiltering.t3);
-//        System.out.println("tDistComps: " + KNNSearchWithGenericTwoPivotFiltering.tDistComps);
     }
 
     private static BoundsOnDistanceEstimation[] initTestedFilters(List pivots, Dataset dataset, int k) {
@@ -149,7 +158,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{trivial};
-        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, ptolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }
 

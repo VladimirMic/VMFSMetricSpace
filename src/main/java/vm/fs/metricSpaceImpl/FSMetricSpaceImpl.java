@@ -29,13 +29,13 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
         if (datasetName.contains("laion2B-en")) {
             return new CosineDistance();
         }
+        if (datasetName.contains("random_") && datasetName.toLowerCase().contains("_uniform_1m")) {
+            return new L2OnFloatsArray();
+        }
         switch (datasetName) {
             case ("decaf_1m"):
             case ("sift_1m"):
                 return new L2OnFloatsArray();
-            case ("random_20dim_uniform_1m"): {
-                return new L2OnFloatsArray();
-            }
             case ("mpeg7_1m"): {
                 return new Sapir3DistanceFunction();
             }

@@ -116,34 +116,12 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     @Override
     public Map<String, TreeSet<Map.Entry<Object, Float>>> getQueryResultsForDataset(String queryResultsName, String datasetName, String querySetName, Integer k) {
         try {
-            Map<String, TreeSet<Map.Entry<Object, Float>>> ret = new HashMap<>();
             File file = getFileWithResults(queryResultsName, datasetName, querySetName, k, false);
             if (!file.exists()) {
                 LOG.log(Level.SEVERE, "The file with the results does not exist: {0}", file.getAbsolutePath());
-                return ret;
+                return new HashMap<>();
             }
-            InputStream s = new FileInputStream(file);
-            if (compress) {
-                s = new GZIPInputStream(s);
-            }
-            BufferedReader br = new BufferedReader(new InputStreamReader(s));
-            String line = br.readLine();
-            while (line != null) {
-                String[] pairsOfNearestNeighbours = line.split(";");
-                String queryObjId = pairsOfNearestNeighbours[0];
-                TreeSet<Map.Entry<Object, Float>> nearestNeighbours = new TreeSet<>(new Tools.MapByFloatValueComparator());
-                for (int i = 1; i < pairsOfNearestNeighbours.length; i++) {
-                    String nearestNeighbourPair = pairsOfNearestNeighbours[i];
-                    if (nearestNeighbourPair.isEmpty()) {
-                        continue;
-                    }
-                    String[] idDistPair = nearestNeighbourPair.split(":");
-                    nearestNeighbours.add(new AbstractMap.SimpleEntry<>(idDistPair[0], Float.valueOf(idDistPair[1])));
-                }
-                ret.put(queryObjId, nearestNeighbours);
-                line = br.readLine();
-            }
-            return ret;
+            return getQueryResultsForDataset(file);
         } catch (IOException ex) {
             Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -171,6 +149,32 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         s = s.substring(0, s.length() - 1);
         os.write(s.getBytes());
         os.write('\n');
+    }
+
+    public Map<String, TreeSet<Map.Entry<Object, Float>>> getQueryResultsForDataset(File file) throws IOException {
+        Map<String, TreeSet<Map.Entry<Object, Float>>> ret = new HashMap<>();
+        InputStream s = new FileInputStream(file);
+        if (compress) {
+            s = new GZIPInputStream(s);
+        }
+        BufferedReader br = new BufferedReader(new InputStreamReader(s));
+        String line = br.readLine();
+        while (line != null) {
+            String[] pairsOfNearestNeighbours = line.split(";");
+            String queryObjId = pairsOfNearestNeighbours[0];
+            TreeSet<Map.Entry<Object, Float>> nearestNeighbours = new TreeSet<>(new Tools.MapByFloatValueComparator());
+            for (int i = 1; i < pairsOfNearestNeighbours.length; i++) {
+                String nearestNeighbourPair = pairsOfNearestNeighbours[i];
+                if (nearestNeighbourPair.isEmpty()) {
+                    continue;
+                }
+                String[] idDistPair = nearestNeighbourPair.split(":");
+                nearestNeighbours.add(new AbstractMap.SimpleEntry<>(idDistPair[0], Float.valueOf(idDistPair[1])));
+            }
+            ret.put(queryObjId, nearestNeighbours);
+            line = br.readLine();
+        }
+        return ret;
     }
 
 }
