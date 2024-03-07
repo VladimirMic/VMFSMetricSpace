@@ -64,6 +64,8 @@ public class FSGlobal {
     public static final String BINARY_SKETCHES = AUXILIARY_FOR_DATA_TRANSFORMS + "Sketches\\";
 
     public static final String SIMREL_TOMEGA_THRESHOLDS = AUXILIARY_FOR_DATA_FILTERING + "SimRel_tOmega_thresholds\\";
+    public static final String FOLDER_PLOTS = ROOT + "Plots\\";
+    public static final String FOLDER_DATA_FOR_PLOTS = FOLDER_PLOTS + "Data\\";
 
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
