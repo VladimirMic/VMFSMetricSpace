@@ -20,7 +20,7 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
 
     @Override
     public DistanceFunctionInterface getDistanceFunctionForDataset(String datasetName, Object... params) {
-        if (datasetName.toLowerCase().contains("pca")) {
+        if (datasetName.toLowerCase().contains("pca") || datasetName.toLowerCase().contains("euclid")) {
             return new L2OnFloatsArray();
         }
         if (datasetName.contains("_GHP_50_") || datasetName.contains("_GHP_80_")) {

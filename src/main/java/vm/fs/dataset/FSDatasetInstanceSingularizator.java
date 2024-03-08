@@ -317,6 +317,30 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
+    public static class LAION_10M_Dataset_Euclid extends LAION_10M_Dataset {
+
+        public LAION_10M_Dataset_Euclid(boolean publicQueries) {
+            super(publicQueries);
+        }
+
+    }
+
+    public static class LAION_30M_Dataset_Euclid extends LAION_10M_Dataset {
+
+        public LAION_30M_Dataset_Euclid(boolean publicQueries) {
+            super(publicQueries);
+        }
+
+    }
+
+    public static class LAION_100M_Dataset_Euclid extends LAION_10M_Dataset {
+
+        public LAION_100M_Dataset_Euclid(boolean publicQueries) {
+            super(publicQueries);
+        }
+
+    }
+
     public static class LAION_10M_Dataset extends H5FloatVectorDataset {
 
         private final boolean publicQueries;
