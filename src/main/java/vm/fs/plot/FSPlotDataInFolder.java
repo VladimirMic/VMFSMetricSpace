@@ -113,7 +113,7 @@ public class FSPlotDataInFolder {
         }
         JFreeChart plot = plotter.createPlot(plotTitle, xName, yName, tracesNames, xPlotValues, yPlotValues);
         File fileForPlot = getFileForPlot(FSGlobal.FOLDER_PLOTS, fileName);
-        plotter.storePlot(fileForPlot.getAbsolutePath(), plot);
+        plotter.storePlotSVG(fileForPlot.getAbsolutePath(), plot);
     }
 
     private static float[][] transformXStringValues(String[] xAxisValues, int numberOfTraces) {
@@ -134,7 +134,7 @@ public class FSPlotDataInFolder {
     }
 
     private static File getFileForPlot(String folder, String fileName) {
-        File f = new File(folder, Tools.getDateYYYYMM() + "_" + fileName + ".png");
+        File f = new File(folder, Tools.getDateYYYYMM() + "_" + fileName + ".svg");
         f = FSGlobal.checkFileExistence(f, true);
         return f;
     }
