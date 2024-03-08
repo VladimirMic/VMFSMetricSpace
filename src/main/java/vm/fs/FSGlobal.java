@@ -15,8 +15,8 @@ public class FSGlobal {
 
     private static String initRoot() {
         String[] paths = new String[]{
-            "h:\\Similarity_search\\",
             "Similarity_search/",
+            "h:\\Similarity_search\\",
             "c:\\Data\\Similarity_search\\"
         };
         for (String path : paths) {
@@ -25,7 +25,7 @@ public class FSGlobal {
                 return path;
             }
         }
-        throw new IllegalArgumentException("Create the root file");
+        return paths[0];
     }
 
     public static final String ROOT = initRoot();
@@ -63,7 +63,6 @@ public class FSGlobal {
     public static final String PARTITIONED_DATASETS = DATASET_FOLDER + "Partitioning\\";
     public static final String VORONOI_PARTITIONING_STORAGE = PARTITIONED_DATASETS + "Voronoi_partitioning\\";
     public static final String GRAPPLE_PARTITIONING_STORAGE = AUXILIARY_FOR_DATA_FILTERING + "GRAPPLE_partitioning\\";
-
 
     public static final String SIMREL_TOMEGA_THRESHOLDS = AUXILIARY_FOR_DATA_FILTERING + "SimRel_tOmega_thresholds\\";
     public static final String FOLDER_PLOTS = ROOT + "Plots\\";

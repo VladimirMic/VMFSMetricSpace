@@ -3,8 +3,8 @@ package vm.fs.main.objTransforms.learning;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.dataTransforms.FSSVDStorageImpl;
+import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.objTransforms.learning.LearnSVD;
@@ -19,10 +19,13 @@ public class FSLearnSVDMain {
     public static void main(String[] args) {
 //        int sampleCount = 100000;
         int sampleCount = 500000;
-//        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);
-//        run(new FSDatasetInstanceSingularizator.DeCAFDataset(), sampleCount);
-        run(new FSDatasetInstanceSingularizator.LAION_1M_SampleDataset(), sampleCount);
-//        run(new FSDatasetInstanceSingularizator.SIFTdataset(), sampleCount);
+        Dataset[] datasets = {
+            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
+        };
+
+        for (Dataset dataset : datasets) {
+            run(dataset, sampleCount);
+        }
     }
 
     private static final List<Object> getTrivialSampleDataset() {

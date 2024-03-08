@@ -2,8 +2,8 @@ package vm.fs.main.objTransforms.apply;
 
 import java.util.Iterator;
 import vm.datatools.Tools;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.dataTransforms.FSSVDStorageImpl;
+import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.AbstractMetricSpacesStorage;
@@ -22,13 +22,14 @@ public class FSApplyPCAMain {
 
     public static void main(String[] args) {
         boolean publicQueries = false;
-//        run(new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries));
-        System.gc();
-//        run(new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries));
-        run(new FSDatasetInstanceSingularizator.DeCAFDataset());
-        System.gc();
-//        run(new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries));
-        System.gc();
+        Dataset[] datasets = {
+            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
+        };
+
+        for (Dataset dataset : datasets) {
+            run(dataset);
+            System.gc();
+        }
     }
 
     private static void run(Dataset dataset) {
