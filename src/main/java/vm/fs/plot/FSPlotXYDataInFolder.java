@@ -20,7 +20,7 @@ import vm.plot.impl.XYLinesPlotter;
  *
  * @author au734419
  */
-public class FSPlotDataInFolder {
+public class FSPlotXYDataInFolder {
 
     public static final String X_NAME = "xName";
     public static final String Y_NAME = "yName";
