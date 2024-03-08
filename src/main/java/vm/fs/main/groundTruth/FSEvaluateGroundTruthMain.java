@@ -20,7 +20,10 @@ public class FSEvaluateGroundTruthMain {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
-            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(), //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
+        //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),

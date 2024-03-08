@@ -24,19 +24,25 @@ public class FSLearnMetadataForAllPivotFilterings {
     public static final Logger LOG = Logger.getLogger(FSLearnMetadataForAllPivotFilterings.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
+        boolean publicQueries = true;
         Dataset[] datasets = {
-//            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+            //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries)
         };
         for (Dataset dataset : datasets) {
             run(dataset);
