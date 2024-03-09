@@ -27,6 +27,12 @@ public class FSDatasetInstanceSingularizator {
             super("decaf_20m_PCA256");
         }
     }
+    public static class DeCAF100M_TMPDataset extends FSFloatVectorDataset {
+
+        public DeCAF100M_TMPDataset() {
+            super("YFCC100M_hybridCNN_gmean_fc6_0");
+        }
+    }
 
     public static class RandomDataset10Uniform extends FSFloatVectorDataset {
 
@@ -321,6 +327,7 @@ public class FSDatasetInstanceSingularizator {
 
         public LAION_10M_Dataset_Euclid(boolean publicQueries) {
             super(publicQueries);
+            datasetName += "euclid";
         }
 
     }
@@ -329,6 +336,7 @@ public class FSDatasetInstanceSingularizator {
 
         public LAION_30M_Dataset_Euclid(boolean publicQueries) {
             super(publicQueries);
+            datasetName += "euclid";
         }
 
     }
@@ -337,6 +345,7 @@ public class FSDatasetInstanceSingularizator {
 
         public LAION_100M_Dataset_Euclid(boolean publicQueries) {
             super(publicQueries);
+            datasetName += "euclid";
         }
 
     }

@@ -38,12 +38,14 @@ public class FSLearnMetadataForAllPivotFilterings {
             //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
+            //            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+            //            new FSDatasetInstanceSingularizator.LAION_30M_PCA256Dataset()
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
             new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries)
-        };
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),};
         for (Dataset dataset : datasets) {
             run(dataset);
         }
@@ -52,12 +54,19 @@ public class FSLearnMetadataForAllPivotFilterings {
     private static void run(Dataset dataset) throws FileNotFoundException {
         LOG.log(Level.INFO, "Dataset: {0}, evaluating ground truth", dataset);
         FSEvaluateGroundTruthMain.run(dataset);
+//
         LOG.log(Level.INFO, "Dataset: {0}, evaluating smallest distances", dataset);
         FSEvalAndStoreSampleOfSmallestDistsMain.run(dataset);
-        LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", dataset);
-        FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
+//        
+        String datasetName = dataset.getDatasetName().toLowerCase();
+        if (datasetName.contains("10m") || datasetName.contains("1m")) {
+            LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", dataset);
+            FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
+        }
+//
         LOG.log(Level.INFO, "Dataset: {0}, learning data dependent metric filtering", dataset);
         FSLearnCoefsForDataDepenentMetricFilteringMain.run(dataset);
+//
         LOG.log(Level.INFO, "Dataset: {0}, learning coefs for data dependent ptolemaic filtering", dataset);
         FSLearnCoefsForDataDepenentPtolemyFilteringMain.run(dataset);
     }

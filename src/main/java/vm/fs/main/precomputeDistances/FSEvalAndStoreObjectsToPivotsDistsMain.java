@@ -32,9 +32,8 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
-            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+                        new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset, PIVOT_COUNT);

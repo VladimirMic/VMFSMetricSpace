@@ -14,15 +14,16 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  *
  * @author Vlada
  */
+@Deprecated // how about learning all the metadata for the filtering in FSLearnMetadataForAllPivotFilterings at once? It includes the ground-truth as well.
 public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
         //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
