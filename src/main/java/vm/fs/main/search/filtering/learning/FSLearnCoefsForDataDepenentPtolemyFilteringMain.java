@@ -1,12 +1,15 @@
 package vm.fs.main.search.filtering.learning;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
+import static vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getFile;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
@@ -22,7 +25,7 @@ public class FSLearnCoefsForDataDepenentPtolemyFilteringMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
-    public static final Integer PIVOTS = 256;
+    public static final Integer PIVOTS = FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT;
     public static final Boolean ALL_PIVOT_PAIRS = true;
 
     public static void main(String[] args) throws IOException {
@@ -56,5 +59,12 @@ public class FSLearnCoefsForDataDepenentPtolemyFilteringMain {
 
         LearningCoefsForPtolemyInequalityWithLimitedAngles learning = new LearningCoefsForPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, smallDistsOfSampleObjectsAndQueries, storage, dataset.getDatasetName(), ALL_PIVOT_PAIRS);
         learning.execute();
+    }
+
+    public static boolean existsForDataset(Dataset dataset) {
+        FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
+        String fileName = storage.getNameOfFileWithCoefs(dataset.getDatasetName(), PIVOTS, true);
+        File file = getFile(fileName, false);
+        return file.exists();
     }
 }

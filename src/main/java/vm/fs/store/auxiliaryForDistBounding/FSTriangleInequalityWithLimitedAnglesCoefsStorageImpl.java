@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +43,7 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
         }
     }
 
-    private File getFile(String resultName, boolean willBeDeleted) {
+    public File getFile(String resultName, boolean willBeDeleted) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_TRIANGULAR_FILTERING_WITH_LIMITED_ANGLES);
         File ret = new File(folderFile, resultName);
         FSGlobal.checkFileExistence(ret, willBeDeleted);

@@ -85,4 +85,9 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
         storage.storePrecomputedDistances(result);
     }
 
+    public static boolean existsForDataset(Dataset dataset) {
+        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
+        return storage.getFileForResults(false).exists();
+    }
+
 }

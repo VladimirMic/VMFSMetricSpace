@@ -332,7 +332,7 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    public static class LAION_30M_Dataset_Euclid extends LAION_10M_Dataset {
+    public static class LAION_30M_Dataset_Euclid extends LAION_30M_Dataset {
 
         public LAION_30M_Dataset_Euclid(boolean publicQueries) {
             super(publicQueries);
@@ -341,7 +341,7 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    public static class LAION_100M_Dataset_Euclid extends LAION_10M_Dataset {
+    public static class LAION_100M_Dataset_Euclid extends LAION_100M_Dataset {
 
         public LAION_100M_Dataset_Euclid(boolean publicQueries) {
             super(publicQueries);

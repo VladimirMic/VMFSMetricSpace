@@ -42,7 +42,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     private String lastString = null;
     private File lastFile = null;
 
-    private File getFileWithResults(String resultsName, String datasetName, String querySetName, Integer k, boolean willBeDeleted) {
+    public File getFileWithResults(String resultsName, String datasetName, String querySetName, Integer k, boolean willBeDeleted) {
         String concat = resultsName + datasetName + querySetName + k;
         if (concat.equals(lastString)) {
             return lastFile;

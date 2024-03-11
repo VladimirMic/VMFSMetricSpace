@@ -60,7 +60,7 @@ public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDist
         }
     }
 
-    private File getFileForResults(boolean willBeDeleted) {
+    public File getFileForResults(boolean willBeDeleted) {
         String fileName = resultsName + "__sample_" + oSize + "__ queries_" + qSize + ".csv";
         File ret = new File(FSGlobal.SMALLEST_DISTANCES, fileName);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);

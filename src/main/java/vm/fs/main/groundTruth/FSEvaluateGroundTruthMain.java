@@ -1,5 +1,6 @@
 package vm.fs.main.groundTruth;
 
+import java.io.File;
 import java.util.List;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.evaluatorsToBeUsed.GroundTruthEvaluator;
@@ -14,7 +15,7 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  *
  * @author Vlada
  */
-@Deprecated // how about learning all the metadata for the filtering in FSLearnMetadataForAllPivotFilterings at once? It includes the ground-truth as well.
+// how about learning all the metadata for the filtering in FSLearnMetadataForAllPivotFilterings at once? It includes the ground-truth as well.
 public class FSEvaluateGroundTruthMain {
 
     public static void main(String[] args) {
@@ -63,6 +64,12 @@ public class FSEvaluateGroundTruthMain {
         gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
 //            gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
         System.gc();
+    }
+
+    public static boolean existsForDataset(Dataset dataset) {
+        FSNearestNeighboursStorageImpl groundTruthStorage = new FSNearestNeighboursStorageImpl();
+        File fileWithResults = groundTruthStorage.getFileWithResults("ground_truth", dataset.getDatasetName(), dataset.getQuerySetName(), GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH, false);
+        return fileWithResults.exists();
     }
 
 }

@@ -1,5 +1,6 @@
 package vm.fs.main.precomputeDistances;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,8 +33,7 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
-                        new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset, PIVOT_COUNT);
@@ -88,4 +88,9 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
         }
     }
 
+    public static boolean existsForDataset(Dataset dataset, int pivotCount) {
+        FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
+        String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount, false).getAbsolutePath();
+        return new File(output).exists();
+    }
 }
