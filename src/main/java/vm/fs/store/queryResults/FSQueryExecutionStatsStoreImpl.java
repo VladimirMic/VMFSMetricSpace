@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,6 +68,11 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
      */
     public FSQueryExecutionStatsStoreImpl(Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> attributesForFileName) {
         output = getFileForStats(attributesForFileName);
+        content = parseAsMap();
+    }
+
+    public FSQueryExecutionStatsStoreImpl(File file) {
+        output = file;
         content = parseAsMap();
     }
 
@@ -258,6 +264,10 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
             }
             return "null";
         }
+    }
+
+    public Map<String, TreeMap<QUERY_STATS, String>> getContent() {
+        return Collections.unmodifiableMap(content);
     }
 
 }

@@ -1,5 +1,6 @@
 package vm.fs.store.queryResults.recallEvaluation;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,6 +28,10 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
      */
     public FSRecallOfCandidateSetsStorageImpl(Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> attributesForFileName) {
         super(attributesForFileName);
+    }
+
+    public FSRecallOfCandidateSetsStorageImpl(File file) {
+        super(file);
     }
 
     /**
