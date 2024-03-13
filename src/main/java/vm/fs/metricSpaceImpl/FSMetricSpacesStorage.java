@@ -287,8 +287,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     }
 
     @Override
-    public void updateDatasetSize(String datasetName, int count
-    ) {
+    public void updateDatasetSize(String datasetName, int count) {
         FileOutputStream os = null;
         try {
             File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", true);

@@ -42,7 +42,7 @@ public class FSLearnGroundTruthAndAllPivotFilterings {
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
             //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
             //            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-            //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+                        new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
             //            new FSDatasetInstanceSingularizator.LAION_30M_PCA256Dataset()
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
             new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
