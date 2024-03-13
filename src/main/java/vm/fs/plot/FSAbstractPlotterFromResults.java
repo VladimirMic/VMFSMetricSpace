@@ -28,9 +28,13 @@ import vm.plot.AbstractPlotter;
  */
 public abstract class FSAbstractPlotterFromResults {
 
-    private static final Logger LOG = Logger.getLogger(FSAbstractPlotterFromResults.class.getName());
+    private final boolean plotOnlySvg;
 
-    public abstract FilenameFilter getFilenameFilterFolders();
+    public FSAbstractPlotterFromResults(boolean plotOnlySvg) {
+        this.plotOnlySvg = plotOnlySvg;
+    }
+
+    private static final Logger LOG = Logger.getLogger(FSAbstractPlotterFromResults.class.getName());
 
     public abstract String[] getDisplayedNamesOfTracesThatMeansFolders();
 
@@ -46,8 +50,35 @@ public abstract class FSAbstractPlotterFromResults {
 
     public abstract AbstractPlotter getPlotter();
 
-    public QUERY_STATS[] getStatsToPrint() {
-        return new QUERY_STATS[]{QUERY_STATS.recall, QUERY_STATS.cand_set_dynamic_size, QUERY_STATS.error_on_dist, QUERY_STATS.query_execution_time};
+    public abstract String getResultName();
+
+    public abstract String getFolderForPlots();
+
+    public FilenameFilter getFilenameFilterStatsFiles() {
+        String[] array = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
+        return getFileNameFilterOR(true, array);
+    }
+
+    public FilenameFilter getFilenameFilterFolders() {
+        String[] array = getUniqueArtifactIdentifyingFolderNameForDisplaydTrace();
+        return getFileNameFilterOR(false, array);
+    }
+
+    private String getResultFullNameWithDate(QUERY_STATS statName) {
+        int datasetsCount = getDisplayedNamesOfGroupsThatMeansFiles().length;
+        int techCount = getUniqueArtifactIdentifyingFolderNameForDisplaydTrace().length;
+        String plotName = getPlotter().getSimpleName();
+        String className = getClass().getName();
+
+        String fileName = Tools.getDateYYYYMM() + "_" + getResultName() + "_" + className;
+        fileName += "_" + datasetsCount + "data_" + techCount + "techs_" + plotName + "_" + statName;
+        File file = new File(getFolderForPlots(), fileName);
+        FSGlobal.checkFileExistence(file, false);
+        return file.getAbsolutePath();
+    }
+
+    private QUERY_STATS[] getStatsToPrint() {
+        return new QUERY_STATS[]{QUERY_STATS.recall, QUERY_STATS.cand_set_dynamic_size, QUERY_STATS.query_execution_time};
     }
 
     private List<File> getFilesWithResultsToBePlotted() {
@@ -109,10 +140,13 @@ public abstract class FSAbstractPlotterFromResults {
 
     private void makePlotsForQueryStats(QUERY_STATS key, Map<QUERY_STATS, List<Float>[][]> dataForStats, AbstractPlotter plotter, String yAxisLabel) {
         List<Float>[][] values = dataForStats.get(key);
-        String path = "c:\\Data\\Similarity_search\\Plots\\2024_Filterings_" + key;
+        String path = getResultFullNameWithDate(key);
         LOG.log(Level.INFO, "Path for future plot: {0}", path);
         JFreeChart plot = plotter.createPlot("", yAxisLabel, getDisplayedNamesOfTracesThatMeansFolders(), getDisplayedNamesOfGroupsThatMeansFiles(), values);
         plotter.storePlotSVG(path, plot);
+        if (!plotOnlySvg) {
+            plotter.storePlotPNG(path, plot);
+        }
     }
 
     public FilenameFilter getFileNameFilterOR(boolean checkSuffixCSV, String... substrings) {
@@ -228,11 +262,6 @@ public abstract class FSAbstractPlotterFromResults {
             ret.put(stat, lists);
         }
         return ret;
-    }
-
-    public FilenameFilter getFilenameFilterStatsFiles() {
-        String[] array = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
-        return getFileNameFilterOR(true, array);
     }
 
 }

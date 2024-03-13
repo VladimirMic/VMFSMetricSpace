@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.implForPapers;
+package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
-import java.io.FilenameFilter;
 import vm.fs.plot.FSAbstractPlotterFromResults;
+import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotCategoricalPlotter;
 
@@ -13,27 +13,19 @@ import vm.plot.impl.BoxPlotCategoricalPlotter;
  *
  * @author au734419
  */
-public class PtolemaicFiltering2024RandomVectorsDims extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosRandomData extends FSAbstractPlotterFromResults {
 
-    @Override
-    public FilenameFilter getFilenameFilterFolders() {
-        String[] array = array(
-                "2024_03_256_pivots_30NN_seq_triangle_inequality",
-                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
-                "2024_03_256_pivots_30NN_seq_ptolemaios",
-                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering"
-        );
-        return getFileNameFilterOR(false, array);
+    public PlotPtolemaiosRandomData(boolean plotOnlySvg) {
+        super(plotOnlySvg);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
         return array(
-                "Triangle Inequality",
+                //                "Triangle Inequality",
                 "Data-dependent Metric Filtering",
-                "Four Point Property",
-                "Ptolemaic Filtering",
+                //                "Four Point Property",
+                //                "Ptolemaic Filtering",
                 "Data-dependent Generalised Ptolemaic Filtering"
         );
     }
@@ -41,11 +33,11 @@ public class PtolemaicFiltering2024RandomVectorsDims extends FSAbstractPlotterFr
     @Override
     public String[] getUniqueArtifactIdentifyingFolderNameForDisplaydTrace() {
         return array(
-                "triangle_inequality",
-                "ata-dependent_metric_filtering",
-                "ourPointBasedFiltering",
-                "ptolemaios",
-                "ndent_generalised_ptolemaic_filtering_pivot_array_selection"
+                //                "2024_03_256_pivots_30NN_seq_triangle_inequality",
+                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
+                //                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
+                //                "2024_03_256_pivots_30NN_seq_ptolemaios",
+                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
         );
     }
 
@@ -91,6 +83,16 @@ public class PtolemaicFiltering2024RandomVectorsDims extends FSAbstractPlotterFr
     @Override
     public AbstractPlotter getPlotter() {
         return new BoxPlotCategoricalPlotter();
+    }
+
+    @Override
+    public String getResultName() {
+        return "Filterings";
+    }
+
+    @Override
+    public String getFolderForPlots() {
+        return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED;
     }
 
 }

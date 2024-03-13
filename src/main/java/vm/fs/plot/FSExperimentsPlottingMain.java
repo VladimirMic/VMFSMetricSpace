@@ -4,7 +4,8 @@
  */
 package vm.fs.plot;
 
-import vm.fs.plot.implForPapers.PtolemaicFiltering2024RandomVectorsDims;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosAllClassic;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosRandomData;
 
 /**
  *
@@ -12,8 +13,11 @@ import vm.fs.plot.implForPapers.PtolemaicFiltering2024RandomVectorsDims;
  */
 public class FSExperimentsPlottingMain {
 
+    public static final Boolean PLOT_ONLY_SVG = true;
+    public static final FSAbstractPlotterFromResults Y2024_PTOLEMAIOS_RANDOM = new PlotPtolemaiosRandomData(true);
+    public static final FSAbstractPlotterFromResults Y2024_PTOLEMAIOS_CLASSI = new PlotPtolemaiosAllClassic(true);
+
     public static void main(String[] args) {
-        FSAbstractPlotterFromResults plotter = new PtolemaicFiltering2024RandomVectorsDims();
-        plotter.makePlots();
+        Y2024_PTOLEMAIOS_RANDOM.makePlots();
     }
 }
