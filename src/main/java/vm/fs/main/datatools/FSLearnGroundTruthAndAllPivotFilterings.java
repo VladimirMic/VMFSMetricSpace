@@ -44,9 +44,9 @@ public class FSLearnGroundTruthAndAllPivotFilterings {
             //            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
             //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
             //            new FSDatasetInstanceSingularizator.LAION_30M_PCA256Dataset()
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries)
-//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -63,7 +63,7 @@ public class FSLearnGroundTruthAndAllPivotFilterings {
             LOG.log(Level.INFO, "Dataset: {0}, evaluating ground truth", dataset);
             FSEvaluateGroundTruthMain.run(dataset);
         }
-        prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset);
+        prohibited = FSEvalAndStoreSampleOfSmallestDistsMain.existsForDataset(dataset);
         if (prohibited) {
             LOG.log(Level.WARNING, "Smallest distances already evaluated for dataset {0}", dataset);
             prohibited = askForRewriting("Smallest distance", dataset);
@@ -94,7 +94,7 @@ public class FSLearnGroundTruthAndAllPivotFilterings {
             FSLearnCoefsForDataDepenentMetricFilteringMain.run(dataset);
         }
 
-        prohibited = FSLearnCoefsForDataDepenentMetricFilteringMain.existsForDataset(dataset);
+        prohibited = FSLearnCoefsForDataDepenentPtolemyFilteringMain.existsForDataset(dataset);
         if (prohibited) {
             LOG.log(Level.WARNING, "Coefs for Data-dependent Generalised Ptolemaic Filtering already evaluated for dataset {0}", dataset);
             prohibited = askForRewriting("Coefs for Data-dependent Generalised Ptolemaic Filtering", dataset);
@@ -108,7 +108,7 @@ public class FSLearnGroundTruthAndAllPivotFilterings {
     private static boolean askForRewriting(String type, Dataset dataset) {
         String question = type + " for " + dataset.getDatasetName() + " already exists. Do you want to delete its content? (NEED TO BE CONFIRMED AGAIN AFTER EVALUATION)";
         Object[] options = new String[]{"Yes", "No"};
-        LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0} for [1]", new Object[]{type, dataset.getDatasetName()});
+        LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0} for {1}", new Object[]{type, dataset.getDatasetName()});
         int add = JOptionPane.showOptionDialog(null, question, "New file?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
         return add == 1;
     }
