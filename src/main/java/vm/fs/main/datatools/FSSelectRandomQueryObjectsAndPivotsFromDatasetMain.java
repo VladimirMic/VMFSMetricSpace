@@ -18,16 +18,20 @@ import vm.metricSpace.Dataset;
 public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
 
     public static final Integer IMPLICIT_NUMBER_OF_QUERIES = 1000;
-    public static final Integer IMPLICIT_NUMBER_OF_PIVOTS = 256;
+    public static final Integer IMPLICIT_NUMBER_OF_PIVOTS = 2560; // also selects one tenth and one fifth
 
     public static void main(String[] args) {
-        Dataset[] datasets = {new FSDatasetInstanceSingularizator.DeCAF100M_TMPDataset()};
+        Dataset[] datasets = {new FSDatasetInstanceSingularizator.RandomDataset20Uniform()};
         for (Dataset dataset : datasets) {
-            run(dataset, IMPLICIT_NUMBER_OF_QUERIES, IMPLICIT_NUMBER_OF_PIVOTS);
+            run(dataset);
         }
     }
 
-    private static void run(Dataset dataset, long numberOfQueries, long numberOfPivots) {
+    public static void run(Dataset dataset) {
+        run(dataset, IMPLICIT_NUMBER_OF_QUERIES, IMPLICIT_NUMBER_OF_PIVOTS);
+    }
+
+    public static void run(Dataset dataset, long numberOfQueries, long numberOfPivots) {
         long datasetSize = dataset.getPrecomputedDatasetSize();
         if (datasetSize < 0) {
             datasetSize = dataset.updateDatasetSize();
@@ -35,36 +39,60 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
         Iterator it = dataset.getMetricObjectsFromDataset();
         long batchSizeForQueries = (long) datasetSize / numberOfQueries;
         long batchSizeForPivots = (long) datasetSize / numberOfPivots;
-        long lcm = vm.math.Tools.lcm(batchSizeForQueries, batchSizeForPivots);
+        float lcm = vm.math.Tools.lcm(batchSizeForQueries, batchSizeForPivots);
+        lcm = Math.min(lcm, datasetSize);
 
-        int queriesPerBatch = (int) (numberOfQueries / lcm);
-        int pivotsPerBatch = (int) (numberOfPivots / lcm);;
+        int queriesPerBatch = (int) Math.ceil((lcm / datasetSize) * numberOfQueries);
+        int pivotsPerBatch = (int) Math.ceil((lcm / datasetSize) * numberOfPivots);
 
         List queries = new ArrayList<>();
         List pivots = new ArrayList<>();
 
-        while (queries.size() != numberOfQueries) {
+        while (queries.size() < numberOfQueries || pivots.size() < numberOfPivots) {
             List<Object> batch = Tools.getObjectsFromIterator(it, (int) lcm);
-            selectObjectsFromBatchUniformly(queries, queriesPerBatch, batch);
-            selectObjectsFromBatchUniformly(pivots, pivotsPerBatch, batch);
+            float ratio = batch.size() / lcm;
+            if (ratio != 1) {
+                selectObjectsFromBatchUniformly(queries, (int) (numberOfQueries - queries.size()), batch);
+                selectObjectsFromBatchUniformly(pivots, (int) (numberOfPivots - pivots.size()), batch);
+            } else {
+                selectObjectsFromBatchUniformly(queries, (int) (queriesPerBatch * ratio), batch);
+                selectObjectsFromBatchUniformly(pivots, (int) (pivotsPerBatch * ratio), batch);
+            }
         }
+        queries = Tools.truncateList(queries, numberOfQueries);
+        pivots = Tools.truncateList(pivots, numberOfPivots);
         String datasetName = dataset.getDatasetName();
-        String pivotSetName = getSetName(datasetName, numberOfPivots);
-        String querySetName = getSetName(datasetName, numberOfQueries);
-        dataset.storeQueryObjects(queries, querySetName);
-        dataset.storePivots(pivots, pivotSetName);
+        dataset.storeQueryObjects(queries, datasetName);
+        dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+        pivots = selectOneOutOfEachGroup(pivots, 5);
+        dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+        pivots = selectOneOutOfEachGroup(pivots, 2);
+        dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+    }
+
+    private static String getNameForPivots(String datasetName, int count) {
+        if (count == 256) {
+            return datasetName;
+        }
+        return datasetName + "_" + count + "pivots.gz";
     }
 
     private static void selectObjectsFromBatchUniformly(List destination, int toBeSelected, List source) {
         int batchSize = source.size() / toBeSelected;
         for (int i = 0; i < toBeSelected; i++) {
-            List subList = source.subList(i * batchSize, (i - 1) * batchSize);
+            List subList = source.subList(i * batchSize, (i + 1) * batchSize);
             Object randomObject = Tools.randomObject(subList);
             destination.add(randomObject);
         }
     }
 
-    private static String getSetName(String datasetName, long numberOfPivots) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private static List selectOneOutOfEachGroup(List pivots, int tuple) {
+        List ret = new ArrayList();
+        for (int i = 0; (i + 1) * tuple <= pivots.size(); i++) {
+            List subList = pivots.subList(i * tuple, (i + 1) * tuple);
+            Object randomObject = Tools.randomObject(subList);
+            ret.add(randomObject);
+        }
+        return ret;
     }
 }

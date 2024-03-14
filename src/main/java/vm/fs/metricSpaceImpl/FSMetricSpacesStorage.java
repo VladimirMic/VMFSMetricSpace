@@ -77,7 +77,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     protected Iterator<Object> getIteratorOfObjects(String folder, String file, Object... params) {
         File f = getFileForObjects(folder, file, false);
         if (!f.exists()) {
-            throw new IllegalArgumentException("No file for objects " + f.getAbsolutePath() + " exists");
+            LOG.log(Level.SEVERE, "No file for objects " + f.getAbsolutePath() + " exists");
+            return null;
         }
         return getIteratorOfObjects(f, params);
     }
@@ -259,7 +260,9 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
             LOG.log(Level.SEVERE, null, ex);
         } finally {
             try {
-                br.close();
+                if (br != null) {
+                    br.close();
+                }
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
