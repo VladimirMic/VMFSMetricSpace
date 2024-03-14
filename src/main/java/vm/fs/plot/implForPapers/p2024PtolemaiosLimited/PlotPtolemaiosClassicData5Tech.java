@@ -10,20 +10,20 @@ import vm.fs.plot.FSPlotFolders;
  *
  * @author au734419
  */
-public class PlotPtolemaiosAllClassic extends PlotPtolemaiosRandomData {
+public class PlotPtolemaiosClassicData5Tech extends PlotPtolemaiosRandomData5Tech {
 
-    public PlotPtolemaiosAllClassic(boolean plotOnlySvg) {
+    public PlotPtolemaiosClassicData5Tech(boolean plotOnlySvg) {
         super(plotOnlySvg);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
         return array(
-                "Triangle Inequality",
-                "Data-dependent Metric Filtering",
+                "Tr. Ineq.",
+                "Data-dep. Metric Filtering",
                 "Four Point Property",
                 "Ptolemaic Filtering",
-                "Data-dependent Generalised Ptolemaic Filtering"
+                "Data-dep. Gen. Ptolemaic Filt."
         );
     }
 
@@ -41,9 +41,9 @@ public class PlotPtolemaiosAllClassic extends PlotPtolemaiosRandomData {
     @Override
     public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return array(
-                "DeCAF",
-                "CLIP_GHP512",
-                "CLIP_PCA256"
+                "DeCAF_1M",
+                "CLIP_10M_GHP512",
+                "CLIP_10M_PCA256"
         );
     }
 

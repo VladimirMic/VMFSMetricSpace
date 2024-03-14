@@ -13,20 +13,20 @@ import vm.plot.impl.BoxPlotPlotter;
  *
  * @author au734419
  */
-public class PlotPtolemaiosRandomData extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosRandomData5Tech extends FSAbstractPlotterFromResults {
 
-    public PlotPtolemaiosRandomData(boolean plotOnlySvg) {
+    public PlotPtolemaiosRandomData5Tech(boolean plotOnlySvg) {
         super(plotOnlySvg);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
         return array(
-                //                "Triangle Inequality",
-                "Data-dependent Metric Filtering",
-                //                "Four Point Property",
-                //                "Ptolemaic Filtering",
-                "Data-dependent Generalised Ptolemaic Filtering"
+//                "Tr. Ineq.",
+                "Data-dep. Metric Filtering",
+//                "Four Point Property",
+//                "Ptolemaic Filtering",
+                "Data-dep. Gen. Ptolemaic Filt."
         );
     }
 
