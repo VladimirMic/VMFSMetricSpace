@@ -68,7 +68,8 @@ public abstract class FSAbstractPlotterFromResults {
         int datasetsCount = getDisplayedNamesOfGroupsThatMeansFiles().length;
         int techCount = getUniqueArtifactIdentifyingFolderNameForDisplaydTrace().length;
         String plotName = getPlotter().getSimpleName();
-        String className = getClass().getName();
+        String className = getClass().getCanonicalName();
+        className = className.substring(className.lastIndexOf(".") + 1);
 
         String fileName = Tools.getDateYYYYMM() + "_" + getResultName() + "_" + className;
         fileName += "_" + datasetsCount + "data_" + techCount + "techs_" + plotName + "_" + statName;
@@ -81,10 +82,14 @@ public abstract class FSAbstractPlotterFromResults {
         return new QUERY_STATS[]{QUERY_STATS.recall, QUERY_STATS.cand_set_dynamic_size, QUERY_STATS.query_execution_time};
     }
 
-    private List<File> getFilesWithResultsToBePlotted() {
+    private List<File> getFilesWithResultsToBePlotted(int groupsCount, int boxplotsCount) {
         File resultsRoot = new File(FSGlobal.RESULT_FOLDER);
         File[] folders = resultsRoot.listFiles(getFilenameFilterFolders());
-        LOG.log(Level.INFO, "There are {0} folders matching the rule", folders.length);
+        if (folders.length != boxplotsCount) {
+            throw new IllegalArgumentException("You have wrong filename filter as number of result folders " + folders.length + "differs from the number of name artifacts " + boxplotsCount);
+        } else {
+            LOG.log(Level.INFO, "There are {0} folders matching the rule", folders.length);
+        }
 
         String[] uniqueArtifactsForFiles = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
         folders = reorder(folders, getUniqueArtifactIdentifyingFolderNameForDisplaydTrace());
@@ -93,6 +98,9 @@ public abstract class FSAbstractPlotterFromResults {
         for (File folder : folders) {
             File folderWithStats = new File(folder, FSGlobal.RESULT_STATS_FOLDER);
             File[] files = folderWithStats.listFiles(filenameFilterFiles);
+            if (files.length != groupsCount) {
+                throw new IllegalArgumentException("You have wrong filename filter as number of files " + files.length + " in folder " + folderWithStats.getAbsolutePath() + "is smaller than the number of name artifacts " + groupsCount);
+            }
             if (files.length != 0) {
                 files = reorder(files, uniqueArtifactsForFiles);
                 LOG.log(Level.INFO, "Folder {0} contains {1} matching files", new Object[]{folder.getName(), files.length});
@@ -128,7 +136,7 @@ public abstract class FSAbstractPlotterFromResults {
     public void makePlots() {
         int groupsCount = getDisplayedNamesOfGroupsThatMeansFiles().length;
         int boxplotsCount = getDisplayedNamesOfTracesThatMeansFolders().length;
-        List<File> files = getFilesWithResultsToBePlotted();
+        List<File> files = getFilesWithResultsToBePlotted(groupsCount, boxplotsCount);
         Map<QUERY_STATS, List<Float>[][]> dataForStats = loadStatsFromFileAsListOfXYValues(files, groupsCount, boxplotsCount);
         AbstractPlotter plotter = getPlotter();
         Set<QUERY_STATS> keyForPlots = dataForStats.keySet();

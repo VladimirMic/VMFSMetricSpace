@@ -7,7 +7,7 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotCategoricalPlotter;
+import vm.plot.impl.BoxPlotPlotter;
 
 /**
  *
@@ -82,7 +82,7 @@ public class PlotPtolemaiosRandomData extends FSAbstractPlotterFromResults {
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotCategoricalPlotter();
+        return new BoxPlotPlotter();
     }
 
     @Override

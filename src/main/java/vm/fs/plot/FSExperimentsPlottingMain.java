@@ -15,9 +15,9 @@ public class FSExperimentsPlottingMain {
 
     public static final Boolean PLOT_ONLY_SVG = true;
     public static final FSAbstractPlotterFromResults Y2024_PTOLEMAIOS_RANDOM = new PlotPtolemaiosRandomData(true);
-    public static final FSAbstractPlotterFromResults Y2024_PTOLEMAIOS_CLASSI = new PlotPtolemaiosAllClassic(true);
+    public static final FSAbstractPlotterFromResults Y2024_PTOLEMAIOS_CLASSIC = new PlotPtolemaiosAllClassic(true);
 
     public static void main(String[] args) {
-        Y2024_PTOLEMAIOS_RANDOM.makePlots();
+        Y2024_PTOLEMAIOS_CLASSIC.makePlots();
     }
 }
