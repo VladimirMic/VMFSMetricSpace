@@ -21,51 +21,51 @@ public class PlotPtolemaiosRandomData5Tech extends FSAbstractPlotterFromResults 
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
-        return array(
-//                "Tr. Ineq.",
+        return strings(
+                "Tr. Ineq.",
                 "Data-dep. Metric Filtering",
-//                "Four Point Property",
-//                "Ptolemaic Filtering",
-                "Data-dep. Gen. Ptolemaic Filt."
+                "Four Point Property",
+                "Ptolemaic Filtering",
+                "Data-dep. Gen. Ptolemaic Filering"
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFolderNameForDisplaydTrace() {
-        return array(
-                //                "2024_03_256_pivots_30NN_seq_triangle_inequality",
+        return strings(
+                "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-                //                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
-                //                "2024_03_256_pivots_30NN_seq_ptolemaios",
+                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_03_256_pivots_30NN_seq_ptolemaios",
                 "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
         );
     }
 
     @Override
-    public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
+    public Object[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return array(
-                "10",
-                "15",
-                "20",
-                "25",
-                "30",
-                "35",
-                "40",
-                "50",
-                "60",
-                "70",
-                "80",
-                "90",
-                "100"
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                50,
+                60,
+                70,
+                80,
+                90,
+                100
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
-        String[] dims = getDisplayedNamesOfGroupsThatMeansFiles();
+        Object[] dims = getDisplayedNamesOfGroupsThatMeansFiles();
         String[] ret = new String[dims.length];
         for (int i = 0; i < dims.length; i++) {
-            ret[i] = dims[i] + "dim";
+            ret[i] = dims[i].toString() + "dim";
         }
         return ret;
     }
@@ -73,11 +73,6 @@ public class PlotPtolemaiosRandomData5Tech extends FSAbstractPlotterFromResults 
     @Override
     public String getXAxisLabel() {
         return "Dimensionality";
-    }
-
-    @Override
-    public String getUnitForTime() {
-        return "s";
     }
 
     @Override
@@ -93,6 +88,16 @@ public class PlotPtolemaiosRandomData5Tech extends FSAbstractPlotterFromResults 
     @Override
     public String getFolderForPlots() {
         return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED;
+    }
+
+    @Override
+    protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
+        return firstValue / 1000000;
+    }
+
+    @Override
+    protected String getYAxisNameForAdditionalParams() {
+        return "# LBs to discard vector";
     }
 
 }

@@ -10,26 +10,26 @@ import vm.fs.plot.FSPlotFolders;
  *
  * @author au734419
  */
-public class PlotPtolemaiosClassicData5Tech extends PlotPtolemaiosRandomData5Tech {
+public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomData5Tech {
 
-    public PlotPtolemaiosClassicData5Tech(boolean plotOnlySvg) {
+    public PlotPtolemaiosTransformedClips5Tech(boolean plotOnlySvg) {
         super(plotOnlySvg);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
-        return array(
+        return strings(
                 "Tr. Ineq.",
                 "Data-dep. Metric Filtering",
                 "Four Point Property",
                 "Ptolemaic Filtering",
-                "Data-dep. Gen. Ptolemaic Filt."
+                "Data-dep. Gen. Ptolemaic Filering"
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFolderNameForDisplaydTrace() {
-        return array(
+        return strings(
                 "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
@@ -40,8 +40,7 @@ public class PlotPtolemaiosClassicData5Tech extends PlotPtolemaiosRandomData5Tec
 
     @Override
     public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
-        return array(
-                "DeCAF_1M",
+        return strings(
                 "CLIP_10M_GHP512",
                 "CLIP_10M_PCA256"
         );
@@ -49,8 +48,7 @@ public class PlotPtolemaiosClassicData5Tech extends PlotPtolemaiosRandomData5Tec
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
-        return array(
-                "decaf_1m__decaf_1m__30__decaf_1m__decaf_1m__",
+        return strings(
                 "laion2B-en-clip768v2-n=10M.h5_GHP_50_512__public-queries-10k-clip768v2.h5_GHP_50_512__30__laion2B-en-clip768v2-n=10M.h5_GHP_50_512__public-queries-10k-clip768v2.h5_GHP_50_512__",
                 "laion2B-en-clip768v2-n=10M.h5_PCA256__laion2B-en-clip768v2-n=10M.h5_PCA256__30__laion2B-en-clip768v2-n=10M.h5_PCA256__laion2B-en-clip768v2-n=10M.h5_PCA256__"
         );
@@ -64,6 +62,11 @@ public class PlotPtolemaiosClassicData5Tech extends PlotPtolemaiosRandomData5Tec
     @Override
     public String getFolderForPlots() {
         return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED;
+    }
+
+    @Override
+    protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
+        return firstValue / 10120191;
     }
 
 }

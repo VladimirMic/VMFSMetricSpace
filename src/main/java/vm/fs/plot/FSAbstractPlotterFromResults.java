@@ -15,12 +15,15 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.chart.JFreeChart;
+import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl.QUERY_STATS;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.plot.AbstractPlotter;
+import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXYPlotter;
 
 /**
  *
@@ -29,9 +32,14 @@ import vm.plot.AbstractPlotter;
 public abstract class FSAbstractPlotterFromResults {
 
     private final boolean plotOnlySvg;
+    private AbstractPlotter plotter = getPlotter();
+    private final Object[] xTicks = getDisplayedNamesOfGroupsThatMeansFiles();
 
     public FSAbstractPlotterFromResults(boolean plotOnlySvg) {
         this.plotOnlySvg = plotOnlySvg;
+        if (plotter instanceof BoxPlotPlotter && Tools.isParseableToFloats(xTicks)) {
+            plotter = new BoxPlotXYPlotter();
+        }
     }
 
     private static final Logger LOG = Logger.getLogger(FSAbstractPlotterFromResults.class.getName());
@@ -40,19 +48,21 @@ public abstract class FSAbstractPlotterFromResults {
 
     public abstract String[] getUniqueArtifactIdentifyingFolderNameForDisplaydTrace();
 
-    public abstract String[] getDisplayedNamesOfGroupsThatMeansFiles();
+    public abstract Object[] getDisplayedNamesOfGroupsThatMeansFiles();
 
     public abstract String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
 
     public abstract String getXAxisLabel();
-
-    public abstract String getUnitForTime();
 
     public abstract AbstractPlotter getPlotter();
 
     public abstract String getResultName();
 
     public abstract String getFolderForPlots();
+
+    protected abstract String getYAxisNameForAdditionalParams();
+
+    protected abstract Float transformAdditionalStatsForQueryToFloat(float firstValue);
 
     public FilenameFilter getFilenameFilterStatsFiles() {
         String[] array = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
@@ -65,9 +75,9 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     private String getResultFullNameWithDate(QUERY_STATS statName) {
-        int datasetsCount = getDisplayedNamesOfGroupsThatMeansFiles().length;
+        int datasetsCount = xTicks.length;
         int techCount = getUniqueArtifactIdentifyingFolderNameForDisplaydTrace().length;
-        String plotName = getPlotter().getSimpleName();
+        String plotName = plotter.getSimpleName();
         String className = getClass().getCanonicalName();
         className = className.substring(className.lastIndexOf(".") + 1);
 
@@ -79,7 +89,7 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     private QUERY_STATS[] getStatsToPrint() {
-        return new QUERY_STATS[]{QUERY_STATS.recall, QUERY_STATS.cand_set_dynamic_size, QUERY_STATS.query_execution_time};
+        return new QUERY_STATS[]{QUERY_STATS.recall, QUERY_STATS.cand_set_dynamic_size, QUERY_STATS.query_execution_time, QUERY_STATS.error_on_dist, QUERY_STATS.additional_stats};
     }
 
     private List<File> getFilesWithResultsToBePlotted(int groupsCount, int boxplotsCount) {
@@ -128,19 +138,21 @@ public abstract class FSAbstractPlotterFromResults {
             for (QUERY_STATS stat : statsToPrint) {
                 List<Float>[][] listOfValues = ret.get(stat);
                 update(listOfValues[traceIdx][groupIdx], results, stat);
+                if (listOfValues[traceIdx][groupIdx].isEmpty()) {
+                    listOfValues[traceIdx][groupIdx] = null;
+                }
             }
         }
         return ret;
     }
 
     public void makePlots() {
-        int groupsCount = getDisplayedNamesOfGroupsThatMeansFiles().length;
+        int groupsCount = xTicks.length;
         int boxplotsCount = getDisplayedNamesOfTracesThatMeansFolders().length;
         List<File> files = getFilesWithResultsToBePlotted(groupsCount, boxplotsCount);
         Map<QUERY_STATS, List<Float>[][]> dataForStats = loadStatsFromFileAsListOfXYValues(files, groupsCount, boxplotsCount);
-        AbstractPlotter plotter = getPlotter();
         Set<QUERY_STATS> keyForPlots = dataForStats.keySet();
-        Map<QUERY_STATS, String> yLabels = queryStatsToYAxisLabels();
+        Map<QUERY_STATS, String> yLabels = queryStatsToYAxisLabels(dataForStats.get(QUERY_STATS.query_execution_time));
         for (QUERY_STATS key : keyForPlots) {
             makePlotsForQueryStats(key, dataForStats, plotter, yLabels.get(key));
         }
@@ -148,9 +160,12 @@ public abstract class FSAbstractPlotterFromResults {
 
     private void makePlotsForQueryStats(QUERY_STATS key, Map<QUERY_STATS, List<Float>[][]> dataForStats, AbstractPlotter plotter, String yAxisLabel) {
         List<Float>[][] values = dataForStats.get(key);
+        if (isEmpty(values)) {
+            return;
+        }
         String path = getResultFullNameWithDate(key);
         LOG.log(Level.INFO, "Path for future plot: {0}", path);
-        JFreeChart plot = plotter.createPlot("", yAxisLabel, getDisplayedNamesOfTracesThatMeansFolders(), getDisplayedNamesOfGroupsThatMeansFiles(), values);
+        JFreeChart plot = plotter.createPlot("", yAxisLabel, getDisplayedNamesOfTracesThatMeansFolders(), xTicks, values);
         plotter.storePlotSVG(path, plot);
         if (!plotOnlySvg) {
             plotter.storePlotPNG(path, plot);
@@ -186,15 +201,21 @@ public abstract class FSAbstractPlotterFromResults {
         };
     }
 
-    protected String[] array(String... strings) {
+    protected String[] strings(String... strings) {
         return strings;
     }
 
-    private Map<QUERY_STATS, String> queryStatsToYAxisLabels() {
+    protected Object[] array(Object... objects) {
+        return objects;
+    }
+
+    private String unitForTime;
+
+    private Map<QUERY_STATS, String> queryStatsToYAxisLabels(List<Float>[][] timeValues) {
         Map<QUERY_STATS, String> ret = new HashMap<>();
         ret.put(QUERY_STATS.cand_set_dynamic_size, "CandSet(q) size");
         ret.put(QUERY_STATS.error_on_dist, "Error on Dist");
-        String unitForTime = getUnitForTime();
+        unitForTime = setUnitForTime(timeValues);
         if (unitForTime == null) {
             unitForTime = "";
         } else {
@@ -202,6 +223,10 @@ public abstract class FSAbstractPlotterFromResults {
         }
         ret.put(QUERY_STATS.query_execution_time, "Time" + unitForTime);
         ret.put(QUERY_STATS.recall, "Recall");
+        String yAxisNameForAdditionalParams = getYAxisNameForAdditionalParams();
+        if (yAxisNameForAdditionalParams != null) {
+            ret.put(QUERY_STATS.additional_stats, yAxisNameForAdditionalParams);
+        }
         return ret;
     }
 
@@ -241,19 +266,23 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     private void update(List<Float> list, Map<String, TreeMap<QUERY_STATS, String>> stats, QUERY_STATS stat) {
-        String unitForTime = getUnitForTime();
-        if (unitForTime != null) {
-            unitForTime = unitForTime.trim().toLowerCase();
-        }
         for (Map.Entry<String, TreeMap<QUERY_STATS, String>> statsForQueryEntry : stats.entrySet()) {
             TreeMap<QUERY_STATS, String> statsForQuery = statsForQueryEntry.getValue();
             String valueString = statsForQuery.get(stat);
             if (valueString != null) {
-                Float valueOf = Float.valueOf(valueString);
-                if (stat == QUERY_STATS.query_execution_time && unitForTime != null && unitForTime.equals("s")) {
-                    valueOf /= 1000;
+                Float fValue = Tools.parseFloat(valueString);
+                if (fValue != null) {
+                    list.add(fValue);
+                } else {
+                    String[] split = valueString.split(",");
+                    fValue = Tools.parseFloat(split[0]);
+                    if (split.length > 0 && fValue != null) {
+                        fValue = transformAdditionalStatsForQueryToFloat(fValue);
+                        if (fValue != null) {
+                            list.add(fValue);
+                        }
+                    }
                 }
-                list.add(valueOf);
             }
         }
     }
@@ -272,4 +301,40 @@ public abstract class FSAbstractPlotterFromResults {
         return ret;
     }
 
+    private String setUnitForTime(List<Float>[][] timeValues) {
+        List<Float> all = new ArrayList<>();
+        for (List<Float>[] timeValue : timeValues) {
+            for (List<Float> list : timeValue) {
+                all.addAll(list);
+            }
+        }
+        double quartile3 = vm.math.Tools.getQuartile3(DataTypeConvertor.floatToPrimitiveArray(all));
+        if (quartile3 >= 1000) {
+            for (List<Float>[] timeValue : timeValues) {
+                for (List<Float> list : timeValue) {
+                    List<Float> listNew = new ArrayList<>();
+                    for (int k = 0; k < list.size(); k++) {
+                        Float value = list.get(k);
+                        listNew.add(value / 1000);
+                    }
+                    list.clear();
+                    list.addAll(listNew);
+                }
+            }
+
+            return "s";
+        }
+        return "ms";
+    }
+
+    private boolean isEmpty(List<Float>[][] values) {
+        for (List<Float>[] value : values) {
+            for (List<Float> list : value) {
+                if (list != null && !list.isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

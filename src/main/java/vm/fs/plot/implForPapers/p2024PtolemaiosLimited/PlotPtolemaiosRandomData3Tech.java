@@ -16,16 +16,16 @@ public class PlotPtolemaiosRandomData3Tech extends PlotPtolemaiosRandomData5Tech
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
-        return array(
+        return strings(
                 "Tr. Ineq.",
                 "Data-dep. Metric Filtering",
-                "Data-dep. Gen. Ptolemaic Filt."
+                "Data-dep. Gen. Ptolemaic Filering"
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFolderNameForDisplaydTrace() {
-        return array(
+        return strings(
                 "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"

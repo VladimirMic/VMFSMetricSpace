@@ -37,9 +37,9 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
             datasetSize = dataset.updateDatasetSize();
         }
         Iterator it = dataset.getMetricObjectsFromDataset();
-        long batchSizeForQueries = (long) datasetSize / numberOfQueries;
-        long batchSizeForPivots = (long) datasetSize / numberOfPivots;
-        float lcm = vm.math.Tools.lcm(batchSizeForQueries, batchSizeForPivots);
+        Long batchSizeForQueries = (long) datasetSize / numberOfQueries;
+        Long batchSizeForPivots = (long) datasetSize / numberOfPivots;
+        float lcm = (float) vm.math.Tools.lcm(batchSizeForQueries, batchSizeForPivots);
         lcm = Math.min(lcm, datasetSize);
 
         int queriesPerBatch = (int) Math.ceil((lcm / datasetSize) * numberOfQueries);
