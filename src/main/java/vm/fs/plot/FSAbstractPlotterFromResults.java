@@ -31,18 +31,23 @@ import vm.plot.impl.BoxPlotXYPlotter;
  */
 public abstract class FSAbstractPlotterFromResults {
 
+    private static final Logger LOG = Logger.getLogger(FSAbstractPlotterFromResults.class.getName());
+
     private final boolean plotOnlySvg;
     private AbstractPlotter plotter = getPlotter();
     private final Object[] xTicks = getDisplayedNamesOfGroupsThatMeansFiles();
+    private final AbstractPlotter.COLOUR_NAMES[] colourIndexesForTraces = getColourIndexesForTraces();
+    private final String[] artifactForTraces = getUniqueArtifactIdentifyingFolderNameForDisplaydTrace();
 
     public FSAbstractPlotterFromResults(boolean plotOnlySvg) {
         this.plotOnlySvg = plotOnlySvg;
         if (plotter instanceof BoxPlotPlotter && Tools.isParseableToFloats(xTicks)) {
             plotter = new BoxPlotXYPlotter();
         }
+        if (colourIndexesForTraces != null && colourIndexesForTraces.length != artifactForTraces.length) {
+            throw new IllegalArgumentException("Incosistent specification of traces colours and traces. The counts do not match. Colours: " + colourIndexesForTraces.length + ", traces: " + xTicks.length);
+        }
     }
-
-    private static final Logger LOG = Logger.getLogger(FSAbstractPlotterFromResults.class.getName());
 
     public abstract String[] getDisplayedNamesOfTracesThatMeansFolders();
 
@@ -64,19 +69,20 @@ public abstract class FSAbstractPlotterFromResults {
 
     protected abstract Float transformAdditionalStatsForQueryToFloat(float firstValue);
 
+    protected abstract AbstractPlotter.COLOUR_NAMES[] getColourIndexesForTraces();
+
     public FilenameFilter getFilenameFilterStatsFiles() {
         String[] array = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
         return getFileNameFilterOR(true, array);
     }
 
     public FilenameFilter getFilenameFilterFolders() {
-        String[] array = getUniqueArtifactIdentifyingFolderNameForDisplaydTrace();
-        return getFileNameFilterOR(false, array);
+        return getFileNameFilterOR(false, artifactForTraces);
     }
 
     private String getResultFullNameWithDate(QUERY_STATS statName) {
         int datasetsCount = xTicks.length;
-        int techCount = getUniqueArtifactIdentifyingFolderNameForDisplaydTrace().length;
+        int techCount = artifactForTraces.length;
         String plotName = plotter.getSimpleName();
         String className = getClass().getCanonicalName();
         className = className.substring(className.lastIndexOf(".") + 1);
@@ -102,7 +108,7 @@ public abstract class FSAbstractPlotterFromResults {
         }
 
         String[] uniqueArtifactsForFiles = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
-        folders = reorder(folders, getUniqueArtifactIdentifyingFolderNameForDisplaydTrace());
+        folders = reorder(folders, artifactForTraces);
         FilenameFilter filenameFilterFiles = getFilenameFilterStatsFiles();
         List<File> ret = new ArrayList<>();
         for (File folder : folders) {
@@ -165,7 +171,8 @@ public abstract class FSAbstractPlotterFromResults {
         }
         String path = getResultFullNameWithDate(key);
         LOG.log(Level.INFO, "Path for future plot: {0}", path);
-        JFreeChart plot = plotter.createPlot("", yAxisLabel, getDisplayedNamesOfTracesThatMeansFolders(), xTicks, values);
+        String xAxisLabel = getXAxisLabel();
+        JFreeChart plot = plotter.createPlot("", xAxisLabel, yAxisLabel, getDisplayedNamesOfTracesThatMeansFolders(), colourIndexesForTraces, xTicks, values);
         plotter.storePlotSVG(path, plot);
         if (!plotOnlySvg) {
             plotter.storePlotPNG(path, plot);
@@ -308,8 +315,8 @@ public abstract class FSAbstractPlotterFromResults {
                 all.addAll(list);
             }
         }
-        double quartile3 = vm.math.Tools.getQuartile3(DataTypeConvertor.floatToPrimitiveArray(all));
-        if (quartile3 >= 1000) {
+        double max = vm.math.Tools.getMax(DataTypeConvertor.floatToPrimitiveArray(all));
+        if (max >= 1300) {
             for (List<Float>[] timeValue : timeValues) {
                 for (List<Float> list : timeValue) {
                     List<Float> listNew = new ArrayList<>();

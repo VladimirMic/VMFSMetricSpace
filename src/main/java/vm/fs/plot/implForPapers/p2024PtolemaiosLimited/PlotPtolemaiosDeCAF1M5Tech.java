@@ -8,7 +8,7 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
  *
  * @author au734419
  */
-public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech {
+public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech10_40 {
 
     public PlotPtolemaiosDeCAF1M5Tech(boolean plotOnlySvg) {
         super(plotOnlySvg);
@@ -30,7 +30,7 @@ public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech {
 
     @Override
     public String getXAxisLabel() {
-        return "Dimensionality";
+        return "";
     }
 
 }

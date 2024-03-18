@@ -4,23 +4,30 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
+import vm.plot.AbstractPlotter.COLOUR_NAMES;
+
 /**
  *
  * @author au734419
  */
-public class PlotPtolemaiosRandomData3Tech extends PlotPtolemaiosRandomData5Tech {
+public class PlotPtolemaiosRandomData3Tech10_40 extends PlotPtolemaiosRandomData5Tech10_40 {
 
-    public PlotPtolemaiosRandomData3Tech(boolean plotOnlySvg) {
+    public PlotPtolemaiosRandomData3Tech10_40(boolean plotOnlySvg) {
         super(plotOnlySvg);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
         return strings(
-                "Tr. Ineq.",
+                "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
-                "Data-dep. Gen. Ptolemaic Filering"
+                "Data-dep. Ptolemaic Filering"
         );
+    }
+
+    @Override
+    protected COLOUR_NAMES[] getColourIndexesForTraces() {
+        return new COLOUR_NAMES[]{COLOUR_NAMES.C1_BLUE, COLOUR_NAMES.C2_RED, COLOUR_NAMES.C5_VIOLET};
     }
 
     @Override

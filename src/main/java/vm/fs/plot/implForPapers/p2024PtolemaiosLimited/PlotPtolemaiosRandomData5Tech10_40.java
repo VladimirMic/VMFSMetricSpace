@@ -7,27 +7,33 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
+import vm.plot.AbstractPlotter.COLOUR_NAMES;
 import vm.plot.impl.BoxPlotPlotter;
 
 /**
  *
  * @author au734419
  */
-public class PlotPtolemaiosRandomData5Tech extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromResults {
 
-    public PlotPtolemaiosRandomData5Tech(boolean plotOnlySvg) {
+    public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlySvg) {
         super(plotOnlySvg);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
         return strings(
-                "Tr. Ineq.",
+                "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
                 "Four Point Property",
                 "Ptolemaic Filtering",
-                "Data-dep. Gen. Ptolemaic Filering"
+                "Data-dep. Ptolemaic Filering"
         );
+    }
+
+    @Override
+    protected COLOUR_NAMES[] getColourIndexesForTraces() {
+        return null;
     }
 
     @Override
@@ -50,13 +56,7 @@ public class PlotPtolemaiosRandomData5Tech extends FSAbstractPlotterFromResults 
                 25,
                 30,
                 35,
-                40,
-                50,
-                60,
-                70,
-                80,
-                90,
-                100
+                40
         );
     }
 
