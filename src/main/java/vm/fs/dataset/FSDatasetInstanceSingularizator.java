@@ -51,7 +51,7 @@ public class FSDatasetInstanceSingularizator {
     public static class RandomDataset20Uniform extends FSFloatVectorDataset {
 
         public RandomDataset20Uniform() {
-            super("orig_random_20dim_uniform_1m");
+            super("random_20dim_uniform_1m");
         }
     }
 

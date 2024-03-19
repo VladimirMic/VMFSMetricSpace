@@ -153,12 +153,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 dataset,
                 pivotCount
         );
-        AbstractOnePivotFilter trivial = new TrivialIneffectiveBound(namePrefix);
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
-//        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
-//        return new BoundsOnDistanceEstimation[]{trivial};
-        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }
 
