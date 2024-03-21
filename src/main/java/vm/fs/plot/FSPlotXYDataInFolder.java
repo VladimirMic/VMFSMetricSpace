@@ -113,7 +113,7 @@ public class FSPlotXYDataInFolder {
         }
         JFreeChart plot = plotter.createPlot(plotTitle, xName, yName, tracesNames, xPlotValues, yPlotValues);
         File fileForPlot = getFileForPlot(FSGlobal.FOLDER_PLOTS, fileName);
-        plotter.storePlotSVG(fileForPlot.getAbsolutePath(), plot);
+        plotter.storePlotPDF(fileForPlot.getAbsolutePath(), plot);
     }
 
     private static float[][] transformXStringValues(String[] xAxisValues, int numberOfTraces) {

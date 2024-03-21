@@ -8,9 +8,9 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
  *
  * @author au734419
  */
-public class PlotPtolemaiosRandomData3Tech50_100 extends PlotPtolemaiosRandomData3Tech10_40 {
+public class PlotPtolemaiosRandomData4Tech50_100Time extends PlotPtolemaiosRandomData4Tech10_40Time {
 
-    public PlotPtolemaiosRandomData3Tech50_100(boolean plotOnlySvg) {
+    public PlotPtolemaiosRandomData4Tech50_100Time(boolean plotOnlySvg) {
         super(plotOnlySvg);
     }
 

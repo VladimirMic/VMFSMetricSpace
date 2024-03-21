@@ -37,21 +37,21 @@ public abstract class FSAbstractPlotterFromResults {
     private AbstractPlotter plotter = getPlotter();
     private final Object[] xTicks = getDisplayedNamesOfGroupsThatMeansFiles();
     private final AbstractPlotter.COLOUR_NAMES[] colourIndexesForTraces = getColourIndexesForTraces();
-    private final String[] artifactForTraces = getUniqueArtifactIdentifyingFolderNameForDisplaydTrace();
+    private final String[] folderNames = getFolderNamesForDisplaydTrace();
 
     public FSAbstractPlotterFromResults(boolean plotOnlySvg) {
         this.plotOnlySvg = plotOnlySvg;
         if (plotter instanceof BoxPlotPlotter && Tools.isParseableToFloats(xTicks)) {
             plotter = new BoxPlotXYPlotter();
         }
-        if (colourIndexesForTraces != null && colourIndexesForTraces.length != artifactForTraces.length) {
+        if (colourIndexesForTraces != null && colourIndexesForTraces.length != folderNames.length) {
             throw new IllegalArgumentException("Incosistent specification of traces colours and traces. The counts do not match. Colours: " + colourIndexesForTraces.length + ", traces: " + xTicks.length);
         }
     }
 
     public abstract String[] getDisplayedNamesOfTracesThatMeansFolders();
 
-    public abstract String[] getUniqueArtifactIdentifyingFolderNameForDisplaydTrace();
+    public abstract String[] getFolderNamesForDisplaydTrace();
 
     public abstract Object[] getDisplayedNamesOfGroupsThatMeansFiles();
 
@@ -77,12 +77,12 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     public FilenameFilter getFilenameFilterFolders() {
-        return getFileNameFilterOR(false, artifactForTraces);
+        return getFileNameFilterArray(folderNames);
     }
 
     private String getResultFullNameWithDate(QUERY_STATS statName) {
         int datasetsCount = xTicks.length;
-        int techCount = artifactForTraces.length;
+        int techCount = folderNames.length;
         String plotName = plotter.getSimpleName();
         String className = getClass().getCanonicalName();
         className = className.substring(className.lastIndexOf(".") + 1);
@@ -102,13 +102,16 @@ public abstract class FSAbstractPlotterFromResults {
         File resultsRoot = new File(FSGlobal.RESULT_FOLDER);
         File[] folders = resultsRoot.listFiles(getFilenameFilterFolders());
         if (folders.length != boxplotsCount) {
-            throw new IllegalArgumentException("You have wrong filename filter as number of result folders " + folders.length + "differs from the number of name artifacts " + boxplotsCount);
+            for (File folder : folders) {
+                System.err.println(folder.getName());
+            }
+            throw new IllegalArgumentException("You have wrong filename filter as number of result folders " + folders.length + " differs from the number of name artifacts " + boxplotsCount);
         } else {
             LOG.log(Level.INFO, "There are {0} folders matching the rule", folders.length);
         }
 
         String[] uniqueArtifactsForFiles = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
-        folders = reorder(folders, artifactForTraces);
+        folders = reorder(folders, folderNames);
         FilenameFilter filenameFilterFiles = getFilenameFilterStatsFiles();
         List<File> ret = new ArrayList<>();
         for (File folder : folders) {
@@ -173,10 +176,21 @@ public abstract class FSAbstractPlotterFromResults {
         LOG.log(Level.INFO, "Path for future plot: {0}", path);
         String xAxisLabel = getXAxisLabel();
         JFreeChart plot = plotter.createPlot("", xAxisLabel, yAxisLabel, getDisplayedNamesOfTracesThatMeansFolders(), colourIndexesForTraces, xTicks, values);
-        plotter.storePlotSVG(path, plot);
+        plotter.storePlotPDF(path, plot);
         if (!plotOnlySvg) {
             plotter.storePlotPNG(path, plot);
         }
+    }
+
+    public FilenameFilter getFileNameFilterArray(String... substrings) {
+        return (File dir, String name) -> {
+            for (String substring : substrings) {
+                if (name.toLowerCase().equals(substring.toLowerCase())) {
+                    return true;
+                }
+            }
+            return false;
+        };
     }
 
     public FilenameFilter getFileNameFilterOR(boolean checkSuffixCSV, String... substrings) {

@@ -14,49 +14,32 @@ import vm.plot.impl.BoxPlotPlotter;
  *
  * @author au734419
  */
-public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstractPlotterFromResults {
 
-    public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlySvg) {
-        super(plotOnlySvg);
-    }
-
-    @Override
-    public String[] getDisplayedNamesOfTracesThatMeansFolders() {
-        return strings(
-                "Triangle Ineq.",
-                "Data-dep. Metric Filtering",
-                "Four Point Property",
-                "Ptolemaic Filtering",
-                "Data-dep. Ptolemaic Filering"
-        );
-    }
-
-    @Override
-    protected COLOUR_NAMES[] getColourIndexesForTraces() {
-        return null;
-    }
-
-    @Override
-    public String[] getFolderNamesForDisplaydTrace() {
-        return strings(
-                "2024_03_256_pivots_30NN_seq_triangle_inequality",
-                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_03_256_pivots_30NN_seq_ptolemaios",
-                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
-        );
+    public PlotPtolemaiosRandomDataPivotSelectionForPtolemaios(boolean plotOnlyPDF) {
+        super(plotOnlyPDF);
     }
 
     @Override
     public Object[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return array(
-                10,
-                15,
-                20,
-                25,
-                30,
-                35,
-                40
+                20
+        );
+    }
+
+    @Override
+    public String[] getDisplayedNamesOfTracesThatMeansFolders() {
+        return strings(
+                "Random Pivot Pairs",
+                "Selected Pivot Pairs"
+        );
+    }
+
+    @Override
+    public String[] getFolderNamesForDisplaydTrace() {
+        return strings(
+                "2024_03_256_pivots_30NN_ptolemaios_randomPivots",
+                "2024_03_256_pivots_30NN_seq_ptolemaios"
         );
     }
 
@@ -72,7 +55,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
 
     @Override
     public String getXAxisLabel() {
-        return "Dimensionality";
+        return "20D";
     }
 
     @Override
@@ -100,4 +83,8 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
         return "# LBs checked per distance";
     }
 
+    @Override
+    protected AbstractPlotter.COLOUR_NAMES[] getColourIndexesForTraces() {
+        return new COLOUR_NAMES[]{COLOUR_NAMES.CX_BLACK, COLOUR_NAMES.C4_ORANGE};
+    }
 }

@@ -10,10 +10,10 @@ import vm.plot.AbstractPlotter.COLOUR_NAMES;
  *
  * @author au734419
  */
-public class PlotPtolemaiosRandomData3Tech10_40 extends PlotPtolemaiosRandomData5Tech10_40 {
+public class PlotPtolemaiosRandomData4Tech10_40Time extends PlotPtolemaiosRandomData5Tech10_40 {
 
-    public PlotPtolemaiosRandomData3Tech10_40(boolean plotOnlySvg) {
-        super(plotOnlySvg);
+    public PlotPtolemaiosRandomData4Tech10_40Time(boolean plotOnlyPDF) {
+        super(plotOnlyPDF);
     }
 
     @Override
@@ -21,22 +21,24 @@ public class PlotPtolemaiosRandomData3Tech10_40 extends PlotPtolemaiosRandomData
         return strings(
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
+                "Ptolemaic Filtering",
                 "Data-dep. Ptolemaic Filering"
         );
     }
 
     @Override
     protected COLOUR_NAMES[] getColourIndexesForTraces() {
-        return new COLOUR_NAMES[]{COLOUR_NAMES.C1_BLUE, COLOUR_NAMES.C2_RED, COLOUR_NAMES.C5_VIOLET};
+        return new COLOUR_NAMES[]{COLOUR_NAMES.C1_BLUE, COLOUR_NAMES.C2_RED, COLOUR_NAMES.C4_ORANGE, COLOUR_NAMES.C5_VIOLET};
     }
 
     @Override
-    public String[] getUniqueArtifactIdentifyingFolderNameForDisplaydTrace() {
+    public String[] getFolderNamesForDisplaydTrace() {
         return strings(
                 "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_03_256_pivots_30NN_seq_ptolemaios",
                 "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
         );
     }
 
-}
+    }
