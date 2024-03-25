@@ -17,8 +17,8 @@ public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomDat
     @Override
     public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return strings(
-                "CLIP_10M_GHP512",
-                "CLIP_10M_PCA256"
+                "CLIP_10M_PCA256",
+                "CLIP_10M_GHP512"
         );
     }
 

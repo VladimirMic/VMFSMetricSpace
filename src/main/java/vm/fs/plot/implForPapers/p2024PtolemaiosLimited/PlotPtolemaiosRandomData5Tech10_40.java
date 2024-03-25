@@ -25,7 +25,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
         return strings(
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
-                "Four Point Property",
+//                "Four Point Property",
                 "Ptolemaic Filtering",
                 "Data-dep. Ptolemaic Filering"
         );
@@ -33,7 +33,12 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
 
     @Override
     protected COLOUR_NAMES[] getColourIndexesForTraces() {
-        return null;
+        return new COLOUR_NAMES[]{
+            COLOUR_NAMES.C1_BLUE,
+            COLOUR_NAMES.C2_RED,
+            COLOUR_NAMES.C4_ORANGE,
+            COLOUR_NAMES.C5_VIOLET
+        };
     }
 
     @Override
@@ -41,7 +46,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
         return strings(
                 "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
+//                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
                 "2024_03_256_pivots_30NN_seq_ptolemaios",
                 "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
         );
