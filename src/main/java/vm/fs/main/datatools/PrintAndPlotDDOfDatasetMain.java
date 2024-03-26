@@ -33,10 +33,12 @@ public class PrintAndPlotDDOfDatasetMain {
     public static void main(String[] args) {
         Dataset[] datasets = {
             new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
-            new FSDatasetInstanceSingularizator.DeCAFDataset()
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
         };
         float[] distIntervals = {
             1f / 100,
+            2f,
             2f
         };
         for (int i = 0; i < datasets.length; i++) {
