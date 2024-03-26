@@ -4,7 +4,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import vm.fs.store.dataTransforms.FSSVDStorageImpl;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.objTransforms.learning.LearnSVD;
@@ -17,10 +17,11 @@ import vm.objTransforms.storeLearned.SVDStoreInterface;
 public class FSLearnSVDMain {
 
     public static void main(String[] args) {
-//        int sampleCount = 100000;
-        int sampleCount = 500000;
+        int sampleCount = 200000;
+//        int sampleCount = 500000;
         Dataset[] datasets = {
-            new FSDatasetInstanceSingularizator.DeCAF100M_TMPDataset()
+            //            new FSDatasetInstanceSingularizator.DeCAF100M_TMPDataset()
+            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
         };
 
         for (Dataset dataset : datasets) {
