@@ -23,7 +23,6 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
     public static void main(String[] args) {
         String datasetName;
         datasetName = "decaf_1m";
-        float distInterval = 2f;
         String transformedDatasetName;
         transformedDatasetName = "decaf_1m_PCA4";
         float transformedDistInterval = 1.0f;
@@ -33,13 +32,14 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         AbstractMetricSpacesStorage metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, new FloatVectorConvertor());
 
 //      getHistogramsForRandomAndNearestNeighbours
-        int objCount = 100 * 1000;//100,000
-        int distCount = 1000 * 1000;//1000,000
+        int objCount = PrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT;//100,000
+        int distCount = PrintAndPlotDDOfDatasetMain.IMPLICIT_DIST_COUNT;//1000,000
         int queriesCount = 1;//1000
         int k = 100;
         List<Object[]> idsOfRandomPairs = new ArrayList<>();
         List<Object[]> idsOfNNPairs = new ArrayList<>();
-        SortedMap<Float, Float> ddRandomSample = PrintAndPlotDDOfDatasetMain.createDDOfRandomSample(metricSpace, metricSpacesStorage, distanceFunction, datasetName, objCount, distCount, distInterval, idsOfRandomPairs);
+        SortedMap<Float, Float> ddRandomSample = PrintAndPlotDDOfDatasetMain.createDDOfRandomSample(metricSpace, metricSpacesStorage, distanceFunction, datasetName, objCount, distCount, idsOfRandomPairs);
+        float distInterval = ToolsMetricDomain.computeBasicDistInterval(ddRandomSample.lastKey());
         SortedMap<Float, Float> ddOfNNSample = createDDOfNNSample(metricSpace, metricSpacesStorage, distanceFunction, datasetName, queriesCount, objCount, k, distInterval, idsOfNNPairs);
 //      print
         printDDOfRandomAndNearNeighbours(datasetName, distInterval, ddRandomSample, ddOfNNSample);

@@ -6,7 +6,6 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,51 +31,47 @@ public class PrintAndPlotDDOfDatasetMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = {
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
+//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
         };
-        float[] distIntervals = {
-            1f / 100,
-            2f,
-            2f
-        };
-        for (int i = 0; i < datasets.length; i++) {
-            run(datasets[i], distIntervals[i]);
+        for (Dataset dataset : datasets) {
+            run(dataset);
         }
     }
 
-    public static void run(Dataset dataset, float distInterval) {
+    public static void run(Dataset dataset) {
         String datasetName = dataset.getDatasetName();
 //      getHistogramsForRandomPairs
-        File f = getFileForDistDensity(datasetName, distInterval, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false);
-        SortedMap<Float, Float> ddRandomSample;
+        File f = getFileForDistDensity(datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false);
+        TreeMap<Float, Float> ddRandomSample;
         if (f.exists()) {
             ddRandomSample = vm.datatools.Tools.parseCsvMapFloats(f.getAbsolutePath());
         } else {
-            ddRandomSample = createDDOfRandomSample(dataset, datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, distInterval, null);
+            ddRandomSample = createDDOfRandomSample(dataset, datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
         }
 //      print
-        Map<Float, Float> mapOfValues = printDD(distInterval, f, ddRandomSample);
+        Map<Float, Float> mapOfValues = printDD(f, ddRandomSample);
         createPlot(f, mapOfValues);
     }
 
-    protected static SortedMap<Float, Float> createDDOfRandomSample(Dataset dataset, String datasetName, int objCount, int distCount, float distInterval, List<Object[]> examinedPairs) {
-        return createDDOfRandomSample(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), dataset.getDistanceFunction(), datasetName, objCount, distCount, distInterval, examinedPairs);
+    protected static TreeMap<Float, Float> createDDOfRandomSample(Dataset dataset, String datasetName, int objCount, int distCount, List<Object[]> examinedPairs) {
+        return createDDOfRandomSample(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), dataset.getDistanceFunction(), datasetName, objCount, distCount, examinedPairs);
     }
 
-    protected static SortedMap<Float, Float> createDDOfRandomSample(AbstractMetricSpace metricSpace, AbstractMetricSpacesStorage metricSpacesStorage, DistanceFunctionInterface df, String datasetName, int objCount, int distCount, float distInterval, List<Object[]> examinedPairs) {
+    protected static TreeMap<Float, Float> createDDOfRandomSample(AbstractMetricSpace metricSpace, AbstractMetricSpacesStorage metricSpacesStorage, DistanceFunctionInterface df, String datasetName, int objCount, int distCount, List<Object[]> examinedPairs) {
         List<Object> metricObjects = metricSpacesStorage.getSampleOfDataset(datasetName, objCount);
-        return ToolsMetricDomain.createDistanceDensityPlot(metricSpace, metricObjects, df, distCount, distInterval, examinedPairs);
+        return ToolsMetricDomain.createDistanceDensityPlot(metricSpace, metricObjects, df, distCount, examinedPairs);
     }
 
-    private static Map<Float, Float> printDD(float distInterval, File f, SortedMap<Float, Float> histogram) {
+    private static Map<Float, Float> printDD(File f, TreeMap<Float, Float> histogram) {
         PrintStream ps = null;
         Map<Float, Float> ret = new TreeMap<>();
         try {
             ps = new PrintStream(f);
             ps.println("Distance;Density of random sample");
             float lastDist = 0;
+            float distInterval = ToolsMetricDomain.computeBasicDistInterval(histogram.lastKey());
             for (float dist : histogram.keySet()) {
                 while (dist - lastDist > distInterval * 1.1d) {
                     lastDist += distInterval;
@@ -98,8 +93,8 @@ public class PrintAndPlotDDOfDatasetMain {
         return ret;
     }
 
-    private static File getFileForDistDensity(String datasetName, float distInterval, int objCount, int distCount, boolean willBeDeleted) {
-        String fileName = datasetName + "_int" + distInterval + "_o" + objCount + "_d" + distCount + ".csv";
+    private static File getFileForDistDensity(String datasetName, int objCount, int distCount, boolean willBeDeleted) {
+        String fileName = datasetName + "_o" + objCount + "_d" + distCount + ".csv";
         File ret = new File(FSGlobal.DIST_DISTRIBUTION_PLOTS_FOLDER, fileName);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
