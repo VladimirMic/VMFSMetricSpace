@@ -30,8 +30,8 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
     @Override
     public String[] getDisplayedNamesOfTracesThatMeansFolders() {
         return strings(
-                "Random Pivot Pairs",
-                "Selected Pivot Pairs"
+                "Uniform Pivot Pairs",
+                "Proposed Pairs Selection"
         );
     }
 

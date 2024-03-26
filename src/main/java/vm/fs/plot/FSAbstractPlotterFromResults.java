@@ -293,6 +293,9 @@ public abstract class FSAbstractPlotterFromResults {
             if (valueString != null) {
                 Float fValue = Tools.parseFloat(valueString);
                 if (fValue != null) {
+                    if (stat.equals(QUERY_STATS.additional_stats)) {
+                        fValue = transformAdditionalStatsForQueryToFloat(fValue);
+                    }
                     list.add(fValue);
                 } else {
                     String[] split = valueString.split(",");
