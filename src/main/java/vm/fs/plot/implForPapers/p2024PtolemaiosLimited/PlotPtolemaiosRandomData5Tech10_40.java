@@ -16,8 +16,8 @@ import vm.plot.impl.BoxPlotPlotter;
  */
 public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromResults {
 
-    public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlySvg) {
-        super(plotOnlySvg);
+    public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlyPDF) {
+        super(plotOnlyPDF);
     }
 
     @Override

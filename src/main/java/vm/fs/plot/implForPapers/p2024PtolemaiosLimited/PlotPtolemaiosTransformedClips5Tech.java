@@ -10,8 +10,8 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
  */
 public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomData5Tech10_40 {
 
-    public PlotPtolemaiosTransformedClips5Tech(boolean plotOnlySvg) {
-        super(plotOnlySvg);
+    public PlotPtolemaiosTransformedClips5Tech(boolean plotOnlyPDF) {
+        super(plotOnlyPDF);
     }
 
     @Override

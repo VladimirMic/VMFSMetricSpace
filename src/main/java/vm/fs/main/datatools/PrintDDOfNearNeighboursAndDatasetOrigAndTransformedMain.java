@@ -39,7 +39,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         int k = 100;
         List<Object[]> idsOfRandomPairs = new ArrayList<>();
         List<Object[]> idsOfNNPairs = new ArrayList<>();
-        SortedMap<Float, Float> ddRandomSample = PrintDDOfDatasetMain.createDDOfRandomSample(metricSpace, metricSpacesStorage, distanceFunction, datasetName, objCount, distCount, distInterval, idsOfRandomPairs);
+        SortedMap<Float, Float> ddRandomSample = PrintAndPlotDDOfDatasetMain.createDDOfRandomSample(metricSpace, metricSpacesStorage, distanceFunction, datasetName, objCount, distCount, distInterval, idsOfRandomPairs);
         SortedMap<Float, Float> ddOfNNSample = createDDOfNNSample(metricSpace, metricSpacesStorage, distanceFunction, datasetName, queriesCount, objCount, k, distInterval, idsOfNNPairs);
 //      print
         printDDOfRandomAndNearNeighbours(datasetName, distInterval, ddRandomSample, ddOfNNSample);
