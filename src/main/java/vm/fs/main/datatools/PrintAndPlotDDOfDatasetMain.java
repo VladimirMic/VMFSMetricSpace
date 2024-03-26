@@ -27,12 +27,17 @@ import vm.plot.impl.XYLinesPlotter;
  */
 public class PrintAndPlotDDOfDatasetMain {
 
+    public static final int IMPLICIT_OBJ_COUNT = 1000 * 1000;//1,000,000
+    public static final int IMPLICIT_DIST_COUNT = 1000 * 10000;//10,000,000
+
     public static void main(String[] args) {
         Dataset[] datasets = {
-            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true)
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
+            new FSDatasetInstanceSingularizator.DeCAFDataset()
         };
         float[] distIntervals = {
-            1f / 100
+            1f / 100,
+            2f
         };
         for (int i = 0; i < datasets.length; i++) {
             run(datasets[i], distIntervals[i]);
@@ -42,11 +47,14 @@ public class PrintAndPlotDDOfDatasetMain {
     public static void run(Dataset dataset, float distInterval) {
         String datasetName = dataset.getDatasetName();
 //      getHistogramsForRandomPairs
-        int objCount = 1000 * 1000;//1,000,000
-        int distCount = 1000 * 10000;//10,000,000
-        SortedMap<Float, Float> ddRandomSample = createDDOfRandomSample(dataset, datasetName, objCount, distCount, distInterval, null);
+        File f = getFileForDistDensity(datasetName, distInterval, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false);
+        SortedMap<Float, Float> ddRandomSample;
+        if (f.exists()) {
+            ddRandomSample = vm.datatools.Tools.parseCsvMapFloats(f.getAbsolutePath());
+        } else {
+            ddRandomSample = createDDOfRandomSample(dataset, datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, distInterval, null);
+        }
 //      print
-        File f = getFileForDistDensity(datasetName, distInterval, objCount, distCount, true);
         Map<Float, Float> mapOfValues = printDD(distInterval, f, ddRandomSample);
         createPlot(f, mapOfValues);
     }
@@ -91,7 +99,7 @@ public class PrintAndPlotDDOfDatasetMain {
     private static File getFileForDistDensity(String datasetName, float distInterval, int objCount, int distCount, boolean willBeDeleted) {
         String fileName = datasetName + "_int" + distInterval + "_o" + objCount + "_d" + distCount + ".csv";
         File ret = new File(FSGlobal.DIST_DISTRIBUTION_PLOTS_FOLDER, fileName);
-        ret = FSGlobal.checkFileExistence(ret, true);
+        ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
     }
 
@@ -108,6 +116,10 @@ public class PrintAndPlotDDOfDatasetMain {
         JFreeChart plot = plotter.createPlot("", "Distance", "", "", traceXValues, traceYValues);
         String path = f.getAbsolutePath();
         path = path.substring(0, path.lastIndexOf("."));
+        plotter.storePlotPDF(path, plot);
+        plotter.setLogY(true);
+        plot = plotter.createPlot("", "Distance", "occurences", "", traceXValues, traceYValues);
+        path += "_log";
         plotter.storePlotPDF(path, plot);
     }
 
