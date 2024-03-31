@@ -27,12 +27,6 @@ public class FSDatasetInstanceSingularizator {
             super("decaf_20m_PCA256");
         }
     }
-    public static class DeCAF100M_TMPDataset extends FSFloatVectorDataset {
-
-        public DeCAF100M_TMPDataset() {
-            super("YFCC100M_hybridCNN_gmean_fc6_0");
-        }
-    }
 
     public static class RandomDataset10Uniform extends FSFloatVectorDataset {
 

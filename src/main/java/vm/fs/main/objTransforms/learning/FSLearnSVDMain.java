@@ -21,7 +21,8 @@ public class FSLearnSVDMain {
 //        int sampleCount = 500000;
         Dataset[] datasets = {
             //            new FSDatasetInstanceSingularizator.DeCAF100M_TMPDataset()
-            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
+            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
+            new M2DatasetInstanceSingularizator.DeCAF100M_TMPDataset()
         };
 
         for (Dataset dataset : datasets) {
@@ -39,9 +40,7 @@ public class FSLearnSVDMain {
     private static void run(Dataset dataset, int sampleCount) {
         String datasetName = dataset.getDatasetName();
         AbstractMetricSpace sourceMetricSpace = dataset.getMetricSpace();
-//
         List<Object> sampleOfDataset = dataset.getSampleOfDataset(sampleCount);
-//        List<Object> sampleOfDataset = getTrivialSampleDataset();
         SVDStoreInterface pcaStorage = new FSSVDStorageImpl(datasetName, sampleCount, true);
 
         LearnSVD svd = new LearnSVD(sourceMetricSpace, pcaStorage, sampleOfDataset, datasetName, sampleCount);
