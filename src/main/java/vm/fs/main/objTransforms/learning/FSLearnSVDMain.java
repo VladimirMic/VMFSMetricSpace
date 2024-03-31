@@ -16,9 +16,9 @@ import vm.objTransforms.storeLearned.SVDStoreInterface;
  */
 public class FSLearnSVDMain {
 
+    public static final Integer SAMPLE_COUNT = 500000;
+
     public static void main(String[] args) {
-        int sampleCount = 200000;
-//        int sampleCount = 500000;
         Dataset[] datasets = {
             //            new FSDatasetInstanceSingularizator.DeCAF100M_TMPDataset()
             new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
@@ -26,7 +26,7 @@ public class FSLearnSVDMain {
         };
 
         for (Dataset dataset : datasets) {
-            run(dataset, sampleCount);
+            run(dataset, SAMPLE_COUNT);
         }
     }
 

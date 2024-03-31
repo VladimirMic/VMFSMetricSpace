@@ -26,7 +26,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMainS</mainClass>
+                            <mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -12,7 +12,7 @@
             <properties>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.mainClass>vm.fs.main.datatools.PrintAndPlotDDOfDatasetMain</exec.mainClass>
+                <exec.mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMain</exec.mainClass>
                 <exec.vmArgs>-Xmx16g</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
@@ -30,7 +30,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
-                <exec.mainClass>vm.fs.main.datatools.PrintAndPlotDDOfDatasetMain</exec.mainClass>
+                <exec.mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMain</exec.mainClass>
                 <exec.vmArgs>-Xmx16g -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
@@ -47,7 +47,7 @@
             <properties>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.mainClass>vm.fs.main.datatools.PrintAndPlotDDOfDatasetMain</exec.mainClass>
+                <exec.mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMain</exec.mainClass>
                 <exec.vmArgs>-Xmx16g</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
