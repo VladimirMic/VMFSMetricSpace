@@ -61,7 +61,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         for (int i = 0; i < queryObjCount; i++) {
             metricObjects.remove(0);
         }
-        GroundTruthEvaluator gte = new GroundTruthEvaluator(metricSpace, distanceFunction, queryObjects, k, null);
+        GroundTruthEvaluator gte = new GroundTruthEvaluator(metricSpace, distanceFunction, queryObjects, k);
         TreeSet<Map.Entry<Object, Float>>[] groundTruth = gte.evaluateIteratorInParallel(metricObjects.iterator());
         List<Float> distances = new ArrayList<>();
         for (int i = 0; i < groundTruth.length; i++) {
