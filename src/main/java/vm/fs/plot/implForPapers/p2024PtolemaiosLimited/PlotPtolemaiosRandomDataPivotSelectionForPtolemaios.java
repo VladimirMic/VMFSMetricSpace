@@ -36,9 +36,9 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
     }
 
     @Override
-    public String[] getFolderNamesForDisplaydTrace() {
+    public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_03_256_pivots_30NN_ptolemaios_randomPivots",
+                "2024_04_256_pivots_30NN_seq_ptolemaios_randomPivots",
                 "2024_03_256_pivots_30NN_seq_ptolemaios"
         );
     }

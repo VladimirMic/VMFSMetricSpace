@@ -32,7 +32,7 @@ public class PlotPtolemaiosRandomData4Tech10_40Time extends PlotPtolemaiosRandom
     }
 
     @Override
-    public String[] getFolderNamesForDisplaydTrace() {
+    public String[] getFolderNamesForDisplayedTraces() {
         return strings(
                 "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",

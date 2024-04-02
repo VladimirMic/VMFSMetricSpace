@@ -37,7 +37,7 @@ public abstract class FSAbstractPlotterFromResults {
     private AbstractPlotter plotter = getPlotter();
     private final Object[] xTicks = getDisplayedNamesOfGroupsThatMeansFiles();
     private final AbstractPlotter.COLOUR_NAMES[] colourIndexesForTraces = getColourIndexesForTraces();
-    private final String[] folderNames = getFolderNamesForDisplaydTrace();
+    private final String[] folderNames = getFolderNamesForDisplayedTraces();
 
     public FSAbstractPlotterFromResults(boolean plotOnlySvg) {
         this.plotOnlySvg = plotOnlySvg;
@@ -51,7 +51,7 @@ public abstract class FSAbstractPlotterFromResults {
 
     public abstract String[] getDisplayedNamesOfTracesThatMeansFolders();
 
-    public abstract String[] getFolderNamesForDisplaydTrace();
+    public abstract String[] getFolderNamesForDisplayedTraces();
 
     public abstract Object[] getDisplayedNamesOfGroupsThatMeansFiles();
 
