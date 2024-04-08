@@ -28,7 +28,7 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
     }
 
     @Override
-    public String[] getDisplayedNamesOfTracesThatMeansFolders() {
+    public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
                 "Uniform Pivot Pairs",
                 "Proposed Pairs Selection"
@@ -84,7 +84,7 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAMES[] getColourIndexesForTraces() {
+    protected AbstractPlotter.COLOUR_NAMES[] getColoursForTraces() {
         return new COLOUR_NAMES[]{COLOUR_NAMES.CX_BLACK, COLOUR_NAMES.C4_ORANGE};
     }
 }

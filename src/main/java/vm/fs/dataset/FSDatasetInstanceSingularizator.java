@@ -28,6 +28,13 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
+    public static class DeCAF100M_PCA256Dataset extends FSFloatVectorDataset {
+
+        public DeCAF100M_PCA256Dataset() {
+            super("decaf_100m_PCA256");
+        }
+    }
+
     public static class RandomDataset10Uniform extends FSFloatVectorDataset {
 
         public RandomDataset10Uniform() {
@@ -45,7 +52,7 @@ public class FSDatasetInstanceSingularizator {
     public static class RandomDataset20Uniform extends FSFloatVectorDataset {
 
         public RandomDataset20Uniform() {
-            super("random_20dim_uniform_1m");
+            super("random_20dim_uniform_1M");
         }
     }
 

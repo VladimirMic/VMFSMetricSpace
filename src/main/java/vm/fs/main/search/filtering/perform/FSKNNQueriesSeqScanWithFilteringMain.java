@@ -43,12 +43,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
-        //            new FSDatasetInstanceSingularizator.SIFTdataset(),
-        //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-        //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+            //            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
 //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
@@ -153,8 +153,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased};
-//        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
-        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }

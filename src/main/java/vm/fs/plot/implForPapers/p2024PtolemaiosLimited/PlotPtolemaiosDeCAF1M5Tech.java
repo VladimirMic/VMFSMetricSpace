@@ -4,6 +4,8 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
+import vm.plot.AbstractPlotter;
+
 /**
  *
  * @author au734419
@@ -22,9 +24,38 @@ public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech10_
     }
 
     @Override
+    public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
+        return strings(
+                "Triangle Ineq.",
+                "Data-dep. Metric Filtering",
+                "Four Point Property",
+                "Ptolemaic Filtering",
+                "Data-dep. Ptolemaic Filering",
+                "Sequential Brute Force"
+        );
+    }
+
+    @Override
+    public String[] getFolderNamesForDisplayedTraces() {
+        return strings(
+                "2024_03_256_pivots_30NN_seq_triangle_inequality",
+                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_03_256_pivots_30NN_seq_ptolemaios",
+                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
+                "ground_truth"
+        );
+    }
+
+    @Override
+    protected AbstractPlotter.COLOUR_NAMES[] getColoursForTraces() {
+        return new AbstractPlotter.COLOUR_NAMES[]{AbstractPlotter.COLOUR_NAMES.C1_BLUE, AbstractPlotter.COLOUR_NAMES.C2_RED, AbstractPlotter.COLOUR_NAMES.C3_GREEN, AbstractPlotter.COLOUR_NAMES.C4_ORANGE, AbstractPlotter.COLOUR_NAMES.C5_VIOLET, AbstractPlotter.COLOUR_NAMES.CX_BLACK};
+    }
+
+    @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "decaf_1m__decaf_1m__30__decaf_1m__decaf_1m__"
+                "decaf_1m__decaf_1m__30__decaf_1m__decaf_1m"
         );
     }
 

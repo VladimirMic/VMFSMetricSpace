@@ -9,11 +9,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.main.groundTruth.FSEvaluateGroundTruthMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain;
+import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.Dataset;
 
 /**
@@ -29,25 +29,26 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         Dataset[] datasets = {
             //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
-//                        new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
-        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_PCA256Dataset()
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
+            //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform()
+            //                        new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_PCA256Dataset()
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
+//            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);

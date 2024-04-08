@@ -30,12 +30,13 @@ public class FSLearnCoefsForDataDepenentMetricFilteringMain {
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
 //            new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_300k_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true)
         };
 
         for (Dataset dataset : datasets) {

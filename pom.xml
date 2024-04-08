@@ -26,7 +26,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>vm.fs.main.objTransforms.apply.FSApplyPCAMain</mainClass>
+                            <mainClass>vm.fs.main.datatools.FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

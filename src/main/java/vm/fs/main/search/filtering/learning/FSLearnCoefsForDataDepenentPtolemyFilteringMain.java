@@ -40,7 +40,8 @@ public class FSLearnCoefsForDataDepenentPtolemyFilteringMain {
             //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_128Dataset(),
             //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_192Dataset(),
             //            new FSDatasetInstanceSingularizator.DeCAF_GHP_50_256Dataset()
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(true)
         };
         for (Dataset dataset : datasets) {
             run(dataset);

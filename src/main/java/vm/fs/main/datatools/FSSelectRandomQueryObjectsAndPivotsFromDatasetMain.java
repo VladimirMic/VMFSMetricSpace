@@ -7,6 +7,8 @@ package vm.fs.main.datatools;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.metricSpace.Dataset;
@@ -18,7 +20,9 @@ import vm.metricSpace.Dataset;
 public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
 
     public static final Integer IMPLICIT_NUMBER_OF_QUERIES = 1000;
-    public static final Integer IMPLICIT_NUMBER_OF_PIVOTS = 2560; // also selects one tenth and one fifth
+    public static final Integer IMPLICIT_NUMBER_OF_PIVOTS = 2560; // also selects one tenth and one fifth, and one 40th, 20th
+
+    public static final Logger LOG = Logger.getLogger(FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.class.getName());
 
     public static void main(String[] args) {
         Dataset[] datasets = {new FSDatasetInstanceSingularizator.RandomDataset20Uniform()};
@@ -37,11 +41,32 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
             datasetSize = dataset.updateDatasetSize();
         }
         Iterator it = dataset.getMetricObjectsFromDataset();
-        Long batchSizeForQueries = (long) datasetSize / numberOfQueries;
-        Long batchSizeForPivots = (long) datasetSize / numberOfPivots;
-        float lcm = (float) vm.math.Tools.lcm(batchSizeForQueries, batchSizeForPivots);
-        lcm = Math.min(lcm, datasetSize);
+        float lcm;
+        Long batchSizeForQueries;
+        Long batchSizeForPivots;
+        if (numberOfQueries == 0) {
+            batchSizeForPivots = (Long) datasetSize / numberOfPivots;
+            lcm = batchSizeForPivots;
+        } else if (numberOfPivots == 0) {
+            batchSizeForQueries = (Long) datasetSize / numberOfQueries;
+            lcm = batchSizeForQueries;
+        } else if (numberOfQueries != 0 && numberOfPivots != 0) {
+            batchSizeForPivots = (Long) datasetSize / numberOfPivots;
+            batchSizeForQueries = (Long) datasetSize / numberOfQueries;
+            lcm = (float) vm.math.Tools.lcm(batchSizeForQueries, batchSizeForPivots);
+            lcm = Math.min(lcm, datasetSize);
+        } else {
+            throw new IllegalArgumentException("Cannot select zero pivots and zero queries!");
+        }
 
+        if (lcm > 10000000) {
+            LOG.log(Level.INFO, "Batch size to load into RAM at once is too big: {0} objects. Trying to select objects separately", new Object[]{lcm});
+            run(dataset, 0, numberOfPivots);
+            run(dataset, numberOfQueries, 0);
+            return;
+        }
+
+        LOG.log(Level.INFO, "Batch size to load into RAM at once: {0} objects", lcm);
         int queriesPerBatch = (int) Math.ceil((lcm / datasetSize) * numberOfQueries);
         int pivotsPerBatch = (int) Math.ceil((lcm / datasetSize) * numberOfPivots);
 
@@ -62,12 +87,20 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
         queries = Tools.truncateList(queries, numberOfQueries);
         pivots = Tools.truncateList(pivots, numberOfPivots);
         String datasetName = dataset.getDatasetName();
-        dataset.storeQueryObjects(queries, datasetName);
-        dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
-        pivots = selectOneOutOfEachGroup(pivots, 5);
-        dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
-        pivots = selectOneOutOfEachGroup(pivots, 2);
-        dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+        if (!queries.isEmpty()) {
+            dataset.storeQueryObjects(queries, datasetName);
+        }
+        if (!pivots.isEmpty()) {
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            pivots = selectOneOutOfEachGroup(pivots, 5);// 2560 / 5 = 512
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            pivots = selectOneOutOfEachGroup(pivots, 2);// 256
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            pivots = selectOneOutOfEachGroup(pivots, 2);//128
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            pivots = selectOneOutOfEachGroup(pivots, 2); // 64
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+        }
     }
 
     private static String getNameForPivots(String datasetName, int count) {
@@ -78,6 +111,9 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
     }
 
     private static void selectObjectsFromBatchUniformly(List destination, int toBeSelected, List source) {
+        if (toBeSelected == 0) {
+            return;
+        }
         int batchSize = source.size() / toBeSelected;
         for (int i = 0; i < toBeSelected; i++) {
             List subList = source.subList(i * batchSize, (i + 1) * batchSize);
@@ -88,6 +124,9 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
 
     private static List selectOneOutOfEachGroup(List pivots, int tuple) {
         List ret = new ArrayList();
+        if (pivots.isEmpty()) {
+            return ret;
+        }
         for (int i = 0; (i + 1) * tuple <= pivots.size(); i++) {
             List subList = pivots.subList(i * tuple, (i + 1) * tuple);
             Object randomObject = Tools.randomObject(subList);

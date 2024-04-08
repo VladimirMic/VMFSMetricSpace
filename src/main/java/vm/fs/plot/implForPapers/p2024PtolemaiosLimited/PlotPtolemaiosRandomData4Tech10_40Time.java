@@ -17,18 +17,19 @@ public class PlotPtolemaiosRandomData4Tech10_40Time extends PlotPtolemaiosRandom
     }
 
     @Override
-    public String[] getDisplayedNamesOfTracesThatMeansFolders() {
+    public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
                 "Ptolemaic Filtering",
-                "Data-dep. Ptolemaic Filering"
+                "Data-dep. Ptolemaic Filering",
+                "Sequential Brute Force"
         );
     }
 
     @Override
-    protected COLOUR_NAMES[] getColourIndexesForTraces() {
-        return new COLOUR_NAMES[]{COLOUR_NAMES.C1_BLUE, COLOUR_NAMES.C2_RED, COLOUR_NAMES.C4_ORANGE, COLOUR_NAMES.C5_VIOLET};
+    protected COLOUR_NAMES[] getColoursForTraces() {
+        return new COLOUR_NAMES[]{COLOUR_NAMES.C1_BLUE, COLOUR_NAMES.C2_RED, COLOUR_NAMES.C4_ORANGE, COLOUR_NAMES.C5_VIOLET, COLOUR_NAMES.CX_BLACK};
     }
 
     @Override
@@ -37,7 +38,8 @@ public class PlotPtolemaiosRandomData4Tech10_40Time extends PlotPtolemaiosRandom
                 "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_03_256_pivots_30NN_seq_ptolemaios",
-                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
+                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
+                "ground_truth"
         );
     }
 
