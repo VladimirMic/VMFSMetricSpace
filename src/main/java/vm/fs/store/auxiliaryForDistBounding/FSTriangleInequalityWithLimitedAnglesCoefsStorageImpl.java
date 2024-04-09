@@ -46,7 +46,7 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
     public File getFile(String resultName, boolean willBeDeleted) {
         File folderFile = new File(FSGlobal.AUXILIARY_FOR_TRIANGULAR_FILTERING_WITH_LIMITED_ANGLES);
         File ret = new File(folderFile, resultName);
-        FSGlobal.checkFileExistence(ret, willBeDeleted);
+        ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
     }
 

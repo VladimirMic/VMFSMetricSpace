@@ -31,9 +31,9 @@ public class PrintAndPlotDDOfDatasetMain {
 
     public static void main(String[] args) {
         Dataset[] datasets = {
-//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-//            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
+            new FSDatasetInstanceSingularizator.DeCAFDataset()
+        //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -91,6 +91,11 @@ public class PrintAndPlotDDOfDatasetMain {
             ps.close();
         }
         return ret;
+    }
+
+    public static boolean existsForDataset(Dataset dataset) {
+        File f = getFileForDistDensity(dataset.getDatasetName(), IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false);
+        return f.exists();
     }
 
     private static File getFileForDistDensity(String datasetName, int objCount, int distCount, boolean willBeDeleted) {
