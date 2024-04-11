@@ -22,10 +22,19 @@ public class PlotPtolemaiosTransformedClipsAbblation extends FSAbstractPlotterFr
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
-                "Data-dep. Metric Filtering",
+                "Data-dep. Metric Filtering 256p_256LB",
                 "256p_256LB",
                 "256p_128LB",
+                "256p_64LB",
+                "256p_32LB",
+                "64p_256LB",
+                "64p_128LB",
                 "64p_64LB",
+                "64p_32LB", 
+                "32p_256LB",
+                "32p_128LB",
+                "32p_64LB",
+                "32p_32LB",
                 "Sequential Brute Force"
         );
     }
@@ -36,7 +45,16 @@ public class PlotPtolemaiosTransformedClipsAbblation extends FSAbstractPlotterFr
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
                 "2024_04_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
-                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
+                "2024_04_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_04_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_32LB",
+                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_256LB",
+                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
+                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_32LB",
+                "2024_04_32_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_256LB",
+                "2024_04_32_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
+                "2024_04_32_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_04_32_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_32LB",
                 "ground_truth"
         );
     }

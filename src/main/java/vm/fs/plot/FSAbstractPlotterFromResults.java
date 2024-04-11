@@ -102,10 +102,12 @@ public abstract class FSAbstractPlotterFromResults {
         File resultsRoot = new File(FSGlobal.RESULT_FOLDER);
         File[] folders = resultsRoot.listFiles(getFilenameFilterFolders());
         if (folders.length != boxplotsCount) {
-            for (File folder : folders) {
-                System.err.println(folder.getName());
+            String[] artifactsWithoutAMatchingFolder = getArtifactsWithoutAFolder(getFolderNamesForDisplayedTraces(), folders);
+            for (String artifact : artifactsWithoutAMatchingFolder) {
+                if (artifact != null) {
+                    throw new IllegalArgumentException("\nYou have wrong filename filter as number of result folders " + folders.length + " differs from the number of name artifacts " + boxplotsCount + ". Wrong folder name is " + artifact);
+                }
             }
-            throw new IllegalArgumentException("\nYou have wrong filename filter as number of result folders " + folders.length + " differs from the number of name artifacts " + boxplotsCount);
         } else {
             LOG.log(Level.INFO, "There are {0} folders matching the rule", folders.length);
         }
@@ -145,7 +147,7 @@ public abstract class FSAbstractPlotterFromResults {
             int groupIdx = (int) (i % groupsCount);
             int traceIdx = (int) (i / groupsCount);
 
-            System.out.println("XXX: groupIdx" + groupIdx + " | traceIdx " + traceIdx + " | " + file.getName());
+            System.out.println("XXX: groupIdx" + groupIdx + " | traceIdx " + traceIdx + " | " + file.getAbsolutePath());
 
             FSQueryExecutionStatsStoreImpl storage = new FSRecallOfCandidateSetsStorageImpl(file);
             Map<String, TreeMap<QUERY_STATS, String>> results = storage.getContent();
@@ -365,5 +367,20 @@ public abstract class FSAbstractPlotterFromResults {
             }
         }
         return true;
+    }
+
+    private String[] getArtifactsWithoutAFolder(String[] foldersArtifacts, File[] folders) {
+        String[] ret = new String[foldersArtifacts.length];
+        System.arraycopy(foldersArtifacts, 0, ret, 0, foldersArtifacts.length);
+        for (int i = 0; i < foldersArtifacts.length; i++) {
+            String artifactL = foldersArtifacts[i].toLowerCase();
+            for (File folder : folders) {
+                String name = folder.getName().toLowerCase();
+                if (name.equals(artifactL)) {
+                    ret[i] = null;
+                }
+            }
+        }
+        return ret;
     }
 }

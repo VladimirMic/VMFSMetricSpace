@@ -43,11 +43,11 @@ public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomDat
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_03_256_pivots_30NN_seq_triangle_inequality",
-                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_03_256_pivots_30NN_seq_ptolemaios",
-                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
+                "2024_04_64_pivots_30NN_seq_triangle_inequality",
+                "2024_04_64_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_04_64_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_04_64_pivots_30NN_seq_ptolemaios_64LB",
+                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
                 "ground_truth"
         );
     }

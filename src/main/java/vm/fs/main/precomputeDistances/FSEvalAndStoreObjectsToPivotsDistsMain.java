@@ -14,6 +14,7 @@ import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
+import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
 
 /**
  * TODO - paralelisation?!
@@ -24,7 +25,7 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
 
     public static final Logger LOG = Logger.getLogger(FSEvalAndStoreObjectsToPivotsDistsMain.class.getName());
 
-    public static final Integer PIVOT_COUNT = 256;
+    public static final Integer PIVOT_COUNT = KNNSearchWithPtolemaicFiltering.LB_COUNT;
 
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;

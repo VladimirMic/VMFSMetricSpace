@@ -47,8 +47,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
+//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
 //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
@@ -61,10 +61,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
         };
 
-        int pivotCount = 256;
+        int pivotCount = KNNSearchWithPtolemaicFiltering.LB_COUNT;
         int k = 30;
 
         for (Dataset dataset : datasets) {
@@ -109,23 +109,23 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         } else if (filter instanceof AbstractOnePivotFilter) {
             alg = new KNNSearchWithOnePivotFiltering(metricSpace, (AbstractOnePivotFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
         } else {
-            throw new IllegalArgumentException("What a weird algorithm ... This is for the pivot filtering, uh?");
+            throw new IllegalArgumentException("What a weird algorithm ... This class is for the pivot filtering, did you notice?");
         }
         TreeSet[] results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(maxObjectsCount), 1);
 
         LOG.log(Level.INFO, "Storing statistics of queries");
-        FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), null);
+        FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
         statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries(), alg.getAddditionalStats());
         statsStorage.save();
 
         LOG.log(Level.INFO, "Storing results of queries");
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
-        resultsStorage.storeQueryResults(metricSpace, queries, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName());
+        resultsStorage.storeQueryResults(metricSpace, queries, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName());
 
         LOG.log(Level.INFO, "Evaluating accuracy of queries");
-        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), null);
+        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(new FSNearestNeighboursStorageImpl(), recallStorage);
-        evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), filter.getTechFullName(), k);
+        evaluator.evaluateAndStoreRecallsOfQueries(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), k);
         recallStorage.save();
     }
 
@@ -153,10 +153,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased};
-        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
-//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering};
     }
 
 }
