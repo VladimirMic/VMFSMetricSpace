@@ -49,7 +49,7 @@ public class FSEvaluateGroundTruthMain {
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries)
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries),
-                    new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
+//                    new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
         //            
         //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(publicQueries),
@@ -62,6 +62,7 @@ public class FSEvaluateGroundTruthMain {
         //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries)
+                    new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -80,7 +81,7 @@ public class FSEvaluateGroundTruthMain {
 
         List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);
         GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k);
-        TreeSet[] results = gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
+        TreeSet[] results = gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName, 1000000), datasetName, querySetName);
 //        TreeSet[] results = gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
 
         LOG.log(Level.INFO, "Storing statistics of queries");

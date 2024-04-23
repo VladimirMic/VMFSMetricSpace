@@ -16,15 +16,26 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static void main(String[] args) throws InterruptedException {
+        String folder = "faiss-100M-IVFPQ-tr1000000-cc262144-m32-nbits8.faiss";
+        String prefix = "query_results-qc-1-k100000-nprobe";
+        int num = 1;
+        while (num <= 512) {
+            String name = prefix + num;
+            run(folder, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", name, "");
+            num *= 2; 
+        }
 
-//        Thread.sleep(1000 * 80 * 60);
+        System.exit(0);
+
         boolean publicQueries = true;
-
         Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries);
-        Dataset[] approximatedDatasets = new Dataset[]{
-            //            new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset()
-        };
-////        run(groundTruthDataset, approximatedDatasets);
+        Dataset[] approximatedDatasets = new Dataset[]{};
+
+//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries);
+//        approximatedDatasets = new Dataset[]{
+//                        new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset()
+//        };
+//        run(groundTruthDataset, approximatedDatasets);
 //
 //        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_300k_Dataset();
 //        approximatedDatasets = new Dataset[]{
@@ -34,14 +45,14 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 //
         groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries);
         approximatedDatasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries)
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries)
             new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         };
-        run(groundTruthDataset, approximatedDatasets);
+//        run(groundTruthDataset, approximatedDatasets);
 
         groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries);
         approximatedDatasets = new Dataset[]{
@@ -62,6 +73,14 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
             new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries)
         };
 //        run(groundTruthDataset, approximatedDatasets);
+    }
+
+    public static final void run(String folder, String groundTDatasetName, String groundTQuerySetName, String approxDatasetName, String approxQuerySetName) {
+        int k = 30;
+        Integer[] kCands = new Integer[]{null};
+        for (Integer kCand : kCands) {
+            evaluateRecallOfTheCandidateSet(groundTDatasetName, groundTQuerySetName, k, approxDatasetName, approxQuerySetName, folder, kCand);
+        }
     }
 
     public static final void run(Dataset groundTruthDataset, Dataset... approximatedDatasets) {
@@ -93,7 +112,9 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
         attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_name, candSetName);
         attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_query_set_name, candSetQuerySetName);
         attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.storing_result_name, resultSetName);
-        attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_fixed_size, candidateNNCount.toString());
+        if (candidateNNCount != null) {
+            attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_fixed_size, candidateNNCount.toString());
+        }
 
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(attributesForFileName);
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(groundTruthStorage, recallStorage);

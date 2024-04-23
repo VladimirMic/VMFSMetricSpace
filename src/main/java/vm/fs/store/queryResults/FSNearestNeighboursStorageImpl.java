@@ -48,13 +48,19 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             return lastFile;
         }
         File ret = new File(FSGlobal.RESULT_FOLDER, resultsName);
-        String n = datasetName + "_" + querySetName;
+        String n = datasetName;
+        if (!querySetName.trim().equals("")) {
+            n = n + "_" + querySetName;
+        }
         if (k != null) {
             n += "_" + k;
         }
         n += compress ? ".gz" : ".csv";
         ret = new File(ret, n);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
+        if (!ret.exists()) {
+            throw new IllegalArgumentException("File with results " + ret.getAbsolutePath() + " does not exist");
+        }
         lastString = concat;
         lastFile = ret;
         return ret;
@@ -169,7 +175,11 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
                     continue;
                 }
                 String[] idDistPair = nearestNeighbourPair.split(":");
-                nearestNeighbours.add(new AbstractMap.SimpleEntry<>(idDistPair[0], Float.valueOf(idDistPair[1])));
+                if (idDistPair.length >= 2) {
+                    nearestNeighbours.add(new AbstractMap.SimpleEntry<>(idDistPair[0], Float.valueOf(idDistPair[1])));
+                } else {
+                    nearestNeighbours.add(new AbstractMap.SimpleEntry<>(idDistPair[0], Float.valueOf(i)));
+                }
             }
             ret.put(queryObjId, nearestNeighbours);
             line = br.readLine();
