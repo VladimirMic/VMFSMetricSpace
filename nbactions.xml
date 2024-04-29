@@ -13,7 +13,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.mainClass>vm.fs.main.queryResults.recallEvaluation.FSEvaluateRecallsOfApproximateDatasetMain</exec.mainClass>
-                <exec.vmArgs>-Xmx90g</exec.vmArgs>
+                <exec.vmArgs>-Xmx96g</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
         </action>
@@ -31,7 +31,7 @@
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
                 <exec.mainClass>vm.fs.main.queryResults.recallEvaluation.FSEvaluateRecallsOfApproximateDatasetMain</exec.mainClass>
-                <exec.vmArgs>-Xmx90g -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
+                <exec.vmArgs>-Xmx96g -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
         </action>
@@ -48,7 +48,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.mainClass>vm.fs.main.queryResults.recallEvaluation.FSEvaluateRecallsOfApproximateDatasetMain</exec.mainClass>
-                <exec.vmArgs>-Xmx90g</exec.vmArgs>
+                <exec.vmArgs>-Xmx96g</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
             </properties>
         </action>
