@@ -5,7 +5,6 @@ import vm.datatools.Tools;
 import static vm.fs.main.objTransforms.learning.FSLearnSVDMain.SAMPLE_COUNT;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.store.dataTransforms.FSSVDStorageImpl;
-import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.AbstractMetricSpacesStorage;
@@ -26,7 +25,7 @@ public class FSApplyPCAMain {
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = {
-            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
+//            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
 //            new M2DatasetInstanceSingularizator.DeCAF100M_TMPDataset()
         };
 

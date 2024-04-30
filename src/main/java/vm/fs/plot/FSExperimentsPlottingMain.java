@@ -39,8 +39,8 @@ public class FSExperimentsPlottingMain {
 //        Y2024_PlotPtolemaiosRandomData4Tech50_100_Time.makePlots();
 //        Y2024_PlotPtolemaiosTransformedClips5Tech.makePlots();
 //        Y2024_PlotPtolemaiosDeCAF1M5Tech.makePlots();
-//        Y2024_PlotPtolemaiosPivotSelection.makePlots();
+        Y2024_PlotPtolemaiosPivotSelection.makePlots();
 //        Y2024_PlotPtolemaiosCLIP_AbblationStudy.makePlots();
-        Y2024_PlotPtolemaiosRandom100D_AbblationStudy.makePlots();
+//        Y2024_PlotPtolemaiosRandom100D_AbblationStudy.makePlots();
     }
 }

@@ -56,7 +56,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
+//            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
