@@ -28,7 +28,7 @@ public class PlotPtolemaiosRandomData4Tech10_40Time extends PlotPtolemaiosRandom
     }
 
     @Override
-    protected COLOUR_NAMES[] getColoursForTraces() {
+    protected COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
         return new COLOUR_NAMES[]{COLOUR_NAMES.C1_BLUE, COLOUR_NAMES.C2_RED, COLOUR_NAMES.C4_ORANGE, COLOUR_NAMES.C5_VIOLET, COLOUR_NAMES.CX_BLACK};
     }
 

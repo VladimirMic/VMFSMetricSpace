@@ -84,7 +84,7 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAMES[] getColoursForTraces() {
+    protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
         return new COLOUR_NAMES[]{COLOUR_NAMES.CX_BLACK, COLOUR_NAMES.C4_ORANGE};
     }
 }

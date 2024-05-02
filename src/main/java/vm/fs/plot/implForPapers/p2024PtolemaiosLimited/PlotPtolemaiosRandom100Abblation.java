@@ -93,7 +93,7 @@ public class PlotPtolemaiosRandom100Abblation extends FSAbstractPlotterFromResul
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAMES[] getColoursForTraces() {
+    protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
         return null;
     }
 

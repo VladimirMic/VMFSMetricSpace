@@ -48,7 +48,7 @@ public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech10_
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAMES[] getColoursForTraces() {
+    protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
         return new AbstractPlotter.COLOUR_NAMES[]{AbstractPlotter.COLOUR_NAMES.C1_BLUE, AbstractPlotter.COLOUR_NAMES.C2_RED, AbstractPlotter.COLOUR_NAMES.C3_GREEN, AbstractPlotter.COLOUR_NAMES.C4_ORANGE, AbstractPlotter.COLOUR_NAMES.C5_VIOLET, AbstractPlotter.COLOUR_NAMES.CX_BLACK};
     }
 

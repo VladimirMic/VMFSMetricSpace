@@ -2,23 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot;
+package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosDeCAF1M5Tech;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosRandom100Abblation;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosTransformedClips5Tech;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosRandomData4Tech10_40Time;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosRandomData4Tech50_100Time;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosRandomData5Tech10_40;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosRandomData5Tech50_100;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosRandomDataPivotSelectionForPtolemaios;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotPtolemaiosTransformedClipsAbblation;
+import vm.fs.plot.FSAbstractPlotterFromResults;
 
 /**
  *
  * @author au734419
  */
-public class FSExperimentsPlottingMain {
+public class FSPtolemaiosPlottingMain {
 
     public static final Boolean PLOT_ONLY_PDF = true;
     

@@ -12,73 +12,64 @@ import vm.plot.impl.BoxPlotPlotter;
 
 /**
  *
- * @author au734419
+ * @author Vlada
  */
-public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromResults {
+public class PlotFAISS2024 extends FSAbstractPlotterFromResults {
 
-    public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlyPDF) {
+    public PlotFAISS2024(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
-                "Triangle Ineq.",
-                "Data-dep. Metric Filtering",
-                "Four Point Property",
-                "Ptolemaic Filtering",
-                "Data-dep. Ptolemaic Filering"
+                "faiss-100M_CLIP_PCA256-IVF-tr20000000-cc262144-qc1000-k100000-nprobe128",
+                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
+                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits8-qc1000-k100000"
         );
     }
 
     @Override
     protected COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
-        return new COLOUR_NAMES[]{
-            COLOUR_NAMES.C1_BLUE,
-            COLOUR_NAMES.C2_RED,
-            COLOUR_NAMES.C3_GREEN,
-            COLOUR_NAMES.C4_ORANGE,
-            COLOUR_NAMES.C5_VIOLET
-        };
+        return null;
     }
 
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_03_256_pivots_30NN_seq_triangle_inequality",
-                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_03_256_pivots_30NN_seq_ptolemaios",
-                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
+                "faiss-100M_CLIP_PCA256-IVF-tr20000000-cc262144-qc1000-k100000-nprobe128",
+                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
+                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits8-qc1000-k100000"
         );
     }
 
     @Override
     public Object[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return array(
-                10,
-                15,
-                20,
-                25,
-                30,
-                35,
-                40
+                "nprobe16",
+                "nprobe32",
+                "nprobe64",
+                "nprobe128",
+                "nprobe256",
+                "nprobe512"
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
-        Object[] dims = getDisplayedNamesOfGroupsThatMeansFiles();
-        String[] ret = new String[dims.length];
-        for (int i = 0; i < dims.length; i++) {
-            ret[i] = dims[i].toString() + "dim_uniform_1M__30";
-        }
-        return ret;
+        return strings(
+                "nprobe16",
+                "nprobe32",
+                "nprobe64",
+                "nprobe128",
+                "nprobe256",
+                "nprobe512"
+        );
     }
 
     @Override
     public String getXAxisLabel() {
-        return "Dimensionality";
+        return null;
     }
 
     @Override
@@ -88,7 +79,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
 
     @Override
     public String getResultName() {
-        return "Filterings";
+        return "FAISS";
     }
 
     @Override
@@ -98,12 +89,12 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
 
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
-        return firstValue / 1000000;
+        return null;
     }
 
     @Override
     protected String getYAxisNameForAdditionalParams() {
-        return "# LBs checked per distance";
+        return null;
     }
 
 }

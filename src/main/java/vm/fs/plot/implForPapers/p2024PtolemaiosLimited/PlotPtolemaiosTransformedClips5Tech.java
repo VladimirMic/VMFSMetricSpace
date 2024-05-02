@@ -29,7 +29,7 @@ public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomDat
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAMES[] getColoursForTraces() {
+    protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
         return new AbstractPlotter.COLOUR_NAMES[]{
             AbstractPlotter.COLOUR_NAMES.C1_BLUE,
             AbstractPlotter.COLOUR_NAMES.C2_RED,

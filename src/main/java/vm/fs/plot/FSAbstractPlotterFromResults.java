@@ -36,7 +36,7 @@ public abstract class FSAbstractPlotterFromResults {
     private final boolean plotOnlyPDF;
     private AbstractPlotter plotter = getPlotter();
     private final Object[] xTicks = getDisplayedNamesOfGroupsThatMeansFiles();
-    private final AbstractPlotter.COLOUR_NAMES[] colourIndexesForTraces = getColoursForTraces();
+    private final AbstractPlotter.COLOUR_NAMES[] colourIndexesForTraces = getVoluntaryColoursForTracesOrNull();
     private final String[] folderNames = getFolderNamesForDisplayedTraces();
 
     public FSAbstractPlotterFromResults(boolean plotOnlyPDF) {
@@ -69,7 +69,7 @@ public abstract class FSAbstractPlotterFromResults {
 
     protected abstract Float transformAdditionalStatsForQueryToFloat(float firstValue);
 
-    protected abstract AbstractPlotter.COLOUR_NAMES[] getColoursForTraces();
+    protected abstract AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull();
 
     public FilenameFilter getFilenameFilterStatsFiles() {
         String[] array = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
@@ -125,7 +125,7 @@ public abstract class FSAbstractPlotterFromResults {
                     System.err.println("File: " + file.getName());
                 }
                 System.err.println();
-                throw new IllegalArgumentException("\nYou have wrong filename filter as number of files " + files.length + " in folder\n" + folderWithStats.getAbsolutePath() + "\nis smaller than the number of name artifacts " + groupsCount);
+                throw new IllegalArgumentException("\nYou have wrong filename filter as number of files  after the filtering " + files.length + " of folder\n" + folderWithStats.getAbsolutePath() + "\nis smaller than the number of name artifacts " + groupsCount);
             }
             if (files.length != 0) {
                 files = reorder(files, uniqueArtifactsForFiles);
@@ -336,8 +336,13 @@ public abstract class FSAbstractPlotterFromResults {
         List<Float> all = new ArrayList<>();
         for (List<Float>[] timeValue : timeValues) {
             for (List<Float> list : timeValue) {
-                all.addAll(list);
+                if (list != null) {
+                    all.addAll(list);
+                }
             }
+        }
+        if (all.isEmpty()) {
+            return "s";
         }
         double max = vm.math.Tools.getMax(DataTypeConvertor.floatToPrimitiveArray(all));
         if (max >= 1300) {
@@ -352,7 +357,6 @@ public abstract class FSAbstractPlotterFromResults {
                     list.addAll(listNew);
                 }
             }
-
             return "s";
         }
         return "ms";
