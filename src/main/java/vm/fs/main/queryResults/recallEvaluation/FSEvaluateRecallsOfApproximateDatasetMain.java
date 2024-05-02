@@ -74,9 +74,12 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     private static void directFiles() {
         String[] folderNames = {
-            "faiss-100M_CLIP_PCA256-IVF-tr20000000-cc262144-qc1000-k100000-nprobe128",
-            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits8-qc1000-k100000",
-            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"};
+//            "faiss-100M_CLIP_PCA256-IVF-tr20000000-cc262144-qc1000-k100000-nprobe128",
+//            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits8-qc1000-k100000",
+//            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
+            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
+            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000"
+        };
 
         for (String folderName : folderNames) {
             File folder = new File(FSGlobal.RESULT_FOLDER, folderName);

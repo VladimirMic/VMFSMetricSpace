@@ -242,6 +242,7 @@ public abstract class FSAbstractPlotterFromResults {
     private Map<QUERY_STATS, String> queryStatsToYAxisLabels(List<Float>[][] timeValues) {
         Map<QUERY_STATS, String> ret = new HashMap<>();
         ret.put(QUERY_STATS.cand_set_dynamic_size, "CandSet(q) size");
+        ret.put(QUERY_STATS.cand_set_dynamic_size, "Remaining objects");
         ret.put(QUERY_STATS.error_on_dist, "Error on Dist");
         unitForTime = setUnitForTime(timeValues);
         if (unitForTime == null) {

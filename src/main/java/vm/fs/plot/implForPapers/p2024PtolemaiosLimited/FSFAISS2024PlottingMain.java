@@ -14,10 +14,12 @@ public class FSFAISS2024PlottingMain {
 
     public static final Boolean PLOT_ONLY_PDF = true;
 
-    public static final FSAbstractPlotterFromResults Y2024_PlotFaiss = new PlotFAISS2024(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotFaissIndexes = new PlotFAISSIndexes2024(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotFaissConfig = new PlotFAISSIndexConfig2024(PLOT_ONLY_PDF);
 
     public static void main(String[] args) {
-        Y2024_PlotFaiss.makePlots();
+        Y2024_PlotFaissIndexes.makePlots();
+        Y2024_PlotFaissConfig.makePlots();
     }
 
 }
