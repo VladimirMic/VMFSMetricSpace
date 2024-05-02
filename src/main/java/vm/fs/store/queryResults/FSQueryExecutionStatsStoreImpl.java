@@ -39,7 +39,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
     public static enum QUERY_STATS {
         query_obj_id, recall,
         cand_set_dynamic_size, query_execution_time,
-        additional_stats, error_on_dist
+        additional_stats, error_on_dist, frr
     }
 
     public FSQueryExecutionStatsStoreImpl(String groundTruthName, String groundTruthQuerySetName, int groundTruthNNCount,

@@ -95,7 +95,7 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     private QUERY_STATS[] getStatsToPrint() {
-        return new QUERY_STATS[]{QUERY_STATS.recall, QUERY_STATS.cand_set_dynamic_size, QUERY_STATS.query_execution_time, QUERY_STATS.error_on_dist, QUERY_STATS.additional_stats};
+        return new QUERY_STATS[]{QUERY_STATS.recall, QUERY_STATS.frr, QUERY_STATS.cand_set_dynamic_size, QUERY_STATS.query_execution_time, QUERY_STATS.error_on_dist, QUERY_STATS.additional_stats};
     }
 
     private List<File> getFilesWithResultsToBePlotted(int groupsCount, int boxplotsCount) {
@@ -257,6 +257,7 @@ public abstract class FSAbstractPlotterFromResults {
         }
         ret.put(QUERY_STATS.query_execution_time, "Time" + unitForTime);
         ret.put(QUERY_STATS.recall, "Recall");
+        ret.put(QUERY_STATS.frr, "False Reject Rate");
         String yAxisNameForAdditionalParams = getYAxisNameForAdditionalParams();
         if (yAxisNameForAdditionalParams != null) {
             ret.put(QUERY_STATS.additional_stats, yAxisNameForAdditionalParams);
@@ -302,15 +303,23 @@ public abstract class FSAbstractPlotterFromResults {
     private void update(List<Float> list, Map<String, TreeMap<QUERY_STATS, String>> stats, QUERY_STATS stat) {
         for (Map.Entry<String, TreeMap<QUERY_STATS, String>> statsForQueryEntry : stats.entrySet()) {
             TreeMap<QUERY_STATS, String> statsForQuery = statsForQueryEntry.getValue();
-            String valueString = statsForQuery.get(stat);
+            String valueString;
+            if (stat.equals(QUERY_STATS.frr)) {
+                valueString = statsForQuery.get(QUERY_STATS.recall);
+            } else {
+                valueString = statsForQuery.get(stat);
+            }
             if (valueString != null) {
                 Float fValue = Tools.parseFloat(valueString);
                 if (fValue != null) {
                     if (stat.equals(QUERY_STATS.additional_stats)) {
                         fValue = transformAdditionalStatsForQueryToFloat(fValue);
                     }
+                    if (stat.equals(QUERY_STATS.frr)) {
+                        fValue = 1 - fValue;
+                    }
                     list.add(fValue);
-                } else {
+                } else { // more additional stats than 1
                     String[] split = valueString.split(",");
                     fValue = Tools.parseFloat(split[0]);
                     if (split.length > 0 && fValue != null) {
