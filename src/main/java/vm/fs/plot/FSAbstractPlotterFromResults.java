@@ -153,8 +153,13 @@ public abstract class FSAbstractPlotterFromResults {
             Map<String, TreeMap<QUERY_STATS, String>> results = storage.getContent();
             for (QUERY_STATS stat : statsToPrint) {
                 List<Float>[][] listOfValues = ret.get(stat);
-                update(listOfValues[traceIdx][groupIdx], results, stat);
-                if (listOfValues[traceIdx][groupIdx].isEmpty()) {
+                List<Float> values = listOfValues[traceIdx][groupIdx];
+                update(values, results, stat);
+                if (stat.equals(QUERY_STATS.recall) && !values.isEmpty()) {
+                    float min = (float) vm.math.Tools.getMin(DataTypeConvertor.floatToPrimitiveArray(values));
+                    plotter.updateMinRecall(min);
+                }
+                if (values.isEmpty()) {
                     listOfValues[traceIdx][groupIdx] = null;
                 }
             }
