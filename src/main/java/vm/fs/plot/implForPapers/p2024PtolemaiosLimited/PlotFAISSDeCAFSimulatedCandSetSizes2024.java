@@ -4,6 +4,7 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
+import vm.fs.main.queryResults.recallEvaluation.FSEvaluateRecallsOfApproximateDatasetMain;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
@@ -14,6 +15,8 @@ import vm.plot.impl.BoxPlotPlotter;
  * @author Vlada
  */
 public class PlotFAISSDeCAFSimulatedCandSetSizes2024 extends FSAbstractPlotterFromResults {
+
+    private Integer[] kCands;
 
     public PlotFAISSDeCAFSimulatedCandSetSizes2024(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
@@ -38,10 +41,11 @@ public class PlotFAISSDeCAFSimulatedCandSetSizes2024 extends FSAbstractPlotterFr
         );
     }
 
-    private final Integer[] kCands = new Integer[]{300, 350, 400, 450, 500, 550, 600, 650, 700, 750};
-
     @Override
     public Object[] getDisplayedNamesOfGroupsThatMeansFiles() {
+        if (kCands == null) {
+            initCands();
+        }
         String[] ret = new String[3 * kCands.length];
         for (int i = 0; i < kCands.length; i++) {
             ret[3 * i] = "nprobe64_" + kCands[i] + "Cands";
@@ -51,13 +55,20 @@ public class PlotFAISSDeCAFSimulatedCandSetSizes2024 extends FSAbstractPlotterFr
         return ret;
     }
 
+    private void initCands() {
+        kCands = FSEvaluateRecallsOfApproximateDatasetMain.kCands;
+    }
+
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
+        if (kCands == null) {
+            initCands();
+        }
         String[] ret = new String[3 * kCands.length];
         for (int i = 0; i < kCands.length; i++) {
             ret[3 * i] = "nprobe64____" + kCands[i] + "__";
-            ret[3 * i] = "nprobe128____" + kCands[i] + "__";
-            ret[3 * i] = "nprobe256____" + kCands[i] + "__";
+            ret[3 * i + 1] = "nprobe128____" + kCands[i] + "__";
+            ret[3 * i + 2] = "nprobe256____" + kCands[i] + "__";
         }
         return ret;
     }

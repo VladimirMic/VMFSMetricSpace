@@ -5,14 +5,12 @@
 package vm.fs.main.datatools;
 
 import java.io.FileNotFoundException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
-import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
-import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
-import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain;
+import vm.fs.main.datatools.storage.VMMVStorageInsertMain;
 import vm.metricSpace.Dataset;
 
 /**
@@ -47,7 +45,8 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
             //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
-            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -56,70 +55,83 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
 
     private static void run(Dataset dataset) throws FileNotFoundException {
         String datasetName = dataset.getDatasetName();
-        boolean prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", datasetName);
-            PrintAndPlotDDOfDatasetMain.run(dataset);
-        } else {
-            LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", datasetName);
-        }
+        boolean prohibited;
 
-        prohibited = dataset.getPivots(-1) != null;
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
-            FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
-        } else {
-            LOG.log(Level.INFO, "Dataset: {0}, pivots already preselected", datasetName);
-        }
+//         prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
+//        if (!prohibited) {
+//            LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", datasetName);
+//            PrintAndPlotDDOfDatasetMain.run(dataset);
+//        } else {
+//            LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", datasetName);
+//        }
+//
+//        prohibited = dataset.getPivots(-1) != null;
+//        if (!prohibited) {
+//            LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
+//            FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
+//        } else {
+//            LOG.log(Level.INFO, "Dataset: {0}, pivots already preselected", datasetName);
+//        }
+//
+//        prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset);
+//        if (prohibited) {
+//            LOG.log(Level.WARNING, "Ground already existed for dataset {0}", datasetName);
+//            prohibited = askForRewriting("Ground truth", dataset);
+//        }
+//        if (!prohibited) {
+//            LOG.log(Level.INFO, "Dataset: {0}, evaluating ground truth", datasetName);
+//            FSEvaluateGroundTruthMain.run(dataset);
+//        }
+//        prohibited = FSEvalAndStoreSampleOfSmallestDistsMain.existsForDataset(dataset);
+//        if (prohibited) {
+//            LOG.log(Level.WARNING, "Smallest distances already evaluated for dataset {0}", datasetName);
+//            prohibited = askForRewriting("Smallest distance", dataset);
+//        }
+//        if (!prohibited) {
+//            LOG.log(Level.INFO, "Dataset: {0}, evaluating smallest distances", dataset);
+//            FSEvalAndStoreSampleOfSmallestDistsMain.run(dataset);
+//        }
+//
+//        datasetName = datasetName.toLowerCase();
+//        prohibited = FSEvalAndStoreObjectsToPivotsDistsMain.existsForDataset(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
+//        if (prohibited) {
+//            LOG.log(Level.WARNING, "Dists to pivots already evaluated for dataset {0}", datasetName);
+//            prohibited = askForRewriting("Dists to pivots", dataset);
+//        }
+//        if (!prohibited && (datasetName.contains("10m") || datasetName.contains("1m"))) {
+//            LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
+//            FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
+//        }
+//
+//        prohibited = FSLearnCoefsForDataDepenentMetricFilteringMain.existsForDataset(dataset);
+//        if (prohibited) {
+//            LOG.log(Level.WARNING, "Coefs for Data-dependent Metric Filtering already evaluated for dataset {0}", datasetName);
+//            prohibited = askForRewriting("Coefs for Data-dependent Metric Filtering", dataset);
+//        }
+//        if (!prohibited) {
+//            LOG.log(Level.INFO, "Dataset: {0}, learning data dependent metric filtering", datasetName);
+//            FSLearnCoefsForDataDepenentMetricFilteringMain.run(dataset);
+//        }
+//
+//        prohibited = FSLearnCoefsForDataDepenentPtolemyFilteringMain.existsForDataset(dataset);
+//        if (prohibited) {
+//            LOG.log(Level.WARNING, "Coefs for Data-dependent Generalised Ptolemaic Filtering already evaluated for dataset {0}", datasetName);
+//            prohibited = askForRewriting("Coefs for Data-dependent Generalised Ptolemaic Filtering", dataset);
+//        }
+//        if (!prohibited) {
+//            LOG.log(Level.INFO, "Dataset: {0}, learning coefs for data dependent ptolemaic filtering", datasetName);
+//            FSLearnCoefsForDataDepenentPtolemyFilteringMain.run(dataset);
+//        }
 
-        prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset);
+        Map keyValueStorage = dataset.getKeyValueStorage();
+        prohibited = !(keyValueStorage == null || keyValueStorage.isEmpty());
         if (prohibited) {
-            LOG.log(Level.WARNING, "Ground already existed for dataset {0}", datasetName);
-            prohibited = askForRewriting("Ground truth", dataset);
+            LOG.log(Level.WARNING, "The key value storage already exists for dataset {0}", datasetName);
+            prohibited = askForRewriting("The key value storage", dataset);
         }
         if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, evaluating ground truth", datasetName);
-            FSEvaluateGroundTruthMain.run(dataset);
-        }
-        prohibited = FSEvalAndStoreSampleOfSmallestDistsMain.existsForDataset(dataset);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Smallest distances already evaluated for dataset {0}", datasetName);
-            prohibited = askForRewriting("Smallest distance", dataset);
-        }
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, evaluating smallest distances", dataset);
-            FSEvalAndStoreSampleOfSmallestDistsMain.run(dataset);
-        }
-
-        datasetName = datasetName.toLowerCase();
-        prohibited = FSEvalAndStoreObjectsToPivotsDistsMain.existsForDataset(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Dists to pivots already evaluated for dataset {0}", datasetName);
-            prohibited = askForRewriting("Dists to pivots", dataset);
-        }
-        if (!prohibited && (datasetName.contains("10m") || datasetName.contains("1m"))) {
-            LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
-            FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
-        }
-
-        prohibited = FSLearnCoefsForDataDepenentMetricFilteringMain.existsForDataset(dataset);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Coefs for Data-dependent Metric Filtering already evaluated for dataset {0}", datasetName);
-            prohibited = askForRewriting("Coefs for Data-dependent Metric Filtering", dataset);
-        }
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, learning data dependent metric filtering", datasetName);
-            FSLearnCoefsForDataDepenentMetricFilteringMain.run(dataset);
-        }
-
-        prohibited = FSLearnCoefsForDataDepenentPtolemyFilteringMain.existsForDataset(dataset);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Coefs for Data-dependent Generalised Ptolemaic Filtering already evaluated for dataset {0}", datasetName);
-            prohibited = askForRewriting("Coefs for Data-dependent Generalised Ptolemaic Filtering", dataset);
-        }
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, learning coefs for data dependent ptolemaic filtering", datasetName);
-            FSLearnCoefsForDataDepenentPtolemyFilteringMain.run(dataset);
+            LOG.log(Level.INFO, "Dataset: {0}, creating key-value storage", datasetName);
+            VMMVStorageInsertMain.run(dataset);
         }
     }
 

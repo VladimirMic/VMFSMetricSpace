@@ -1,6 +1,7 @@
 package vm.fs.dataset;
 
 import java.util.Map;
+import org.h2.mvstore.MVStoreException;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
@@ -1172,8 +1173,12 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public Map<Object, Object> getKeyValueStorage() {
-            VMMVStorage storage = new VMMVStorage(datasetName, false);
-            return storage.getKeyValueStorage();
+            try {
+                VMMVStorage storage = new VMMVStorage(datasetName, false);
+                return storage.getKeyValueStorage();
+            } catch (MVStoreException ex) {
+                return null;
+            }
         }
 
     }

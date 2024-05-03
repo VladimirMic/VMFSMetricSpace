@@ -19,6 +19,8 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
  */
 public class FSEvaluateRecallsOfApproximateDatasetMain {
 
+    public static final Integer[] kCands = new Integer[]{300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; // null if dynamic, otherwise fixed number
+
     public static void main(String[] args) throws InterruptedException {
         directFiles();
 //        forDatasets();
@@ -26,7 +28,6 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static final void run(String folder, String groundTDatasetName, String groundTQuerySetName, String approxDatasetName, String approxQuerySetName) {
         int k = 30;
-        Integer[] kCands = new Integer[]{300, 350, 400, 450, 500, 550, 600, 650, 700, 750};
         for (Integer kCand : kCands) {
             evaluateRecallOfTheCandidateSet(groundTDatasetName, groundTQuerySetName, k, approxDatasetName, approxQuerySetName, folder, kCand);
         }
@@ -34,9 +35,6 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static final void run(Dataset groundTruthDataset, Dataset... approximatedDatasets) {
         int k = 30;
-//        Integer kCand = null; // null if dynamic, otherwise fixed number
-//        int[] kCands = new int[]{100, 110, 120, 125, 130, 140, 150};
-        int[] kCands = new int[]{30, 50, 100, 1000};
 
         for (Dataset approximatedDataset : approximatedDatasets) {
             for (int kCand : kCands) {
@@ -73,7 +71,7 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     private static void directFiles() {
         String[] folderNames = {
-//                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
+            //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
             //        //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
             //        //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
             //        //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000"
