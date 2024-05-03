@@ -39,14 +39,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         this.compress = compress;
     }
 
-    private String lastString = null;
-    private File lastFile = null;
-
     public File getFileWithResults(String resultsName, String datasetName, String querySetName, Integer k, boolean willBeDeleted) {
-        String concat = resultsName + datasetName + querySetName + k;
-        if (concat.equals(lastString)) {
-            return lastFile;
-        }
         File ret = new File(FSGlobal.RESULT_FOLDER, resultsName);
         String n = datasetName;
         if (!querySetName.trim().equals("")) {
@@ -59,10 +52,12 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         ret = new File(ret, n);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         if (!ret.exists()) {
-            throw new IllegalArgumentException("File with results " + ret.getAbsolutePath() + " does not exist");
+            try {
+                return getFileWithResults(resultsName, datasetName, querySetName, null, willBeDeleted);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("File with results " + ret.getAbsolutePath() + " does not exist");
+            }
         }
-        lastString = concat;
-        lastFile = ret;
         return ret;
     }
 
@@ -119,6 +114,8 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         }
     }
 
+    private final Map<String, Map<String, TreeSet<Map.Entry<Object, Float>>>> cache = new HashMap();
+
     @Override
     public Map<String, TreeSet<Map.Entry<Object, Float>>> getQueryResultsForDataset(String queryResultsName, String datasetName, String querySetName, Integer k) {
         try {
@@ -127,7 +124,16 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
                 LOG.log(Level.SEVERE, "The file with the results does not exist: {0}", file.getAbsolutePath());
                 return new HashMap<>();
             }
-            return getQueryResultsForDataset(file);
+            String key = queryResultsName + datasetName + querySetName;
+            if (k != null) {
+                key += k;
+            }
+            if (cache.containsKey(key)) {
+                return cache.get(key);
+            }
+            Map<String, TreeSet<Map.Entry<Object, Float>>> ret = getQueryResultsForDataset(file);
+            cache.put(key, ret);
+            return ret;
         } catch (IOException ex) {
             Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -168,15 +174,6 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         while (line != null) {
             String[] pairsOfNearestNeighbours = line.split(";");
             String queryObjId = pairsOfNearestNeighbours[0];
-
-//            try {
-//                int id = Integer.parseInt(queryObjId.substring(1));
-//                if (id > 1000) {
-//                    break;
-//                }
-//            } catch (Exception ex) {
-//            }
-
             TreeSet<Map.Entry<Object, Float>> nearestNeighbours = new TreeSet<>(new Tools.MapByFloatValueComparator());
             for (int i = 1; i < pairsOfNearestNeighbours.length; i++) {
                 String nearestNeighbourPair = pairsOfNearestNeighbours[i];

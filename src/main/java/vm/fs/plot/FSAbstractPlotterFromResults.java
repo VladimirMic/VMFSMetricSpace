@@ -113,7 +113,7 @@ public abstract class FSAbstractPlotterFromResults {
         }
 
         String[] uniqueArtifactsForFiles = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();
-        folders = reorder(folders, folderNames);
+        folders = reorder(folders, folderNames, true);
         FilenameFilter filenameFilterFiles = getFilenameFilterStatsFiles();
         List<File> ret = new ArrayList<>();
         for (File folder : folders) {
@@ -128,7 +128,7 @@ public abstract class FSAbstractPlotterFromResults {
                 throw new IllegalArgumentException("\nYou have wrong filename filter as number of files  after the filtering " + files.length + " of folder\n" + folderWithStats.getAbsolutePath() + "\nis smaller than the number of name artifacts " + groupsCount);
             }
             if (files.length != 0) {
-                files = reorder(files, uniqueArtifactsForFiles);
+                files = reorder(files, uniqueArtifactsForFiles, false);
                 LOG.log(Level.INFO, "Folder {0} contains {1} matching files", new Object[]{folder.getName(), files.length});
                 List list = Tools.arrayToList(files);
                 ret.addAll(list);
@@ -265,10 +265,10 @@ public abstract class FSAbstractPlotterFromResults {
         return ret;
     }
 
-    private File[] reorder(File[] files, String[] uniqueArtifactsForFiles) {
+    private File[] reorder(File[] files, String[] uniqueArtifactsForFiles, boolean directMatch) {
         File[] ret = new File[files.length];
         for (File file : files) {
-            int idx = getIndex(uniqueArtifactsForFiles, file.getName().toLowerCase());
+            int idx = getIndex(uniqueArtifactsForFiles, file.getName().toLowerCase(), directMatch);
             if (idx != -1) {
                 if (idx > ret.length) {
                     throw new IllegalArgumentException("You have wrong file/folder name filter as number of files/folders " + ret.length + " is smaller than the number of name artifacts " + uniqueArtifactsForFiles.length);
@@ -285,11 +285,11 @@ public abstract class FSAbstractPlotterFromResults {
         return ret;
     }
 
-    private int getIndex(String[] uniqueArtifactsForFiles, String name) {
+    private int getIndex(String[] uniqueArtifactsForFiles, String name, boolean directMatch) {
         int ret = -1;
         for (int i = 0; i < uniqueArtifactsForFiles.length; i++) {
-            String artifact = uniqueArtifactsForFiles[i];
-            if (name.contains(artifact.toLowerCase())) {
+            String artifact = uniqueArtifactsForFiles[i].toLowerCase();
+            if ((!directMatch && name.contains(artifact)) || (directMatch && name.equals(artifact))) {
                 if (ret == -1) {
                     ret = i;
                 } else {

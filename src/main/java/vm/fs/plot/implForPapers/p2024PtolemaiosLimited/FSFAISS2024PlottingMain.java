@@ -14,12 +14,18 @@ public class FSFAISS2024PlottingMain {
 
     public static final Boolean PLOT_ONLY_PDF = true;
 
-    public static final FSAbstractPlotterFromResults Y2024_PlotFaissIndexes = new PlotFAISSIndexes2024(PLOT_ONLY_PDF);
-    public static final FSAbstractPlotterFromResults Y2024_PlotFaissConfig = new PlotFAISSIndexConfig2024(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotFaissCLIPIndexes = new PlotFAISSCLIPIndexes2024(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotFaissCLIPConfig = new PlotFAISSCLIPIndexConfig2024(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotFaissDeCAFConfig = new PlotFAISSDeCAFIndexConfig2024(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotFaissDeCAFSimulatedCandSetSizes = new PlotFAISSDeCAFSimulatedCandSetSizes2024(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotFaissCLIPSimulatedCandSetSizes = new PlotFAISSCLIPSimulatedCandSetSizes2024(PLOT_ONLY_PDF);
 
     public static void main(String[] args) {
-        Y2024_PlotFaissIndexes.makePlots();
-        Y2024_PlotFaissConfig.makePlots();
+//        Y2024_PlotFaissCLIPIndexes.makePlots();
+//        Y2024_PlotFaissCLIPConfig.makePlots();
+//        Y2024_PlotFaissDeCAFConfig.makePlots();
+        Y2024_PlotFaissDeCAFSimulatedCandSetSizes.makePlots();
+        Y2024_PlotFaissCLIPSimulatedCandSetSizes.makePlots();
     }
 
 }
