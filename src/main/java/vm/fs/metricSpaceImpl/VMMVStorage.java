@@ -85,6 +85,9 @@ public class VMMVStorage<T> {
     private Map<Object, T> loadBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
         Map<Object, T> ret = new TreeMap<>();
         for (int i = 0; i < BATCH_SIZE; i++) {
+            if (i % 100000 == 0) {
+                LOG.log(Level.INFO, "Loading batch. Currently: {0} objects", i);
+            }
             if (metricObjects.hasNext()) {
                 Object next = metricObjects.next();
                 String id = metricSpace.getIDOfMetricObject(next).toString();
@@ -92,6 +95,7 @@ public class VMMVStorage<T> {
                 ret.put(id, dataOfMetricObject);
             }
         }
+        LOG.log(Level.INFO, "Loaded batch of {0} objects", ret.size());
         return ret;
     }
 
