@@ -76,7 +76,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         if (count < 0) {
             count = Integer.MAX_VALUE;
         }
-        String prefix = params[params.length - 1].toString();
+        String prefix = params[params.length - 1].toString();        
         return new H5MetricObjectFileIterator(hdfFile, dataset, prefix, count);
     }
 

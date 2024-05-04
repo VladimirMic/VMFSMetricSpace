@@ -44,7 +44,8 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
             //            new FSDatasetInstanceSingularizator.LAION_30M_PCA256Dataset()
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
             //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset_Euclid(publicQueries),
-            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
+            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)            
+            //            new FSDatasetInstanceSingularizator.DeCAF_PCA1540Dataset(),
             new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
         };
@@ -57,7 +58,7 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         String datasetName = dataset.getDatasetName();
         boolean prohibited;
 
-//         prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
+//        prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
 //        if (!prohibited) {
 //            LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", datasetName);
 //            PrintAndPlotDDOfDatasetMain.run(dataset);

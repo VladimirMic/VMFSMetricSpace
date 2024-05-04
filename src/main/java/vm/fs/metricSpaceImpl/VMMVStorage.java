@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.h2.mvstore.MVMap;
@@ -20,6 +21,7 @@ public class VMMVStorage<T> {
 
     public static final Logger LOG = Logger.getLogger(VMMVStorage.class.getName());
     private static final String MAP_NAME = "data";
+    private static final int BATCH_SIZE = 5000000;
 
     private final MVStore storage;
     private final String datasetName;
@@ -60,15 +62,16 @@ public class VMMVStorage<T> {
     }
 
     public void insertObjects(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
-        for (int i = 1; metricObjects.hasNext(); i++) {
-            Object next = metricObjects.next();
-            String id = metricSpace.getIDOfMetricObject(next).toString();
-            T dataOfMetricObject = metricSpace.getDataOfMetricObject(next);
-            map.put(id, dataOfMetricObject);
-            if (i % 50000 == 0) {
-                LOG.log(Level.INFO, "Stored {0} data objects", i);
-            }
-            if (i % 500000 == 0) {
+        int batchCount = 0;
+        int lastGC = 0;
+        while (metricObjects.hasNext()) {
+            batchCount++;
+            Map<Object, T> batch = loadBatch(metricObjects, metricSpace);
+            map.putAll(batch);
+            int size = batchCount * BATCH_SIZE;
+            LOG.log(Level.INFO, "Stored {0} data objects", size);
+            if (size - lastGC >= 500000) {
+                lastGC = size;
                 System.gc();
             }
         }
@@ -79,5 +82,17 @@ public class VMMVStorage<T> {
         return getKeyValueStorage().size();
     }
 
+    private Map<Object, T> loadBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
+        Map<Object, T> ret = new TreeMap<>();
+        for (int i = 0; i < BATCH_SIZE; i++) {
+            if (metricObjects.hasNext()) {
+                Object next = metricObjects.next();
+                String id = metricSpace.getIDOfMetricObject(next).toString();
+                T dataOfMetricObject = metricSpace.getDataOfMetricObject(next);
+                ret.put(id, dataOfMetricObject);
+            }
+        }
+        return ret;
+    }
 
 }

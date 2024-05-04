@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.List;
@@ -179,7 +180,13 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
             if (!fGZ.exists() && !willBeDeleted) {
                 LOG.log(Level.WARNING, "File on the path {0} does not exist. The params are: folder: {1}, fileName: {2}. Returning zipped file: ", new Object[]{f.getAbsolutePath(), folder, fileName, fGZ.getName()});
             }
+            if (Files.isSymbolicLink(fGZ.toPath())) {
+                LOG.log(Level.WARNING, "Returned file {0} is a symbolic file. Reading might be slow", fGZ.getAbsolutePath());
+            }
             return fGZ;
+        }
+        if (Files.isSymbolicLink(f.toPath())) {
+            LOG.log(Level.WARNING, "Returned file {0} is a symbolic file. Reading might be slow", f.getAbsolutePath());
         }
         return f;
     }
