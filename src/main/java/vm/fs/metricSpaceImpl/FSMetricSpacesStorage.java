@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,8 +79,18 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     protected Iterator<Object> getIteratorOfObjects(String folder, String file, Object... params) {
         File f = getFileForObjects(folder, file, false);
         if (!f.exists()) {
-            LOG.log(Level.SEVERE, "No file for objects " + f.getAbsolutePath() + " exists");
-            return null;
+            if (!folder.equals(FSGlobal.DATASET_FOLDER)) {
+                LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
+                return null;
+            }
+            VMMVStorage storage = new VMMVStorage(file, false);
+            Map<Object, T> map = storage.getKeyValueStorage();
+            if (map == null) {
+                LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
+                return null;
+            }
+            Iterator<Map.Entry<Object, T>> iterator = map.entrySet().iterator();
+            return new MetricObjectMapEntriesIterator(storage, iterator, params);
         }
         return getIteratorOfObjects(f, params);
     }
@@ -371,4 +382,40 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
         }
     }
 
+    private class MetricObjectMapEntriesIterator<T> implements Iterator<Object> {
+
+        private final VMMVStorage storage;
+        private final int maxCount;
+        private int counter;
+
+        private final Iterator<Map.Entry<Object, T>> it;
+
+        public MetricObjectMapEntriesIterator(VMMVStorage storage, Iterator<Map.Entry<Object, T>> it, Object... params) {
+            this.storage = storage;
+            this.maxCount = params.length > 0 ? Integer.parseInt(params[0].toString()) : Integer.MAX_VALUE;
+            this.it = it;
+            counter = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            boolean ret = counter < maxCount && it.hasNext();
+            if (!ret) {
+                storage.close();
+            }
+            return ret;
+
+        }
+
+        @Override
+        public Object next() {
+            counter++;
+            if (!it.hasNext()) {
+                throw new NoSuchElementException("No more objects in the map");
+            }
+            Map.Entry<Object, T> next = it.next();
+            return metricSpace.createMetricObject(next.getKey(), next.getValue());
+        }
+
+    }
 }

@@ -1,6 +1,7 @@
 package vm.fs.metricSpaceImpl;
 
 import java.util.AbstractMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.distance.impl.L2OnFloatsArray;
@@ -45,13 +46,13 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
 
     @Override
     public Object getIDOfMetricObject(Object o) {
-        AbstractMap.SimpleEntry<String, String> entry = (AbstractMap.SimpleEntry<String, String>) o;
+        Map.Entry<Object, T> entry = (Map.Entry<Object, T>) o;
         return entry.getKey();
     }
 
     @Override
     public T getDataOfMetricObject(Object o) {
-        AbstractMap.SimpleEntry<Object, T> entry = (AbstractMap.SimpleEntry<Object, T>) o;
+        Map.Entry<Object, T> entry = (Map.Entry<Object, T>) o;
         return entry.getValue();
     }
 

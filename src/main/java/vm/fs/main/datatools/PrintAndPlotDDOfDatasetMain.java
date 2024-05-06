@@ -115,6 +115,7 @@ public class PrintAndPlotDDOfDatasetMain {
             traceXValues[i] = entry.getKey();
             traceYValues[i] = entry.getValue();
         }
+        plotter.setIncludeZeroForXAxis(true);
         JFreeChart plot = plotter.createPlot("", "Distance", "", "", traceXValues, traceYValues);
         String path = f.getAbsolutePath();
         path = path.substring(0, path.lastIndexOf("."));

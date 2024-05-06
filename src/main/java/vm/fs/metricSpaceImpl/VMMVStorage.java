@@ -1,6 +1,7 @@
 package vm.fs.metricSpaceImpl;
 
 import java.io.File;
+import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -97,6 +98,16 @@ public class VMMVStorage<T> {
         }
         LOG.log(Level.INFO, "Loaded batch of {0} objects", ret.size());
         return ret;
+    }
+
+    public void close() {
+        storage.close();;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        close();
+        super.finalize(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
 }
