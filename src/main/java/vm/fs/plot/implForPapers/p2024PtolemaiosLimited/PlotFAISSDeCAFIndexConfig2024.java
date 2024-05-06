@@ -22,11 +22,7 @@ public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000",
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k200000"
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
         );
     }
 
@@ -38,11 +34,7 @@ public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000",
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k200000"
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
         );
     }
 
@@ -51,16 +43,24 @@ public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults
         return array(
                 "nprobe64",
                 "nprobe128",
-                "nprobe256"
+                "nprobe256",
+                "nprobe384",
+                "nprobe512",
+                "nprobe768",
+                "nprobe1024"
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "nprobe64",
-                "nprobe128",
-                "nprobe256"
+                "nprobe64____.csv",
+                "nprobe128____.csv",
+                "nprobe256____.csv",
+                "nprobe384____.csv",
+                "nprobe512____.csv",
+                "nprobe768____.csv",
+                "nprobe1024____.csv"
         );
     }
 
@@ -71,7 +71,9 @@ public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        BoxPlotPlotter ret = new BoxPlotPlotter();
+        ret.setEnforceInvolvingZeroToYAxis(true);
+        return ret;
     }
 
     @Override

@@ -125,7 +125,11 @@ public abstract class FSAbstractPlotterFromResults {
                     System.err.println("File: " + file.getName());
                 }
                 System.err.println();
-                throw new IllegalArgumentException("\nYou have wrong filename filter as number of files  after the filtering " + files.length + " of folder\n" + folderWithStats.getAbsolutePath() + "\nis smaller than the number of name artifacts " + groupsCount);
+                String message = "You have wrong uniqueArtifactIdentifyingFileNameForDisplaydGroup filter as number of files after the filtering " + files.length + " of folder " + folderWithStats.getAbsolutePath() + " is smaller than the number of name artifacts " + groupsCount;
+                LOG.log(Level.WARNING, message);
+                if (files.length > groupsCount) {
+                    throw new IllegalArgumentException(message);
+                }
             }
             if (files.length != 0) {
                 files = reorder(files, uniqueArtifactsForFiles, false);
@@ -147,7 +151,9 @@ public abstract class FSAbstractPlotterFromResults {
             int groupIdx = (int) (i % groupsCount);
             int traceIdx = (int) (i / groupsCount);
 
-            System.out.println("XXX: groupIdx" + groupIdx + " | traceIdx " + traceIdx + " | " + file.getAbsolutePath());
+            if (file != null) {
+                System.out.println("XXX: groupIdx" + groupIdx + " | traceIdx " + traceIdx + " | " + file.getAbsolutePath());
+            }
 
             FSQueryExecutionStatsStoreImpl storage = new FSRecallOfCandidateSetsStorageImpl(file);
             Map<String, TreeMap<QUERY_STATS, String>> results = storage.getContent();
@@ -266,7 +272,7 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     private File[] reorder(File[] files, String[] uniqueArtifactsForFiles, boolean directMatch) {
-        File[] ret = new File[files.length];
+        File[] ret = new File[uniqueArtifactsForFiles.length];
         for (File file : files) {
             int idx = getIndex(uniqueArtifactsForFiles, file.getName().toLowerCase(), directMatch);
             if (idx != -1) {
@@ -275,11 +281,6 @@ public abstract class FSAbstractPlotterFromResults {
                 } else {
                     ret[idx] = file;
                 }
-            }
-        }
-        for (File file : ret) {
-            if (file == null) {
-                throw new IllegalArgumentException("You have wrong file/folder name filter as number of files/folders " + ret.length + " is bigger than the number of name artifacts " + uniqueArtifactsForFiles.length);
             }
         }
         return ret;

@@ -23,12 +23,13 @@ import vm.metricSpace.Dataset;
  */
 public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings {
 
+    public static final Boolean SKIP_EVERYTHING_EVALUATED = true;
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
+            //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
             new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
             new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
@@ -133,15 +134,17 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
             FSLearnCoefsForDataDepenentPtolemyFilteringMain.run(dataset);
         }
 
-        Map keyValueStorage = dataset.getKeyValueStorage();
-        prohibited = !(keyValueStorage == null || keyValueStorage.isEmpty());
-        if (prohibited) {
-            LOG.log(Level.WARNING, "The key value storage already exists for dataset {0}", datasetName);
-            prohibited = askForRewriting("The key value storage", dataset);
-        }
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, creating key-value storage", datasetName);
-            VMMVStorageInsertMain.run(dataset);
+        if (dataset.getPrecomputedDatasetSize() > 30000000) {
+            Map keyValueStorage = dataset.getKeyValueStorage();
+            prohibited = !(keyValueStorage == null || keyValueStorage.isEmpty());
+            if (prohibited) {
+                LOG.log(Level.WARNING, "The key value storage already exists for dataset {0}", datasetName);
+                prohibited = askForRewriting("The key value storage", dataset);
+            }
+            if (!prohibited) {
+                LOG.log(Level.INFO, "Dataset: {0}, creating key-value storage", datasetName);
+                VMMVStorageInsertMain.run(dataset);
+            }
         }
     }
 
@@ -152,6 +155,9 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
      * @return true iff the file CANNOT be overwritten
      */
     private static boolean askForRewriting(String type, Dataset dataset) {
+        if (SKIP_EVERYTHING_EVALUATED) {
+            return true;
+        }
         try {
             String question = type + " for " + dataset.getDatasetName() + " already exists. Do you want to delete its content? (NEED TO BE CONFIRMED AGAIN AFTER EVALUATION)";
             Object[] options = new String[]{"Yes", "No"};

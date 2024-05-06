@@ -135,7 +135,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
      */
     public final Map<String, TreeMap<QUERY_STATS, String>> parseAsMap() {
         Map<String, TreeMap<QUERY_STATS, String>> ret = new HashMap<>();
-        if (!output.exists()) {
+        if (output == null || !output.exists()) {
             return ret;
         }
         List<String[]> lines = Tools.parseCsvRowOriented(output.getAbsolutePath(), ";");

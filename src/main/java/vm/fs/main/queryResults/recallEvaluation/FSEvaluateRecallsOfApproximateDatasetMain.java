@@ -19,7 +19,8 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
  */
 public class FSEvaluateRecallsOfApproximateDatasetMain {
 
-    public static final Integer[] kCands = new Integer[]{300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; // null if dynamic, otherwise fixed number
+//    public static final Integer[] kCands = new Integer[]{300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; // null if dynamic, otherwise fixed number
+    public static final Integer[] kCands = new Integer[]{null}; // null if dynamic, otherwise fixed number
 
     public static void main(String[] args) throws InterruptedException {
         directFiles();
@@ -71,11 +72,12 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     private static void directFiles() {
         String[] folderNames = {
-            //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
+            //            //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
             //        //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
             //        //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
-            //        //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000"
-            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
+//            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000"
+            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750"
+//            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
 //        //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
 //        //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
 //        //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
@@ -91,8 +93,8 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
             for (String fileName : files) {
                 Logger.getLogger(FSEvaluateRecallsOfApproximateDatasetMain.class.getName()).log(Level.INFO, "Processing file {0}", fileName);
                 fileName = fileName.trim().substring(0, fileName.length() - 3);
-//                run(folderName, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", fileName, "");
-                run(folderName, "decaf_100m_PCA256", "decaf_100m_PCA256", fileName, "");
+                run(folderName, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", fileName, "");
+//                run(folderName, "decaf_100m_PCA256", "decaf_100m_PCA256", fileName, "");
             }
         }
     }

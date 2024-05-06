@@ -23,9 +23,9 @@ public class FSFAISS2024PlottingMain {
     public static void main(String[] args) {
 //        Y2024_PlotFaissCLIPIndexes.makePlots();
 //        Y2024_PlotFaissCLIPConfig.makePlots();
-//        Y2024_PlotFaissDeCAFConfig.makePlots();
-        Y2024_PlotFaissDeCAFSimulatedCandSetSizes.makePlots();
-        Y2024_PlotFaissCLIPSimulatedCandSetSizes.makePlots();
+        Y2024_PlotFaissDeCAFConfig.makePlots();
+//        Y2024_PlotFaissCLIPSimulatedCandSetSizes.makePlots();
+//        Y2024_PlotFaissDeCAFSimulatedCandSetSizes.makePlots();
     }
 
 }

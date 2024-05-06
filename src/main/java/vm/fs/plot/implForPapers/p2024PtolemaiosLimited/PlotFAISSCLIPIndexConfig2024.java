@@ -22,10 +22,9 @@ public class PlotFAISSCLIPIndexConfig2024 extends FSAbstractPlotterFromResults {
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
+                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750",
                 "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k200000"
+                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000"
         );
     }
 
@@ -37,10 +36,9 @@ public class PlotFAISSCLIPIndexConfig2024 extends FSAbstractPlotterFromResults {
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
+                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750",
                 "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k200000"
+                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000"
         );
     }
 
@@ -69,7 +67,9 @@ public class PlotFAISSCLIPIndexConfig2024 extends FSAbstractPlotterFromResults {
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        BoxPlotPlotter ret = new BoxPlotPlotter();
+        ret.setEnforceInvolvingZeroToYAxis(true);
+        return ret;
     }
 
     @Override
