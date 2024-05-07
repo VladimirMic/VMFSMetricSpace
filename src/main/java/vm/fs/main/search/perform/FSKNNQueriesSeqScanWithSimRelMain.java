@@ -1,4 +1,4 @@
-package vm.fs.main.search.filtering.perform;
+package vm.fs.main.search.perform;
 
 import java.util.AbstractMap;
 import java.util.HashMap;

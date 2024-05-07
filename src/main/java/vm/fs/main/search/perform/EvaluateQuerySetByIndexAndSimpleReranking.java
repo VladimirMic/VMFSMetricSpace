@@ -18,7 +18,7 @@ import vm.search.algorithm.impl.GRAPPLEPartitionsCandSetIdentifier;
  *
  * @author Vlada
  */
-public class EvaluateQuerySetWithPartitioningAlgorithm {
+public class EvaluateQuerySetByIndexAndSimpleReranking {
 
     public static void main(String[] args) {
         int k = 100;
@@ -40,7 +40,7 @@ public class EvaluateQuerySetWithPartitioningAlgorithm {
         }
     }
 
-    private static void evaluate(SearchingAlgorithm alg, Dataset dataset, int k, int kCandSetMaxSize) {
+    private static void evaluate(SearchingAlgorithm alg, Dataset dataset, int k, Integer kCandSetMaxSize) {
         FSRecallOfCandidateSetsStorageImpl statsStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
         AlgorithmEvaluator evaluator = new AlgorithmEvaluator(alg, statsStorage, resultsStorage, statsStorage, statsStorage);
