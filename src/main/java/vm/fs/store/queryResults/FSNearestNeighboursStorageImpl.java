@@ -51,9 +51,11 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         n += compress ? ".gz" : ".csv";
         ret = new File(ret, n);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
-        if (!ret.exists()) {
+        if (!ret.exists() && !willBeDeleted) {
             try {
-                return getFileWithResults(resultsName, datasetName, querySetName, null, willBeDeleted);
+                if (k != null) {
+                    return getFileWithResults(resultsName, datasetName, querySetName, null, willBeDeleted);
+                }
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("File with results " + ret.getAbsolutePath() + " does not exist");
             }

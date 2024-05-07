@@ -76,7 +76,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         if (count < 0) {
             count = Integer.MAX_VALUE;
         }
-        String prefix = params[params.length - 1].toString();        
+        String prefix = params[params.length - 1].toString();
         return new H5MetricObjectFileIterator(hdfFile, dataset, prefix, count);
     }
 
@@ -86,13 +86,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
     }
 
     public Map<Object, Object> getAsMap(String datasetName) {
-        File f;
-        if (FSGlobal.ROOT.equals("h:\\Similarity_search\\") && datasetName.startsWith("laion2B-en-clip768v2-n")) {
-            f = new File("c:\\Dataset_tmp\\" + datasetName);
-            f = FSGlobal.checkFileExistence(f, false);
-        } else {
-            f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
-        }
+        File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
         HdfFile hdfFile = new HdfFile(f.toPath());
         Node node = hdfFile.iterator().next();
         String name = node.getName();

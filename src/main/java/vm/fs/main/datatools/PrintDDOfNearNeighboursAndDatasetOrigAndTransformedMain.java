@@ -8,9 +8,11 @@ import java.util.TreeSet;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.evaluatorsToBeUsed.GroundTruthEvaluator;
+import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.impl.FloatVectorConvertor;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 
@@ -21,14 +23,13 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
 public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
 
     public static void main(String[] args) {
-        String datasetName;
-        datasetName = "decaf_1m";
-        String transformedDatasetName;
-        transformedDatasetName = "decaf_1m_PCA4";
+        Dataset datasetOrig = new FSDatasetInstanceSingularizator.DeCAFDataset();
+        Dataset datasetTransformed = new FSDatasetInstanceSingularizator.DeCAF_PCA10Dataset();
+        String datasetName = datasetOrig.getDatasetName();
+        String transformedDatasetName = datasetTransformed.getDatasetName();
         float transformedDistInterval = 1.0f;
 
         AbstractMetricSpace metricSpace = new FSMetricSpaceImpl<>();
-        DistanceFunctionInterface distanceFunction = metricSpace.getDistanceFunctionForDataset(datasetName);
         AbstractMetricSpacesStorage metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, new FloatVectorConvertor());
 
 //      getHistogramsForRandomAndNearestNeighbours
@@ -38,9 +39,9 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         int k = 100;
         List<Object[]> idsOfRandomPairs = new ArrayList<>();
         List<Object[]> idsOfNNPairs = new ArrayList<>();
-        SortedMap<Float, Float> ddRandomSample = PrintAndPlotDDOfDatasetMain.createDDOfRandomSample(metricSpace, metricSpacesStorage, distanceFunction, datasetName, objCount, distCount, idsOfRandomPairs);
+        SortedMap<Float, Float> ddRandomSample = PrintAndPlotDDOfDatasetMain.createDDOfRandomSample(datasetOrig, objCount, distCount, idsOfRandomPairs);
         float distInterval = ToolsMetricDomain.computeBasicDistInterval(ddRandomSample.lastKey());
-        SortedMap<Float, Float> ddOfNNSample = createDDOfNNSample(metricSpace, metricSpacesStorage, distanceFunction, datasetName, queriesCount, objCount, k, distInterval, idsOfNNPairs);
+        SortedMap<Float, Float> ddOfNNSample = createDDOfNNSample(datasetOrig, queriesCount, objCount, k, distInterval, idsOfNNPairs);
 //      print
         printDDOfRandomAndNearNeighbours(datasetName, distInterval, ddRandomSample, ddOfNNSample);
 
@@ -55,13 +56,14 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         printDDOfRandomAndNearNeighbours(transformedDatasetName, transformedDistInterval, ddRandomSampleTransformed, ddOfNNSampleTransformed);
     }
 
-    private static SortedMap<Float, Float> createDDOfNNSample(AbstractMetricSpace metricSpace, AbstractMetricSpacesStorage metricSpacesStorage, DistanceFunctionInterface distanceFunction, String datasetName, int queryObjCount, int sampleCount, int k, float distInterval, List<Object[]> idsOfNNPairs) {
-        List<Object> queryObjects = metricSpacesStorage.getSampleOfDataset(datasetName, queryObjCount);
-        List<Object> metricObjects = metricSpacesStorage.getSampleOfDataset(datasetName, sampleCount + queryObjCount);
+    private static SortedMap<Float, Float> createDDOfNNSample(Dataset dataset, int queryObjCount, int sampleCount, int k, float distInterval, List<Object[]> idsOfNNPairs) {
+        List<Object> queryObjects = dataset.getMetricQueryObjects(queryObjCount);
+        List<Object> metricObjects = dataset.getSampleOfDataset(sampleCount + queryObjCount);
+        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         for (int i = 0; i < queryObjCount; i++) {
             metricObjects.remove(0);
         }
-        GroundTruthEvaluator gte = new GroundTruthEvaluator(metricSpace, distanceFunction, queryObjects, k);
+        GroundTruthEvaluator gte = new GroundTruthEvaluator(dataset, k);
         TreeSet<Map.Entry<Object, Float>>[] groundTruth = gte.evaluateIteratorInParallel(metricObjects.iterator());
         List<Float> distances = new ArrayList<>();
         for (int i = 0; i < groundTruth.length; i++) {

@@ -8,12 +8,11 @@ import java.util.logging.Logger;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.evaluatorsToBeUsed.GroundTruthEvaluator;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetOfCandidates;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
  *
@@ -46,23 +45,25 @@ public class FSEvaluateGroundTruthMain {
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
             //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
             //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries)
-        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries),
-//                    new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
-        //            
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(publicQueries),
-        //
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries)
-                    new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries)
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries),
+            //                    new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
+            //            
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(publicQueries),
+            //
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries)
+            //                    new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -71,19 +72,25 @@ public class FSEvaluateGroundTruthMain {
 
     public static void run(Dataset dataset) {
         String datasetName = dataset.getDatasetName();
-        String querySetName = dataset.getQuerySetName();
-        int k = GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH;
+        int k;
+        if (dataset instanceof FSDatasetOfCandidates) {
+            k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
+        } else {
+            k = GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH;
+        }
         AbstractMetricSpace space = dataset.getMetricSpace();
 
-        DistanceFunctionInterface distanceFunction = space.getDistanceFunctionForDataset(datasetName);
-        AbstractMetricSpacesStorage spaceStorage = dataset.getMetricSpacesStorage();
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
 
-        List<Object> metricQueryObjects = spaceStorage.getQueryObjects(querySetName);
-        GroundTruthEvaluator gte = new GroundTruthEvaluator(space, distanceFunction, metricQueryObjects, k);
-        TreeSet[] results = gte.evaluateIteratorInParallel(spaceStorage.getObjectsFromDataset(datasetName, 1000000), datasetName, querySetName);
-//        TreeSet[] results = gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
-
+        List<Object> metricQueryObjects = dataset.getMetricQueryObjects();
+        GroundTruthEvaluator gte = new GroundTruthEvaluator(dataset, k);
+        TreeSet[] results;
+        if (dataset instanceof FSDatasetOfCandidates) {
+            results = gte.evaluateIteratorsSequentiallyForEachQuery(dataset, k);
+        } else {
+            results = gte.evaluateIteratorInParallel(dataset.getMetricObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());
+//             results = gte.evaluateIteratorSequentially(spaceStorage.getObjectsFromDataset(datasetName), datasetName, querySetName);
+        }
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth", null);
         statsStorage.storeStatsForQueries(gte.getDistCompsPerQueries(), gte.getTimesPerQueries(), gte.getAddditionalStats());

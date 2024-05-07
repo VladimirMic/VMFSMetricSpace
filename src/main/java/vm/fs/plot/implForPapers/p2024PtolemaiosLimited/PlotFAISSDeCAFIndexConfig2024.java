@@ -22,7 +22,8 @@ public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000",
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits16-qc1000-k10000"
         );
     }
 
@@ -34,7 +35,8 @@ public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000",
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits16-qc1000-k10000"
         );
     }
 

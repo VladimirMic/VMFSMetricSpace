@@ -52,7 +52,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
             //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(), //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
+            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),

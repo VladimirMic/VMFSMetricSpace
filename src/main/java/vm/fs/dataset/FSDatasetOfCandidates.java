@@ -28,13 +28,23 @@ public class FSDatasetOfCandidates<T> extends Dataset<T> {
     private final Map<Object, List<Object>> mapOfQueriesToCandidates;
     private final Map<Object, Object> keyValueStorage;
 
-    public FSDatasetOfCandidates(Dataset origDataset, QueryNearestNeighboursStoreInterface resultsStorage, String resultFolderName, String resultFileName) {
+    public FSDatasetOfCandidates(Dataset origDataset, String newDatasetName, QueryNearestNeighboursStoreInterface resultsStorage, String resultFolderName, String directResultFileName) {
+        this.origDataset = origDataset;
+        datasetName = newDatasetName;
+        this.keyValueStorage = origDataset.getKeyValueStorage();
+        metricSpace = origDataset.getMetricSpace();
+        metricSpacesStorage = origDataset.getMetricSpacesStorage();
+        Map<String, TreeSet<Map.Entry<Object, Float>>> queryResultsForDataset = resultsStorage.getQueryResultsForDataset(resultFolderName, directResultFileName, "", null);
+        mapOfQueriesToCandidates = transformToList(queryResultsForDataset);
+    }
+
+    public FSDatasetOfCandidates(Dataset origDataset, QueryNearestNeighboursStoreInterface resultsStorage, String resultFolderName) {
         this.origDataset = origDataset;
         datasetName = origDataset.getDatasetName();
         this.keyValueStorage = origDataset.getKeyValueStorage();
         metricSpace = origDataset.getMetricSpace();
         metricSpacesStorage = origDataset.getMetricSpacesStorage();
-        Map<String, TreeSet<Map.Entry<Object, Float>>> queryResultsForDataset = resultsStorage.getQueryResultsForDataset(resultFolderName, resultFileName, "", null);
+        Map<String, TreeSet<Map.Entry<Object, Float>>> queryResultsForDataset = resultsStorage.getQueryResultsForDataset(resultFolderName, getDatasetName(), getQuerySetName(), null);
         mapOfQueriesToCandidates = transformToList(queryResultsForDataset);
     }
 
@@ -59,8 +69,8 @@ public class FSDatasetOfCandidates<T> extends Dataset<T> {
     }
 
     @Override
-    public List<Object> getMetricQueryObjects() {
-        return origDataset.getMetricQueryObjects();
+    public List<Object> getMetricQueryObjects(Object... params) {
+        return origDataset.getMetricQueryObjects(1000);
     }
 
     @Override
@@ -106,8 +116,7 @@ public class FSDatasetOfCandidates<T> extends Dataset<T> {
     private Map<Object, List<Object>> transformToList(Map<String, TreeSet<Map.Entry<Object, Float>>> queryResultsForDataset) {
         Map<Object, List<Object>> ret = new HashMap<>();
         Set<String> queryIDs = queryResultsForDataset.keySet();
-        while (queryIDs.iterator().hasNext()) {
-            String queryID = queryIDs.iterator().next();
+        for (String queryID : queryIDs) {
             TreeSet<Map.Entry<Object, Float>> candidates = queryResultsForDataset.get(queryID);
             List<Object> candsIDs = new ArrayList<>();
             for (Map.Entry<Object, Float> candidate : candidates) {

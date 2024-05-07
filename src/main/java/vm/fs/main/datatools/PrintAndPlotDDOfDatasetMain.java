@@ -48,15 +48,15 @@ public class PrintAndPlotDDOfDatasetMain {
         if (f.exists()) {
             ddRandomSample = vm.datatools.Tools.parseCsvMapFloats(f.getAbsolutePath());
         } else {
-            ddRandomSample = createDDOfRandomSample(dataset, datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
+            ddRandomSample = createDDOfRandomSample(dataset, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
         }
 //      print
         Map<Float, Float> mapOfValues = printDD(f, ddRandomSample);
         createPlot(f, mapOfValues);
     }
 
-    protected static TreeMap<Float, Float> createDDOfRandomSample(Dataset dataset, String datasetName, int objCount, int distCount, List<Object[]> examinedPairs) {
-        return createDDOfRandomSample(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), dataset.getDistanceFunction(), datasetName, objCount, distCount, examinedPairs);
+    protected static TreeMap<Float, Float> createDDOfRandomSample(Dataset dataset, int objCount, int distCount, List<Object[]> examinedPairs) {
+        return createDDOfRandomSample(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), dataset.getDistanceFunction(), dataset.getDatasetName(), objCount, distCount, examinedPairs);
     }
 
     protected static TreeMap<Float, Float> createDDOfRandomSample(AbstractMetricSpace metricSpace, AbstractMetricSpacesStorage metricSpacesStorage, DistanceFunctionInterface df, String datasetName, int objCount, int distCount, List<Object[]> examinedPairs) {

@@ -104,10 +104,5 @@ public class VMMVStorage<T> {
         storage.close();;
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        close();
-        super.finalize(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
 
 }
