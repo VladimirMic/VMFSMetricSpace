@@ -27,7 +27,8 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
                 "Data-dep. Metric Filtering",
                 "Four Point Property",
                 "Ptolemaic Filtering",
-                "Data-dep. Ptolemaic Filering"
+                "Data-dep. Ptolemaic Filering",
+                "Sequential Brute Force"
         );
     }
 
@@ -38,7 +39,8 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
             COLOUR_NAMES.C2_RED,
             COLOUR_NAMES.C3_GREEN,
             COLOUR_NAMES.C4_ORANGE,
-            COLOUR_NAMES.C5_VIOLET
+            COLOUR_NAMES.C5_VIOLET,
+            COLOUR_NAMES.CX_BLACK
         };
     }
 
@@ -49,7 +51,8 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
                 "2024_03_256_pivots_30NN_seq_ptolemaios",
-                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
+                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
+                "ground_truth"
         );
     }
 

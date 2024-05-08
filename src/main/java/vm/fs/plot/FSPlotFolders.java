@@ -13,5 +13,6 @@ import vm.fs.FSGlobal;
 public class FSPlotFolders {
 
     public static final String Y2024_PTOLEMAIOS_LIMITED = FSGlobal.FOLDER_PLOTS + "2024_PtolemaiosLimited\\";
+    public static final String Y2024_PTOLEMAIOS_LIMITED_FAISS = FSGlobal.FOLDER_PLOTS + "2024_PtolemaiosLimited_Faiss\\";
 
 }

@@ -47,12 +47,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+                        new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
             //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
             //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),

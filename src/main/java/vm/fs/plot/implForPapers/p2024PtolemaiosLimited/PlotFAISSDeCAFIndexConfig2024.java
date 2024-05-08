@@ -85,7 +85,7 @@ public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults
 
     @Override
     public String getFolderForPlots() {
-        return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED;
+        return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED_FAISS;
     }
 
     @Override

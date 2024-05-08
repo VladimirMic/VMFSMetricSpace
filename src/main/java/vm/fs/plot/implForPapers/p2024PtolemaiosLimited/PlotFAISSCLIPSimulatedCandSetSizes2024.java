@@ -90,7 +90,7 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
 
     @Override
     public String getFolderForPlots() {
-        return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED;
+        return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED_FAISS;
     }
 
     @Override
