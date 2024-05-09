@@ -7,7 +7,7 @@ import java.util.SortedMap;
 import java.util.TreeSet;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.evaluatorsToBeUsed.GroundTruthEvaluator;
+import vm.search.algorithm.impl.GroundTruthEvaluator;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.AbstractMetricSpacesStorage;

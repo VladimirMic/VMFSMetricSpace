@@ -86,7 +86,7 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
 
         prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset);
         if (prohibited) {
-            LOG.log(Level.WARNING, "Ground already existed for dataset {0}", datasetName);
+            LOG.log(Level.WARNING, "Ground already exists for dataset {0}", datasetName);
             prohibited = askForRewriting("Ground truth", dataset);
         }
         if (!prohibited) {

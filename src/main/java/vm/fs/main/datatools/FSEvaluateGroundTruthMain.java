@@ -6,7 +6,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
-import vm.evaluatorsToBeUsed.GroundTruthEvaluator;
+import vm.search.algorithm.impl.GroundTruthEvaluator;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.dataset.FSDatasetOfCandidates;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
@@ -62,9 +62,9 @@ public class FSEvaluateGroundTruthMain {
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
 //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
 //            new FSDatasetInstanceSingularizator.SIFTdataset(),
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
+//            new FSDatasetInstanceSingularizator.DeCAFDataset()
 //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
 //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
         };

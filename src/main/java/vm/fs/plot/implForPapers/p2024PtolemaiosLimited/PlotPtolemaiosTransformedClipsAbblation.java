@@ -24,17 +24,15 @@ public class PlotPtolemaiosTransformedClipsAbblation extends FSAbstractPlotterFr
         return strings(
                 "Data-dep. Metric Filtering 256p_256LB",
                 "256p_256LB",
-                "256p_128LB",
                 "256p_64LB",
                 "256p_32LB",
-                "64p_256LB",
-                "64p_128LB",
+                "96p_96LB",
+                "80p_80LB",
+                "80p_64LB",
+                "72p_72LB",
                 "64p_64LB",
                 "64p_32LB", 
-                "32p_256LB",
-                "32p_128LB",
-                "32p_64LB",
-                "32p_32LB",
+                "40p_40LB",
                 "Sequential Brute Force"
         );
     }
@@ -43,18 +41,16 @@ public class PlotPtolemaiosTransformedClipsAbblation extends FSAbstractPlotterFr
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
-                "2024_04_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
-                "2024_04_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
-                "2024_04_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_32LB",
-                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_256LB",
-                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
-                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
-                "2024_04_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_32LB",
-                "2024_04_32_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_256LB",
-                "2024_04_32_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
-                "2024_04_32_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
-                "2024_04_32_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_32LB",
+                "2024_05_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_256LB",
+                "2024_05_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_05_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_32LB",
+                "2024_05_96_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_96LB",
+                "2024_05_80_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_80LB",
+                "2024_05_80_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_05_72_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_72LB",
+                "2024_05_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_05_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_32LB",
+                "2024_05_40_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_40LB",
                 "ground_truth"
         );
     }
@@ -62,16 +58,16 @@ public class PlotPtolemaiosTransformedClipsAbblation extends FSAbstractPlotterFr
     @Override
     public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return strings(
-                "CLIP_10M_PCA256",
-                "CLIP_10M_GHP512"
+                "CLIP_10M_PCA256"
+//                "CLIP_10M_GHP512"
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "laion2B-en-clip768v2-n=10M.h5_PCA256__laion2B-en-clip768v2-n=10M.h5_PCA256__30__laion2B-en-clip768v2-n=10M.h5_PCA256__laion2B-en-clip768v2-n=10M.h5_PCA256__",
-                "laion2B-en-clip768v2-n=10M.h5_GHP_50_512__public-queries-10k-clip768v2.h5_GHP_50_512__30__laion2B-en-clip768v2-n=10M.h5_GHP_50_512__public-queries-10k-clip768v2.h5_GHP_50_512__"
+                "laion2B-en-clip768v2-n=10M.h5_PCA256__laion2B-en-clip768v2-n=10M.h5_PCA256__30__laion2B-en-clip768v2-n=10M.h5_PCA256__laion2B-en-clip768v2-n=10M.h5_PCA256__"
+//                "laion2B-en-clip768v2-n=10M.h5_GHP_50_512__public-queries-10k-clip768v2.h5_GHP_50_512__30__laion2B-en-clip768v2-n=10M.h5_GHP_50_512__public-queries-10k-clip768v2.h5_GHP_50_512__"
         );
     }
 
