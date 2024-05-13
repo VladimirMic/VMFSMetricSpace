@@ -34,7 +34,6 @@ public class FSGlobal {
     public static final String TRIALS_FOLDER = ROOT + "Trials\\";
 
     public static final String DATA_FOLDER = ROOT + "Dataset\\";
-//    public static final String DATASET_MAPDB_FOLDER = DATA_FOLDER + "Map_DB\\";
     public static final String DATASET_MVSTORAGE_FOLDER = DATA_FOLDER + "MV_storage\\";
     public static final String DATASET_FOLDER = DATA_FOLDER + "Dataset\\";
     public static final String DATASET_METADATA = DATA_FOLDER + "Metadata\\";

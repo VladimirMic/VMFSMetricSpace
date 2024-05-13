@@ -4,6 +4,11 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSDeCAFSimulatedCandSetSizes2024;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIPIndexes2024;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIPSimulatedCandSetSizes2024;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSDeCAFIndexConfig2024;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIPIndexConfig2024;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 
 /**

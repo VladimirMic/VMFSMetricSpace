@@ -4,6 +4,7 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random.PlotPtolemaiosRandomData4Tech10_40Time;
 import vm.plot.AbstractPlotter;
 
 /**

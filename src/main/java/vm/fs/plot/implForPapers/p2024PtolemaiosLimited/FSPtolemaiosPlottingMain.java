@@ -4,6 +4,12 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random.PlotPtolemaiosRandomDataPivotSelectionForPtolemaios;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random.PlotPtolemaiosRandomData5Tech50_100;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random.PlotPtolemaiosRandomData4Tech10_40Time;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random.PlotPtolemaiosRandom100Abblation;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random.PlotPtolemaiosRandomData5Tech10_40;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random.PlotPtolemaiosRandomData4Tech50_100Time;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 
 /**
@@ -21,7 +27,7 @@ public class FSPtolemaiosPlottingMain {
     public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosTransformedClips5Tech = new PlotPtolemaiosTransformedClips5Tech(PLOT_ONLY_PDF);
     public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosDeCAF1M5Tech = new PlotPtolemaiosDeCAF1M5Tech(PLOT_ONLY_PDF);
     public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosPivotSelection = new PlotPtolemaiosRandomDataPivotSelectionForPtolemaios(PLOT_ONLY_PDF);
-    public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosCLIP_AbblationStudy = new PlotPtolemaiosTransformedClipsAbblation(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosCLIP_DF = new PlotPtolemaiosTransformedClipsAbblation(PLOT_ONLY_PDF);
     public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosRandom100D_AbblationStudy = new PlotPtolemaiosRandom100Abblation(PLOT_ONLY_PDF);
 
     public static void main(String[] args) {
@@ -32,7 +38,7 @@ public class FSPtolemaiosPlottingMain {
 //        Y2024_PlotPtolemaiosTransformedClips5Tech.makePlots();// TODO with better results
 //        Y2024_PlotPtolemaiosDeCAF1M5Tech.makePlots();
 //        Y2024_PlotPtolemaiosPivotSelection.makePlots();
-        Y2024_PlotPtolemaiosCLIP_AbblationStudy.makePlots();
+        Y2024_PlotPtolemaiosCLIP_DF.makePlots();
 //        Y2024_PlotPtolemaiosRandom100D_AbblationStudy.makePlots();
     }
 }

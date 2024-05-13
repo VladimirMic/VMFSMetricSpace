@@ -26,47 +26,49 @@ public class FSEvaluateGroundTruthMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset100Uniform(),
-//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-        //            
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(publicQueries),
-        //
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries)
-        //                    new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+            //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
+            //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform(),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
+            //            
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(publicQueries),
+            //
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries)
+            //                    new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
             //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
-//            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-//            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+            //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+            //            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
-//            new FSDatasetInstanceSingularizator.DeCAFDataset()
-//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
+        //            new FSDatasetInstanceSingularizator.DeCAFDataset()
+        //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -76,11 +78,12 @@ public class FSEvaluateGroundTruthMain {
     public static void run(Dataset dataset) {
         String datasetName = dataset.getDatasetName();
         int k;
-//        if (dataset instanceof FSDatasetOfCandidates) {
-        k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
-//        } else {
-//            k = GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH;
-//        }
+        if (dataset instanceof FSDatasetOfCandidates) {
+            k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
+        } else {
+            k = GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH;
+            k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
+        }
         AbstractMetricSpace space = dataset.getMetricSpace();
 
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
@@ -105,9 +108,12 @@ public class FSEvaluateGroundTruthMain {
         System.gc();
     }
 
-    public static boolean existsForDataset(Dataset dataset) {
+    public static boolean existsForDataset(Dataset dataset, Integer k) {
+        if (k == null || k <= 0) {
+            k = GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH;
+        }
         FSNearestNeighboursStorageImpl groundTruthStorage = new FSNearestNeighboursStorageImpl();
-        File fileWithResults = groundTruthStorage.getFileWithResults("ground_truth", dataset.getDatasetName(), dataset.getQuerySetName(), GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH, false);
+        File fileWithResults = groundTruthStorage.getFileWithResults("ground_truth", dataset.getDatasetName(), dataset.getQuerySetName(), k, false);
         return fileWithResults.exists();
     }
 

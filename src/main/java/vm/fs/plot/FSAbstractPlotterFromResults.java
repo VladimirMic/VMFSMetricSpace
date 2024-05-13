@@ -45,7 +45,7 @@ public abstract class FSAbstractPlotterFromResults {
             plotter = new BoxPlotXYPlotter();
         }
         if (colourIndexesForTraces != null && colourIndexesForTraces.length != folderNames.length) {
-            throw new IllegalArgumentException("Incosistent specification of traces colours and traces. The counts do not match. Colours: " + colourIndexesForTraces.length + ", traces: " + xTicks.length);
+            throw new IllegalArgumentException("Incosistent specification of colours and folders. The counts do not match. Colours: " + colourIndexesForTraces.length + ", folders: " + folderNames.length);
         }
     }
 
@@ -125,7 +125,7 @@ public abstract class FSAbstractPlotterFromResults {
                     System.err.println("File: " + file.getName());
                 }
                 System.err.println();
-                String message = "You have wrong uniqueArtifactIdentifyingFileNameForDisplaydGroup filter as number of files after the filtering " + files.length + " of folder " + folderWithStats.getAbsolutePath() + " is smaller than the number of name artifacts " + groupsCount;
+                String message = "You have wrong uniqueArtifactIdentifyingFileNameForDisplaydGroup filter as number of files after the filtering " + files.length + " of folder " + folderWithStats.getAbsolutePath() + " is larger than the number of name artifacts " + groupsCount;
                 LOG.log(Level.WARNING, message);
                 if (files.length > groupsCount) {
                     throw new IllegalArgumentException(message);
@@ -176,6 +176,9 @@ public abstract class FSAbstractPlotterFromResults {
     public void makePlots() {
         int groupsCount = xTicks.length;
         int boxplotsCount = getDisplayedNamesOfTracesThatMatchesFolders().length;
+        if (boxplotsCount != folderNames.length) {
+            throw new IllegalArgumentException("Inconsistent numbers: the number of folders returned by getFolderNamesForDisplayedTraces() " + folderNames.length + " does not match the number of names given by getDisplayedNamesOfTracesThatMatchesFolders()" + boxplotsCount);
+        }
         List<File> files = getFilesWithResultsToBePlotted(groupsCount, boxplotsCount);
         Map<QUERY_STATS, List<Float>[][]> dataForStats = loadStatsFromFileAsListOfXYValues(files, groupsCount, boxplotsCount);
         Set<QUERY_STATS> keyForPlots = dataForStats.keySet();
@@ -364,6 +367,9 @@ public abstract class FSAbstractPlotterFromResults {
         if (max >= 1300) {
             for (List<Float>[] timeValue : timeValues) {
                 for (List<Float> list : timeValue) {
+                    if (list == null || list.isEmpty()) {
+                        continue;
+                    }
                     List<Float> listNew = new ArrayList<>();
                     for (int k = 0; k < list.size(); k++) {
                         Float value = list.get(k);

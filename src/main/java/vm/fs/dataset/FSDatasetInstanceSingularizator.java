@@ -336,6 +336,42 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
+    public static class LAION_10M_Dataset_Dot extends LAION_10M_Dataset {
+
+        public LAION_10M_Dataset_Dot(boolean publicQueries) {
+            super(publicQueries);
+            datasetName += "DotPro";
+        }
+
+    }
+
+    public static class LAION_10M_Dataset_Angular extends LAION_10M_Dataset {
+
+        public LAION_10M_Dataset_Angular(boolean publicQueries) {
+            super(publicQueries);
+            datasetName += "Angular";
+        }
+
+    }
+
+    public static class LAION_30M_Dataset_Dot extends LAION_30M_Dataset {
+
+        public LAION_30M_Dataset_Dot(boolean publicQueries) {
+            super(publicQueries);
+            datasetName += "DotPro";
+        }
+
+    }
+
+    public static class LAION_100M_Dataset_Dot extends LAION_100M_Dataset {
+
+        public LAION_100M_Dataset_Dot(boolean publicQueries) {
+            super(publicQueries);
+            datasetName += "DotPro";
+        }
+
+    }
+
     public static class LAION_30M_Dataset_Euclid extends LAION_30M_Dataset {
 
         public LAION_30M_Dataset_Euclid(boolean publicQueries) {
