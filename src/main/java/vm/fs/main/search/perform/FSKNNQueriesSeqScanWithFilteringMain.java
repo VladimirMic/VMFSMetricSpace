@@ -28,6 +28,7 @@ import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.algorithm.SearchingAlgorithm;
+import vm.search.algorithm.impl.GroundTruthEvaluator;
 import vm.search.algorithm.impl.KNNSearchWithOnePivotFiltering;
 import vm.search.algorithm.impl.KNNSearchWithGenericTwoPivotFiltering;
 import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
@@ -46,8 +47,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(publicQueries),
 //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
@@ -68,7 +69,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         };
 
         int pivotCount = KNNSearchWithPtolemaicFiltering.LB_COUNT;
-        int k = 30;
+        int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
 
         for (Dataset dataset : datasets) {
             List pivots = dataset.getPivots(pivotCount);
@@ -162,9 +163,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 dataset,
                 pivotCount
         );
+//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, ptolemaicFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{fourPointPropertyBased};
-//        return new BoundsOnDistanceEstimation[]{ptolemaicFiltering};
         return new BoundsOnDistanceEstimation[]{dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering};

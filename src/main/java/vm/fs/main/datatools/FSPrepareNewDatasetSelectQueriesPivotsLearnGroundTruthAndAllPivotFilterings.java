@@ -16,7 +16,6 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain;
 import vm.metricSpace.Dataset;
-import vm.search.algorithm.impl.GroundTruthEvaluator;
 
 /**
  *
