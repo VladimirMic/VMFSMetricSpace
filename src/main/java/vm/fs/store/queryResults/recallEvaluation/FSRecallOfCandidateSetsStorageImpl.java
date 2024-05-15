@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.DataTypeConvertor;
@@ -47,6 +48,10 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
     public FSRecallOfCandidateSetsStorageImpl(String groundTruthDatasetName, String groundTruthQuerySetName, int groundTruthNNCount, String candSetName, String candSetQuerySetName, String resultSetName, Integer candidateNNCount) {
         this(transformFileNameParamsToMap(groundTruthDatasetName, groundTruthQuerySetName, groundTruthNNCount, candSetName, candSetQuerySetName, resultSetName, candidateNNCount));
     }
+    
+    public static Map<String, TreeSet<Map.Entry<Object, Float>>> getGroundTruthForDataset(String datasetName, String querySetName) {
+        return getGroundTruthForDataset(datasetName, querySetName);
+    }
 
     public static final Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> transformFileNameParamsToMap(String groundTruthDatasetName, String groundTruthQuerySetName, int groundTruthNNCount, String candSetName, String candSetQuerySetName, String resultSetName, Integer candidateSetFixedSize) {
         Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> attributesForFileName = new HashMap<>();
@@ -61,7 +66,7 @@ public class FSRecallOfCandidateSetsStorageImpl extends FSQueryExecutionStatsSto
         }
         return attributesForFileName;
     }
-
+    
     @Override
     public void storeRecallForQuery(Object queryObjId, float recall, Object... additionalParametersToStore) {
         TreeMap<QUERY_STATS, String> line = content.get(queryObjId.toString());

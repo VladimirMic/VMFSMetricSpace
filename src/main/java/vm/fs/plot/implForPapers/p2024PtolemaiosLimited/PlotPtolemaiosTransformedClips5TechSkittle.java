@@ -30,6 +30,10 @@ public class PlotPtolemaiosTransformedClips5TechSkittle extends FSAbstractPlotte
                 "Data-dep. Ptolemaic Filering SKITTLE 48-10000",
                 "Data-dep. Ptolemaic Filering SKITTLE 32-10000",
                 "Data-dep. Ptolemaic Filering SKITTLE 32-15000",
+                "Data-dep. Ptolemaic Filering SKITTLE 32-50000",
+                "Data-dep. Ptolemaic Filering SKITTLE 32-100000",
+                "Data-dep. Ptolemaic Filering SKITTLE 32-400000",
+                "Data-dep. Ptolemaic Filering SKITTLE 32-500000",
                 "Sequential Brute Force"
         );
     }
@@ -45,6 +49,10 @@ public class PlotPtolemaiosTransformedClips5TechSkittle extends FSAbstractPlotte
             AbstractPlotter.COLOUR_NAMES.C6_BROWN,
             AbstractPlotter.COLOUR_NAMES.C7_PURPLE,
             AbstractPlotter.COLOUR_NAMES.C8_GREY,
+            AbstractPlotter.COLOUR_NAMES.C9_LIME,
+            AbstractPlotter.COLOUR_NAMES.C10_CYAN,
+            AbstractPlotter.COLOUR_NAMES.C1_BLUE,
+            AbstractPlotter.COLOUR_NAMES.C2_RED,
             AbstractPlotter.COLOUR_NAMES.CX_BLACK
         };
     }
@@ -60,6 +68,10 @@ public class PlotPtolemaiosTransformedClips5TechSkittle extends FSAbstractPlotte
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_48perc",
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc",
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc_15000obj",
+                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc_50000objIntMem",
+                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc_100000objIntMem",
+                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc_400000objIntMem",
+                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc_500000objIntMem",
                 "ground_truth"
         );
     }

@@ -270,4 +270,27 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
         return Collections.unmodifiableMap(content);
     }
 
+    @Override
+    public Map<Object, Integer> getDistComps() {
+        return returnStat(QUERY_STATS.cand_set_dynamic_size, false);
+    }
+
+    @Override
+    public Map<Object, Long> getQueryTimes() {
+        return returnStat(QUERY_STATS.query_execution_time, true);
+    }
+
+    private Map returnStat(QUERY_STATS keyStat, boolean islong) {
+        Map ret = new HashMap<>();
+        for (Map.Entry<String, TreeMap<QUERY_STATS, String>> entry : content.entrySet()) {
+            String qID = entry.getKey();
+            TreeMap<QUERY_STATS, String> stats = entry.getValue();
+            String valueString = stats.get(keyStat);
+            Object value = islong ? Long.parseLong(valueString) : Integer.parseInt(valueString);
+            ret.put(qID, value);
+        }
+        return ret;
+
+    }
+
 }
