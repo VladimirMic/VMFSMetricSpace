@@ -23,19 +23,16 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
 
     private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName());
 
-    @Override
-    public float[][] loadPrecomPivotsToObjectsDists(Dataset dataset, int pivotCount) {
+    public float[][] loadPrecomPivotsToObjectsDists(File file, Dataset dataset, int maxColumnCount) {
         List<float[]> retList = new ArrayList<>();
-        String datasetName = dataset.getDatasetName();
-        String pivotSetName = dataset.getPivotSetName();
-        File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount, false);
-        if (!file.exists()) {
-            LOG.log(Level.WARNING, "No precomputed distances found for dataset {0} pivot set {1} and {2} pivots", new Object[]{datasetName, pivotSetName, pivotCount});
-            return null;
-        }
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));
-            int maxPivots = pivotCount > 0 ? pivotCount : Integer.MAX_VALUE;
+            BufferedReader br;
+            if (file.getName().toLowerCase().endsWith(".gz")) {
+                br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));
+            } else {
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            }
+            int maxPivots = maxColumnCount > 0 ? maxColumnCount : Integer.MAX_VALUE;
             try {
                 String line = br.readLine();
                 String[] columns = line.split(";");
@@ -64,13 +61,27 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
             for (int i = 0; i < retList.size(); i++) {
                 ret[i] = retList.get(i);
             }
-        checkOrdersOfPivots(dataset.getPivots(pivotCount), dataset.getMetricSpace());
-        return ret;
+            if (dataset != null) {
+                checkOrdersOfPivots(dataset.getPivots(maxColumnCount), dataset.getMetricSpace());
+            }
+            return ret;
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
         return null;
 
+    }
+
+    @Override
+    public float[][] loadPrecomPivotsToObjectsDists(Dataset dataset, int pivotCount) {
+        String datasetName = dataset.getDatasetName();
+        String pivotSetName = dataset.getPivotSetName();
+        File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount, false);
+        if (!file.exists()) {
+            LOG.log(Level.WARNING, "No precomputed distances found for dataset {0} pivot set {1} and {2} pivots", new Object[]{datasetName, pivotSetName, pivotCount});
+            return null;
+        }
+        return loadPrecomPivotsToObjectsDists(file, dataset, pivotCount);
     }
 
     public File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount, boolean willBeDeleted) {

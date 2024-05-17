@@ -106,7 +106,7 @@ public class FSCheckDatasetFilesConsistency {
                 System.out.println("Error in pivot set " + dataset.getPivotSetName());
             }
             try {
-                dataset.getMetricQueryObjects();
+                dataset.getQueryObjects();
             } catch (Exception e) {
                 System.out.println("Error in query set " + dataset.getPivotSetName());
             }

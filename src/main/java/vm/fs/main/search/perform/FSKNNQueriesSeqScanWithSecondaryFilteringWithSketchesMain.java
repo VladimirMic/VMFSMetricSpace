@@ -88,7 +88,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
 
         SearchingAlgorithm alg = new KNNSearchWithSketchSecondaryFiltering(fullDataset, filter, sketchingTechnique);
 
-        List queries = fullDataset.getMetricQueryObjects();
+        List queries = fullDataset.getQueryObjects();
 
         TreeSet[] results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, fullDataset.getMetricObjectsFromDataset());
 

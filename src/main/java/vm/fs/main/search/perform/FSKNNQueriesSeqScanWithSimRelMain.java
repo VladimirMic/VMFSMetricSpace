@@ -121,7 +121,7 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
 //            MVStore storage = VMMVStorageMain.openStorage(fullDataset.getDatasetName());
 //            mapOfAllFullObjects = VMMVStorageMain.getStoredMap(storage);
         }
-        List<Object> fullQueries = fullDataset.getMetricQueryObjects();
+        List<Object> fullQueries = fullDataset.getQueryObjects();
         SimRelSeqScanKNNCandSet alg = new SimRelSeqScanKNNCandSet(simRel, kPCA, INVOLVE_OBJS_UNKNOWN_RELATION);
         AbstractMetricSpace metricSpaceOfFullDataset = fullDataset.getMetricSpace();
         AbstractMetricSpace pcaDatasetMetricSpace = pcaDataset.getMetricSpace();

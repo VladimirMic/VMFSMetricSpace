@@ -42,6 +42,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
+        vm.javatools.Tools.sleep(75);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
@@ -96,7 +97,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             poDists = pd.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
         }
 
-        List queries = dataset.getMetricQueryObjects();
+        List queries = dataset.getQueryObjects();
         queries = queries.subList(0, 1000);
 //        queries = ToolsMetricDomain.filterObjectsByIDs(metricSpace, queries,
 //                "Q832",

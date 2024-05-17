@@ -69,8 +69,8 @@ public class FSDatasetOfCandidates<T> extends Dataset<T> {
     }
 
     @Override
-    public List<Object> getMetricQueryObjects(Object... params) {
-        return origDataset.getMetricQueryObjects(1000);
+    public List<Object> getQueryObjects(Object... params) {
+        return origDataset.getQueryObjects(1000);
     }
 
     @Override

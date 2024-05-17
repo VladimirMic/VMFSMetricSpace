@@ -44,7 +44,7 @@ public class EvaluateQuerySetByIndexAndSimpleReranking {
         FSRecallOfCandidateSetsStorageImpl statsStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
         AlgorithmEvaluator evaluator = new AlgorithmEvaluator(alg, statsStorage, resultsStorage, statsStorage, statsStorage);
-        evaluator.evaluate(dataset, dataset.getMetricQueryObjects(), k, kCandSetMaxSize, alg.getResultName());
+        evaluator.evaluate(dataset, dataset.getQueryObjects(), k, kCandSetMaxSize, alg.getResultName());
     }
 
     private static SearchingAlgorithm getGRAPPLEAlgorithm(Dataset dataset) {

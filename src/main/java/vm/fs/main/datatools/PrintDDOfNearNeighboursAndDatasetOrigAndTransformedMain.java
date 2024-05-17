@@ -57,7 +57,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
     }
 
     private static SortedMap<Float, Float> createDDOfNNSample(Dataset dataset, int queryObjCount, int sampleCount, int k, float distInterval, List<Object[]> idsOfNNPairs) {
-        List<Object> queryObjects = dataset.getMetricQueryObjects(queryObjCount);
+        List<Object> queryObjects = dataset.getQueryObjects(queryObjCount);
         List<Object> metricObjects = dataset.getSampleOfDataset(sampleCount + queryObjCount);
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         for (int i = 0; i < queryObjCount; i++) {
