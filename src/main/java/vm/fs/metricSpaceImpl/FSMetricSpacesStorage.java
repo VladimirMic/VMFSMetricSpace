@@ -410,7 +410,12 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
 
         public MetricObjectMapEntriesIterator(VMMVStorage storage, Iterator<Map.Entry<Object, T>> it, Object... params) {
             this.storage = storage;
-            this.maxCount = params.length > 0 ? Integer.parseInt(params[0].toString()) : Integer.MAX_VALUE;
+            if (params.length > 0) {
+                int value = Integer.parseInt(params[0].toString());
+                maxCount = value > 0 ? value : Integer.MAX_VALUE;
+            } else {
+                maxCount = Integer.MAX_VALUE;
+            }
             this.it = it;
             counter = 0;
         }

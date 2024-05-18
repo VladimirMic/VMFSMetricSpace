@@ -116,7 +116,13 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         } else {
             throw new IllegalArgumentException("What a weird algorithm ... This class is for the pivot filtering, did you notice?");
         }
-        TreeSet[] results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(maxObjectsCount), 1);
+
+        TreeSet[] results;
+        if (dataset instanceof DatasetOfCandidates) {
+            results = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, k);
+        } else {
+            results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(maxObjectsCount), 1);
+        }
 
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
@@ -144,8 +150,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             poDists = pd.loadPrecomPivotsToObjectsDists(origDataset, pivotCount);
         }
         if (poDists == null || poDists.length == 0) {
-            pd = ToolsMetricDomain.evaluateMatrixOfDistances(origDataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df);
-            poDists = pd.loadPrecomPivotsToObjectsDists(null, -1);
+            int precomputedDatasetSize = origDataset.getPrecomputedDatasetSize();
+//            pd = ToolsMetricDomain.evaluateMatrixOfDistances(origDataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df, precomputedDatasetSize);
+//            poDists = pd.loadPrecomPivotsToObjectsDists(null, -1);
         }
     }
 
