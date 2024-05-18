@@ -38,6 +38,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     protected final AbstractMetricSpace metricSpace;
     protected final MetricObjectDataToStringInterface<T> dataSerializator;
 
+    private VMMVStorage singularizatorOfDiskStorage = null;
+
     /**
      * Methods metricSpace.getIDOfMetricObject and
      * metricSpace.getDataOfMetricObject are used to store the metric objects in
@@ -83,16 +85,26 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
                 LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
                 return null;
             }
-            VMMVStorage storage = new VMMVStorage(file, false);
-            Map<Object, T> map = storage.getKeyValueStorage();
-            if (map == null) {
+            if (singularizatorOfDiskStorage == null) {
+                singularizatorOfDiskStorage = new VMMVStorage(file, false);
+            }
+            if (singularizatorOfDiskStorage == null) {
                 LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
                 return null;
             }
+            Map<Object, T> map = singularizatorOfDiskStorage.getKeyValueStorage();
             Iterator<Map.Entry<Object, T>> iterator = map.entrySet().iterator();
-            return new MetricObjectMapEntriesIterator(storage, iterator, params);
+            return new MetricObjectMapEntriesIterator(singularizatorOfDiskStorage, iterator, params);
         }
         return getIteratorOfObjects(f, params);
+    }
+
+    public VMMVStorage getSingularizatorOfDiskStorage() {
+        return singularizatorOfDiskStorage;
+    }
+
+    public void setSingularizatorOfDiskStorage(VMMVStorage singularizatorOfDiskStorage) {
+        this.singularizatorOfDiskStorage = singularizatorOfDiskStorage;
     }
 
     public Iterator<Object> getIteratorOfObjects(File f, Object... params) {
@@ -211,12 +223,15 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
      * and its data
      */
     @Override
-    public void storePivots(List<Object> pivots, String pivotSetName, Object... additionalParamsToStoreWithNewPivotSet
-    ) {
+    public void storePivots(List<Object> pivots, String pivotSetName, Object... additionalParamsToStoreWithNewPivotSet) {
+        boolean delete = true;
+        if (additionalParamsToStoreWithNewPivotSet != null && additionalParamsToStoreWithNewPivotSet.length > 0 && additionalParamsToStoreWithNewPivotSet[0] instanceof Boolean) {
+            delete = (boolean) additionalParamsToStoreWithNewPivotSet[0];
+        }
         GZIPOutputStream os = null;
         try {
-            File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, true);
-            os = new GZIPOutputStream(new FileOutputStream(f, false), true);
+            File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, delete);
+            os = new GZIPOutputStream(new FileOutputStream(f, !delete), true);
             for (Object metricObject : pivots) {
                 storeMetricObject(metricObject, os, additionalParamsToStoreWithNewPivotSet);
             }
@@ -241,13 +256,16 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
      * and its data
      */
     @Override
-    public void storeQueryObjects(List<Object> queryObjs, String querySetName, Object... additionalParamsToStoreWithNewQuerySet
-    ) {
+    public void storeQueryObjects(List<Object> queryObjs, String querySetName, Object... additionalParamsToStoreWithNewQuerySet) {
+        boolean delete = true;
+        if (additionalParamsToStoreWithNewQuerySet != null && additionalParamsToStoreWithNewQuerySet.length > 0 && additionalParamsToStoreWithNewQuerySet[0] instanceof Boolean) {
+            delete = (boolean) additionalParamsToStoreWithNewQuerySet[0];
+        }
         GZIPOutputStream datasetOutputStream = null;
         try {
-            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, querySetName, true);
+            File f = getFileForObjects(FSGlobal.QUERY_FOLDER, querySetName, delete);
             FSGlobal.checkFileExistence(f);
-            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, false), true);
+            datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, !delete), true);
             for (Object metricObject : queryObjs) {
                 storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewQuerySet);
             }

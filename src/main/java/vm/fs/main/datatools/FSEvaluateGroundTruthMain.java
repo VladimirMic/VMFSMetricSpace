@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.dataset.FSDatasetOfCandidates;
+import vm.metricSpace.DatasetOfCandidates;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.metricSpace.AbstractMetricSpace;
@@ -78,7 +78,7 @@ public class FSEvaluateGroundTruthMain {
     public static void run(Dataset dataset) {
         String datasetName = dataset.getDatasetName();
         int k;
-        if (dataset instanceof FSDatasetOfCandidates) {
+        if (dataset instanceof DatasetOfCandidates) {
             k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
         } else {
             k = GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH;
@@ -91,7 +91,7 @@ public class FSEvaluateGroundTruthMain {
         List<Object> metricQueryObjects = dataset.getQueryObjects(1000);
         GroundTruthEvaluator gte = new GroundTruthEvaluator(dataset, k, Float.MAX_VALUE, metricQueryObjects.size());
         TreeSet[] results;
-        if (dataset instanceof FSDatasetOfCandidates) {
+        if (dataset instanceof DatasetOfCandidates) {
             results = gte.evaluateIteratorsSequentiallyForEachQuery(dataset, k);
         } else {
 //            results = gte.evaluateIteratorInParallel(dataset.getMetricObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());

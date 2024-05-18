@@ -1,5 +1,6 @@
 package vm.fs.dataset;
 
+import vm.metricSpace.DatasetOfCandidates;
 import java.util.Map;
 import org.h2.mvstore.MVStoreException;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
@@ -9,7 +10,6 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
-import vm.queryResults.QueryNearestNeighboursStoreInterface;
 
 /**
  *
@@ -638,15 +638,6 @@ public class FSDatasetInstanceSingularizator {
             super("laion2B-en-clip768v2-n=10M.h5_PCA256");
         }
 
-        @Override
-        public String getQuerySetName() {
-            return "laion2B-en-clip768v2-n=10M.h5_PCA256";
-        }
-
-        @Override
-        public String getPivotSetName() {
-            return "laion2B-en-clip768v2-n=10M.h5_PCA256";
-        }
     }
 
     public static class LAION_30M_PCA256Dataset extends FSFloatVectorDataset {
@@ -670,6 +661,11 @@ public class FSDatasetInstanceSingularizator {
 
         public LAION_100M_PCA256Dataset() {
             super("laion2B-en-clip768v2-n=100M.h5_PCA256");
+        }
+
+        @Override
+        public String getPivotSetName() {
+            return "laion2B-en-clip768v2-n=100M.h5_20000pivots_PCA256";
         }
 
     }
@@ -1201,7 +1197,7 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    public static class Faiss_Clip_100M_PCA256_Candidates extends FSDatasetOfCandidates<float[]> {
+    public static class Faiss_Clip_100M_PCA256_Candidates extends DatasetOfCandidates<float[]> {
 
         public Faiss_Clip_100M_PCA256_Candidates() {
             super(new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(), "Faiss_Clip_100M_PCA256_Candidates", new FSNearestNeighboursStorageImpl(), "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750", "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750-nprobe256");
@@ -1209,7 +1205,7 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    public static class Faiss_DeCAF_100M_PCA256_Candidates extends FSDatasetOfCandidates<float[]> {
+    public static class Faiss_DeCAF_100M_PCA256_Candidates extends DatasetOfCandidates<float[]> {
 
         public Faiss_DeCAF_100M_PCA256_Candidates() {
             super(new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(), "Faiss_DeCAF_100M_PCA256_Candidates", new FSNearestNeighboursStorageImpl(), "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000", "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000-nprobe1024");
@@ -1228,7 +1224,11 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public Map<Object, Object> getKeyValueStorage() {
             try {
-                VMMVStorage storage = new VMMVStorage(datasetName, false);
+                VMMVStorage storage = ((FSMetricSpacesStorage) metricSpacesStorage).getSingularizatorOfDiskStorage();
+                if (storage == null) {
+                    storage = new VMMVStorage(datasetName, false);
+                    ((FSMetricSpacesStorage) metricSpacesStorage).setSingularizatorOfDiskStorage(storage);
+                }
                 return storage.getKeyValueStorage();
             } catch (MVStoreException ex) {
                 return null;

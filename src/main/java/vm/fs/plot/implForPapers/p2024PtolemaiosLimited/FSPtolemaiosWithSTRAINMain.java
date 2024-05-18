@@ -10,13 +10,13 @@ import vm.fs.plot.FSAbstractPlotterFromResults;
  *
  * @author Vlada
  */
-public class FSPtolemaiosWithSkittleMain {
+public class FSPtolemaiosWithSTRAINMain {
 
     public static final Boolean PLOT_ONLY_PDF = true;
 
-    public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosTransformedClipsSkittle = new PlotPtolemaiosTransformedClips5TechSkittle(PLOT_ONLY_PDF);
+    public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosTransformedClipsSTRAIN = new PlotPtolemaiosTransformedClips5TechSTRAIN(PLOT_ONLY_PDF);
 
     public static void main(String[] args) {
-        Y2024_PlotPtolemaiosTransformedClipsSkittle.makePlots();
+        Y2024_PlotPtolemaiosTransformedClipsSTRAIN.makePlots();
     }
 }

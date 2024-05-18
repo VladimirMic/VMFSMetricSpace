@@ -19,7 +19,7 @@ import vm.fs.plot.FSAbstractPlotterFromResults;
 public class FSPtolemaiosPlottingMain {
 
     public static final Boolean PLOT_ONLY_PDF = true;
-    
+
     public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosRandomData5Tech10_40 = new PlotPtolemaiosRandomData5Tech10_40(PLOT_ONLY_PDF);
     public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosRandomData4Tech10_40_Time = new PlotPtolemaiosRandomData4Tech10_40Time(PLOT_ONLY_PDF);
     public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosRandomData5Tech50_100 = new PlotPtolemaiosRandomData5Tech50_100(PLOT_ONLY_PDF);
@@ -35,10 +35,10 @@ public class FSPtolemaiosPlottingMain {
 //        Y2024_PlotPtolemaiosRandomData5Tech50_100.makePlots();
 ////        Y2024_PlotPtolemaiosRandomData4Tech10_40_Time.makePlots();
 //        Y2024_PlotPtolemaiosRandomData4Tech50_100_Time.makePlots();
-//        Y2024_PlotPtolemaiosTransformedClips5Tech.makePlots();// TODO with better results
+        Y2024_PlotPtolemaiosTransformedClips5Tech.makePlots();
 //        Y2024_PlotPtolemaiosDeCAF1M5Tech.makePlots();
 //        Y2024_PlotPtolemaiosPivotSelection.makePlots();
-        Y2024_PlotPtolemaiosCLIP_DF.makePlots();
+//        Y2024_PlotPtolemaiosCLIP_DF.makePlots();
 //        Y2024_PlotPtolemaiosRandom100D_AbblationStudy.makePlots();
     }
 }

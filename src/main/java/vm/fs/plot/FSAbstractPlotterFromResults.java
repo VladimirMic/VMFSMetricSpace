@@ -183,7 +183,7 @@ public abstract class FSAbstractPlotterFromResults {
         int groupsCount = xTicks.length;
         int boxplotsCount = getDisplayedNamesOfTracesThatMatchesFolders().length;
         if (boxplotsCount != folderNames.length) {
-            throw new IllegalArgumentException("Inconsistent numbers: the number of folders returned by getFolderNamesForDisplayedTraces() " + folderNames.length + " does not match the number of names given by getDisplayedNamesOfTracesThatMatchesFolders()" + boxplotsCount);
+            throw new IllegalArgumentException("Inconsistent numbers: the number of folders returned by getFolderNamesForDisplayedTraces() " + folderNames.length + " does not match the number of names given by getDisplayedNamesOfTracesThatMatchesFolders() " + boxplotsCount);
         }
         List<File> files = getFilesWithResultsToBePlotted(groupsCount, boxplotsCount);
         Map<QUERY_STATS, List<Float>[][]> dataForStats = loadStatsFromFileAsListOfXYValues(files, groupsCount, boxplotsCount);

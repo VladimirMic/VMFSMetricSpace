@@ -13,23 +13,25 @@ import vm.plot.impl.BoxPlotPlotter;
  *
  * @author Vlada
  */
-public class PlotPtolemaiosTransformedClips5TechSkittle extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosTransformedClips5TechSTRAIN extends FSAbstractPlotterFromResults {
 
-    public PlotPtolemaiosTransformedClips5TechSkittle(boolean plotOnlyPDF) {
+    public PlotPtolemaiosTransformedClips5TechSTRAIN(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
-                "Ptolemaic Filtering",
                 "Data-dep. Ptolemaic Filering",
-                "Data-dep. Ptolemaic Filering SKITTLE 32-50000",
-                "Data-dep. Ptolemaic Filering SKITTLE 32-50000Mem",
-                "Data-dep. Ptolemaic Filering SKITTLE 32-100000",
-                "Data-dep. Ptolemaic Filering SKITTLE 32-100000Mem",
-                "Data-dep. Ptolemaic Filering SKITTLE 32-400000",
-                "Data-dep. Ptolemaic Filering SKITTLE 32-500000",
+                "Data-dep. Ptolemaic Filering STRAIN 17-150000Mem",
+                "Data-dep. Ptolemaic Filering STRAIN 20-100000Mem",
+                "Data-dep. Ptolemaic Filering STRAIN 25-50000Mem",
+                "Data-dep. Ptolemaic Filering STRAIN 32-50000",
+                "Data-dep. Ptolemaic Filering STRAIN 32-50000Mem",
+                "Data-dep. Ptolemaic Filering STRAIN 32-100000",
+                "Data-dep. Ptolemaic Filering STRAIN 32-100000Mem",
+                "Data-dep. Ptolemaic Filering STRAIN 32-400000",
+                "Data-dep. Ptolemaic Filering STRAIN 32-500000",
                 "Sequential Brute Force"
         );
     }
@@ -45,6 +47,8 @@ public class PlotPtolemaiosTransformedClips5TechSkittle extends FSAbstractPlotte
             AbstractPlotter.COLOUR_NAMES.C6_BROWN,
             AbstractPlotter.COLOUR_NAMES.C7_PURPLE,
             AbstractPlotter.COLOUR_NAMES.C8_GREY,
+            AbstractPlotter.COLOUR_NAMES.C9_LIME,
+            AbstractPlotter.COLOUR_NAMES.C10_CYAN,
             AbstractPlotter.COLOUR_NAMES.CX_BLACK
         };
     }
@@ -52,8 +56,10 @@ public class PlotPtolemaiosTransformedClips5TechSkittle extends FSAbstractPlotte
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_05_128_pivots_30NN_seq_ptolemaios_128LB",
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
+                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_17perc_150000objMem",
+                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_20perc_100000objMem",
+                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_25perc_50000objMem",
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc_50000objIntMem",
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc_50000objMem",
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_32perc_100000objIntMem",

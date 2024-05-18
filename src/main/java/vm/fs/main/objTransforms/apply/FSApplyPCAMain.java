@@ -2,6 +2,7 @@ package vm.fs.main.objTransforms.apply;
 
 import java.util.Iterator;
 import vm.datatools.Tools;
+import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import static vm.fs.main.objTransforms.learning.FSLearnSVDMain.SAMPLE_COUNT;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.store.dataTransforms.FSSVDStorageImpl;
@@ -25,8 +26,7 @@ public class FSApplyPCAMain {
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = {
-//            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
-//            new M2DatasetInstanceSingularizator.DeCAF100M_TMPDataset()
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
         };
 
         for (Dataset dataset : datasets) {
@@ -63,8 +63,8 @@ public class FSApplyPCAMain {
             String newPivotsName = pca.getNameOfTransformedSetOfObjects(dataset.getPivotSetName(), false);
             MetricObjectsParallelTransformerImpl parallelTransformerImpl = new MetricObjectsParallelTransformerImpl(pca, destStorage, newDatasetName, newQuerySetName, newPivotsName);
             transformPivots(dataset.getPivotSetName(), sourceSpaceStorage, parallelTransformerImpl, "Pivot set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + SAMPLE_COUNT + " to the length " + finalDimension);
-            transformQueryObjects(dataset.getQuerySetName(), sourceSpaceStorage, parallelTransformerImpl, "Query set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + SAMPLE_COUNT + " to the length " + finalDimension);
-            transformDataset(origDatasetName, sourceSpaceStorage, parallelTransformerImpl, "Dataset with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + SAMPLE_COUNT + " to the length " + finalDimension);
+//            transformQueryObjects(dataset.getQuerySetName(), sourceSpaceStorage, parallelTransformerImpl, "Query set with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + SAMPLE_COUNT + " to the length " + finalDimension);
+//            transformDataset(origDatasetName, sourceSpaceStorage, parallelTransformerImpl, "Dataset with name \"" + origDatasetName + "\" transformed by VT matrix of svd " + SAMPLE_COUNT + " to the length " + finalDimension);
             try {
                 sourceSpaceStorage.updateDatasetSize(pca.getNameOfTransformedSetOfObjects(origDatasetName, false));
             } catch (Exception e) {
