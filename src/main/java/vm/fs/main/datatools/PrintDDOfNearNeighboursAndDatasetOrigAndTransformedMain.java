@@ -39,9 +39,9 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         int k = 100;
         List<Object[]> idsOfRandomPairs = new ArrayList<>();
         List<Object[]> idsOfNNPairs = new ArrayList<>();
-        SortedMap<Float, Float> ddRandomSample = PrintAndPlotDDOfDatasetMain.createDDOfRandomSample(datasetOrig, objCount, distCount, idsOfRandomPairs);
+        SortedMap<Float, Float> ddRandomSample = ToolsMetricDomain.createDistanceDensityPlot(datasetOrig, objCount, distCount, idsOfRandomPairs);
         float distInterval = ToolsMetricDomain.computeBasicDistInterval(ddRandomSample.lastKey());
-        SortedMap<Float, Float> ddOfNNSample = createDDOfNNSample(datasetOrig, queriesCount, objCount, k, distInterval, idsOfNNPairs);
+        SortedMap<Float, Float> ddOfNNSample = createDDOfNNSample(datasetOrig, queriesCount, objCount, k, idsOfNNPairs);
 //      print
         printDDOfRandomAndNearNeighbours(datasetName, distInterval, ddRandomSample, ddOfNNSample);
 
@@ -49,14 +49,14 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         List<Object> transformedObjects = metricSpacesStorage.getSampleOfDataset(transformedDatasetName, -1);
         Map<Object, Object> metricObjectsAsIdObjectMap = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, transformedObjects, true);
         DistanceFunctionInterface distanceFunctionForTransformedDataset = metricSpace.getDistanceFunctionForDataset(transformedDatasetName);
-        SortedMap<Float, Float> ddRandomSampleTransformed = evaluateDDForPairs(metricSpace, distanceFunctionForTransformedDataset, idsOfRandomPairs, metricObjectsAsIdObjectMap, transformedDistInterval);
-        SortedMap<Float, Float> ddOfNNSampleTransformed = evaluateDDForPairs(metricSpace, distanceFunctionForTransformedDataset, idsOfNNPairs, metricObjectsAsIdObjectMap, transformedDistInterval);
+        SortedMap<Float, Float> ddRandomSampleTransformed = evaluateDDForPairs(distanceFunctionForTransformedDataset, idsOfRandomPairs, metricObjectsAsIdObjectMap);
+        SortedMap<Float, Float> ddOfNNSampleTransformed = evaluateDDForPairs(distanceFunctionForTransformedDataset, idsOfNNPairs, metricObjectsAsIdObjectMap);
 
 //      print
         printDDOfRandomAndNearNeighbours(transformedDatasetName, transformedDistInterval, ddRandomSampleTransformed, ddOfNNSampleTransformed);
     }
 
-    private static SortedMap<Float, Float> createDDOfNNSample(Dataset dataset, int queryObjCount, int sampleCount, int k, float distInterval, List<Object[]> idsOfNNPairs) {
+    private static SortedMap<Float, Float> createDDOfNNSample(Dataset dataset, int queryObjCount, int sampleCount, int k, List<Object[]> idsOfNNPairs) {
         List<Object> queryObjects = dataset.getQueryObjects(queryObjCount);
         List<Object> metricObjects = dataset.getSampleOfDataset(sampleCount + queryObjCount);
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
@@ -75,10 +75,10 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
                 distances.add(entry.getValue());
             }
         }
-        return ToolsMetricDomain.createDistanceDensityPlot(distances, distInterval);
+        return ToolsMetricDomain.createDistanceDensityPlot(distances);
     }
 
-    private static SortedMap<Float, Float> evaluateDDForPairs(AbstractMetricSpace metricSpace, DistanceFunctionInterface distanceFunction, List<Object[]> idsPairs, Map<Object, Object> metricObjects, float distInterval) {
+    private static SortedMap<Float, Float> evaluateDDForPairs(DistanceFunctionInterface distanceFunction, List<Object[]> idsPairs, Map<Object, Object> metricObjects) {
         List<Float> distances = new ArrayList<>();
         for (Object[] idsPair : idsPairs) {
             Object o1 = metricObjects.get(idsPair[0]);
@@ -86,7 +86,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
             float distance = distanceFunction.getDistance(o1, o2);
             distances.add(distance);
         }
-        return ToolsMetricDomain.createDistanceDensityPlot(distances, distInterval);
+        return ToolsMetricDomain.createDistanceDensityPlot(distances);
     }
 
     private static void printDDOfRandomAndNearNeighbours(String datasetName, float distInterval, SortedMap<Float, Float> ddRandomSample, SortedMap<Float, Float> ddOfNNSample) {

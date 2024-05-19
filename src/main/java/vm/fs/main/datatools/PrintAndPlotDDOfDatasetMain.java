@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,11 +14,8 @@ import org.jfree.chart.JFreeChart;
 import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.math.Tools;
-import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.plot.impl.XYLinesPlotter;
 
 /**
@@ -44,27 +42,18 @@ public class PrintAndPlotDDOfDatasetMain {
         String datasetName = dataset.getDatasetName();
 //      getHistogramsForRandomPairs
         File f = getFileForDistDensity(datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false);
-        TreeMap<Float, Float> ddRandomSample;
+        SortedMap<Float, Float> ddRandomSample;
         if (f.exists()) {
             ddRandomSample = vm.datatools.Tools.parseCsvMapFloats(f.getAbsolutePath());
         } else {
-            ddRandomSample = createDDOfRandomSample(dataset, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
+            ddRandomSample = ToolsMetricDomain.createDistanceDensityPlot(dataset, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
         }
 //      print
         Map<Float, Float> mapOfValues = printDD(f, ddRandomSample);
         createPlot(f, mapOfValues);
     }
 
-    protected static TreeMap<Float, Float> createDDOfRandomSample(Dataset dataset, int objCount, int distCount, List<Object[]> examinedPairs) {
-        return createDDOfRandomSample(dataset.getMetricSpace(), dataset.getMetricSpacesStorage(), dataset.getDistanceFunction(), dataset.getDatasetName(), objCount, distCount, examinedPairs);
-    }
-
-    protected static TreeMap<Float, Float> createDDOfRandomSample(AbstractMetricSpace metricSpace, AbstractMetricSpacesStorage metricSpacesStorage, DistanceFunctionInterface df, String datasetName, int objCount, int distCount, List<Object[]> examinedPairs) {
-        List<Object> metricObjects = metricSpacesStorage.getSampleOfDataset(datasetName, objCount);
-        return ToolsMetricDomain.createDistanceDensityPlot(metricSpace, metricObjects, df, distCount, examinedPairs);
-    }
-
-    private static Map<Float, Float> printDD(File f, TreeMap<Float, Float> histogram) {
+    private static Map<Float, Float> printDD(File f, SortedMap<Float, Float> histogram) {
         PrintStream ps = null;
         Map<Float, Float> ret = new TreeMap<>();
         try {

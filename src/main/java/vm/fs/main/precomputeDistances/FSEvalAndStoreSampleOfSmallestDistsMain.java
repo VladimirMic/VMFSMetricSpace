@@ -1,19 +1,10 @@
 package vm.fs.main.precomputeDistances;
 
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
-import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.DistanceFunctionInterface;
 import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
 
 /**
@@ -52,35 +43,7 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
     }
 
     public static void run(Dataset dataset) {
-        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
-
-        DistanceFunctionInterface df = dataset.getDistanceFunction();
-
-        List<Object> metricObjects = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
-        List<Object> sampleObjects = metricObjects.subList(0, SAMPLE_SET_SIZE);
-        List<Object> queriesSamples = metricObjects.subList(SAMPLE_SET_SIZE, SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
-
-        Comparator<Map.Entry<String, Float>> comp = new Tools.MapByFloatValueComparator<>();
-        TreeSet<Map.Entry<String, Float>> result = new TreeSet(comp);
-        for (int i = 0; i < sampleObjects.size(); i++) {
-            Object o = sampleObjects.get(i);
-            Object oData = metricSpace.getDataOfMetricObject(o);
-            Object oID = metricSpace.getIDOfMetricObject(o);
-            for (Object q : queriesSamples) {
-                Object qData = metricSpace.getDataOfMetricObject(q);
-                Object qID = metricSpace.getIDOfMetricObject(q);
-                float dist = df.getDistance(oData, qData);
-                String key = oID + ";" + qID;
-                SimpleEntry<String, Float> e = new AbstractMap.SimpleEntry(key, dist);
-                result.add(e);
-                while (result.size() > IMPLICIT_K) {
-                    result.remove(result.last());
-                }
-            }
-            if ((i + 1) % 500 == 0) {
-                LOG.log(Level.INFO, "Processed object {0} out of {1}", new Object[]{i + 1, sampleObjects.size()});
-            }
-        }
+        TreeSet result = dataset.evaluateSampleOfSmallestDistances(SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, IMPLICIT_K, null);
         FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
         storage.storePrecomputedDistances(result);
     }
