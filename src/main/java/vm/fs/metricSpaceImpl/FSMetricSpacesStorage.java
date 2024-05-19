@@ -422,12 +422,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
 
         @Override
         public boolean hasNext() {
-            boolean ret = counter < maxCount && it.hasNext();
-            if (!ret) {
-                storage.close();
-            }
-            return ret;
-
+            return counter < maxCount && it.hasNext();
         }
 
         @Override

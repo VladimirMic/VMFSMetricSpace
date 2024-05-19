@@ -67,8 +67,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         };
 
         int pivotCount = KNNSearchWithPtolemaicFiltering.LB_COUNT;
@@ -96,8 +96,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         initPODists(dataset, pivotCount, maxObjectsCount, pivots, metricSpace, df);
 
-        List queries = dataset.getQueryObjects();
-        queries = queries.subList(0, 1000);
+        List queries = dataset.getQueryObjects(1000);
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
@@ -119,7 +118,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         TreeSet[] results;
         if (dataset instanceof DatasetOfCandidates) {
-            results = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, k);
+            results = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, queries, k);
         } else {
             results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(maxObjectsCount), 1);
         }
@@ -151,8 +150,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         }
         if (poDists == null || poDists.length == 0) {
             int precomputedDatasetSize = origDataset.getPrecomputedDatasetSize();
-//            pd = ToolsMetricDomain.evaluateMatrixOfDistances(origDataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df, precomputedDatasetSize);
-//            poDists = pd.loadPrecomPivotsToObjectsDists(null, -1);
+            pd = ToolsMetricDomain.evaluateMatrixOfDistances(origDataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df, precomputedDatasetSize);
+            poDists = pd.loadPrecomPivotsToObjectsDists(null, -1);
         }
     }
 

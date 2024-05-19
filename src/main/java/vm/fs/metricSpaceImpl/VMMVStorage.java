@@ -1,7 +1,6 @@
 package vm.fs.metricSpaceImpl;
 
 import java.io.File;
-import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -101,8 +100,15 @@ public class VMMVStorage<T> {
     }
 
     public void close() {
-        storage.close();;
+        storage.close();
     }
 
+//    public boolean reopenIfClosed() {
+//        boolean ret = map.isClosed();
+//        if (ret) {
+//            map = storage.openMap(MAP_NAME);
+//        }
+//        return ret;
+//    }
 
 }

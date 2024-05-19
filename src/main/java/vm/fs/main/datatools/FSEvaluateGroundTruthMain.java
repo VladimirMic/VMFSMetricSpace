@@ -18,7 +18,7 @@ import vm.metricSpace.Dataset;
  *
  * @author Vlada
  */
-// how about learning all the metadata for the filtering in FSLearnMetadataForAllPivotFilterings at once? It includes the ground-truth as well.
+// see learning of all the metadata for the filtering in FSLearnMetadataForAllPivotFilterings? It includes the ground-truth as well.
 public class FSEvaluateGroundTruthMain {
 
     public static final Logger LOG = Logger.getLogger(FSEvaluateGroundTruthMain.class.getName());
@@ -64,35 +64,29 @@ public class FSEvaluateGroundTruthMain {
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
-        //            new FSDatasetInstanceSingularizator.DeCAFDataset()
-        //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
+            //            new FSDatasetInstanceSingularizator.DeCAFDataset()
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         };
         for (Dataset dataset : datasets) {
-            run(dataset);
+            run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
+//            run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
         }
     }
 
-    public static void run(Dataset dataset) {
+    public static void run(Dataset dataset, int k) {
         String datasetName = dataset.getDatasetName();
-        int k;
-        if (dataset instanceof DatasetOfCandidates) {
-            k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
-        } else {
-            k = GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH;
-            k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
-        }
         AbstractMetricSpace space = dataset.getMetricSpace();
 
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
 
-        List<Object> metricQueryObjects = dataset.getQueryObjects(1000);
-        GroundTruthEvaluator gte = new GroundTruthEvaluator(dataset, k, Float.MAX_VALUE, metricQueryObjects.size());
+        List<Object> queryObjects = dataset.getQueryObjects(1000);
+        GroundTruthEvaluator gte = new GroundTruthEvaluator(dataset, k, Float.MAX_VALUE, queryObjects.size());
         TreeSet[] results;
         if (dataset instanceof DatasetOfCandidates) {
-            results = gte.evaluateIteratorsSequentiallyForEachQuery(dataset, k);
+            results = gte.evaluateIteratorsSequentiallyForEachQuery(dataset, queryObjects, k);
         } else {
 //            results = gte.evaluateIteratorInParallel(dataset.getMetricObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());
             results = gte.evaluateIteratorSequentially(dataset.getMetricObjectsFromDataset(), datasetName, dataset.getQuerySetName());
@@ -103,7 +97,7 @@ public class FSEvaluateGroundTruthMain {
         statsStorage.save();
 
         LOG.log(Level.INFO, "Storing results of queries");
-        groundTruthStorage.storeQueryResults(space, metricQueryObjects, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth");
+        groundTruthStorage.storeQueryResults(space, queryObjects, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth");
 
         System.gc();
     }
