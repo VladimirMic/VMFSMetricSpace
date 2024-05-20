@@ -105,12 +105,12 @@ public class PrintAndPlotDDOfDatasetMain {
             traceYValues[i] = entry.getValue();
         }
         plotter.setIncludeZeroForXAxis(true);
-        JFreeChart plot = plotter.createPlot("", "Distance", "", "", traceXValues, traceYValues);
+        JFreeChart plot = plotter.createPlot("", "Distance", "", "", null, traceXValues, traceYValues);
         String path = f.getAbsolutePath();
         path = path.substring(0, path.lastIndexOf("."));
         plotter.storePlotPDF(path, plot);
         plotter.setLogY(true);
-        plot = plotter.createPlot("", "Distance", "occurences", "", traceXValues, traceYValues);
+        plot = plotter.createPlot("", "Distance", "occurences", "", null, traceXValues, traceYValues);
         path += "_log";
         plotter.storePlotPDF(path, plot);
     }

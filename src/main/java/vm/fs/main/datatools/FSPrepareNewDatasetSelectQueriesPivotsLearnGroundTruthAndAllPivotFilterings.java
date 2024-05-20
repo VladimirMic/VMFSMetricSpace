@@ -14,7 +14,7 @@ import vm.fs.main.datatools.storage.VMMVStorageInsertMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
-import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentPtolemyFilteringMain;
+import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
 import vm.metricSpace.Dataset;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 
@@ -30,7 +30,7 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
             new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
 //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
@@ -82,11 +82,11 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
         if (!prohibited) {
             LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", datasetName);
-//            PrintAndPlotDDOfDatasetMain.run(dataset);
+            PrintAndPlotDDOfDatasetMain.run(dataset);
         } else {
             LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", datasetName);
         }
-
+        
         prohibited = dataset.getPivots(-1) != null;
         if (!prohibited) {
             LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
@@ -136,14 +136,14 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
             FSLearnCoefsForDataDepenentMetricFilteringMain.run(dataset);
         }
 
-        prohibited = FSLearnCoefsForDataDepenentPtolemyFilteringMain.existsForDataset(dataset);
+        prohibited = FSLearnCoefsForDataDependentPtolemyFilteringMain.existsForDataset(dataset);
         if (prohibited) {
             LOG.log(Level.WARNING, "Coefs for Data-dependent Generalised Ptolemaic Filtering already evaluated for dataset {0}", datasetName);
             prohibited = askForRewriting("Coefs for Data-dependent Generalised Ptolemaic Filtering", dataset);
         }
         if (!prohibited) {
             LOG.log(Level.INFO, "Dataset: {0}, learning coefs for data dependent ptolemaic filtering", datasetName);
-            FSLearnCoefsForDataDepenentPtolemyFilteringMain.run(dataset);
+            FSLearnCoefsForDataDependentPtolemyFilteringMain.run(dataset);
         }
 
         if (dataset.getPrecomputedDatasetSize() > 30000000) {

@@ -21,7 +21,7 @@ import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDist
  *
  * @author Vlada
  */
-public class FSLearnCoefsForDataDepenentPtolemyFilteringMain {
+public class FSLearnCoefsForDataDependentPtolemyFilteringMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;

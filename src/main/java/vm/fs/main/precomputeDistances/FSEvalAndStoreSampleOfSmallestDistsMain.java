@@ -43,7 +43,7 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
     }
 
     public static void run(Dataset dataset) {
-        TreeSet result = dataset.evaluateSampleOfSmallestDistances(SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, IMPLICIT_K, null);
+        TreeSet result = dataset.evaluateSmallestDistances(SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, IMPLICIT_K);
         FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
         storage.storePrecomputedDistances(result);
     }

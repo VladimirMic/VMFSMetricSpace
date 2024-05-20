@@ -10,6 +10,7 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
+import vm.metricSpace.ToolsMetricDomain;
 
 /**
  *
@@ -1226,8 +1227,12 @@ public class FSDatasetInstanceSingularizator {
             try {
                 VMMVStorage storage = ((FSMetricSpacesStorage) metricSpacesStorage).getSingularizatorOfDiskStorage();
                 if (storage == null) {
-                    storage = new VMMVStorage(datasetName, false);
-                    ((FSMetricSpacesStorage) metricSpacesStorage).setSingularizatorOfDiskStorage(storage);
+                    try {
+                        storage = new VMMVStorage(datasetName, false);
+                        ((FSMetricSpacesStorage) metricSpacesStorage).setSingularizatorOfDiskStorage(storage);
+                    } catch (Exception e) {
+                        return ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, getMetricObjectsFromDataset(), true);
+                    }
                 }
                 return storage.getKeyValueStorage();
             } catch (MVStoreException ex) {
@@ -1262,7 +1267,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public Map<Object, Object> getKeyValueStorage() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, getMetricObjectsFromDataset(), true);
         }
 
     }
