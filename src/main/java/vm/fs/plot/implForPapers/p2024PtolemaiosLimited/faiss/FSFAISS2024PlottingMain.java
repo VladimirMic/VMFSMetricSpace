@@ -2,14 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
+package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSDeCAFSimulatedCandSetSizes2024;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIPIndexes2024;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIPSimulatedCandSetSizes2024;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSDeCAFIndexConfig2024;
-import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIPIndexConfig2024;
 import vm.fs.plot.FSAbstractPlotterFromResults;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotFAISSCLIP_PCA256_FinalFiltering;
+import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotFAISSDeCAF_PCA256_FinalFiltering;
 
 /**
  *
@@ -33,8 +30,8 @@ public class FSFAISS2024PlottingMain {
 //        Y2024_PlotFaissDeCAFConfig.makePlots();
 //        Y2024_PlotFaissCLIPSimulatedCandSetSizes.makePlots();
 //        Y2024_PlotFaissDeCAFSimulatedCandSetSizes.makePlots();
-//        Y2024_PlotFaiss_CLIP_PCA256_FinalFiltering.makePlots();
-        Y2024_PlotFaissDeCAF_FinalFiltering.makePlots();
+        Y2024_PlotFaiss_CLIP_PCA256_FinalFiltering.makePlots();
+//        Y2024_PlotFaissDeCAF_FinalFiltering.makePlots();
     }
 
 }

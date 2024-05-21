@@ -67,7 +67,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
-//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
             new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         };
 
@@ -168,11 +168,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         }
         namePrefix += "_seq";
         AbstractOnePivotFilter metricFiltering = new TriangleInequality(namePrefix);
-        AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(namePrefix,
+        AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(
+                namePrefix,
                 pivotCount,
                 FSLearnCoefsForDataDepenentMetricFilteringMain.SAMPLE_O_COUNT,
                 FSLearnCoefsForDataDepenentMetricFilteringMain.SAMPLE_Q_COUNT,
-                origDataset
+                dataset
         );
         AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(namePrefix);
 
@@ -184,10 +185,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         );
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, ptolemaicFiltering, fourPointPropertyBased};
-//        return new BoundsOnDistanceEstimation[]{fourPointPropertyBased};
+//        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering};
-        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
     }
 
 }

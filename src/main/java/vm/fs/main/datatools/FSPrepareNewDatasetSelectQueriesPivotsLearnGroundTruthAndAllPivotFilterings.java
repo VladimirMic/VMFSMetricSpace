@@ -30,8 +30,8 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
+//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
 //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
@@ -86,7 +86,7 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         } else {
             LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", datasetName);
         }
-        
+
         prohibited = dataset.getPivots(-1) != null;
         if (!prohibited) {
             LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);

@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.AbstractMap;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,6 +102,16 @@ public class FSPrecomputedDistPairsStorageImpl implements PrecomputedPairsOfDist
             }
         }
         return null;
+    }
+
+    public static Set<Object> getIDsOfObjects(TreeSet<Map.Entry<String, Float>> smallestDists) {
+        Set ret = new HashSet();
+        for (Map.Entry<String, Float> smallestDist : smallestDists) {
+            String[] split = smallestDist.getKey().split(";");
+            ret.add(split[0]);
+            ret.add(split[1]);
+        }
+        return ret;
     }
 
 }
