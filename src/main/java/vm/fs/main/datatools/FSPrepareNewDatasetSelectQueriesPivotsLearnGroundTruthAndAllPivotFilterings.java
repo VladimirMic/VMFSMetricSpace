@@ -25,12 +25,14 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
 public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings {
 
     public static final Boolean SKIP_EVERYTHING_EVALUATED = true;
+    public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 30000000;
+    public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 11000000;
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
             new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
 //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
@@ -72,92 +74,24 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {
-        int precomputedDatasetSize = dataset.getPrecomputedDatasetSize();
-        if (precomputedDatasetSize < 0) {
-            dataset.updateDatasetSize();
-        }
         String datasetName = dataset.getDatasetName();
-        boolean prohibited;
+        int datasetSize = precomputeDatasetSize(dataset);
 
-        prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", datasetName);
-            PrintAndPlotDDOfDatasetMain.run(dataset);
-        } else {
-            LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", datasetName);
-        }
+        plotDistanceDensity(dataset, datasetName);
 
-        prohibited = dataset.getPivots(-1) != null;
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
-            FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
-        } else {
-            LOG.log(Level.INFO, "Dataset: {0}, pivots already preselected", datasetName);
-        }
+        selectRandomPivotsAndQueryObjects(dataset, datasetName);
 
-        prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset, null);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Ground already exists for dataset {0}", datasetName);
-            prohibited = askForRewriting("Ground truth", dataset);
-        }
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, evaluating ground truth", datasetName);
-            FSEvaluateGroundTruthMain.run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
-        }
+        evaluateGroundTruth(dataset, datasetName);
 
-        prohibited = FSEvalAndStoreSampleOfSmallestDistsMain.existsForDataset(dataset);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Smallest distances already evaluated for dataset {0}", datasetName);
-            prohibited = askForRewriting("Smallest distance", dataset);
-        }
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, evaluating smallest distances", dataset);
-            FSEvalAndStoreSampleOfSmallestDistsMain.run(dataset);
-        }
+        evaluateSampleOfSmallestDistances(dataset, datasetName);
 
-        datasetName = datasetName.toLowerCase();
-        prohibited = FSEvalAndStoreObjectsToPivotsDistsMain.existsForDataset(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Dists to pivots already evaluated for dataset {0}", datasetName);
-            prohibited = askForRewriting("Dists to pivots", dataset);
-        }
-        if (!prohibited && (datasetName.contains("10m") || datasetName.contains("1m"))) {
-            LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
-            FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
-        }
+        precomputeObjectToPivotDists(dataset, datasetName, datasetSize);
 
-        prohibited = FSLearnCoefsForDataDepenentMetricFilteringMain.existsForDataset(dataset);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Coefs for Data-dependent Metric Filtering already evaluated for dataset {0}", datasetName);
-            prohibited = askForRewriting("Coefs for Data-dependent Metric Filtering", dataset);
-        }
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, learning data dependent metric filtering", datasetName);
-            FSLearnCoefsForDataDepenentMetricFilteringMain.run(dataset);
-        }
+        learnDataDependentMetricFiltering(dataset, datasetName);
 
-        prohibited = FSLearnCoefsForDataDependentPtolemyFilteringMain.existsForDataset(dataset);
-        if (prohibited) {
-            LOG.log(Level.WARNING, "Coefs for Data-dependent Generalised Ptolemaic Filtering already evaluated for dataset {0}", datasetName);
-            prohibited = askForRewriting("Coefs for Data-dependent Generalised Ptolemaic Filtering", dataset);
-        }
-        if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, learning coefs for data dependent ptolemaic filtering", datasetName);
-            FSLearnCoefsForDataDependentPtolemyFilteringMain.run(dataset);
-        }
+        learnDataDependentPtolemaicFiltering(dataset, datasetName);
 
-        if (dataset.getPrecomputedDatasetSize() > 30000000) {
-            Map keyValueStorage = dataset.getKeyValueStorage();
-            prohibited = !(keyValueStorage == null || keyValueStorage.isEmpty());
-            if (prohibited) {
-                LOG.log(Level.WARNING, "The key value storage already exists for dataset {0}", datasetName);
-                prohibited = askForRewriting("The key value storage", dataset);
-            }
-            if (!prohibited) {
-                LOG.log(Level.INFO, "Dataset: {0}, creating key-value storage", datasetName);
-                VMMVStorageInsertMain.run(dataset);
-            }
-        }
+        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
     }
 
     /**
@@ -180,6 +114,111 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         } catch (Throwable e) {
             LOG.log(Level.WARNING, "File exists and I cannot ask you for a permission to delete it. Skipping step.");
             return true;
+        }
+    }
+
+    private static int precomputeDatasetSize(Dataset dataset) {
+        int precomputedDatasetSize = dataset.getPrecomputedDatasetSize();
+        if (precomputedDatasetSize < 0) {
+            return dataset.updateDatasetSize();
+        }
+        return precomputedDatasetSize;
+    }
+
+    private static void plotDistanceDensity(Dataset dataset, String datasetName) {
+        boolean prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
+        if (!prohibited) {
+            LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", datasetName);
+            PrintAndPlotDDOfDatasetMain.run(dataset);
+        } else {
+            LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", datasetName);
+        }
+    }
+
+    private static void selectRandomPivotsAndQueryObjects(Dataset dataset, String datasetName) {
+        boolean prohibited = dataset.getPivots(-1) != null;
+        if (!prohibited) {
+            LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
+            FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
+        } else {
+            LOG.log(Level.INFO, "Dataset: {0}, pivots already preselected", datasetName);
+        }
+    }
+
+    private static void evaluateGroundTruth(Dataset dataset, String datasetName) {
+        boolean prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset, null);
+        if (prohibited) {
+            LOG.log(Level.WARNING, "Ground already exists for dataset {0}", datasetName);
+            prohibited = askForRewriting("Ground truth", dataset);
+        }
+        if (!prohibited) {
+            LOG.log(Level.INFO, "Dataset: {0}, evaluating ground truth", datasetName);
+            FSEvaluateGroundTruthMain.run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
+        }
+    }
+
+    private static void evaluateSampleOfSmallestDistances(Dataset dataset, String datasetName) {
+        boolean prohibited = FSEvalAndStoreSampleOfSmallestDistsMain.existsForDataset(dataset);
+        if (prohibited) {
+            LOG.log(Level.WARNING, "Smallest distances already evaluated for dataset {0}", datasetName);
+            prohibited = askForRewriting("Smallest distance", dataset);
+        }
+        if (!prohibited) {
+            LOG.log(Level.INFO, "Dataset: {0}, evaluating smallest distances", dataset);
+            FSEvalAndStoreSampleOfSmallestDistsMain.run(dataset);
+        }
+    }
+
+    private static void precomputeObjectToPivotDists(Dataset dataset, String datasetName, int datasetSize) {
+        boolean prohibited = FSEvalAndStoreObjectsToPivotsDistsMain.existsForDataset(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
+        if (prohibited) {
+            LOG.log(Level.WARNING, "Dists to pivots already evaluated for dataset {0}", datasetName);
+            prohibited = askForRewriting("Dists to pivots", dataset);
+        }
+        if (!prohibited && datasetSize <= MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS) {
+            LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
+            FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
+        }
+    }
+
+    private static void learnDataDependentMetricFiltering(Dataset dataset, String datasetName) {
+        boolean prohibited = FSLearnCoefsForDataDepenentMetricFilteringMain.existsForDataset(dataset);
+        if (prohibited) {
+            LOG.log(Level.WARNING, "Coefs for Data-dependent Metric Filtering already evaluated for dataset {0}", datasetName);
+            prohibited = askForRewriting("Coefs for Data-dependent Metric Filtering", dataset);
+        }
+        if (!prohibited) {
+            LOG.log(Level.INFO, "Dataset: {0}, learning data dependent metric filtering", datasetName);
+            FSLearnCoefsForDataDepenentMetricFilteringMain.run(dataset);
+        }
+    }
+
+    private static void learnDataDependentPtolemaicFiltering(Dataset dataset, String datasetName) {
+        boolean prohibited = FSLearnCoefsForDataDependentPtolemyFilteringMain.existsForDataset(dataset);
+        if (prohibited) {
+            LOG.log(Level.WARNING, "Coefs for Data-dependent Generalised Ptolemaic Filtering already evaluated for dataset {0}", datasetName);
+            prohibited = askForRewriting("Coefs for Data-dependent Generalised Ptolemaic Filtering", dataset);
+        }
+        if (!prohibited) {
+            LOG.log(Level.INFO, "Dataset: {0}, learning coefs for data dependent ptolemaic filtering", datasetName);
+            FSLearnCoefsForDataDependentPtolemyFilteringMain.run(dataset);
+        }
+    }
+
+    private static void createKeyValueStorageForBigDataset(Dataset dataset, String datasetName, int datasetSize) {
+        if (datasetSize >= MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE) {
+            Map keyValueStorage = dataset.getKeyValueStorage();
+            boolean prohibited = !(keyValueStorage == null || keyValueStorage.isEmpty());
+            if (prohibited) {
+                LOG.log(Level.WARNING, "The key value storage already exists for dataset {0}", datasetName);
+                prohibited = askForRewriting("The key value storage", dataset);
+            }
+            if (!prohibited) {
+                LOG.log(Level.INFO, "Dataset: {0}, creating key-value storage", datasetName);
+                VMMVStorageInsertMain.run(dataset);
+            }
+        } else {
+            LOG.log(Level.INFO, "Dataset: {0} is too small to create the key-value storage", datasetName);
         }
     }
 }

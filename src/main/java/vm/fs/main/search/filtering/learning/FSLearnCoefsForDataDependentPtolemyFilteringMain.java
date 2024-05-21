@@ -1,7 +1,6 @@
 package vm.fs.main.search.filtering.learning;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,7 @@ public class FSLearnCoefsForDataDependentPtolemyFilteringMain {
         }
     }
 
-    public static void run(Dataset dataset) throws FileNotFoundException {
+    public static void run(Dataset dataset) {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         List<Object> pivots = dataset.getPivots(PIVOTS);
