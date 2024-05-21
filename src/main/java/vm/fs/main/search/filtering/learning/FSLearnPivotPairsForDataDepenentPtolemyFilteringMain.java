@@ -7,7 +7,6 @@ package vm.fs.main.search.filtering.learning;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain.PIVOTS;
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain.SAMPLE_QUERY_SET_SIZE;
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain.SAMPLE_SET_SIZE;
@@ -18,6 +17,7 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.learning.LearningPivotPairsForPtolemyInequalityWithLimitedAngles;
+import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
 
 /**
  *
@@ -53,7 +53,7 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
 
         List<Object> sampleObjectsAndQueries = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
         FSDataDependentPtolemyInequalityPivotPairsStorageImpl storage = new FSDataDependentPtolemyInequalityPivotPairsStorageImpl();
-        LearningPivotPairsForPtolemyInequalityWithLimitedAngles learning = new LearningPivotPairsForPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, FSEvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K, filter, dataset.getDatasetName(), storage);
+        LearningPivotPairsForPtolemyInequalityWithLimitedAngles learning = new LearningPivotPairsForPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.IMPLICIT_K, filter, dataset.getDatasetName(), storage);
         try {
             learning.execute();
         } catch (InterruptedException ex) {

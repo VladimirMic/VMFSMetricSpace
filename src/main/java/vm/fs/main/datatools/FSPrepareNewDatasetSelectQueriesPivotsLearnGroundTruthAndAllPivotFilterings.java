@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.datatools.storage.VMMVStorageInsertMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
@@ -24,7 +25,7 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  */
 public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings {
 
-    public static final Boolean SKIP_EVERYTHING_EVALUATED = true;
+    public static final Boolean SKIP_EVERYTHING_EVALUATED = false;
     public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 30000000;
     public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 11000000;
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings.class.getName());
@@ -32,9 +33,9 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
             new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
-//            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
+        //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
@@ -52,7 +53,6 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset()
-
         //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
@@ -64,9 +64,9 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         //            new FSDatasetInstanceSingularizator.DeCAF_PCA1540Dataset(),
         //                    new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
         //                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset(true),
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(true)
+        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(true)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(true)
-//                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(true)
+        //                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(true)
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -77,21 +77,17 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         String datasetName = dataset.getDatasetName();
         int datasetSize = precomputeDatasetSize(dataset);
 
-        plotDistanceDensity(dataset, datasetName);
-
-        selectRandomPivotsAndQueryObjects(dataset, datasetName);
-
-        evaluateGroundTruth(dataset, datasetName);
-
-        evaluateSampleOfSmallestDistances(dataset, datasetName);
-
-        precomputeObjectToPivotDists(dataset, datasetName, datasetSize);
-
-        learnDataDependentMetricFiltering(dataset, datasetName);
-
+//        plotDistanceDensity(dataset, datasetName);
+//
+//        selectRandomPivotsAndQueryObjects(dataset, datasetName);
+//
+//        evaluateGroundTruth(dataset, datasetName);
+//        evaluateSampleOfSmallestDistances(dataset, datasetName);
+//        precomputeObjectToPivotDists(dataset, datasetName, datasetSize);
+//        learnDataDependentMetricFiltering(dataset, datasetName);
         learnDataDependentPtolemaicFiltering(dataset, datasetName);
 
-        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
+//        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
     }
 
     /**
@@ -103,6 +99,9 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     private static boolean askForRewriting(String type, Dataset dataset) {
         if (SKIP_EVERYTHING_EVALUATED) {
             return true;
+        }
+        if (!FSGlobal.ASK_FOR_EXISTENCE) {
+            return false;
         }
         try {
             String question = type + " for " + dataset.getDatasetName() + " already exists. Do you want to delete its content? (NEED TO BE CONFIRMED AGAIN AFTER EVALUATION)";

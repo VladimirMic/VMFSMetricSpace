@@ -16,6 +16,7 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
+import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
 
 /**
  *
@@ -70,7 +71,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         try {
             File resultFile = getFile(resultName, true);
             PrintStream err = System.err;
-            System.setErr(new PrintStream(new FileOutputStream(resultFile, true)));
+            System.setErr(new PrintStream(new FileOutputStream(resultFile, false)));
             Tools.printMapOfKeyFloatValues(results);
             System.setErr(err);
         } catch (IOException ex) {
@@ -79,7 +80,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     public String getNameOfFileWithCoefs(String datasetName, int pivotCount, boolean allPivotPairs) {
-        return getResultDescription(datasetName, FSEvalAndStoreSampleOfSmallestDistsMain.IMPLICIT_K, FSEvalAndStoreSampleOfSmallestDistsMain.SAMPLE_SET_SIZE, FSEvalAndStoreSampleOfSmallestDistsMain.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
+        return getResultDescription(datasetName, PrecomputedPairsOfDistancesStoreInterface.IMPLICIT_K, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.Dataset;
-import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
+import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
 
 /**
  *
@@ -13,13 +13,7 @@ import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangl
  */
 public class FSEvalAndStoreSampleOfSmallestDistsMain {
 
-    public static final Integer SAMPLE_SET_SIZE = 10000;
-    public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
     public static final Logger LOG = Logger.getLogger(FSEvalAndStoreSampleOfSmallestDistsMain.class.getName());
-    /**
-     * Number of stored minimum distances
-     */
-    public static final Integer IMPLICIT_K = (int) (RATIO_OF_SMALLEST_DISTS * SAMPLE_SET_SIZE * SAMPLE_QUERY_SET_SIZE);
 
     public static void main(String[] args) {
         Dataset[] datasets = new Dataset[]{
@@ -43,13 +37,13 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
     }
 
     public static void run(Dataset dataset) {
-        TreeSet result = dataset.evaluateSmallestDistances(SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, IMPLICIT_K);
-        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
+        TreeSet result = dataset.evaluateSmallestDistances(PrecomputedPairsOfDistancesStoreInterface.SAMPLE_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_QUERY_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.IMPLICIT_K);
+        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), PrecomputedPairsOfDistancesStoreInterface.SAMPLE_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_QUERY_SET_SIZE);
         storage.storePrecomputedDistances(result);
     }
 
     public static boolean existsForDataset(Dataset dataset) {
-        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
+        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), PrecomputedPairsOfDistancesStoreInterface.SAMPLE_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_QUERY_SET_SIZE);
         return storage.getFileForResults(false).exists();
     }
 
