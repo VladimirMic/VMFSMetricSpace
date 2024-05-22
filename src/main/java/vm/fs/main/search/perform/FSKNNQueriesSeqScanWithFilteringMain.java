@@ -43,8 +43,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
+//        vm.javatools.Tools.sleep(8);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
@@ -67,8 +70,6 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         };
 
         int pivotCount = KNNSearchWithPtolemaicFiltering.LB_COUNT;

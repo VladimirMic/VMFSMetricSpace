@@ -34,7 +34,7 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         boolean publicQueries = true;
         Dataset[] datasets = {
             new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
@@ -82,11 +82,10 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
 //        selectRandomPivotsAndQueryObjects(dataset, datasetName);
 //
 //        evaluateGroundTruth(dataset, datasetName);
-//        evaluateSampleOfSmallestDistances(dataset, datasetName);
+        evaluateSampleOfSmallestDistances(dataset, datasetName);
 //        precomputeObjectToPivotDists(dataset, datasetName, datasetSize);
-//        learnDataDependentMetricFiltering(dataset, datasetName);
+        learnDataDependentMetricFiltering(dataset, datasetName);
         learnDataDependentPtolemaicFiltering(dataset, datasetName);
-
 //        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
     }
 

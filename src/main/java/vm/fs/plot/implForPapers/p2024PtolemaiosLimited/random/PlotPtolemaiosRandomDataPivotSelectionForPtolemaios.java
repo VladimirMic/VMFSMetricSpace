@@ -31,7 +31,8 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
                 "Uniform Pivot Pairs",
-                "Proposed Pairs Selection"
+                "Proposed Pairs Selection",
+                "Data-dep. Ptolemaic Filering"
         );
     }
 
@@ -39,7 +40,8 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
                 "2024_04_256_pivots_30NN_seq_ptolemaios_randomPivots",
-                "2024_03_256_pivots_30NN_seq_ptolemaios"
+                "2024_03_256_pivots_30NN_seq_ptolemaios",
+                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection"
         );
     }
 
@@ -85,6 +87,9 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
 
     @Override
     protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
-        return new COLOUR_NAMES[]{COLOUR_NAMES.CX_BLACK, COLOUR_NAMES.C4_ORANGE};
+        return new COLOUR_NAMES[]{COLOUR_NAMES.CX_BLACK,
+            COLOUR_NAMES.C4_ORANGE,
+            COLOUR_NAMES.C5_VIOLET
+        };
     }
 }

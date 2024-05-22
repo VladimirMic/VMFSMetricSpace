@@ -2,6 +2,7 @@ package vm.fs.main.search.filtering.learning;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,8 +71,7 @@ public class FSLearnCoefsForDataDependentPtolemyFilteringMain {
 
         TreeSet<Map.Entry<String, Float>> smallDistsOfSampleObjectsAndQueries = smallDistSample.loadPrecomputedDistances();
         Set<Object> set = FSPrecomputedDistPairsStorageImpl.getIDsOfObjects(smallDistsOfSampleObjectsAndQueries);
-        List sampleObjectsAndQueries = dataset.getQueryObjects();
-        sampleObjectsAndQueries.addAll(set);
+        List sampleObjectsAndQueries = new ArrayList(set);
         LearningCoefsForPtolemyInequalityWithLimitedAngles learning = new LearningCoefsForPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, smallDistsOfSampleObjectsAndQueries, storage, dataset.getDatasetName(), ALL_PIVOT_PAIRS);
         learning.execute();
     }
