@@ -43,11 +43,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
-//        vm.javatools.Tools.sleep(8);
+//        vm.javatools.Tools.sleep(20);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
@@ -90,6 +90,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static float[][] poDists = null;
 
     private static void run(Dataset dataset, BoundsOnDistanceEstimation filter, List pivots, int k) {
+        LOG.log(Level.INFO, "Going to search for {0}NN in dataset {1} with the filter {2}", new Object[]{k, dataset.getDatasetName(), filter.getTechFullName()});
         int maxObjectsCount = -1;
         int pivotCount = pivots.size();
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
@@ -157,12 +158,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     }
 
     private static BoundsOnDistanceEstimation[] initTestedFilters(List pivots, Dataset dataset, int k) {
-        Dataset origDataset = dataset;
-        if (dataset instanceof DatasetOfCandidates) {
-            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
-        }
         int pivotCount = pivots.size();
-        List pivotsData = origDataset.getMetricSpace().getDataOfMetricObjects(pivots);
+        List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
         String namePrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots_" + k + "NN";
         if (KNNSearchWithOnePivotFiltering.SORT_PIVOTS) {
             namePrefix += "_SortedP";
@@ -181,13 +178,13 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFiltering(namePrefix, pivotsData, dataset.getDistanceFunction());
         DataDependentGeneralisedPtolemaicFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(
                 namePrefix,
-                origDataset,
+                dataset,
                 pivotCount
         );
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, ptolemaicFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
-        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, dataDependentPtolemaicFiltering};
+        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, dataDependentMetricFiltering, dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};

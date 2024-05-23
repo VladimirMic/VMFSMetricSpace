@@ -33,8 +33,8 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
