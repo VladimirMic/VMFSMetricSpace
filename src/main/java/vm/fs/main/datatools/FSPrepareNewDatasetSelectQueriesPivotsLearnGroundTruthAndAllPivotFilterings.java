@@ -36,7 +36,7 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         boolean publicQueries = true;
         Dataset[] datasets = {
 //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
-//                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
                     new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
@@ -85,15 +85,15 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
             plotDistanceDensity(origDataset, datasetName);
         }
 
-        plotDistanceDensity(dataset, datasetName);
+//        plotDistanceDensity(dataset, datasetName);
 
-        selectRandomPivotsAndQueryObjects(origDataset, datasetName);
-        evaluateGroundTruth(dataset, datasetName);
+//        selectRandomPivotsAndQueryObjects(origDataset, datasetName);
+//        evaluateGroundTruth(dataset, datasetName);
         evaluateSampleOfSmallestDistances(dataset, datasetName);
-        precomputeObjectToPivotDists(origDataset, datasetName, datasetSize);
+//        precomputeObjectToPivotDists(origDataset, datasetName, datasetSize);
         learnDataDependentMetricFiltering(dataset, datasetName);
         learnDataDependentPtolemaicFiltering(dataset, datasetName);
-        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
+//        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
     }
 
     /**

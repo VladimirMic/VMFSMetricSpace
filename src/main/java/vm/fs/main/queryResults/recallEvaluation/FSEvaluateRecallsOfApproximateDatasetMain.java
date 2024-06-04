@@ -73,9 +73,9 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     private static void directFiles() {
         String[] folderNames = {
-            //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
+                                    "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
             //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
-            //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
+//                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
             //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000"
             //                        "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits16-qc1000-k10000"
             //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
@@ -83,7 +83,7 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
             //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
             //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k200000"
             //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750"
-            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
+//            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
 
         };
 
@@ -96,8 +96,8 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
             for (String fileName : files) {
                 Logger.getLogger(FSEvaluateRecallsOfApproximateDatasetMain.class.getName()).log(Level.INFO, "Processing file {0}", fileName);
                 fileName = fileName.trim().substring(0, fileName.length() - 3);
-//                run(folderName, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", fileName, "");
-                run(folderName, "decaf_100m_PCA256", "decaf_100m_PCA256", fileName, "");
+                run(folderName, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", fileName, "");
+//                run(folderName, "decaf_100m_PCA256", "decaf_100m_PCA256", fileName, "");
             }
         }
     }
