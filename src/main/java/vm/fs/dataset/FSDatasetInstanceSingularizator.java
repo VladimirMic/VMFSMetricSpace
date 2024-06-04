@@ -39,6 +39,13 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
+    public static class DeCAF100M_Dataset extends FSFloatVectorDataset {
+
+        public DeCAF100M_Dataset() {
+            super("decaf_100m");
+        }
+    }
+
     public static class RandomDataset10Uniform extends FSFloatVectorDataset {
 
         public RandomDataset10Uniform() {
@@ -1219,11 +1226,11 @@ public class FSDatasetInstanceSingularizator {
             super(
                     new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
                     "Faiss_DeCAF_100M_PCA256_Candidates",
-                    new FSNearestNeighboursStorageImpl(), 
-                    "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000", 
+                    new FSNearestNeighboursStorageImpl(),
+                    "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000",
                     "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000-nprobe1024",
                     "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000_QueriesSample",
-                    "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k10000-nprobe256");
+                    "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k10000-nprobe1024");
         }
 
     }

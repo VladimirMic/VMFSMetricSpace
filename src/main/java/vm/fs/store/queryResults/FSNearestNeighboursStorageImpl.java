@@ -21,6 +21,7 @@ import java.util.zip.GZIPOutputStream;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
+import vm.search.algorithm.impl.GroundTruthEvaluator;
 
 /**
  *
@@ -124,7 +125,12 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             File file = getFileWithResults(queryResultsName, datasetName, querySetName, k, false);
             if (!file.exists()) {
                 LOG.log(Level.SEVERE, "The file with the results does not exist: {0}", file.getAbsolutePath());
-                return new HashMap<>();
+                file = getFileWithResults(queryResultsName, datasetName, querySetName, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH, false);
+                if (!file.exists()) {
+                    throw new IllegalArgumentException("The file does not exist");
+                } else {
+                    LOG.log(Level.INFO, "But the file with the results {0} exists, so taking the implicit number of NNs", file.getAbsolutePath());
+                }
             }
             String key = queryResultsName + datasetName + querySetName;
             if (k != null) {

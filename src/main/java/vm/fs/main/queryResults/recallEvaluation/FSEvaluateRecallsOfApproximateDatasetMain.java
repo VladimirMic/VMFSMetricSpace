@@ -20,11 +20,11 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 public class FSEvaluateRecallsOfApproximateDatasetMain {
 
 //    public static final Integer[] kCands = new Integer[]{300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; // null if dynamic, otherwise fixed number
-    public static final Integer[] kCands = new Integer[]{null}; // null if dynamic, otherwise fixed number
+    public static final Integer[] kCands = new Integer[]{30}; // {null} if dynamic, otherwise fixed number
 
     public static void main(String[] args) throws InterruptedException {
         directFiles();
-//        forDatasets();
+//        forDatasets(); // just if the results are in the ground truth folder
     }
 
     public static final void run(String folder, String groundTDatasetName, String groundTQuerySetName, String approxDatasetName, String approxQuerySetName) {
@@ -36,15 +36,17 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     public static final void run(Dataset groundTruthDataset, Dataset... approximatedDatasets) {
         int k = 30;
+        String resultName = "ground_truth";
 
         for (Dataset approximatedDataset : approximatedDatasets) {
-            for (int kCand : kCands) {
-//        String resultName = "pure_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
-//        String resultName = "pure_double_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
-//        String resultName = "pure_deleteMany_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnDecreasingErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
-                String resultName = "ground_truth";
+            if (kCands == null) {
                 evaluateRecallOfTheCandidateSet(groundTruthDataset.getDatasetName(), groundTruthDataset.getQuerySetName(), k,
-                        approximatedDataset.getDatasetName(), approximatedDataset.getQuerySetName(), resultName, kCand);
+                        approximatedDataset.getDatasetName(), approximatedDataset.getQuerySetName(), resultName, null);
+            } else {
+                for (Integer kCand : kCands) {
+                    evaluateRecallOfTheCandidateSet(groundTruthDataset.getDatasetName(), groundTruthDataset.getQuerySetName(), k,
+                            approximatedDataset.getDatasetName(), approximatedDataset.getQuerySetName(), resultName, kCand);
+                }
             }
         }
     }
@@ -63,7 +65,6 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
         if (candidateNNCount != null) {
             attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_fixed_size, candidateNNCount.toString());
         }
-
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(attributesForFileName);
         RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(groundTruthStorage, recallStorage);
         evaluator.evaluateAndStoreRecallsOfQueries(groundTruthDatasetName, groundTruthQuerySetName, groundTruthNNCount, candSetName, candSetQuerySetName, resultSetName, candidateNNCount);
@@ -72,17 +73,18 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     private static void directFiles() {
         String[] folderNames = {
-            //            //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
-            //        //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
-            //        //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
-//            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000"
-//            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750"
-//            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
-            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits16-qc1000-k10000"
-//        //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
-//        //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
-//        //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
-////            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k200000"
+            //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
+            //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
+            //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
+            //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000"
+            //                        "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits16-qc1000-k10000"
+            //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
+            //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
+            //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
+            //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k200000"
+            //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750"
+            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
+
         };
 
         for (String folderName : folderNames) {
@@ -102,50 +104,19 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     private static void forDatasets() {
         boolean publicQueries = true;
-        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries);
-        Dataset[] approximatedDatasets = new Dataset[]{};
+        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset();
+        Dataset[] approximatedDatasets = new Dataset[]{
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
 
-//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100k_Dataset(publicQueries);
-//        approximatedDatasets = new Dataset[]{
-//                        new FSDatasetInstanceSingularizator.LAION_100k_PCA96Dataset()
-//        };
-//        run(groundTruthDataset, approximatedDatasets);
-//
-//        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_300k_Dataset();
-//        approximatedDatasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.LAION_300k_PCA96Dataset()
-//        };
-////        run(groundTruthDataset, approximatedDatasets);
-//
-        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries);
-        approximatedDatasets = new Dataset[]{
-            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_192Dataset(publicQueries),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_256Dataset(publicQueries),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_384Dataset(publicQueries),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_1024Dataset(publicQueries)
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         };
 //        run(groundTruthDataset, approximatedDatasets);
 
-        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_30M_Dataset(publicQueries);
+        groundTruthDataset = new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset();
         approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_192Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_256Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_384Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_512Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_30M_GHP_50_1024Dataset(publicQueries)
-        };
-//        run(groundTruthDataset, approximatedDatasets);
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
 
-        groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries);
-        approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_192Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_256Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_384Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_512Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_GHP_50_1024Dataset(publicQueries)
         };
-//        run(groundTruthDataset, approximatedDatasets);
+        run(groundTruthDataset, approximatedDatasets);
+
     }
 }

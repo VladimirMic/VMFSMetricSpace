@@ -91,15 +91,15 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
             dataset.storeQueryObjects(queries, datasetName);
         }
         if (!pivots.isEmpty()) {
-            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()), true);
             pivots = selectOneOutOfEachGroup(pivots, 5);// 2560 / 5 = 512
-            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()), true);
             pivots = selectOneOutOfEachGroup(pivots, 2);// 256
-            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()), true);
             pivots = selectOneOutOfEachGroup(pivots, 2);//128
-            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()), true);
             pivots = selectOneOutOfEachGroup(pivots, 2); // 64
-            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()));
+            dataset.storePivots(pivots, getNameForPivots(datasetName, pivots.size()), true);
         }
     }
 

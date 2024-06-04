@@ -16,7 +16,9 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
+import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.Dataset;
+import vm.metricSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 
 /**
@@ -33,8 +35,9 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+//            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
+//                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
@@ -76,17 +79,21 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     private static void run(Dataset dataset) throws FileNotFoundException {
         String datasetName = dataset.getDatasetName();
         int datasetSize = precomputeDatasetSize(dataset);
+        Dataset origDataset = dataset;
+        if (dataset instanceof DatasetOfCandidates) {
+            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
+            plotDistanceDensity(origDataset, datasetName);
+        }
 
-//        plotDistanceDensity(dataset, datasetName);
-//
-//        selectRandomPivotsAndQueryObjects(dataset, datasetName);
-//
-//        evaluateGroundTruth(dataset, datasetName);
+        plotDistanceDensity(dataset, datasetName);
+
+        selectRandomPivotsAndQueryObjects(origDataset, datasetName);
+        evaluateGroundTruth(dataset, datasetName);
         evaluateSampleOfSmallestDistances(dataset, datasetName);
-//        precomputeObjectToPivotDists(dataset, datasetName, datasetSize);
+        precomputeObjectToPivotDists(origDataset, datasetName, datasetSize);
         learnDataDependentMetricFiltering(dataset, datasetName);
         learnDataDependentPtolemaicFiltering(dataset, datasetName);
-//        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
+        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
     }
 
     /**

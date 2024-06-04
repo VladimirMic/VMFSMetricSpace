@@ -63,7 +63,8 @@ public class FSEvaluateGroundTruthMain {
             //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
-            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
             //            new FSDatasetInstanceSingularizator.DeCAFDataset()
@@ -71,6 +72,7 @@ public class FSEvaluateGroundTruthMain {
             new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         };
         for (Dataset dataset : datasets) {
+            run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
             run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
 //            run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
         }

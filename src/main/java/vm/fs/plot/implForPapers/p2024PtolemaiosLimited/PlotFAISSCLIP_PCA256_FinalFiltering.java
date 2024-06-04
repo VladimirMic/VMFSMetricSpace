@@ -15,6 +15,9 @@ import vm.plot.impl.BoxPlotPlotter;
  */
 public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromResults {
 
+    public static final Integer PIVOTS = 16;
+    public static final Integer LB = PIVOTS;
+
     public PlotFAISSCLIP_PCA256_FinalFiltering(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
@@ -41,11 +44,11 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_05_128_pivots_30NN_seq_triangle_inequality",
-                "2024_05_128_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_05_128_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_05_128_pivots_30NN_seq_ptolemaios_128LB",
-                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
+                "2024_05_" + PIVOTS + "_pivots_30NN_seq_triangle_inequality",
+                "2024_05_" + PIVOTS + "_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_05_" + PIVOTS + "_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_05_" + PIVOTS + "_pivots_30NN_seq_ptolemaios_" + LB + "LB",
+                "2024_05_" + PIVOTS + "_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_" + LB + "LB",
                 "ground_truth"
         );
     }
@@ -64,7 +67,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "Faiss_Clip_100M_PCA256_Candidates__laion2B-en-clip768v2-n=100M.h5_PCA256__30__Faiss_Clip_100M_PCA256_Candidates__laion2B-en-clip768v2-n=100M.h5_PCA256__"        );
+                "Faiss_Clip_100M_PCA256_Candidates__laion2B-en-clip768v2-n=100M.h5_PCA256__30__Faiss_Clip_100M_PCA256_Candidates__laion2B-en-clip768v2-n=100M.h5_PCA256__");
     }
 
     @Override

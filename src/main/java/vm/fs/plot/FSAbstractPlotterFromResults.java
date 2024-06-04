@@ -125,7 +125,7 @@ public abstract class FSAbstractPlotterFromResults {
                     System.err.println("File: " + file.getName());
                 }
                 System.err.println();
-                String message = "You have wrong uniqueArtifactIdentifyingFileNameForDisplaydGroup filter as number of files after the filtering " + files.length + " of folder " + folderWithStats.getAbsolutePath() + " differs from the number of name artifacts " + groupsCount;
+                String message = "You have wrong uniqueArtifactIdentifyingFileNameForDisplaydGroup " + getUniqueArtifactIdentifyingFileNameForDisplaydGroup() + " filter as number of files after the filtering " + files.length + " of folder " + folderWithStats.getAbsolutePath() + " differs from the number of name artifacts " + groupsCount;
                 LOG.log(Level.SEVERE, message);
                 for (int i = 0; i < Math.max(0, groupsCount - files.length); i++) {
                     ret.add(null);
