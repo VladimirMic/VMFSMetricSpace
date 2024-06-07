@@ -37,7 +37,7 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
 
     public static void run(Dataset dataset, long numberOfQueries, long numberOfPivots) {
         long datasetSize = dataset.getPrecomputedDatasetSize();
-        if (datasetSize <= 0) {
+        if (datasetSize < 0) {
             datasetSize = dataset.updateDatasetSize();
         }
         LOG.log(Level.INFO, "Going to select {0} pivots and {1} queries for a dataset of size {2}", new Object[]{numberOfPivots, numberOfQueries, datasetSize});
