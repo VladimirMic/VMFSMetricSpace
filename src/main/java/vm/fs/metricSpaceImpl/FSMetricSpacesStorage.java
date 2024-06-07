@@ -201,7 +201,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
             File fGZ = new File(folder, fileName);
             fGZ = FSGlobal.checkFileExistence(fGZ, willBeDeleted);
             if (!fGZ.exists() && !willBeDeleted) {
-                LOG.log(Level.WARNING, "File on the path {0} does not exist. The params are: folder: {1}, fileName: {2}. Returning zipped file: ", new Object[]{f.getAbsolutePath(), folder, fileName, fGZ.getName()});
+                LOG.log(Level.WARNING, "File on the path {0} does not exist. The params are: folder: {1}, fileName: {2}. Returning zipped file: {3}", new Object[]{f.getAbsolutePath(), folder, fileName, fGZ.getName()});
             }
             if (fGZ.exists() && Files.isSymbolicLink(fGZ.toPath()) && (folder.equals(FSGlobal.DATASET_FOLDER) || folder.equals(FSGlobal.DATASET_MVSTORAGE_FOLDER))) {
                 LOG.log(Level.WARNING, "Returned file {0} is a symbolic file. Reading might be slow", fGZ.getAbsolutePath());

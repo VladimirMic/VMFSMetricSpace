@@ -5,12 +5,12 @@
 package vm.fs.main.datatools;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import vm.fs.FSGlobal;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.datatools.storage.VMMVStorageInsertMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
@@ -27,7 +27,7 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  */
 public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings {
 
-    public static final Boolean SKIP_EVERYTHING_EVALUATED = false;
+    public static final Boolean SKIP_EVERYTHING_EVALUATED = true;
     public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 30000000;
     public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 11000000;
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings.class.getName());
@@ -35,9 +35,8 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-//            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
-//                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(), //                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+        //                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
@@ -141,12 +140,18 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     }
 
     private static void selectRandomPivotsAndQueryObjects(Dataset dataset, String datasetName) {
-        boolean prohibited = dataset.getPivots(-1) != null;
-        if (!prohibited) {
+        boolean exists = dataset.getPivots(-1) != null;
+        if (!exists) {
             LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
             FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
         } else {
             LOG.log(Level.INFO, "Dataset: {0}, pivots already preselected", datasetName);
+            List queryObjects = dataset.getQueryObjects();
+            exists = queryObjects != null && !queryObjects.isEmpty();
+            if (!exists) {
+                LOG.log(Level.INFO, "Dataset: {0}, trying to select queries", datasetName);
+                FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset, FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.IMPLICIT_NUMBER_OF_QUERIES, 0);
+            }
         }
     }
 
