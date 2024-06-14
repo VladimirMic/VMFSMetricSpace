@@ -90,8 +90,11 @@ public class FSEvaluateGroundTruthMain {
         if (dataset instanceof DatasetOfCandidates) {
             results = gte.evaluateIteratorsSequentiallyForEachQuery(dataset, queryObjects, k);
         } else {
-//            results = gte.evaluateIteratorInParallel(dataset.getMetricObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());
-            results = gte.evaluateIteratorSequentially(dataset.getMetricObjectsFromDataset(), datasetName, dataset.getQuerySetName());
+            if (k == GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH) {
+                results = gte.evaluateIteratorInParallel(dataset.getMetricObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());
+            } else {
+                results = gte.evaluateIteratorSequentially(dataset.getMetricObjectsFromDataset(), datasetName, dataset.getQuerySetName());
+            }
         }
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth", null);

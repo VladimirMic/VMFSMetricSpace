@@ -43,6 +43,7 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
         }
         switch (datasetName) {
             case ("decaf_1m"):
+            case ("decaf_100m"):
             case ("sift_1m"):
                 return new L2OnFloatsArray();
             case ("mpeg7_1m"): {

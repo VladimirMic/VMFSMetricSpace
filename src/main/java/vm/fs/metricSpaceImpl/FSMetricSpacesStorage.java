@@ -388,11 +388,16 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
                 if (line == null) {
                     return null;
                 }
-                String[] split = line.split(":");
-                T obj = (T) dataSerializator.parseString(split[1]);
-                AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(split[0], obj);
-                counter++;
-                return entry;
+                try {
+                    String[] split = line.split(":");
+                    T obj = (T) dataSerializator.parseString(split[1]);
+                    AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(split[0], obj);
+                    counter++;
+                    return entry;
+                } catch (Exception e) {
+                    LOG.log(Level.WARNING, "The file is corrupted. Exception occured when reading. Trying to read next line", e);
+                    return nextStreamObject();
+                }
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }

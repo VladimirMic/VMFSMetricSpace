@@ -11,12 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import vm.fs.FSGlobal;
+import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.datatools.storage.VMMVStorageInsertMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
-import vm.m2.dataset.M2DatasetInstanceSingularizator;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
@@ -35,7 +35,8 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
+//            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
+            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
         //                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
         //                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
