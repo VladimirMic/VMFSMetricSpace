@@ -93,6 +93,9 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
                 return null;
             }
             Map<Object, T> map = singularizatorOfDiskStorage.getKeyValueStorage();
+            if (map == null) {
+                return null;
+            }
             Iterator<Map.Entry<Object, T>> iterator = map.entrySet().iterator();
             return new MetricObjectMapEntriesIterator(singularizatorOfDiskStorage, iterator, params);
         }

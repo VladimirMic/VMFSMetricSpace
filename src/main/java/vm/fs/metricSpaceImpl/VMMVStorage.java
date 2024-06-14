@@ -32,7 +32,11 @@ public class VMMVStorage<T> {
         this.datasetName = datasetName;
         this.willBeDeleted = createNew;
         storage = getStorage();
-        map = storage.openMap(MAP_NAME);
+        if (storage != null) {
+            map = storage.openMap(MAP_NAME);
+        } else {
+            map = null;
+        }
     }
 
     private MVStore getStorage() {
@@ -42,6 +46,7 @@ public class VMMVStorage<T> {
         File file = getFile();
         if (!file.exists() && !willBeDeleted) {
             LOG.log(Level.SEVERE, "The file {0} does not exists. Cannot read.", file.getAbsolutePath());
+            return null;
         }
         MVStore.Builder ret = new MVStore.Builder().fileName(file.getAbsolutePath()).compressHigh();
         if (!willBeDeleted) {
@@ -58,6 +63,9 @@ public class VMMVStorage<T> {
     }
 
     public Map<Object, T> getKeyValueStorage() {
+        if (map == null) {
+            return null;
+        }
         return Collections.unmodifiableMap(map);
     }
 
@@ -110,5 +118,4 @@ public class VMMVStorage<T> {
 //        }
 //        return ret;
 //    }
-
 }
