@@ -35,7 +35,7 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-//            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
+            //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
             new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
         //                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
         //                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
@@ -128,8 +128,10 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     private static int precomputeDatasetSize(Dataset dataset) {
         int precomputedDatasetSize = dataset.getPrecomputedDatasetSize();
         if (precomputedDatasetSize < 0) {
+            LOG.log(Level.INFO, "Dataset {0} -- going to recompute number of stored objects", new Object[]{dataset.getDatasetName()});
             return dataset.updateDatasetSize();
         }
+        LOG.log(Level.INFO, "Dataset {0} has the precomputed dataset size {1} objects", new Object[]{dataset.getDatasetName(), precomputedDatasetSize});
         return precomputedDatasetSize;
     }
 
