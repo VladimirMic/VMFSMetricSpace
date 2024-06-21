@@ -3,6 +3,7 @@ package vm.fs.metricSpaceImpl;
 import java.io.File;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -21,7 +22,6 @@ public class VMMVStorage<T> {
 
     public static final Logger LOG = Logger.getLogger(VMMVStorage.class.getName());
     private static final String MAP_NAME = "data";
-    private static final int BATCH_SIZE = 5000000;
 
     private final MVStore storage;
     private final String datasetName;
@@ -72,11 +72,12 @@ public class VMMVStorage<T> {
     public void insertObjects(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
         int batchCount = 0;
         int lastGC = 0;
+        int size = 0;
         while (metricObjects.hasNext()) {
             batchCount++;
             Map<Object, T> batch = loadBatch(metricObjects, metricSpace);
+            size += batch.size();
             map.putAll(batch);
-            int size = batchCount * BATCH_SIZE;
             LOG.log(Level.INFO, "Stored {0} data objects", size);
             if (size - lastGC >= 500000) {
                 lastGC = size;
@@ -92,16 +93,12 @@ public class VMMVStorage<T> {
 
     private Map<Object, T> loadBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
         Map<Object, T> ret = new TreeMap<>();
-        for (int i = 0; i < BATCH_SIZE; i++) {
-            if (i % 100000 == 0) {
-                LOG.log(Level.INFO, "Loading batch. Currently: {0} objects", i);
-            }
-            if (metricObjects.hasNext()) {
-                Object next = metricObjects.next();
-                String id = metricSpace.getIDOfMetricObject(next).toString();
-                T dataOfMetricObject = metricSpace.getDataOfMetricObject(next);
-                ret.put(id, dataOfMetricObject);
-            }
+        List<Object> objectsFromIterator = vm.datatools.Tools.getObjectsFromIterator(metricObjects);
+        for (int i = 0; i < objectsFromIterator.size(); i++) {
+            Object next = objectsFromIterator.get(i);
+            String id = metricSpace.getIDOfMetricObject(next).toString();
+            T dataOfMetricObject = metricSpace.getDataOfMetricObject(next);
+            ret.put(id, dataOfMetricObject);
         }
         LOG.log(Level.INFO, "Loaded batch of {0} objects", ret.size());
         return ret;

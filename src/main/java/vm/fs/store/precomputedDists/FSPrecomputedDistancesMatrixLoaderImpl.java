@@ -86,7 +86,7 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
 
     public File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount, boolean willBeDeleted) {
         File ret = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
-        FSGlobal.checkFileExistence(ret, willBeDeleted);
+        ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         if (!willBeDeleted && !ret.exists()) {
             LOG.log(Level.WARNING, "File with precomputed distances does not exist: {0}", ret.getAbsolutePath());
         }
