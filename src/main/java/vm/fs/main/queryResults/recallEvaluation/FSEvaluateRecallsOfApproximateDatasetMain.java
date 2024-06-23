@@ -23,8 +23,8 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
     public static final Integer[] kCands = new Integer[]{30}; // {null} if dynamic, otherwise fixed number
 
     public static void main(String[] args) throws InterruptedException {
-        directFiles();
-//        forDatasets(); // just if the results are in the ground truth folder
+//        directFiles();
+        forDatasets(); // just if the results are in the ground truth folder
     }
 
     public static final void run(String folder, String groundTDatasetName, String groundTQuerySetName, String approxDatasetName, String approxQuerySetName) {
@@ -72,11 +72,10 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
     }
 
     private static void directFiles() {
-        String[] folderNames = {
-            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k30"
-//                                    "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
+        String[] folderNames = { //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k30"
+        //                                    "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
         //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
-//                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
+        //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
         //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000"
         //                        "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits16-qc1000-k10000"
         //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
@@ -84,8 +83,7 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
         //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
         //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k200000"
         //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750"
-//            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
-
+        //            "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
         };
 
         for (String folderName : folderNames) {
@@ -105,19 +103,16 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     private static void forDatasets() {
         boolean publicQueries = true;
-        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset();
+        Dataset groundTruthDataset = new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries);
         Dataset[] approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
-
-        };
-//        run(groundTruthDataset, approximatedDatasets);
-
-        groundTruthDataset = new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset();
-        approximatedDatasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
-
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         };
         run(groundTruthDataset, approximatedDatasets);
 
+//        groundTruthDataset = new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset();
+//        approximatedDatasets = new Dataset[]{
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+//        };
+//        run(groundTruthDataset, approximatedDatasets);
     }
 }
