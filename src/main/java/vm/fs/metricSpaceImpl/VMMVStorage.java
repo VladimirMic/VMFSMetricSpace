@@ -5,13 +5,18 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.h2.mvstore.MVMap;
 import org.h2.mvstore.MVStore;
 import vm.fs.FSGlobal;
 import vm.metricSpace.AbstractMetricSpace;
+import vm.metricSpace.Dataset;
+import vm.metricSpace.ToolsMetricDomain;
 
 /**
  *
@@ -69,21 +74,30 @@ public class VMMVStorage<T> {
         return Collections.unmodifiableMap(map);
     }
 
-    public void insertObjects(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
-        int batchCount = 0;
-        int lastGC = 0;
-        int size = 0;
-        while (metricObjects.hasNext()) {
-            batchCount++;
-            Map<Object, T> batch = loadBatch(metricObjects, metricSpace);
-            size += batch.size();
-            map.putAll(batch);
-            LOG.log(Level.INFO, "Stored {0} data objects", size);
-            if (size - lastGC >= 500000) {
-                lastGC = size;
+    public void insertObjects(Dataset dataset) {
+        int stored;
+        Iterator metricObjects = dataset.getMetricObjectsFromDataset();
+        AbstractMetricSpace<T> metricSpace = dataset.getMetricSpace();
+        SortedMap<Object, T> batch = loadBatch(metricObjects, metricSpace);
+        int batchSize = batch.size();
+        if (metricObjects.hasNext()) {
+            SortedSet allSortedIDs = new TreeSet<>(ToolsMetricDomain.getIDs(dataset.getMetricObjectsFromDataset(), metricSpace));
+            LOG.log(Level.INFO, "Loaded  and sorted {0} IDs", allSortedIDs.size());
+            SortedMap<Object, T> prefixToStore = new TreeMap<>();
+            stored = storePrefix(allSortedIDs, batch, 0);
+            // process wisely, search for first
+            while (!allSortedIDs.isEmpty()) {
+                LOG.log(Level.INFO, "Remaining to store {0} objects", allSortedIDs.size());
+                metricObjects = dataset.getMetricObjectsFromDataset();
                 System.gc();
+                performPrefixBatch(metricObjects, metricSpace, prefixToStore, allSortedIDs, batchSize);
             }
+        } else {
+            map.putAll(batch);
+            stored = batch.size();
         }
+        LOG.log(Level.INFO, "Stored {0} objects", stored);
+        System.gc();
         storage.commit();
     }
 
@@ -91,8 +105,8 @@ public class VMMVStorage<T> {
         return getKeyValueStorage().size();
     }
 
-    private Map<Object, T> loadBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
-        Map<Object, T> ret = new TreeMap<>();
+    private SortedMap<Object, T> loadBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
+        SortedMap<Object, T> ret = new TreeMap<>();
         List<Object> objectsFromIterator = vm.datatools.Tools.getObjectsFromIterator(metricObjects);
         for (int i = 0; i < objectsFromIterator.size(); i++) {
             Object next = objectsFromIterator.get(i);
@@ -104,15 +118,49 @@ public class VMMVStorage<T> {
         return ret;
     }
 
+    private int storePrefix(SortedSet allSortedIDs, SortedMap<Object, T> batch, int counter) {
+        Object firstID = allSortedIDs.first();
+        Object batchID = batch.firstKey();
+        while (firstID.equals(batchID)) {
+            map.put(firstID, batch.get(batchID));
+            allSortedIDs.remove(firstID);
+            batch.remove(firstID);
+            firstID = allSortedIDs.first();
+            batchID = batch.firstKey();
+            counter++;
+            if (counter % 100000 == 0) {
+                LOG.log(Level.INFO, "Stored {0} data objects", counter);
+            }
+        }
+        return counter;
+    }
+
+    private int performPrefixBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace, SortedMap<Object, T> prefixOfIDsToStore, SortedSet allSortedIDs, int batchSize) {
+        prefixOfIDsToStore.clear();
+        int stored = 0;
+        SortedSet batchOfIDs = new TreeSet();
+        getAndRemovePrefix(allSortedIDs, batchOfIDs, batchSize);
+        while (metricObjects.hasNext() && !allSortedIDs.isEmpty()) {
+            Object o = metricObjects.next();
+            Object id = metricSpace.getIDOfMetricObject(o);
+            if (batchOfIDs.contains(id)) {
+                prefixOfIDsToStore.put(id, metricSpace.getDataOfMetricObject(o));
+                stored = storePrefix(batchOfIDs, prefixOfIDsToStore, stored);
+                getAndRemovePrefix(allSortedIDs, batchOfIDs, batchSize);
+            }
+        }
+        return stored;
+    }
+
+    private void getAndRemovePrefix(SortedSet allSortedIDs, SortedSet batchOfIDs, int batchSize) {
+        while (batchOfIDs.size() != batchSize && !allSortedIDs.isEmpty()) {
+            Object id = allSortedIDs.first();
+            batchOfIDs.add(id);
+            allSortedIDs.remove(id);
+        }
+    }
+
     public void close() {
         storage.close();
     }
-
-//    public boolean reopenIfClosed() {
-//        boolean ret = map.isClosed();
-//        if (ret) {
-//            map = storage.openMap(MAP_NAME);
-//        }
-//        return ret;
-//    }
 }

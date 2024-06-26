@@ -29,7 +29,7 @@ public class VMMVStorageInsertMain {
 
     public static void run(Dataset dataset) {
         VMMVStorage storage = new VMMVStorage(dataset.getDatasetName(), true);
-        storage.insertObjects(dataset.getMetricObjectsFromDataset(), dataset.getMetricSpace());
+        storage.insertObjects(dataset);
         LOG.log(Level.INFO, "Finished. Stored {0} objects", storage.size());
     }
 
