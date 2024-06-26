@@ -107,7 +107,7 @@ public class VMMVStorage<T> {
 
     private SortedMap<Object, T> loadBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
         SortedMap<Object, T> ret = new TreeMap<>();
-        List<Object> objectsFromIterator = vm.datatools.Tools.getObjectsFromIterator(50f, metricObjects);
+        List<Object> objectsFromIterator = vm.datatools.Tools.getObjectsFromIterator(66f, metricObjects);
         for (int i = 0; i < objectsFromIterator.size(); i++) {
             Object next = objectsFromIterator.get(i);
             String id = metricSpace.getIDOfMetricObject(next).toString();
@@ -119,6 +119,9 @@ public class VMMVStorage<T> {
     }
 
     private void storePrefix(SortedSet allSortedIDs, SortedMap<Object, T> batch) {
+        if (allSortedIDs.isEmpty() || batch.isEmpty()) {
+            return;
+        }
         Object firstID = allSortedIDs.first();
         Object batchID = batch.firstKey();
 //        LOG.log(Level.INFO, "firstID: {0}, batchID: {1}, comparison {2}", new Object[]{firstID, batchID, firstID.toString().compareTo(batchID.toString())});
@@ -149,7 +152,7 @@ public class VMMVStorage<T> {
                 }
             }
             if (couter % 100000 == 0) {
-                LOG.log(Level.INFO, "Pass {4}, read {0} objects, stored {5}, remain {1}, loaded from the first: {2} out of {3}", new Object[]{couter, allSortedIDs.size(), prefixOfIDsToStore.size(), batchOfIDs.size(), goArounds, map.size()});
+                LOG.log(Level.INFO, "Pass {4}, read {0} objects, stored {5}, remain {1}, cached: {2} out of {3}", new Object[]{couter, allSortedIDs.size(), prefixOfIDsToStore.size(), batchOfIDs.size(), goArounds, map.size()});
             }
         }
         storePrefix(batchOfIDs, prefixOfIDsToStore);
