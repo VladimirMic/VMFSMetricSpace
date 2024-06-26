@@ -28,7 +28,7 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
 public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings {
 
     public static final Boolean SKIP_EVERYTHING_EVALUATED = true;
-    public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 5 * 1000 * 1000;
+    public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 10 * 1000 * 1000;
     public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 11 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings.class.getName());
 
