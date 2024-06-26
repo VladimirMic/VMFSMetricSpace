@@ -82,7 +82,7 @@ public class VMMVStorage<T> {
         int batchSize = batch.size();
         if (metricObjects.hasNext()) {
             SortedSet allSortedIDs = new TreeSet<>(ToolsMetricDomain.getIDs(dataset.getMetricObjectsFromDataset(), metricSpace));
-            LOG.log(Level.INFO, "Loaded  and sorted {0} IDs", allSortedIDs.size());
+            LOG.log(Level.INFO, "Loaded and sorted {0} IDs", allSortedIDs.size());
             SortedMap<Object, T> prefixToStore = new TreeMap<>();
             stored = storePrefix(allSortedIDs, batch, 0);
             // process wisely, search for first
@@ -90,7 +90,7 @@ public class VMMVStorage<T> {
                 LOG.log(Level.INFO, "Remaining to store {0} objects", allSortedIDs.size());
                 metricObjects = dataset.getMetricObjectsFromDataset();
                 System.gc();
-                performPrefixBatch(metricObjects, metricSpace, prefixToStore, allSortedIDs, batchSize);
+                stored += performPrefixBatch(metricObjects, metricSpace, prefixToStore, allSortedIDs, batchSize);
             }
         } else {
             map.putAll(batch);
@@ -145,19 +145,23 @@ public class VMMVStorage<T> {
             Object id = metricSpace.getIDOfMetricObject(o);
             if (batchOfIDs.contains(id)) {
                 prefixOfIDsToStore.put(id, metricSpace.getDataOfMetricObject(o));
-                stored = storePrefix(batchOfIDs, prefixOfIDsToStore, stored);
-                getAndRemovePrefix(allSortedIDs, batchOfIDs, batchSize);
+                if (prefixOfIDsToStore.size() == 100) {
+                    stored += storePrefix(batchOfIDs, prefixOfIDsToStore, stored);
+                    getAndRemovePrefix(allSortedIDs, batchOfIDs, batchSize);
+                }
             }
         }
+        stored += storePrefix(batchOfIDs, prefixOfIDsToStore, stored);
         return stored;
     }
 
     private void getAndRemovePrefix(SortedSet allSortedIDs, SortedSet batchOfIDs, int batchSize) {
-        while (batchOfIDs.size() != batchSize && !allSortedIDs.isEmpty()) {
-            Object id = allSortedIDs.first();
+        Iterator it = allSortedIDs.iterator();
+        while (batchOfIDs.size() != batchSize && it.hasNext()) {
+            Object id = it.next();
             batchOfIDs.add(id);
-            allSortedIDs.remove(id);
         }
+        allSortedIDs.removeAll(batchOfIDs);
     }
 
     public void close() {

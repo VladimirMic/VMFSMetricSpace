@@ -33,7 +33,7 @@ import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
  */
 public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
 
-    public final Logger LOG = Logger.getLogger(FSMetricSpacesStorage.class.getName());
+    public static final Logger LOG = Logger.getLogger(FSMetricSpacesStorage.class.getName());
 
     protected final AbstractMetricSpace metricSpace;
     protected final MetricObjectDataToStringInterface<T> dataSerializator;
@@ -97,7 +97,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
                 return null;
             }
             Iterator<Map.Entry<Object, T>> iterator = map.entrySet().iterator();
-            return new MetricObjectMapEntriesIterator(singularizatorOfDiskStorage, iterator, params);
+            return new MetricObjectMapEntriesIterator(iterator, params);
         }
         return getIteratorOfObjects(f, params);
     }
@@ -111,7 +111,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     }
 
     public Iterator<Object> getIteratorOfObjects(File f, Object... params) {
-        BufferedReader br = null;
+        BufferedReader br;
         try {
             br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));
             int count = params.length > 0 && params[0] instanceof Integer ? (int) params[0] : Integer.MAX_VALUE;
@@ -349,22 +349,31 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
 
     private class MetricObjectFileIterator<T> implements Iterator<AbstractMap.SimpleEntry<String, T>> {
 
-        protected AbstractMap.SimpleEntry<String, T> nextObject;
+        protected AbstractMap.SimpleEntry<String, T>[] nextObjects;
+        private int pointer;
         protected AbstractMap.SimpleEntry<String, T> currentObject;
         private final BufferedReader br;
-        private final int maxCount;
-        private int counter;
+        private int maxCount;
+        private int counterX;
+
+        private final int BATCH_SIZE = 256;
 
         public MetricObjectFileIterator(BufferedReader br, int maxCount) {
             this.br = br;
-            this.nextObject = nextStreamObject();
+            nextObjects = new AbstractMap.SimpleEntry[BATCH_SIZE];
             this.maxCount = maxCount;
-            counter = 0;
+            counterX = 0;
+            pointer = 0;
+            loadBatch();
         }
 
         @Override
         public boolean hasNext() {
-            boolean ret = nextObject != null && counter < maxCount;
+            if (pointer == BATCH_SIZE) {
+                loadBatch();
+                pointer = 0;
+            }
+            boolean ret = nextObjects[pointer] != null && counterX < maxCount;
             if (!ret) {
                 try {
                     br.close();
@@ -377,47 +386,58 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
 
         @Override
         public AbstractMap.SimpleEntry<String, T> next() {
-            if (nextObject == null) {
-                throw new NoSuchElementException("No more objects in the stream");
-            }
-            currentObject = nextObject;
-            nextObject = nextStreamObject();
+            currentObject = nextObjects[pointer];
+            pointer++;
+            counterX++;
             return currentObject;
         }
 
-        private AbstractMap.SimpleEntry<String, T> nextStreamObject() {
+        private void nextStreamObjects(int limit) {
             try {
-                String line = br.readLine();
-                if (line == null) {
-                    return null;
+                if (limit == 0) {
+                    nextObjects[0] = null;
                 }
-                try {
-                    String[] split = line.split(":");
-                    T obj = (T) dataSerializator.parseString(split[1]);
-                    AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(split[0], obj);
-                    counter++;
-                    return entry;
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, "The file is corrupted. Exception occured when reading. Trying to read next line", e);
-                    return nextStreamObject();
+                String[] lines = new String[limit];
+                int i;
+                for (i = 0; i < lines.length; i++) {
+                    lines[i] = br.readLine();
+                    if (lines[i] == null) {
+                        maxCount = counterX + i;
+                        break;
+                    }
+                }
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i] == null) {
+                        break;
+                    }
+                    try {
+                        String[] split = lines[i].split(":");
+                        T obj = (T) dataSerializator.parseString(split[1]);
+                        AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(split[0], obj);
+                        nextObjects[i] = entry;
+                    } catch (Exception e) {
+                        LOG.log(Level.SEVERE, "The file is corrupted. Exception occured when reading. Trying to read next line", e);
+                    }
                 }
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
-            return null;
+        }
+
+        private void loadBatch() {
+            int limit = Math.min(maxCount - counterX, BATCH_SIZE);
+            nextStreamObjects(limit);
         }
     }
 
     private class MetricObjectMapEntriesIterator<T> implements Iterator<Object> {
 
-        private final VMMVStorage storage;
         private final int maxCount;
         private int counter;
 
         private final Iterator<Map.Entry<Object, T>> it;
 
-        public MetricObjectMapEntriesIterator(VMMVStorage storage, Iterator<Map.Entry<Object, T>> it, Object... params) {
-            this.storage = storage;
+        public MetricObjectMapEntriesIterator(Iterator<Map.Entry<Object, T>> it, Object... params) {
             if (params.length > 0) {
                 int value = Integer.parseInt(params[0].toString());
                 maxCount = value > 0 ? value : Integer.MAX_VALUE;
