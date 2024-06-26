@@ -109,15 +109,15 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
         return ret[0];
     }
 
-    private static void testQueries(Dataset fullDataset, Dataset pcaDataset, SimRelEuclideanPCAImplForTesting simRel, PCAMetricObjectTransformer pcaTransformer, int prefixLength, int kPCA, int k, QueryNearestNeighboursStoreInterface resultsStorage, String resultName, FSQueryExecutionStatsStoreImpl statsStorage, Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> fileNameDataForRecallStorage) {
+    private static void testQueries(Dataset<float[]> fullDataset, Dataset<float[]> pcaDataset, SimRelEuclideanPCAImplForTesting simRel, PCAMetricObjectTransformer pcaTransformer, int prefixLength, int kPCA, int k, QueryNearestNeighboursStoreInterface resultsStorage, String resultName, FSQueryExecutionStatsStoreImpl statsStorage, Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> fileNameDataForRecallStorage) {
         List<Object> pcaData = Tools.getObjectsFromIterator(pcaDataset.getMetricObjectsFromDataset());
         pcaData = ToolsMetricDomain.getPrefixesOfVectors(pcaDataset.getMetricSpace(), pcaData, prefixLength);
         System.gc();
-        Map<Object, Object> mapOfAllFullObjects = null;
+        Map<Comparable, float[]> mapOfAllFullObjects = null;
         if (FULL_RERANK) {
             mapOfAllFullObjects = fullDataset.getKeyValueStorage();
 //            Iterator<Object> fullDatasetIterator = fullDataset.getMetricObjectsFromDataset();
-//            mapOfAllFullObjects = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(fullDataset.getMetricSpace(), fullDatasetIterator, true);
+//            mapOfAllFullObjects = ToolsMetricDomain.getMetricObjectsAsIdDataMap(fullDataset.getMetricSpace(), fullDatasetIterator, true);
 //            MVStore storage = VMMVStorageMain.openStorage(fullDataset.getDatasetName());
 //            mapOfAllFullObjects = VMMVStorageMain.getStoredMap(storage);
         }
@@ -128,11 +128,11 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
         for (int i = 0; i < Math.min(fullQueries.size(), 1000); i++) {
             long time = -System.currentTimeMillis();
             Object fullQueryObj = fullQueries.get(i);
-            Object queryObjId = metricSpaceOfFullDataset.getIDOfMetricObject(fullQueryObj);
-            AbstractMap.SimpleEntry<Object, float[]> pcaQueryObj = (AbstractMap.SimpleEntry<Object, float[]>) pcaTransformer.transformMetricObject(fullQueryObj, prefixLength);
+            Comparable queryObjId = metricSpaceOfFullDataset.getIDOfMetricObject(fullQueryObj);
+            AbstractMap.SimpleEntry<Comparable, float[]> pcaQueryObj = (AbstractMap.SimpleEntry<Comparable, float[]>) pcaTransformer.transformMetricObject(fullQueryObj, prefixLength);
 
-            List<Object> candSetObjIDs = alg.candSetKnnSearch(pcaDatasetMetricSpace, pcaQueryObj, kPCA, pcaData.iterator());
-            TreeSet<Map.Entry<Object, Float>> rerankCandidateSet = alg.rerankCandidateSet(metricSpaceOfFullDataset, fullQueryObj, k, fullDataset.getDistanceFunction(), mapOfAllFullObjects, candSetObjIDs);
+            List<Comparable> candSetObjIDs = alg.candSetKnnSearch(pcaDatasetMetricSpace, pcaQueryObj, kPCA, pcaData.iterator());
+            TreeSet<Map.Entry<Comparable, Float>> rerankCandidateSet = alg.rerankCandidateSet(metricSpaceOfFullDataset, fullQueryObj, k, fullDataset.getDistanceFunction(), mapOfAllFullObjects, candSetObjIDs);
             time += System.currentTimeMillis();
             alg.incTime(queryObjId, time);
             if (STORE_RESULTS) {

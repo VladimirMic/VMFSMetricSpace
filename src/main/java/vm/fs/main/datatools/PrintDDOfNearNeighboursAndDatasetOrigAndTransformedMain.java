@@ -29,9 +29,6 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         String transformedDatasetName = datasetTransformed.getDatasetName();
         float transformedDistInterval = 1.0f;
 
-        AbstractMetricSpace metricSpace = new FSMetricSpaceImpl<>();
-        AbstractMetricSpacesStorage metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, new FloatVectorConvertor());
-
 //      getHistogramsForRandomAndNearestNeighbours
         int objCount = PrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT;//100,000
         int distCount = PrintAndPlotDDOfDatasetMain.IMPLICIT_DIST_COUNT;//1000,000
@@ -46,8 +43,9 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         printDDOfRandomAndNearNeighbours(datasetName, distInterval, ddRandomSample, ddOfNNSample);
 
 //      find the same pairs in the transformed dataset and print corresponding distances
-        List<Object> transformedObjects = metricSpacesStorage.getSampleOfDataset(transformedDatasetName, -1);
-        Map<Object, Object> metricObjectsAsIdObjectMap = ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, transformedObjects, true);
+        List<Object> transformedObjects = datasetTransformed.getMetricSpacesStorage().getSampleOfDataset(transformedDatasetName, -1);
+        AbstractMetricSpace metricSpace = datasetTransformed.getMetricSpace();
+        Map<Comparable, Object> metricObjectsAsIdObjectMap = ToolsMetricDomain.getMetricObjectsAsIdDataMap(metricSpace, transformedObjects);
         DistanceFunctionInterface distanceFunctionForTransformedDataset = metricSpace.getDistanceFunctionForDataset(transformedDatasetName);
         SortedMap<Float, Float> ddRandomSampleTransformed = evaluateDDForPairs(distanceFunctionForTransformedDataset, idsOfRandomPairs, metricObjectsAsIdObjectMap);
         SortedMap<Float, Float> ddOfNNSampleTransformed = evaluateDDForPairs(distanceFunctionForTransformedDataset, idsOfNNPairs, metricObjectsAsIdObjectMap);
@@ -78,7 +76,7 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         return ToolsMetricDomain.createDistanceDensityPlot(distances);
     }
 
-    private static SortedMap<Float, Float> evaluateDDForPairs(DistanceFunctionInterface distanceFunction, List<Object[]> idsPairs, Map<Object, Object> metricObjects) {
+    private static SortedMap<Float, Float> evaluateDDForPairs(DistanceFunctionInterface distanceFunction, List<Object[]> idsPairs, Map<Comparable, Object> metricObjects) {
         List<Float> distances = new ArrayList<>();
         for (Object[] idsPair : idsPairs) {
             Object o1 = metricObjects.get(idsPair[0]);

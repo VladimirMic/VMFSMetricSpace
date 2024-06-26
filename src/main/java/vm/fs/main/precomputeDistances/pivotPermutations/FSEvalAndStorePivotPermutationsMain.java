@@ -49,7 +49,7 @@ public class FSEvalAndStorePivotPermutationsMain {
     private static void run(Dataset dataset, int pivotCount) {
         FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] distsToPivots = loader.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
-        Map<Object, Integer> rowHeaders = loader.getRowHeaders();
+        Map<Comparable, Integer> rowHeaders = loader.getRowHeaders();
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         List pivots = dataset.getPivots(pivotCount);
         String[] pivotIDs = checkPivots(metricSpace, loader.getColumnHeaders(), pivots);
@@ -107,7 +107,7 @@ public class FSEvalAndStorePivotPermutationsMain {
         }
     }
 
-    private static String[] checkPivots(AbstractMetricSpace metricSpace, Map<Object, Integer> columnHeaders, List pivots) {
+    private static String[] checkPivots(AbstractMetricSpace metricSpace, Map<Comparable, Integer> columnHeaders, List pivots) {
         String[] ret = new String[pivots.size()];
         for (int i = 0; i < pivots.size(); i++) {
             Object pId = metricSpace.getIDOfMetricObject(pivots.get(i));

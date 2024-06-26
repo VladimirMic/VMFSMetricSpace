@@ -32,10 +32,10 @@ public class FSGRAPPLEPartitioningStorage extends FSVoronoiPartitioningStorage {
     }
 
     @Override
-    public Map<Object, TreeSet<Object>> load(String datasetName, int origPivotCount) {
+    public Map<Comparable, TreeSet<Comparable>> load(String datasetName, int origPivotCount) {
         File f = getFile(datasetName, origPivotCount, false);
         SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
-        Map<Object, TreeSet<Object>> ret = new HashMap<>();
+        Map<Comparable, TreeSet<Comparable>> ret = new HashMap<>();
         Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, String[]> entry = it.next();

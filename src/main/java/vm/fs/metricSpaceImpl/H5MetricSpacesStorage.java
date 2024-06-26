@@ -24,12 +24,12 @@ import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
  *
  * @author xmic
  */
-public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
+public class H5MetricSpacesStorage<T> extends FSMetricSpacesStorage<T> {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
     public final Logger LOG = Logger.getLogger(H5MetricSpacesStorage.class.getName());
 
-    public H5MetricSpacesStorage(AbstractMetricSpace<float[]> metricSpace, MetricObjectDataToStringInterface dataSerializator) {
+    public H5MetricSpacesStorage(AbstractMetricSpace<T> metricSpace, MetricObjectDataToStringInterface dataSerializator) {
         super(metricSpace, dataSerializator);
     }
 
@@ -85,7 +85,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         super.storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
     }
 
-    public Map<Object, Object> getAsMap(String datasetName) {
+    public Map<Comparable, Object> getAsMap(String datasetName) {
         File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
         HdfFile hdfFile = new HdfFile(f.toPath());
         Node node = hdfFile.iterator().next();
@@ -150,7 +150,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         }
     }
 
-    private class VMH5StorageAsMap implements Map<Object, Object> {
+    private class VMH5StorageAsMap implements Map<Comparable, Object> {
 
         private final Dataset dataset;
         private final int[] dimensions;
@@ -203,7 +203,7 @@ public class H5MetricSpacesStorage extends FSMetricSpacesStorage<float[]> {
         }
 
         @Override
-        public Object put(Object key, Object value) {
+        public Object put(Comparable key, Object value) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 

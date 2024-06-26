@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;

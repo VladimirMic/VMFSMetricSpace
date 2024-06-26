@@ -104,14 +104,14 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         SearchingAlgorithm alg;
         if (filter instanceof AbstractPtolemaicBasedFiltering) {
-            alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
+            alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), df);
             if (filter instanceof DataDependentGeneralisedPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset())) {
                 KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
                 tmp.setObjBeforeSeqScan(100000);
                 tmp.setThresholdOnLBsPerObjForSeqScan(20);
             }
         } else if (filter instanceof AbstractTwoPivotsFilter) {
-            alg = new KNNSearchWithGenericTwoPivotFiltering(metricSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), pivotPivotDists, df);
+            alg = new KNNSearchWithGenericTwoPivotFiltering(metricSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pivotPivotDists, df);
         } else if (filter instanceof AbstractOnePivotFilter) {
             alg = new KNNSearchWithOnePivotFiltering(metricSpace, (AbstractOnePivotFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
         } else {

@@ -27,7 +27,7 @@ public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInt
     public final Logger LOG = Logger.getLogger(FSVoronoiPartitioningStorage.class.getName());
     
     @Override
-    public void store(Map<Object, SortedSet<Object>> mapping, String datasetName, int origPivotCount) {
+    public void store(Map<Comparable, SortedSet<Comparable>> mapping, String datasetName, int origPivotCount) {
         if (mapping == null || mapping.isEmpty()) {
             LOG.log(Level.WARNING, "Nothing to store: {0}", mapping);
             return;
@@ -36,9 +36,9 @@ public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInt
         try {
             File file = getFile(datasetName, origPivotCount, true);
             os = new GZIPOutputStream(new FileOutputStream(file, false), true);
-            for (Map.Entry<Object, SortedSet<Object>> cell : mapping.entrySet()) {
+            for (Map.Entry<Comparable, SortedSet<Comparable>> cell : mapping.entrySet()) {
                 String pivotID = cell.getKey().toString();
-                Set<Object> ids = cell.getValue();
+                Set<Comparable> ids = cell.getValue();
                 os.write(pivotID.getBytes());
                 os.write(';');
                 for (Object id : ids) {
@@ -68,10 +68,10 @@ public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInt
     }
     
     @Override
-    public Map<Object, TreeSet<Object>> load(String datasetName, int origPivotCount) {
+    public Map<Comparable, TreeSet<Comparable>> load(String datasetName, int origPivotCount) {
         File f = getFile(datasetName, origPivotCount, false);
         SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
-        Map<Object, TreeSet<Object>> ret = new HashMap<>();
+        Map<Comparable, TreeSet<Comparable>> ret = new HashMap<>();
         Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, String[]> entry = it.next();

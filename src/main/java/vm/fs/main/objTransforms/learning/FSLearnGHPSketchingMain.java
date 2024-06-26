@@ -33,8 +33,8 @@ public class FSLearnGHPSketchingMain {
         // voluntary step and voluntary arguments - is the precomputed distances does not excist, that deals with it automatically
         FSPrecomputedDistancesMatrixLoaderImpl pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] dists = pd.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
-        Map<Object, Integer> columnHeaders = pd.getColumnHeaders();
-        Map<Object, Integer> rowHeaders = pd.getRowHeaders();
+        Map<Comparable, Integer> columnHeaders = pd.getColumnHeaders();
+        Map<Comparable, Integer> rowHeaders = pd.getRowHeaders();
         // voluntary step and voluntary arguments
         learn.evaluate(dataset, sampleSize, sketchesLengths, 0.5f, dists, columnHeaders, rowHeaders);
     }

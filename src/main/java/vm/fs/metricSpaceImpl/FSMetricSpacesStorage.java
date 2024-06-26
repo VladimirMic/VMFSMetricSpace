@@ -435,9 +435,9 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
         private final int maxCount;
         private int counter;
 
-        private final Iterator<Map.Entry<Object, T>> it;
+        private final Iterator<Map.Entry<Comparable, T>> it;
 
-        public MetricObjectMapEntriesIterator(Iterator<Map.Entry<Object, T>> it, Object... params) {
+        public MetricObjectMapEntriesIterator(Iterator<Map.Entry<Comparable, T>> it, Object... params) {
             if (params.length > 0) {
                 int value = Integer.parseInt(params[0].toString());
                 maxCount = value > 0 ? value : Integer.MAX_VALUE;
@@ -459,7 +459,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
             if (!it.hasNext()) {
                 throw new NoSuchElementException("No more objects in the map");
             }
-            Map.Entry<Object, T> next = it.next();
+            Map.Entry<Comparable, T> next = it.next();
             return metricSpace.createMetricObject(next.getKey(), next.getValue());
         }
 

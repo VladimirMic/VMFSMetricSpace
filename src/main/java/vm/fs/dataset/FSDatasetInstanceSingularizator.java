@@ -6,10 +6,10 @@ import org.h2.mvstore.MVStoreException;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
-import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
+import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 
 /**
@@ -153,7 +153,7 @@ public class FSDatasetInstanceSingularizator {
         }
 
         @Override
-        public Map<Object, Object> getKeyValueStorage() {
+        public Map<Comparable, Map<String, Object>> getKeyValueStorage() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
@@ -1244,7 +1244,7 @@ public class FSDatasetInstanceSingularizator {
         }
 
         @Override
-        public Map<Object, Object> getKeyValueStorage() {
+        public Map<Comparable, float[]> getKeyValueStorage() {
             try {
                 VMMVStorage storage = ((FSMetricSpacesStorage) metricSpacesStorage).getSingularizatorOfDiskStorage();
                 if (storage == null) {
@@ -1252,7 +1252,7 @@ public class FSDatasetInstanceSingularizator {
                         storage = new VMMVStorage(datasetName, false);
                         ((FSMetricSpacesStorage) metricSpacesStorage).setSingularizatorOfDiskStorage(storage);
                     } catch (Exception e) {
-                        return ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, getMetricObjectsFromDataset(), true);
+                        return ToolsMetricDomain.getMetricObjectsAsIdDataMap(metricSpace, getMetricObjectsFromDataset());
                     }
                 }
                 return storage.getKeyValueStorage();
@@ -1268,11 +1268,11 @@ public class FSDatasetInstanceSingularizator {
         public H5FloatVectorDataset(String datasetName) {
             this.datasetName = datasetName;
             this.metricSpace = new FSMetricSpaceImpl();
-            this.metricSpacesStorage = new H5MetricSpacesStorage(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+            this.metricSpacesStorage = new H5MetricSpacesStorage<float[]>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
 
         @Override
-        public Map<Object, Object> getKeyValueStorage() {
+        public Map<Comparable, float[]> getKeyValueStorage() {
             H5MetricSpacesStorage storage = (H5MetricSpacesStorage) metricSpacesStorage;
             return storage.getAsMap(datasetName);
         }
@@ -1287,8 +1287,8 @@ public class FSDatasetInstanceSingularizator {
         }
 
         @Override
-        public Map<Object, Object> getKeyValueStorage() {
-            return ToolsMetricDomain.getMetricObjectsAsIdObjectMap(metricSpace, getMetricObjectsFromDataset(), true);
+        public Map<Comparable, long[]> getKeyValueStorage() {
+            return ToolsMetricDomain.getMetricObjectsAsIdDataMap(metricSpace, getMetricObjectsFromDataset());
         }
 
     }

@@ -69,7 +69,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     }
 
     @Override
-    public void storeQueryResults(List<Object> queryObjectsIDs, TreeSet<Map.Entry<Object, Float>>[] queryResults, Integer k, String datasetName, String querySetName, String resultsName) {
+    public void storeQueryResults(List<Comparable> queryObjectsIDs, TreeSet<Map.Entry<Comparable, Float>>[] queryResults, Integer k, String datasetName, String querySetName, String resultsName) {
         OutputStream os = null;
         try {
             File file = getFileWithResults(resultsName, datasetName, querySetName, k, true);
@@ -98,7 +98,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
     private boolean ask = true;
 
     @Override
-    public void storeQueryResult(Object queryObjectID, TreeSet<Map.Entry<Object, Float>> queryResults, Integer k, String datasetName, String querySetName, String resultsName) {
+    public void storeQueryResult(Comparable queryObjectID, TreeSet<Map.Entry<Comparable, Float>> queryResults, Integer k, String datasetName, String querySetName, String resultsName) {
         OutputStream os = null;
         try {
             File file = getFileWithResults(resultsName, datasetName, querySetName, k, ask);
@@ -121,10 +121,10 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         }
     }
 
-    private final Map<String, Map<String, TreeSet<Map.Entry<Object, Float>>>> cache = new HashMap();
+    private final Map<Comparable, Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>>> cache = new HashMap();
 
     @Override
-    public Map<String, TreeSet<Map.Entry<Object, Float>>> getQueryResultsForDataset(String queryResultsName, String datasetName, String querySetName, Integer k) {
+    public Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>> getQueryResultsForDataset(String queryResultsName, String datasetName, String querySetName, Integer k) {
         try {
             File file = getFileWithResults(queryResultsName, datasetName, querySetName, k, false);
             if (!file.exists()) {
@@ -143,7 +143,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             if (cache.containsKey(key)) {
                 return cache.get(key);
             }
-            Map<String, TreeSet<Map.Entry<Object, Float>>> ret = getQueryResultsForDataset(file);
+            Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>> ret = getQueryResultsForDataset(file);
             cache.put(key, ret);
             return ret;
         } catch (IOException ex) {
@@ -152,7 +152,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         return null;
     }
 
-    private void store(OutputStream os, String queryId, TreeSet<Map.Entry<Object, Float>> queryResult) throws IOException {
+    private void store(OutputStream os, String queryId, TreeSet<Map.Entry<Comparable, Float>> queryResult) throws IOException {
         if (!compress && queryId.startsWith("Q")) {
             queryId = queryId.substring(1);
         }
@@ -161,9 +161,9 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             buffer.append(queryId);
             buffer.append(";");
         }
-        Iterator<Map.Entry<Object, Float>> it = queryResult.iterator();
+        Iterator<Map.Entry<Comparable, Float>> it = queryResult.iterator();
         while (it.hasNext()) {
-            Map.Entry<Object, Float> nn = it.next();
+            Map.Entry<Comparable, Float> nn = it.next();
             buffer.append(nn.getKey().toString());
             buffer.append(":");
             buffer.append(nn.getValue().toString());
@@ -175,8 +175,8 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         os.write('\n');
     }
 
-    public Map<String, TreeSet<Map.Entry<Object, Float>>> getQueryResultsForDataset(File file) throws IOException {
-        Map<String, TreeSet<Map.Entry<Object, Float>>> ret = new HashMap<>();
+    public Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>> getQueryResultsForDataset(File file) throws IOException {
+        Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>> ret = new HashMap<>();
         InputStream s = new FileInputStream(file);
         if (compress) {
             s = new GZIPInputStream(s);
@@ -186,7 +186,7 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         while (line != null) {
             String[] pairsOfNearestNeighbours = line.split(";");
             String queryObjId = pairsOfNearestNeighbours[0];
-            TreeSet<Map.Entry<Object, Float>> nearestNeighbours = new TreeSet<>(new Tools.MapByFloatValueComparator());
+            TreeSet<Map.Entry<Comparable, Float>> nearestNeighbours = new TreeSet<>(new Tools.MapByFloatValueComparator());
             for (int i = 1; i < pairsOfNearestNeighbours.length; i++) {
                 String nearestNeighbourPair = pairsOfNearestNeighbours[i];
                 if (nearestNeighbourPair.isEmpty()) {

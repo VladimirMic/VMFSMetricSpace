@@ -27,8 +27,8 @@ public class FSHeatMapFromFile {
 
         FSPrecomputedDistancesMatrixLoaderImpl pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] values = pd.loadPrecomPivotsToObjectsDists(file, null, -1);
-        Map<Object, Integer> columnHeaders = pd.getColumnHeaders();
-        Map<Object, Integer> rowHeaders = pd.getRowHeaders();
+        Map<Comparable, Integer> columnHeaders = pd.getColumnHeaders();
+        Map<Comparable, Integer> rowHeaders = pd.getRowHeaders();
 
         HeatMapPlotter plotter = new HeatMapPlotter();
         String xLabel = "Threshold on # LB per avg. obj";
