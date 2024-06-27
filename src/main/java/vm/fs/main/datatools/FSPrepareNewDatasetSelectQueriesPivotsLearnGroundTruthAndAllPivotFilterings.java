@@ -28,7 +28,7 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
 public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings {
 
     public static final Boolean SKIP_EVERYTHING_EVALUATED = false;
-    public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 10 * 1000 * 1000;
+    public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 50 * 1000 * 1000; // decide by yourself, smaller datasets can be kept as a map in the main memory only, and creation of the map is efficient. This is implemented, e.g., in FSFloatVectorDataset and FSHammingSpaceDataset in class FSDatasetInstanceSingularizator
     public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 11 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings.class.getName());
 
@@ -36,8 +36,8 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         boolean publicQueries = true;
         Dataset[] datasets = {
             //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
-            //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         //                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
         //                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),

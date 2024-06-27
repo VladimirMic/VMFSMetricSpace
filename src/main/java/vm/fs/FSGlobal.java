@@ -14,8 +14,12 @@ public class FSGlobal {
     public static final Boolean ASK_FOR_EXISTENCE = true;
 
     private static String initRoot() {
+        String separator = System.getProperty("file.separator");
+        if (separator == null || separator.trim().isEmpty()) {
+            separator = "/";
+        }
         String[] paths = new String[]{
-            "Similarity_search/",
+            "Similarity_search" + separator,
             "h:\\Similarity_search\\",
             "c:\\Data\\Similarity_search\\"
         };
@@ -34,7 +38,7 @@ public class FSGlobal {
     public static final String TRIALS_FOLDER = ROOT + "Trials\\";
 
     public static final String DATA_FOLDER = ROOT + "Dataset\\";
-    public static final String DATASET_MVSTORAGE_FOLDER = DATA_FOLDER + "MV_storage\\";
+    public static final String DATASET_MVSTORAGE_FOLDER = DATA_FOLDER + "MV_storage2\\";
     public static final String DATASET_FOLDER = DATA_FOLDER + "Dataset\\";
     public static final String DATASET_METADATA = DATA_FOLDER + "Metadata\\";
     public static final String PIVOT_FOLDER = DATA_FOLDER + "Pivot\\";
