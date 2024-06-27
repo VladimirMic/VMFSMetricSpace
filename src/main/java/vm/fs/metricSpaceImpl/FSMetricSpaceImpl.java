@@ -1,7 +1,9 @@
 package vm.fs.metricSpaceImpl;
 
 import java.util.AbstractMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.distance.impl.L2OnFloatsArray;

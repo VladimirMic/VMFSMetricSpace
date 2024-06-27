@@ -15,7 +15,6 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
@@ -24,6 +23,7 @@ import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.AbstractMetricSpacesStorage;
+import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
 
 /**
@@ -97,7 +97,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
                 return null;
             }
             Iterator<Map.Entry<Object, T>> iterator = map.entrySet().iterator();
-            return new MetricObjectMapEntriesIterator(iterator, params);
+            return new Dataset.StaticIteratorOfMetricObjectsMadeOfKeyValueMap(iterator, metricSpace, params);
         }
         return getIteratorOfObjects(f, params);
     }
@@ -430,38 +430,4 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
         }
     }
 
-    private class MetricObjectMapEntriesIterator<T> implements Iterator<Object> {
-
-        private final int maxCount;
-        private int counter;
-
-        private final Iterator<Map.Entry<Comparable, T>> it;
-
-        public MetricObjectMapEntriesIterator(Iterator<Map.Entry<Comparable, T>> it, Object... params) {
-            if (params.length > 0) {
-                int value = Integer.parseInt(params[0].toString());
-                maxCount = value > 0 ? value : Integer.MAX_VALUE;
-            } else {
-                maxCount = Integer.MAX_VALUE;
-            }
-            this.it = it;
-            counter = 0;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return counter < maxCount && it.hasNext();
-        }
-
-        @Override
-        public Object next() {
-            counter++;
-            if (!it.hasNext()) {
-                throw new NoSuchElementException("No more objects in the map");
-            }
-            Map.Entry<Comparable, T> next = it.next();
-            return metricSpace.createMetricObject(next.getKey(), next.getValue());
-        }
-
-    }
 }

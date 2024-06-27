@@ -36,8 +36,8 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
         boolean publicQueries = true;
         Dataset[] datasets = {
             //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
-            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
-//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+            //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         //                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
         //                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
