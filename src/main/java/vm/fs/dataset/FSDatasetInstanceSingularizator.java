@@ -157,6 +157,15 @@ public class FSDatasetInstanceSingularizator {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
+        @Override
+        public boolean hasKeyValueStorage() {
+            return VMMVStorage.exists(datasetName);
+        }
+
+        @Override
+        public void deleteKeyValueStorage() {
+            VMMVStorage.delete(datasetName);
+        }
     }
 
     public static class DeCAF_PCA8Dataset extends FSFloatVectorDataset {
@@ -1261,6 +1270,15 @@ public class FSDatasetInstanceSingularizator {
             }
         }
 
+        @Override
+        public boolean hasKeyValueStorage() {
+            return VMMVStorage.exists(datasetName);
+        }
+
+        @Override
+        public void deleteKeyValueStorage() {
+            VMMVStorage.delete(datasetName);
+        }
     }
 
     public static class H5FloatVectorDataset extends Dataset<float[]> {
@@ -1268,13 +1286,23 @@ public class FSDatasetInstanceSingularizator {
         public H5FloatVectorDataset(String datasetName) {
             this.datasetName = datasetName;
             this.metricSpace = new FSMetricSpaceImpl();
-            this.metricSpacesStorage = new H5MetricSpacesStorage<float[]>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+            this.metricSpacesStorage = new H5MetricSpacesStorage<>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
 
         @Override
         public Map<Comparable, float[]> getKeyValueStorage() {
             H5MetricSpacesStorage storage = (H5MetricSpacesStorage) metricSpacesStorage;
             return storage.getAsMap(datasetName);
+        }
+
+        @Override
+        public boolean hasKeyValueStorage() {
+            return true;
+        }
+
+        @Override
+        public void deleteKeyValueStorage() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
     }
 
@@ -1291,6 +1319,13 @@ public class FSDatasetInstanceSingularizator {
             return ToolsMetricDomain.getMetricObjectsAsIdDataMap(metricSpace, getMetricObjectsFromDataset());
         }
 
-    }
+        @Override
+        public boolean hasKeyValueStorage() {
+            return true;
+        }
 
+        @Override
+        public void deleteKeyValueStorage() {
+        }
+    }
 }

@@ -27,7 +27,6 @@ public class VMMVStorage<T> {
 
     public static final Logger LOG = Logger.getLogger(VMMVStorage.class.getName());
     private static final String MAP_NAME = "data";
-    private static final Integer TINY_PERFORMACE_CACHE_SIZE = 1000;
 
     private final MVStore storage;
     private final String datasetName;
@@ -62,7 +61,20 @@ public class VMMVStorage<T> {
         return ret.open();
     }
 
-    private File getFile() {
+    public static boolean exists(String datasetName) {
+        File ret = new File(FSGlobal.DATASET_MVSTORAGE_FOLDER, datasetName);
+        ret = FSGlobal.checkFileExistence(ret, false);
+        return ret.exists();
+    }
+
+    public static void delete(String datasetName) {
+        File ret = new File(FSGlobal.DATASET_MVSTORAGE_FOLDER, datasetName);
+        ret = FSGlobal.checkFileExistence(ret, true);
+        ret.delete();
+
+    }
+
+    public File getFile() {
         File ret = new File(FSGlobal.DATASET_MVSTORAGE_FOLDER, datasetName);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
@@ -78,24 +90,23 @@ public class VMMVStorage<T> {
     public void insertObjects(Dataset<T> dataset) {
         Iterator metricObjects = dataset.getMetricObjectsFromDataset();
         AbstractMetricSpace<T> metricSpace = dataset.getMetricSpace();
-        SortedMap<Comparable, T> batch = loadBatch(metricObjects, metricSpace);
-        int batchSize = batch.size();
+        SortedMap<Comparable, T> priorityObjects = loadBatch(metricObjects, metricSpace);
+        int batchSize = priorityObjects.size();
         if (metricObjects.hasNext()) {
             SortedSet allSortedIDs = new TreeSet<>(ToolsMetricDomain.getIDs(dataset.getMetricObjectsFromDataset(), metricSpace));
             LOG.log(Level.INFO, "Loaded and sorted {0} IDs", allSortedIDs.size());
-            SortedMap<Comparable, T> prefixToStore = new TreeMap<>();
             SortedSet<Comparable> batchOfIDs = new TreeSet();
-            storePrefix(allSortedIDs, batch);
+            storePrefix(allSortedIDs, priorityObjects);
             int goArounds = 0;
             // process wisely, search for first
-            while (!allSortedIDs.isEmpty()) {
+            while (!allSortedIDs.isEmpty() || !batchOfIDs.isEmpty()) {
                 goArounds++;
-                metricObjects = dataset.getMetricObjectsFromDataset();
                 System.gc();
-                performPrefixBatch(metricObjects, metricSpace, batchOfIDs, prefixToStore, allSortedIDs, batchSize, goArounds);
+                performPrefixBatch(metricObjects, metricSpace, batchOfIDs, priorityObjects, allSortedIDs, batchSize, goArounds);
+                metricObjects = dataset.getMetricObjectsFromDataset();
             }
         } else {
-            map.putAll(batch);
+            map.putAll(priorityObjects);
         }
         LOG.log(Level.INFO, "Stored {0} objects", map.size());
         System.gc();
@@ -119,65 +130,74 @@ public class VMMVStorage<T> {
         return ret;
     }
 
-    private void storePrefix(SortedSet<Comparable> allSortedIDs, SortedMap<Comparable, T> batch) {
-        if (allSortedIDs.isEmpty() || batch.isEmpty()) {
-            return;
+    private boolean storePrefix(SortedSet<Comparable> topIDs, SortedMap<Comparable, T> batch) {
+        boolean ret = false;
+        if (topIDs.isEmpty() || batch.isEmpty()) {
+            return ret;
         }
-        Comparable firstID = allSortedIDs.first();
+        Comparable firstID = topIDs.first();
         Comparable batchID = batch.firstKey();
 //        LOG.log(Level.INFO, "firstID: {0}, batchID: {1}, comparison {2}", new Object[]{firstID, batchID, firstID.toString().compareTo(batchID.toString())});
         while (firstID.equals(batchID)) {
             map.put(firstID, batch.get(batchID));
-            allSortedIDs.remove(firstID);
+            ret = true;
+            topIDs.remove(firstID);
             batch.remove(firstID);
-            if (allSortedIDs.isEmpty() || batch.isEmpty()) {
-                return;
+            if (topIDs.isEmpty() || batch.isEmpty()) {
+                return ret;
             }
-            firstID = allSortedIDs.first();
+            firstID = topIDs.first();
             batchID = batch.firstKey();
         }
+        return ret;
     }
 
-    private void performPrefixBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace, SortedSet<Comparable> batchOfIDs, SortedMap<Comparable, T> prefixOfIDsToStore, SortedSet allSortedIDs, int batchSize, int goArounds) {
-        getAndRemovePrefix(allSortedIDs, batchOfIDs, batchSize);
-        int couter = 0;
-        SortedMap<Comparable, T> tinyPerformanceCache = new TreeMap<>();
-        Comparable cacheLastID = null;
-        while (metricObjects.hasNext() && !allSortedIDs.isEmpty()) {
-            couter++;
+    private void performPrefixBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace, SortedSet<Comparable> batchOfIDs, SortedMap<Comparable, T> priorityObjects, SortedSet allSortedIDs, int batchSize, int goArounds) {
+        createPriorityPrefix(allSortedIDs, batchOfIDs, batchSize);
+        int itCounter = 0;
+        while (metricObjects.hasNext() && (!batchOfIDs.isEmpty() || !allSortedIDs.isEmpty())) {
+            itCounter++;
             Object o = metricObjects.next();
             Comparable id = metricSpace.getIDOfMetricObject(o);
             T data = metricSpace.getDataOfMetricObject(o);
-            if (batchOfIDs.contains(id)) {
-                prefixOfIDsToStore.put(id, data);
-                if (prefixOfIDsToStore.size() % 100 == 0) {
-                    storePrefix(batchOfIDs, prefixOfIDsToStore);
-                    getAndRemovePrefix(allSortedIDs, batchOfIDs, batchSize);
-                }
-            } else {
-                if (id.compareTo(cacheLastID) < 0) {
-                    tinyPerformanceCache.put(id, data);
-                    if (tinyPerformanceCache.size() >= TINY_PERFORMACE_CACHE_SIZE) {
-                        tinyPerformanceCache.remove(tinyPerformanceCache.lastKey());
-                        cacheLastID = tinyPerformanceCache.lastKey();
-                    }
+            boolean add = (priorityObjects.size() < batchSize || id.compareTo(priorityObjects.lastKey()) < 0)
+                    && (id.compareTo(batchOfIDs.first()) >= 0);
+            if (add) {
+                priorityObjects.put(id, data);
+//                LOG.log(Level.INFO, "Adding {0}, waiting for {1}, priority size {2}, first obj in priority: {3}, comparison: {4}", new Object[]{id, batchOfIDs.first(), priorityObjects.size(), priorityObjects.firstKey(), priorityObjects.firstKey().compareTo(batchOfIDs.first())});
+                boolean check = (priorityObjects.size() >= batchSize * 0.7f && priorityObjects.size() % 100 == 0) || allSortedIDs.isEmpty();
+                while (check) {
+                    check = storePrefix(batchOfIDs, priorityObjects);
+                    createPriorityPrefix(allSortedIDs, batchOfIDs, batchSize);
                 }
             }
-            if (couter % 100000 == 0) {
-                LOG.log(Level.INFO, "Pass {4}, read {0} objects, stored {5}, remain {1}, cached: {2} out of {3}", new Object[]{couter, allSortedIDs.size(), prefixOfIDsToStore.size(), batchOfIDs.size(), goArounds, map.size()});
+            while (priorityObjects.size() > batchSize) {
+                priorityObjects.remove(priorityObjects.lastKey());
+            }
+            if (itCounter % 100000 == 0) {
+                LOG.log(Level.INFO, "Pass {4}, read {0} objects, stored {5}, remain {1}, cached: {2} out of capacity {3}", new Object[]{itCounter, allSortedIDs.size(), priorityObjects.size(), batchOfIDs.size(), goArounds, map.size()});
             }
         }
-        storePrefix(batchOfIDs, prefixOfIDsToStore);
+        storePrefix(batchOfIDs, priorityObjects);
     }
 
-    private void getAndRemovePrefix(SortedSet allSortedIDs, SortedSet batchOfIDs, int batchSize) {
+    private void createPriorityPrefix(SortedSet allSortedIDs, SortedSet batchOfIDs, int batchSize) {
         Iterator it = allSortedIDs.iterator();
-        SortedSet remove = new TreeSet();
-        while (batchOfIDs.size() != batchSize && it.hasNext()) {
-            Object id = it.next();
-            batchOfIDs.add(id);
-            remove.add(id);
+        Object end = null;
+        int endIdx = batchSize - batchOfIDs.size();
+        if (endIdx == 0) {
+//            LOG.log(Level.INFO, "allSortedIDs size {0}, batchOfIDs size {1}, batchsize {2}, endidx: {3}", new Object[]{allSortedIDs.size(), batchOfIDs.size(), batchSize, endIdx});
+            return;
         }
+        for (int i = 0; i < endIdx && it.hasNext(); i++) {
+            end = it.next();
+        }
+        if (end == null) {
+            return;
+        }
+        SortedSet remove = new TreeSet<>(allSortedIDs.headSet(end));
+        remove.add(end);
+        batchOfIDs.addAll(remove);
         allSortedIDs.removeAll(remove);
     }
 

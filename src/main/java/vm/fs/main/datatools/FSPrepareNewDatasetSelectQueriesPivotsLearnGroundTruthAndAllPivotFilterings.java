@@ -27,7 +27,7 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  */
 public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings {
 
-    public static final Boolean SKIP_EVERYTHING_EVALUATED = true;
+    public static final Boolean SKIP_EVERYTHING_EVALUATED = false;
     public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 10 * 1000 * 1000;
     public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 11 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings.class.getName());
@@ -90,14 +90,14 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
             plotDistanceDensity(origDataset, datasetName);
         }
 
-        plotDistanceDensity(dataset, datasetName);
-        selectRandomPivotsAndQueryObjects(origDataset, datasetName);
-        evaluateGroundTruth(dataset, datasetName);
-        evaluateSampleOfSmallestDistances(dataset, datasetName);
-        precomputeObjectToPivotDists(origDataset, datasetName, datasetSize);
+//        plotDistanceDensity(dataset, datasetName);
+//        selectRandomPivotsAndQueryObjects(origDataset, datasetName);
+//        evaluateGroundTruth(dataset, datasetName);
+//        evaluateSampleOfSmallestDistances(dataset, datasetName);
+//        precomputeObjectToPivotDists(origDataset, datasetName, datasetSize);
         createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
-        learnDataDependentMetricFiltering(dataset, datasetName);
-        learnDataDependentPtolemaicFiltering(dataset, datasetName);
+//        learnDataDependentMetricFiltering(dataset, datasetName);
+//        learnDataDependentPtolemaicFiltering(dataset, datasetName);
     }
 
     /**
@@ -147,7 +147,7 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
     }
 
     private static void selectRandomPivotsAndQueryObjects(Dataset dataset, String datasetName) {
-        boolean exists = dataset.getPivots(-1) != null;
+        boolean exists = dataset.getPivots(1) != null;
         if (!exists) {
             LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
             FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
@@ -224,13 +224,13 @@ public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFi
 
     private static void createKeyValueStorageForBigDataset(Dataset dataset, String datasetName, int datasetSize) {
         if (datasetSize >= MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE) {
-            Map keyValueStorage = dataset.getKeyValueStorage();
-            boolean prohibited = !(keyValueStorage == null || keyValueStorage.isEmpty());
+            boolean prohibited = dataset.hasKeyValueStorage();
             if (prohibited) {
                 LOG.log(Level.WARNING, "The key value storage already exists for dataset {0}", datasetName);
                 prohibited = askForRewriting("The key value storage", dataset);
             }
             if (!prohibited) {
+                dataset.deleteKeyValueStorage();
                 LOG.log(Level.INFO, "Dataset: {0}, creating key-value storage", datasetName);
                 VMMVStorageInsertMain.run(dataset);
             }
