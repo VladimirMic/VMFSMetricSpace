@@ -25,12 +25,12 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  *
  * @author au734419
  */
-public class FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings {
+public class FSPrepareNewDatasetForPivotFilterings {
 
     public static final Boolean SKIP_EVERYTHING_EVALUATED = false;
     public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 50 * 1000 * 1000; // decide by yourself, smaller datasets can be kept as a map in the main memory only, and creation of the map is efficient. This is implemented, e.g., in FSFloatVectorDataset and FSHammingSpaceDataset in class FSDatasetInstanceSingularizator
     public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 11 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
-    public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetSelectQueriesPivotsLearnGroundTruthAndAllPivotFilterings.class.getName());
+    public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetForPivotFilterings.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;

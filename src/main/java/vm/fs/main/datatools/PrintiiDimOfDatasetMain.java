@@ -24,8 +24,10 @@ public class PrintiiDimOfDatasetMain {
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
 //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
