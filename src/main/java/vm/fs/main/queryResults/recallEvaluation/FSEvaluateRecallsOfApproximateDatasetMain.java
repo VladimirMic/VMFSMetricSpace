@@ -23,8 +23,8 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
     public static final Integer[] kCands = new Integer[]{30}; // {null} if dynamic, otherwise fixed number
 
     public static void main(String[] args) throws InterruptedException {
-//        directFiles();
-        forDatasets(); // just if the results are in the ground truth folder
+        directFiles();
+//        forDatasets(); // just if the results are in the ground truth folder
     }
 
     public static final void run(String folder, String groundTDatasetName, String groundTQuerySetName, String approxDatasetName, String approxQuerySetName) {
@@ -72,7 +72,9 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
     }
 
     private static void directFiles() {
-        String[] folderNames = { //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k30"
+        String[] folderNames = {
+            "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k30"
+//            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k30"
         //                                    "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
         //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
         //                        "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000",
@@ -95,8 +97,9 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
             for (String fileName : files) {
                 Logger.getLogger(FSEvaluateRecallsOfApproximateDatasetMain.class.getName()).log(Level.INFO, "Processing file {0}", fileName);
                 fileName = fileName.trim().substring(0, fileName.length() - 3);
-                run(folderName, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", fileName, "");
+//                run(folderName, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", fileName, "");
 //                run(folderName, "decaf_100m_PCA256", "decaf_100m_PCA256", fileName, "");
+                run(folderName, "decaf_100m", "decaf_100m", fileName, "");
             }
         }
     }
