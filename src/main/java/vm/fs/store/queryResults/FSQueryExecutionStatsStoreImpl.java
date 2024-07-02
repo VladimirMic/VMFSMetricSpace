@@ -77,7 +77,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
     }
 
     @Override
-    public void storeStatsForQuery(Object queryObjId, Integer distanceComputationsCount, long time, Object... additionalParametersToStore) {
+    public void storeStatsForQuery(Comparable queryObjId, Integer distanceComputationsCount, long time, Object... additionalParametersToStore) {
         TreeMap<FSQueryExecutionStatsStoreImpl.QUERY_STATS, String> treeMap = new TreeMap(new StatsAttributesComparator());
         treeMap.put(QUERY_STATS.query_obj_id, queryObjId.toString());
         treeMap.put(QUERY_STATS.cand_set_dynamic_size, Integer.toString(distanceComputationsCount));
