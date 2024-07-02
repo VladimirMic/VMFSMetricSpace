@@ -18,6 +18,7 @@ import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFil
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
+import vm.search.algorithm.SearchingAlgorithm;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 
 /**
@@ -186,14 +187,14 @@ public class FSPrepareNewDatasetForPivotFilterings {
     }
 
     private static void precomputeObjectToPivotDists(Dataset dataset, String datasetName, int datasetSize) {
-        boolean prohibited = FSEvalAndStoreObjectsToPivotsDistsMain.existsForDataset(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
+        boolean prohibited = FSEvalAndStoreObjectsToPivotsDistsMain.existsForDataset(dataset, SearchingAlgorithm.IMPLICIT_PIVOT_COUNT);
         if (prohibited) {
             LOG.log(Level.WARNING, "Dists to pivots already evaluated for dataset {0}", datasetName);
             prohibited = askForRewriting("Dists to pivots", dataset);
         }
         if (!prohibited && datasetSize <= MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS) {
             LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
-            FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT);
+            FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, SearchingAlgorithm.IMPLICIT_PIVOT_COUNT);
         }
     }
 

@@ -5,6 +5,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
+import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
@@ -73,7 +74,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
         };
 
-        int pivotCount = FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT;
+        int pivotCount = SearchingAlgorithm.IMPLICIT_PIVOT_COUNT;
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
 
         for (Dataset dataset : datasets) {

@@ -1,6 +1,7 @@
 package vm.fs.main.search.filtering.learning;
 
 import java.io.File;
+import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
@@ -9,6 +10,7 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles;
 import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
 import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
+import vm.search.algorithm.SearchingAlgorithm;
 
 /**
  *
@@ -57,7 +59,7 @@ public class FSLearnCoefsForDataDepenentMetricFilteringMain {
     }
 
     public static void run(Dataset dataset) {
-        int pivotCount = FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT;
+        int pivotCount = SearchingAlgorithm.IMPLICIT_PIVOT_COUNT;
         PrecomputedPairsOfDistancesStoreInterface smallDistSample = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_O_COUNT, SAMPLE_Q_COUNT);
 
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
@@ -67,7 +69,7 @@ public class FSLearnCoefsForDataDepenentMetricFilteringMain {
 
     public static boolean existsForDataset(Dataset dataset) {
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
-        String result = storage.getResultDescription(dataset.getDatasetName(), FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT, SAMPLE_O_COUNT, SAMPLE_Q_COUNT, RATIO_OF_SMALLEST_DISTS);
+        String result = storage.getResultDescription(dataset.getDatasetName(), SearchingAlgorithm.IMPLICIT_PIVOT_COUNT, SAMPLE_O_COUNT, SAMPLE_Q_COUNT, RATIO_OF_SMALLEST_DISTS);
         File file = storage.getFile(result, false);
         return file.exists();
     }

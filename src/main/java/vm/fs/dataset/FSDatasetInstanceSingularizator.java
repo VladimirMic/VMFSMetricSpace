@@ -166,6 +166,11 @@ public class FSDatasetInstanceSingularizator {
         public void deleteKeyValueStorage() {
             VMMVStorage.delete(datasetName);
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return -1;
+        }
     }
 
     public static class DeCAF_PCA8Dataset extends FSFloatVectorDataset {
@@ -1268,6 +1273,11 @@ public class FSDatasetInstanceSingularizator {
         }
 
         @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return -1;
+        }
+
+        @Override
         public Map<Comparable, float[]> getKeyValueStorage() {
             try {
                 VMMVStorage storage = ((FSMetricSpacesStorage) metricSpacesStorage).getSingularizatorOfDiskStorage();
@@ -1319,6 +1329,12 @@ public class FSDatasetInstanceSingularizator {
         public void deleteKeyValueStorage() {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return -1;
+        }
+
     }
 
     public static class FSHammingSpaceDataset extends Dataset<long[]> {
@@ -1342,5 +1358,11 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public void deleteKeyValueStorage() {
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return -1;
+        }
+
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
@@ -17,6 +18,7 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.twopivots.learning.LearningCoefsForPtolemyInequalityWithLimitedAngles;
 import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
+import vm.search.algorithm.SearchingAlgorithm;
 
 /**
  *
@@ -26,7 +28,7 @@ public class FSLearnCoefsForDataDependentPtolemyFilteringMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
-    public static final Integer PIVOTS = FSEvalAndStoreObjectsToPivotsDistsMain.PIVOT_COUNT;
+    public static final Integer PIVOTS = SearchingAlgorithm.IMPLICIT_PIVOT_COUNT;
     public static final Boolean ALL_PIVOT_PAIRS = true;
 
     public static void main(String[] args) throws IOException {

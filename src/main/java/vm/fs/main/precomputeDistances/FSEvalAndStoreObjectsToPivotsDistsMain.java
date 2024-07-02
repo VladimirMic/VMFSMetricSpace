@@ -9,12 +9,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
+import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
+import vm.search.algorithm.SearchingAlgorithm;
 
 /**
  * TODO - paralelisation?!
@@ -25,7 +26,6 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
 
     public static final Logger LOG = Logger.getLogger(FSEvalAndStoreObjectsToPivotsDistsMain.class.getName());
 
-    public static final Integer PIVOT_COUNT = KNNSearchWithPtolemaicFiltering.LB_COUNT;
 
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
@@ -37,7 +37,7 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         };
         for (Dataset dataset : datasets) {
-            run(dataset, PIVOT_COUNT);
+            run(dataset, SearchingAlgorithm.IMPLICIT_PIVOT_COUNT);
             System.gc();
         }
     }
