@@ -20,7 +20,7 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 public class FSEvaluateRecallsOfApproximateDatasetMain {
 
 //    public static final Integer[] kCands = new Integer[]{300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; // null if dynamic, otherwise fixed number
-    public static final Integer[] kCands = new Integer[]{30}; // {null} if dynamic, otherwise fixed number
+    public static final Integer[] kCands = new Integer[]{null}; // {null} if dynamic, otherwise fixed number
 
     public static void main(String[] args) throws InterruptedException {
         directFiles();
@@ -73,7 +73,7 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
 
     private static void directFiles() {
         String[] folderNames = {
-            "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k30"
+            "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k100000"
 //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k30"
         //                                    "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
         //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",

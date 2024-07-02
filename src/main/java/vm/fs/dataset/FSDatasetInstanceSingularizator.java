@@ -1229,6 +1229,21 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
+    public static class Faiss_DeCAF_100M_Candidates extends DatasetOfCandidates<float[]> {
+
+        public Faiss_DeCAF_100M_Candidates() {
+            super(
+                    new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
+                    "Faiss_DeCAF_100M_Candidates",
+                    new FSNearestNeighboursStorageImpl(),
+                    "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k100000",
+                    "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000-nprobe1024",
+                    "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k100000_QueriesSample",
+                    "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000-nprobe1024");
+        }
+
+    }
+
     public static class Faiss_DeCAF_100M_PCA256_Candidates extends DatasetOfCandidates<float[]> {
 
         public Faiss_DeCAF_100M_PCA256_Candidates() {

@@ -56,7 +56,8 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             try {
                 if (k != null) {
                     return getFileWithResults(resultsName, datasetName, querySetName, null, willBeDeleted);
-                } else if (k != 50000) {
+                }
+                if (k != null && k != 50000) {
                     ret = getFileWithResults(resultsName, datasetName, querySetName, 50000, willBeDeleted);
                     if (ret.exists()) {
                         return ret;

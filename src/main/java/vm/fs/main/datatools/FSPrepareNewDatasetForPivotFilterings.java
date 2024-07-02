@@ -6,7 +6,6 @@ package vm.fs.main.datatools;
 
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,7 +26,7 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  */
 public class FSPrepareNewDatasetForPivotFilterings {
 
-    public static final Boolean SKIP_EVERYTHING_EVALUATED = false;
+    public static final Boolean SKIP_EVERYTHING_EVALUATED = true;
     public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 50 * 1000 * 1000; // decide by yourself, smaller datasets can be kept as a map in the main memory only, and creation of the map is efficient. This is implemented, e.g., in FSFloatVectorDataset and FSHammingSpaceDataset in class FSDatasetInstanceSingularizator
     public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 11 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetForPivotFilterings.class.getName());
@@ -37,9 +36,10 @@ public class FSPrepareNewDatasetForPivotFilterings {
         Dataset[] datasets = {
             //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda()
             //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
-        //                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-        //                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+            //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+            //                            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
+            //                            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
         //                    new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
         //                    new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
@@ -87,17 +87,16 @@ public class FSPrepareNewDatasetForPivotFilterings {
         Dataset origDataset = dataset;
         if (dataset instanceof DatasetOfCandidates) {
             origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
-            plotDistanceDensity(origDataset, datasetName);
+            plotDistanceDensity(origDataset);
         }
-
-//        plotDistanceDensity(dataset, datasetName);
-//        selectRandomPivotsAndQueryObjects(origDataset, datasetName);
-//        evaluateGroundTruth(dataset, datasetName);
-//        evaluateSampleOfSmallestDistances(dataset, datasetName);
-//        precomputeObjectToPivotDists(origDataset, datasetName, datasetSize);
+        plotDistanceDensity(dataset);
+        selectRandomPivotsAndQueryObjects(origDataset, datasetName);
+        evaluateGroundTruth(dataset, datasetName);
+        evaluateSampleOfSmallestDistances(dataset, datasetName);
+        precomputeObjectToPivotDists(origDataset, origDataset.getDatasetName(), datasetSize);
         createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
-//        learnDataDependentMetricFiltering(dataset, datasetName);
-//        learnDataDependentPtolemaicFiltering(dataset, datasetName);
+        learnDataDependentMetricFiltering(dataset, datasetName);
+        learnDataDependentPtolemaicFiltering(dataset, datasetName);
     }
 
     /**
@@ -136,13 +135,13 @@ public class FSPrepareNewDatasetForPivotFilterings {
         return precomputedDatasetSize;
     }
 
-    private static void plotDistanceDensity(Dataset dataset, String datasetName) {
+    private static void plotDistanceDensity(Dataset dataset) {
         boolean prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
         if (!prohibited) {
-            LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", datasetName);
+            LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", dataset.getDatasetName());
             PrintAndPlotDDOfDatasetMain.run(dataset);
         } else {
-            LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", datasetName);
+            LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", dataset.getDatasetName());
         }
     }
 
