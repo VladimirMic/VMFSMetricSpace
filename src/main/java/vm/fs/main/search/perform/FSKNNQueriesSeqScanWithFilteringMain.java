@@ -5,9 +5,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
-import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
@@ -47,8 +45,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+            //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
             new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
@@ -109,6 +107,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), df);
             if (filter instanceof DataDependentGeneralisedPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset())) {
                 KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
+//STRAIN
                 tmp.setObjBeforeSeqScan(100000);
                 tmp.setThresholdOnLBsPerObjForSeqScan(20);
             }
@@ -191,7 +190,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, ptolemaicFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
         return new BoundsOnDistanceEstimation[]{
-            metricFiltering, metricFiltering,
+            //            metricFiltering, metricFiltering,
             dataDependentMetricFiltering, dataDependentMetricFiltering,
             fourPointPropertyBased, fourPointPropertyBased,
             ptolemaicFiltering, ptolemaicFiltering,

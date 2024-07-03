@@ -92,7 +92,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
         plotDistanceDensity(dataset);
         selectRandomPivotsAndQueryObjects(origDataset, datasetName);
-        evaluateGroundTruth(dataset, datasetName);
+//        evaluateGroundTruth(dataset, datasetName);
         evaluateSampleOfSmallestDistances(dataset, datasetName);
         precomputeObjectToPivotDists(origDataset, origDataset.getDatasetName(), datasetSize);
         createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
