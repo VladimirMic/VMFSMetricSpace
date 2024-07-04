@@ -53,9 +53,9 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
                     retList.add(lineFloats);
                     if (counter % 50000 == 0) {
                         LOG.log(Level.INFO, "Parsed precomputed distances between pivots and {0} objects", counter);
-                    }
-                    if (vm.javatools.Tools.getRatioOfConsumedRam(false) >= 0.9) {
-                        System.gc();
+                        if (vm.javatools.Tools.getRatioOfConsumedRam(true) >= 0.9) {
+                            System.gc();
+                        }
                     }
                 }
             } catch (NullPointerException ex) {

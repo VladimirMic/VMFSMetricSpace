@@ -190,11 +190,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, ptolemaicFiltering, fourPointPropertyBased};
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
         return new BoundsOnDistanceEstimation[]{
+//            dataDependentMetricFiltering, dataDependentMetricFiltering,
+            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering,
             //            metricFiltering, metricFiltering,
-            dataDependentMetricFiltering, dataDependentMetricFiltering,
             fourPointPropertyBased, fourPointPropertyBased,
-            ptolemaicFiltering, ptolemaicFiltering,
-            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering};
+            ptolemaicFiltering, ptolemaicFiltering
+        };
 //        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering};
 //        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
