@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
+package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
-import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotFAISSCLIP_PCA256_FinalFiltering.LB;
-import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.PlotFAISSCLIP_PCA256_FinalFiltering.PIVOTS;
+import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering.LB;
+import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering.PIVOTS;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotPlotter;
 
@@ -15,16 +11,16 @@ import vm.plot.impl.BoxPlotPlotter;
  *
  * @author Vlada
  */
-public class PlotFAISSDeCAF_PCA256_FinalFiltering extends FSAbstractPlotterFromResults {
+public class PlotFAISSDeCAF_FinalFiltering extends FSAbstractPlotterFromResults {
 
-    public PlotFAISSDeCAF_PCA256_FinalFiltering(boolean plotOnlyPDF) {
+    public PlotFAISSDeCAF_FinalFiltering(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
     @Override
     public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return strings(
-                "DeCAF_PCA256"
+                "DeCAF_100M"
         );
     }
 
@@ -43,11 +39,11 @@ public class PlotFAISSDeCAF_PCA256_FinalFiltering extends FSAbstractPlotterFromR
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_06_" + PIVOTS + "_pivots_30NN_seq_triangle_inequality",
-                "2024_06_" + PIVOTS + "_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_06_" + PIVOTS + "_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_06_" + PIVOTS + "_pivots_30NN_seq_ptolemaios_" + LB + "LB",
-                "2024_06_" + PIVOTS + "_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_" + LB + "LB",
+                "2024_07_" + PIVOTS + "_pivots_30NN_seq_triangle_inequality",
+                "2024_07_" + PIVOTS + "_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_07_" + PIVOTS + "_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_07_" + PIVOTS + "_pivots_30NN_seq_ptolemaios_" + LB + "LB",
+                "2024_07_" + PIVOTS + "_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_" + LB + "LB",
                 "ground_truth"
         );
     }
@@ -66,7 +62,7 @@ public class PlotFAISSDeCAF_PCA256_FinalFiltering extends FSAbstractPlotterFromR
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "Faiss_DeCAF_100M_PCA256_Candidates__decaf_100m_PCA256__30__Faiss_DeCAF_100M_PCA256_Candidates__decaf_100m_PCA256__"
+                "Faiss_DeCAF_100M_Candidates__decaf_100m__30__Faiss_DeCAF_100M_Candidates__decaf_100m__"
         );
     }
 
@@ -97,7 +93,7 @@ public class PlotFAISSDeCAF_PCA256_FinalFiltering extends FSAbstractPlotterFromR
 
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
-        return firstValue / 10000;
+        return firstValue / 100000;
     }
 
 }

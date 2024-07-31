@@ -31,7 +31,7 @@ public class VMMVStorage<T> {
     private final MVStore storage;
     private final String datasetName;
     private final boolean willBeDeleted;
-    private final MVMap<Object, T> map;
+    private final MVMap<Comparable, T> map;
 
     public VMMVStorage(String datasetName, boolean createNew) {
         this.datasetName = datasetName;
@@ -80,11 +80,19 @@ public class VMMVStorage<T> {
         return ret;
     }
 
-    public Map<Object, T> getKeyValueStorage() {
+    public Map<Comparable, T> getKeyValueStorage() {
         if (map == null) {
             return null;
         }
         return Collections.unmodifiableMap(map);
+    }
+
+    public void insertObjects(Map<Comparable, T> source) {
+        LOG.log(Level.INFO, "Commit of {0} objects", map.size());
+        map.putAll(source);
+        storage.commit();
+        System.gc();
+        LOG.log(Level.INFO, "Stored {0} objects", map.size());
     }
 
     public void insertObjects(Dataset<T> dataset) {
@@ -107,9 +115,9 @@ public class VMMVStorage<T> {
         } else {
             map.putAll(priorityObjects);
         }
-        LOG.log(Level.INFO, "Stored {0} objects", map.size());
         System.gc();
         storage.commit();
+        LOG.log(Level.INFO, "Stored {0} objects", map.size());
     }
 
     public int size() {

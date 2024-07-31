@@ -111,6 +111,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 tmp.setObjBeforeSeqScan(100000);
                 tmp.setThresholdOnLBsPerObjForSeqScan(20);
             }
+//            if (filter instanceof DataDependentGeneralisedPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates())) {
+//                KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
+////STRAIN
+//                tmp.setObjBeforeSeqScan(10000);
+//                tmp.setThresholdOnLBsPerObjForSeqScan(50); // 85 for 128 pivots
+//            }
         } else if (filter instanceof AbstractTwoPivotsFilter) {
             alg = new KNNSearchWithGenericTwoPivotFiltering(metricSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pivotPivotDists, df);
         } else if (filter instanceof AbstractOnePivotFilter) {
@@ -186,19 +192,20 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 dataset,
                 pivotCount
         );
-//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased};
-//        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, ptolemaicFiltering, fourPointPropertyBased};
-//        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering};
         return new BoundsOnDistanceEstimation[]{
-//            dataDependentMetricFiltering, dataDependentMetricFiltering,
             dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering,
-            //            metricFiltering, metricFiltering,
+            dataDependentMetricFiltering, dataDependentMetricFiltering,
+            metricFiltering, metricFiltering,
             fourPointPropertyBased, fourPointPropertyBased,
             ptolemaicFiltering, ptolemaicFiltering
         };
-//        return new BoundsOnDistanceEstimation[]{dataDependentMetricFiltering, metricFiltering, fourPointPropertyBased, dataDependentPtolemaicFiltering, ptolemaicFiltering};
-//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering};
-//        return new BoundsOnDistanceEstimation[]{metricFiltering, dataDependentMetricFiltering, fourPointPropertyBased, ptolemaicFiltering, dataDependentPtolemaicFiltering};
+//        return new BoundsOnDistanceEstimation[]{
+//            dataDependentPtolemaicFiltering,
+//            dataDependentMetricFiltering,
+//            metricFiltering,
+//            fourPointPropertyBased,
+//            ptolemaicFiltering
+//        };
     }
 
 }

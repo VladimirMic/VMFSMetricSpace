@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
+package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
+import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering.LB;
+import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering.PIVOTS;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotPlotter;
 
@@ -13,19 +11,16 @@ import vm.plot.impl.BoxPlotPlotter;
  *
  * @author Vlada
  */
-public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromResults {
+public class PlotFAISSDeCAF_PCA256_FinalFiltering extends FSAbstractPlotterFromResults {
 
-    public static final Integer PIVOTS = 64;
-    public static final Integer LB = PIVOTS;
-
-    public PlotFAISSCLIP_PCA256_FinalFiltering(boolean plotOnlyPDF) {
+    public PlotFAISSDeCAF_PCA256_FinalFiltering(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
     @Override
     public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return strings(
-                "CLIP_PCA256"
+                "DeCAF_PCA256"
         );
     }
 
@@ -67,7 +62,8 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "Faiss_Clip_100M_PCA256_Candidates__laion2B-en-clip768v2-n=100M.h5_PCA256__30__Faiss_Clip_100M_PCA256_Candidates__laion2B-en-clip768v2-n=100M.h5_PCA256__");
+                "Faiss_DeCAF_100M_PCA256_Candidates__decaf_100m_PCA256__30__Faiss_DeCAF_100M_PCA256_Candidates__decaf_100m_PCA256__"
+        );
     }
 
     @Override
@@ -82,7 +78,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
 
     @Override
     public String getResultName() {
-        return "Filterings_Clip";
+        return "Filterings_DeCAF";
     }
 
     @Override
@@ -97,7 +93,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
 
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
-        return firstValue / 750;
+        return firstValue / 10000;
     }
 
 }

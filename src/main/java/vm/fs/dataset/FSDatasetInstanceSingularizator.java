@@ -1,5 +1,7 @@
 package vm.fs.dataset;
 
+import java.util.HashMap;
+import java.util.List;
 import vm.metricSpace.DatasetOfCandidates;
 import java.util.Map;
 import org.h2.mvstore.MVStoreException;
@@ -11,6 +13,7 @@ import vm.fs.metricSpaceImpl.VMMVStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
+import vm.queryResults.QueryNearestNeighboursStoreInterface;
 
 /**
  *
@@ -1219,7 +1222,7 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    public static class Faiss_Clip_100M_PCA256_Candidates extends DatasetOfCandidates<float[]> {
+    public static class Faiss_Clip_100M_PCA256_Candidates extends FSDatasetOfCandidates<float[]> {
 
         public Faiss_Clip_100M_PCA256_Candidates() {
             super(
@@ -1234,7 +1237,7 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    public static class Faiss_DeCAF_100M_Candidates extends DatasetOfCandidates<float[]> {
+    public static class Faiss_DeCAF_100M_Candidates extends FSDatasetOfCandidates<float[]> {
 
         public Faiss_DeCAF_100M_Candidates() {
             super(
@@ -1249,7 +1252,7 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    public static class Faiss_DeCAF_100M_PCA256_Candidates extends DatasetOfCandidates<float[]> {
+    public static class Faiss_DeCAF_100M_PCA256_Candidates extends FSDatasetOfCandidates<float[]> {
 
         public Faiss_DeCAF_100M_PCA256_Candidates() {
             super(
@@ -1364,5 +1367,46 @@ public class FSDatasetInstanceSingularizator {
             return -1;
         }
 
+    }
+
+    public static class FSDatasetOfCandidates<T> extends DatasetOfCandidates<T> {
+
+        private Map<String, VMMVStorage<Comparable[]>> singularizator;
+
+        public FSDatasetOfCandidates(Dataset origDataset, String newDatasetName, QueryNearestNeighboursStoreInterface resultsStorage, String resultFolderName, String directResultFileName, String trainingResultFolderName, String trainingDirectResultFileName) {
+            super(origDataset, newDatasetName, resultsStorage, resultFolderName, directResultFileName, trainingResultFolderName, trainingDirectResultFileName);
+        }
+
+        @Override
+        protected Map<Comparable,Comparable[]> getDiskBasedDatasetOfCandsMap(String datasetName) {
+            if (!VMMVStorage.exists(datasetName)) {
+                return null;
+            }
+            if (singularizator == null) {
+                singularizator = new HashMap<>();
+            }
+            if (!singularizator.containsKey(datasetName)) {
+                singularizator.put(datasetName, new VMMVStorage<>(datasetName, false));
+            }
+            return singularizator.get(datasetName).getKeyValueStorage();
+        }
+
+        @Override
+        protected void materialiseMap(Map<Comparable, Comparable[]> map, String storageName) {
+            if (singularizator != null && singularizator.containsKey(storageName)) {
+                throw new RuntimeException("The dataset " + storageName + " has a disk based representation already");
+            }
+            VMMVStorage<Comparable[]> vmmvStorage = new VMMVStorage<>(storageName, true);
+            vmmvStorage.insertObjects(map);
+            if (singularizator == null) {
+                singularizator = new HashMap<>();
+            }
+            singularizator.put(storageName, vmmvStorage);
+        }
+
+        @Override
+        public boolean hasKeyValueStorage() {
+            return VMMVStorage.exists(datasetName);
+        }
     }
 }
