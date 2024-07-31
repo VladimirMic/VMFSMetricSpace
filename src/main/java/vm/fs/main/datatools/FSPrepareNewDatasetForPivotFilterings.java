@@ -83,21 +83,20 @@ public class FSPrepareNewDatasetForPivotFilterings {
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {
-        String datasetName = dataset.getDatasetName();
-        int datasetSize = precomputeDatasetSize(dataset);
+        precomputeDatasetSize(dataset);
         Dataset origDataset = dataset;
         if (dataset instanceof DatasetOfCandidates) {
             origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
             plotDistanceDensity(origDataset);
         }
-        plotDistanceDensity(dataset);
-        selectRandomPivotsAndQueryObjects(origDataset, datasetName);
-//        evaluateGroundTruth(dataset, datasetName);
-        evaluateSampleOfSmallestDistances(dataset, datasetName);
-        precomputeObjectToPivotDists(origDataset, origDataset.getDatasetName(), datasetSize);
-        createKeyValueStorageForBigDataset(dataset, datasetName, datasetSize);
-        learnDataDependentMetricFiltering(dataset, datasetName);
-        learnDataDependentPtolemaicFiltering(dataset, datasetName);
+//        plotDistanceDensity(dataset);
+//        selectRandomPivotsAndQueryObjects(origDataset);
+//        evaluateGroundTruth(dataset);
+//        evaluateSampleOfSmallestDistances(dataset);
+//        precomputeObjectToPivotDists(origDataset);
+        createKeyValueStorageForBigDataset(origDataset);
+//        learnDataDependentMetricFiltering(dataset);
+//        learnDataDependentPtolemaicFiltering(dataset);
     }
 
     /**
@@ -146,8 +145,9 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void selectRandomPivotsAndQueryObjects(Dataset dataset, String datasetName) {
+    private static void selectRandomPivotsAndQueryObjects(Dataset dataset) {
         boolean exists = dataset.getPivots(1) != null;
+        String datasetName = dataset.getDatasetName();
         if (!exists) {
             LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
             FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
@@ -162,8 +162,9 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void evaluateGroundTruth(Dataset dataset, String datasetName) {
+    private static void evaluateGroundTruth(Dataset dataset) {
         boolean prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset, null);
+        String datasetName = dataset.getDatasetName();
         if (prohibited) {
             LOG.log(Level.WARNING, "Ground already exists for dataset {0}", datasetName);
             prohibited = askForRewriting("Ground truth", dataset);
@@ -174,8 +175,9 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void evaluateSampleOfSmallestDistances(Dataset dataset, String datasetName) {
+    private static void evaluateSampleOfSmallestDistances(Dataset dataset) {
         boolean prohibited = FSEvalAndStoreSampleOfSmallestDistsMain.existsForDataset(dataset);
+        String datasetName = dataset.getDatasetName();
         if (prohibited) {
             LOG.log(Level.WARNING, "Smallest distances already evaluated for dataset {0}", datasetName);
             prohibited = askForRewriting("Smallest distance", dataset);
@@ -186,19 +188,22 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void precomputeObjectToPivotDists(Dataset dataset, String datasetName, int datasetSize) {
+    private static void precomputeObjectToPivotDists(Dataset dataset) {
+        String datasetName = dataset.getDatasetName();
         boolean prohibited = FSEvalAndStoreObjectsToPivotsDistsMain.existsForDataset(dataset, SearchingAlgorithm.IMPLICIT_PIVOT_COUNT);
         if (prohibited) {
             LOG.log(Level.WARNING, "Dists to pivots already evaluated for dataset {0}", datasetName);
             prohibited = askForRewriting("Dists to pivots", dataset);
         }
+        int datasetSize = dataset.getPrecomputedDatasetSize();
         if (!prohibited && datasetSize <= MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS) {
             LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
             FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, SearchingAlgorithm.IMPLICIT_PIVOT_COUNT);
         }
     }
 
-    private static void learnDataDependentMetricFiltering(Dataset dataset, String datasetName) {
+    private static void learnDataDependentMetricFiltering(Dataset dataset) {
+        String datasetName = dataset.getDatasetName();
         boolean prohibited = FSLearnCoefsForDataDepenentMetricFilteringMain.existsForDataset(dataset);
         if (prohibited) {
             LOG.log(Level.WARNING, "Coefs for Data-dependent Metric Filtering already evaluated for dataset {0}", datasetName);
@@ -210,7 +215,8 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void learnDataDependentPtolemaicFiltering(Dataset dataset, String datasetName) {
+    private static void learnDataDependentPtolemaicFiltering(Dataset dataset) {
+        String datasetName = dataset.getDatasetName();
         boolean prohibited = FSLearnCoefsForDataDependentPtolemyFilteringMain.existsForDataset(dataset);
         if (prohibited) {
             LOG.log(Level.WARNING, "Coefs for Data-dependent Generalised Ptolemaic Filtering already evaluated for dataset {0}", datasetName);
@@ -222,7 +228,9 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void createKeyValueStorageForBigDataset(Dataset dataset, String datasetName, int datasetSize) {
+    private static void createKeyValueStorageForBigDataset(Dataset dataset) {
+        String datasetName = dataset.getDatasetName();
+        int datasetSize = dataset.getPrecomputedDatasetSize();
         if (datasetSize >= MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE) {
             boolean prohibited = dataset.hasKeyValueStorage();
             if (prohibited) {

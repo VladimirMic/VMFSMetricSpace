@@ -166,13 +166,13 @@ public class VMMVStorage<T> {
             Object o = metricObjects.next();
             Comparable id = metricSpace.getIDOfMetricObject(o);
             T data = metricSpace.getDataOfMetricObject(o);
-            boolean add = (priorityObjects.size() < batchSize || id.compareTo(priorityObjects.lastKey()) < 0)
-                    && (id.compareTo(allSortedIDs.first()) >= 0);
+            boolean add = (priorityObjects.size() < batchSize || id.compareTo(priorityObjects.lastKey()) < 0) && (id.compareTo(allSortedIDs.first()) >= 0);
             if (add) {
                 priorityObjects.put(id, data);
-//                LOG.log(Level.INFO, "Adding {0}, waiting for {1}, priority size {2}, first obj in priority: {3}, comparison: {4}", new Object[]{id, batchOfIDs.first(), priorityObjects.size(), priorityObjects.firstKey(), priorityObjects.firstKey().compareTo(batchOfIDs.first())});
-                boolean check = (priorityObjects.size() >= batchSize * 0.7f && priorityObjects.size() % 100 == 0) || allSortedIDs.isEmpty();
+                boolean check = priorityObjects.size() >= batchSize * 0.7f || allSortedIDs.isEmpty();
                 while (check) {
+                    LOG.log(Level.INFO, "Checking: added {0} to cached, waiting for {1}, cached {2} objects, first obj in cached: {3}, comparison of first cached with the required: {4}",
+                            new Object[]{id, allSortedIDs.first(), priorityObjects.size(), priorityObjects.firstKey(), priorityObjects.firstKey().compareTo(allSortedIDs.first())});
                     check = storePrefix(allSortedIDs, priorityObjects);
                 }
             }
