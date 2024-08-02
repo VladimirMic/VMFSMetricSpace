@@ -15,7 +15,7 @@ import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
-import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
+import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
 /**
  *
@@ -79,7 +79,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
     }
 
     public String getNameOfFileWithCoefs(String datasetName, int pivotCount, boolean allPivotPairs) {
-        return getResultDescription(datasetName, PrecomputedPairsOfDistancesStoreInterface.IMPLICIT_K, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
+        return getResultDescription(datasetName, AbstractPrecomputedPairsOfDistancesStorage.IMPLICIT_K, AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_QUERY_SET_SIZE, pivotCount, allPivotPairs);
     }
 
 }

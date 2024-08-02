@@ -9,7 +9,7 @@ import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles;
 import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
-import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
+import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 import vm.search.algorithm.SearchingAlgorithm;
 
 /**
@@ -60,7 +60,7 @@ public class FSLearnCoefsForDataDepenentMetricFilteringMain {
 
     public static void run(Dataset dataset) {
         int pivotCount = SearchingAlgorithm.IMPLICIT_PIVOT_COUNT;
-        PrecomputedPairsOfDistancesStoreInterface smallDistSample = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_O_COUNT, SAMPLE_Q_COUNT);
+        AbstractPrecomputedPairsOfDistancesStorage smallDistSample = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_O_COUNT, SAMPLE_Q_COUNT);
 
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
         LearningTriangleInequalityWithLimitedAngles learning = new LearningTriangleInequalityWithLimitedAngles(dataset, smallDistSample, pivotCount, SAMPLE_O_COUNT, SAMPLE_Q_COUNT, storage, dataset.getDatasetName());

@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
-    public static final Boolean ASK_FOR_EXISTENCE = false;
+    public static final Boolean ASK_FOR_EXISTENCE = true;
 
     private static String initRoot() {
         String separator = System.getProperty("file.separator");
@@ -38,7 +38,7 @@ public class FSGlobal {
     public static final String TRIALS_FOLDER = ROOT + "Trials\\";
 
     public static final String DATA_FOLDER = ROOT + "Dataset\\";
-    public static final String DATASET_MVSTORAGE_FOLDER = DATA_FOLDER + "MV_storage2\\";
+    public static final String DATASET_MVSTORAGE_FOLDER = DATA_FOLDER + "MV_storage\\";
     public static final String DATASET_FOLDER = DATA_FOLDER + "Dataset\\";
     public static final String DATASET_METADATA = DATA_FOLDER + "Metadata\\";
     public static final String PIVOT_FOLDER = DATA_FOLDER + "Pivot\\";

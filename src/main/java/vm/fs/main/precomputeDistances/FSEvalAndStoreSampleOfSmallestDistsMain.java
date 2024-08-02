@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.storedPrecomputedDistances.PrecomputedPairsOfDistancesStoreInterface;
+import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
 /**
  *
@@ -37,13 +37,13 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
     }
 
     public static void run(Dataset dataset) {
-        TreeSet result = dataset.evaluateSmallestDistances(PrecomputedPairsOfDistancesStoreInterface.SAMPLE_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_QUERY_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.IMPLICIT_K);
-        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), PrecomputedPairsOfDistancesStoreInterface.SAMPLE_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_QUERY_SET_SIZE);
+        TreeSet result = dataset.evaluateSmallestDistances(AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_QUERY_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.IMPLICIT_K);
+        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_QUERY_SET_SIZE);
         storage.storePrecomputedDistances(result);
     }
 
     public static boolean existsForDataset(Dataset dataset) {
-        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), PrecomputedPairsOfDistancesStoreInterface.SAMPLE_SET_SIZE, PrecomputedPairsOfDistancesStoreInterface.SAMPLE_QUERY_SET_SIZE);
+        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_QUERY_SET_SIZE);
         return storage.getFileForResults(false).exists();
     }
 

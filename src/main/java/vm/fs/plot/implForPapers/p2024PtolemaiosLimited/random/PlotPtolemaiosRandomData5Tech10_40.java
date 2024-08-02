@@ -16,6 +16,8 @@ import vm.plot.impl.BoxPlotPlotter;
  */
 public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromResults {
 
+    public static final Integer PIVOTS = 32;
+
     public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
@@ -47,12 +49,18 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_03_256_pivots_30NN_seq_triangle_inequality",
-                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_03_256_pivots_30NN_seq_ptolemaios",
-                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
+                "2024_08_" + PIVOTS + "_pivots_30NN_seq_triangle_inequality",
+                "2024_08_" + PIVOTS + "_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_08_" + PIVOTS + "_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_08_" + PIVOTS + "_pivots_30NN_seq_ptolemaios_" + PIVOTS + "LB",
+                "2024_08_" + PIVOTS + "_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_" + PIVOTS + "LB",
                 "ground_truth"
+        //                "2024_03_256_pivots_30NN_seq_triangle_inequality",
+        //                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
+        //                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
+        //                "2024_03_256_pivots_30NN_seq_ptolemaios",
+        //                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
+        //                "ground_truth"
         );
     }
 
