@@ -16,7 +16,7 @@ import vm.plot.impl.BoxPlotPlotter;
  */
 public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromResults {
 
-    public static final Integer PIVOTS = 32;
+    public static final Integer PIVOTS = 128;
 
     public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
@@ -27,8 +27,9 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
         return strings(
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
-                "Four Point Property",
+                "Four Point Prop.",
                 "Ptolemaic Filtering",
+                "Ptolemaic with Dyn. Pivots",
                 "Data-dep. Ptolemaic Filering",
                 "Sequential Brute Force"
         );
@@ -41,6 +42,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
             COLOUR_NAMES.C2_RED,
             COLOUR_NAMES.C3_GREEN,
             COLOUR_NAMES.C4_ORANGE,
+            COLOUR_NAMES.C6_BROWN,
             COLOUR_NAMES.C5_VIOLET,
             COLOUR_NAMES.CX_BLACK
         };
@@ -52,6 +54,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_triangle_inequality",
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_08_" + PIVOTS + "_pivots_30NN_seq_ptolemaios_" + PIVOTS + "LB_random_pivots",
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_ptolemaios_" + PIVOTS + "LB",
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_" + PIVOTS + "LB",
                 "ground_truth"

@@ -2,8 +2,6 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
-import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering.LB;
-import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering.PIVOTS;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotPlotter;
 
@@ -12,6 +10,9 @@ import vm.plot.impl.BoxPlotPlotter;
  * @author Vlada
  */
 public class PlotFAISSDeCAF_PCA256_FinalFiltering extends FSAbstractPlotterFromResults {
+
+    public static final Integer PIVOTS = 32;
+    public static final Integer LB = PIVOTS;
 
     public PlotFAISSDeCAF_PCA256_FinalFiltering(boolean plotOnlyPDF) {
         super(plotOnlyPDF);

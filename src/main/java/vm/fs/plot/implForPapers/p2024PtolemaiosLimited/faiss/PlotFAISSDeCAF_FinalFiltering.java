@@ -2,8 +2,6 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
-import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering.LB;
-import static vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering.PIVOTS;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotPlotter;
 
@@ -12,6 +10,9 @@ import vm.plot.impl.BoxPlotPlotter;
  * @author Vlada
  */
 public class PlotFAISSDeCAF_FinalFiltering extends FSAbstractPlotterFromResults {
+
+    public static final Integer PIVOTS = 32;
+    public static final Integer LB = PIVOTS;
 
     public PlotFAISSDeCAF_FinalFiltering(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
@@ -29,8 +30,8 @@ public class PlotFAISSDeCAF_FinalFiltering extends FSAbstractPlotterFromResults 
         return strings(
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
-                "Four Point Property",
-                "Ptolemaic Filtering",
+                "Four Point Prop.",
+                "Ptolemaic with Dyn. Pivots",
                 "Data-dep. Ptolemaic Filering",
                 "Sequential Brute Force"
         );

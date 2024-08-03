@@ -29,8 +29,9 @@ public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech10_
         return strings(
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
-                "Four Point Property",
+                "Four Point Prop.",
                 "Ptolemaic Filtering",
+                "Ptolemaic with Dyn. Pivots",
                 "Data-dep. Ptolemaic Filering",
                 "Sequential Brute Force"
         );
@@ -42,6 +43,7 @@ public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech10_
                 "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_08_256_pivots_30NN_seq_ptolemaios_random_pivots",
                 "2024_03_256_pivots_30NN_seq_ptolemaios",
                 "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
                 "ground_truth"
@@ -50,7 +52,14 @@ public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech10_
 
     @Override
     protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
-        return new AbstractPlotter.COLOUR_NAMES[]{AbstractPlotter.COLOUR_NAMES.C1_BLUE, AbstractPlotter.COLOUR_NAMES.C2_RED, AbstractPlotter.COLOUR_NAMES.C3_GREEN, AbstractPlotter.COLOUR_NAMES.C4_ORANGE, AbstractPlotter.COLOUR_NAMES.C5_VIOLET, AbstractPlotter.COLOUR_NAMES.CX_BLACK};
+        return new AbstractPlotter.COLOUR_NAMES[]{
+            AbstractPlotter.COLOUR_NAMES.C1_BLUE,
+            AbstractPlotter.COLOUR_NAMES.C2_RED,
+            AbstractPlotter.COLOUR_NAMES.C3_GREEN,
+            AbstractPlotter.COLOUR_NAMES.C4_ORANGE,
+            AbstractPlotter.COLOUR_NAMES.C6_BROWN,
+            AbstractPlotter.COLOUR_NAMES.C5_VIOLET,
+            AbstractPlotter.COLOUR_NAMES.CX_BLACK};
     }
 
     @Override

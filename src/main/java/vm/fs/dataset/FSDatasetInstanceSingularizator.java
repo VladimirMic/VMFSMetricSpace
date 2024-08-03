@@ -26,6 +26,11 @@ public class FSDatasetInstanceSingularizator {
         public DeCAFDataset() {
             super("decaf_1m");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 256;
+        }
     }
 
     public static class DeCAF20M_PCA256Dataset extends FSFloatVectorDataset {
@@ -49,17 +54,30 @@ public class FSDatasetInstanceSingularizator {
         }
     }
 
+    private static final Integer PIVOTS_RANDOM_DATASETS = 128;
+
     public static class RandomDataset10Uniform extends FSFloatVectorDataset {
 
         public RandomDataset10Uniform() {
             super("random_10dim_uniform_1M");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
+        }
+
     }
 
     public static class RandomDataset15Uniform extends FSFloatVectorDataset {
 
         public RandomDataset15Uniform() {
             super("random_15dim_uniform_1M");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
         }
     }
 
@@ -68,12 +86,22 @@ public class FSDatasetInstanceSingularizator {
         public RandomDataset20Uniform() {
             super("random_20dim_uniform_1M");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
+        }
     }
 
     public static class RandomDataset25Uniform extends FSFloatVectorDataset {
 
         public RandomDataset25Uniform() {
             super("random_25dim_uniform_1M");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
         }
     }
 
@@ -82,12 +110,22 @@ public class FSDatasetInstanceSingularizator {
         public RandomDataset30Uniform() {
             super("random_30dim_uniform_1M");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
+        }
     }
 
     public static class RandomDataset35Uniform extends FSFloatVectorDataset {
 
         public RandomDataset35Uniform() {
             super("random_35dim_uniform_1M");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
         }
     }
 
@@ -96,12 +134,22 @@ public class FSDatasetInstanceSingularizator {
         public RandomDataset40Uniform() {
             super("random_40dim_uniform_1M");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
+        }
     }
 
     public static class RandomDataset50Uniform extends FSFloatVectorDataset {
 
         public RandomDataset50Uniform() {
             super("random_50dim_uniform_1M");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
         }
     }
 
@@ -110,12 +158,22 @@ public class FSDatasetInstanceSingularizator {
         public RandomDataset60Uniform() {
             super("random_60dim_uniform_1M");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
+        }
     }
 
     public static class RandomDataset70Uniform extends FSFloatVectorDataset {
 
         public RandomDataset70Uniform() {
             super("random_70dim_uniform_1M");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
         }
     }
 
@@ -124,6 +182,11 @@ public class FSDatasetInstanceSingularizator {
         public RandomDataset80Uniform() {
             super("random_80dim_uniform_1M");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
+        }
     }
 
     public static class RandomDataset90Uniform extends FSFloatVectorDataset {
@@ -131,12 +194,22 @@ public class FSDatasetInstanceSingularizator {
         public RandomDataset90Uniform() {
             super("random_90dim_uniform_1M");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
+        }
     }
 
     public static class RandomDataset100Uniform extends FSFloatVectorDataset {
 
         public RandomDataset100Uniform() {
             super("random_100dim_uniform_1M");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return PIVOTS_RANDOM_DATASETS;
         }
     }
 
@@ -661,6 +734,11 @@ public class FSDatasetInstanceSingularizator {
 
         public LAION_10M_PCA256Dataset() {
             super("laion2B-en-clip768v2-n=10M.h5_PCA256");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 128;
         }
 
     }
@@ -1235,6 +1313,11 @@ public class FSDatasetInstanceSingularizator {
                     "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k10000-nprobe256");
         }
 
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 64;
+        }
+
     }
 
     public static class Faiss_DeCAF_100M_Candidates extends FSDatasetOfCandidates<float[]> {
@@ -1248,6 +1331,11 @@ public class FSDatasetInstanceSingularizator {
                     "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000-nprobe1024",
                     "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k100000_QueriesSample",
                     "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000-nprobe1024");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 32;
         }
 
     }
@@ -1378,7 +1466,7 @@ public class FSDatasetInstanceSingularizator {
         }
 
         @Override
-        protected Map<Comparable,Comparable[]> getDiskBasedDatasetOfCandsMap(String datasetName) {
+        protected Map<Comparable, Comparable[]> getDiskBasedDatasetOfCandsMap(String datasetName) {
             if (!VMMVStorage.exists(datasetName)) {
                 return null;
             }

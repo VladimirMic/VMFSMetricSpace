@@ -15,9 +15,6 @@ import vm.plot.impl.BoxPlotPlotter;
  */
 public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromResults {
 
-    public static final Integer PIVOTS = 32;
-    public static final Integer LB = PIVOTS;
-
     public PlotFAISSCLIP_PCA256_FinalFiltering(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
@@ -34,8 +31,8 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
         return strings(
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
-                "Four Point Property",
-                "Ptolemaic Filtering",
+                "Four Point Prop.",
+                "Ptolemaic with Dyn. Pivots",
                 "Data-dep. Ptolemaic Filering",
                 "Sequential Brute Force"
         );
