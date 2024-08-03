@@ -126,7 +126,7 @@ public class VMMVStorage<T> {
 
     private SortedMap<Comparable, T> loadBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
         SortedMap<Comparable, T> ret = new TreeMap<>();
-        List<Object> objectsFromIterator = vm.datatools.Tools.getObjectsFromIterator(66f, metricObjects);
+        List<Object> objectsFromIterator = vm.datatools.Tools.getObjectsFromIterator(90f, metricObjects);
         for (int i = 0; i < objectsFromIterator.size(); i++) {
             Object next = objectsFromIterator.get(i);
             Comparable id = metricSpace.getIDOfMetricObject(next);
@@ -144,7 +144,6 @@ public class VMMVStorage<T> {
         }
         Comparable firstID = topIDs.first();
         Comparable batchID = batch.firstKey();
-//        LOG.log(Level.INFO, "firstID: {0}, batchID: {1}, comparison {2}", new Object[]{firstID, batchID, firstID.toString().compareTo(batchID.toString())});
         while (firstID.equals(batchID)) {
             map.put(firstID, batch.get(batchID));
             ret = true;
@@ -170,9 +169,9 @@ public class VMMVStorage<T> {
             if (add) {
                 priorityObjects.put(id, data);
                 boolean check = priorityObjects.size() >= batchSize * 0.7f || allSortedIDs.isEmpty();
+//                LOG.log(Level.INFO, "Checking? {5}: added {0} to cached, waiting for {1}, cached {2} objects, first obj in cached: {3}, comparison of first cached with the required: {4}",
+//                        new Object[]{id, allSortedIDs.first(), priorityObjects.size(), priorityObjects.firstKey(), priorityObjects.firstKey().compareTo(allSortedIDs.first()), check});
                 while (check) {
-                    LOG.log(Level.INFO, "Checking: added {0} to cached, waiting for {1}, cached {2} objects, first obj in cached: {3}, comparison of first cached with the required: {4}",
-                            new Object[]{id, allSortedIDs.first(), priorityObjects.size(), priorityObjects.firstKey(), priorityObjects.firstKey().compareTo(allSortedIDs.first())});
                     check = storePrefix(allSortedIDs, priorityObjects);
                 }
             }
