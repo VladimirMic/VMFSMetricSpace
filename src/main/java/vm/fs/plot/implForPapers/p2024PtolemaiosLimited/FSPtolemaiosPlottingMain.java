@@ -29,10 +29,10 @@ public class FSPtolemaiosPlottingMain {
     public static final FSAbstractPlotterFromResults Y2024_PlotPtolemaiosRandom100D_AbblationStudy = new PlotPtolemaiosRandom100Abblation(PLOT_ONLY_PDF);
 
     public static void main(String[] args) {
-        Y2024_PlotPtolemaiosRandomData5Tech10_40.makePlots();
-        Y2024_PlotPtolemaiosRandomData5Tech50_100.makePlots();
+//        Y2024_PlotPtolemaiosRandomData5Tech10_40.makePlots();
+//        Y2024_PlotPtolemaiosRandomData5Tech50_100.makePlots();
 //        Y2024_PlotPtolemaiosRandomData5Tech40_100Recall.makePlots();
-//        Y2024_PlotPtolemaiosTransformedClips5Tech.makePlots();
+        Y2024_PlotPtolemaiosTransformedClips5Tech.makePlots();
 //        Y2024_PlotPtolemaiosDeCAF1M5Tech.makePlots();
 //        Y2024_PlotPtolemaiosPivotSelection.makePlots();
 //        Y2024_PlotPtolemaiosCLIP_DF.makePlots();

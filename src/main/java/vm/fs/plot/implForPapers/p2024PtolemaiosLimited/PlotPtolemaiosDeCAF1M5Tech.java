@@ -43,7 +43,7 @@ public class PlotPtolemaiosDeCAF1M5Tech extends PlotPtolemaiosRandomData5Tech10_
                 "2024_03_256_pivots_30NN_seq_triangle_inequality",
                 "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_08_256_pivots_30NN_seq_ptolemaios_random_pivots",
+                "2024_08_256_pivots_30NN_seq_ptolemaios_256LB_random_pivots",
                 "2024_03_256_pivots_30NN_seq_ptolemaios",
                 "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
                 "ground_truth"
