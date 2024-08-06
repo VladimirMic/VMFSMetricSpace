@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
-    public static final Boolean ASK_FOR_EXISTENCE = true;
+    public static final Boolean ASK_FOR_EXISTENCE = false;
 
     private static String initRoot() {
         String separator = System.getProperty("file.separator");

@@ -26,6 +26,8 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
 
     public float[][] loadPrecomPivotsToObjectsDists(File file, Dataset dataset, int maxColumnCount) {
         List<float[]> retList = new ArrayList<>();
+        int maxPivots = maxColumnCount > 0 ? maxColumnCount : Integer.MAX_VALUE;
+        float[][] ret = dataset == null ? null : new float[dataset.getPrecomputedDatasetSize()][maxPivots];
         try {
             BufferedReader br;
             if (file.getName().toLowerCase().endsWith(".gz")) {
@@ -33,7 +35,6 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
             } else {
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             }
-            int maxPivots = maxColumnCount > 0 ? maxColumnCount : Integer.MAX_VALUE;
             try {
                 String line = br.readLine();
                 String[] columns = line.split(";");
@@ -51,7 +52,11 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
                     for (int i = 0; i < lineFloats.length; i++) {
                         lineFloats[i] = Float.parseFloat(split[i + 1]);
                     }
-                    retList.add(lineFloats);
+                    if (ret != null) {
+                        ret[counter - 1] = lineFloats;
+                    } else {
+                        retList.add(lineFloats);
+                    }
                     if (counter % 50000 == 0) {
                         LOG.log(Level.INFO, "Parsed precomputed distances between pivots and {0} objects", counter);
                         if (vm.javatools.Tools.getRatioOfConsumedRam(true) >= 0.9) {
@@ -61,9 +66,11 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
                 }
             } catch (NullPointerException ex) {
             }
-            float[][] ret = new float[retList.size()][maxPivots];
-            for (int i = 0; i < retList.size(); i++) {
-                ret[i] = retList.get(i);
+            if (ret == null) {
+                ret = new float[retList.size()][maxPivots];
+                for (int i = 0; i < retList.size(); i++) {
+                    ret[i] = retList.get(i);
+                }
             }
             if (dataset != null) {
                 checkOrdersOfPivots(dataset.getPivots(maxColumnCount), dataset.getMetricSpace());
@@ -106,14 +113,14 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
             if (bestCount == Integer.MAX_VALUE) {
                 LOG.log(Level.WARNING, "File with precomputed distances does not exist: {0}", ret.getAbsolutePath());
             } else {
-                LOG.log(Level.WARNING, "Since file with precomputed distances to {0} pivots does not exist, returning file with distances to {1} pivots", new Object[]{pivotCount, bestCount});
+                LOG.log(Level.WARNING, "Since the file with precomputed distances to {0} pivots does not exist, returning file with distances to {1} pivots", new Object[]{pivotCount, bestCount});
             }
         }
         return ret;
     }
 
     private int parsePivotCountFromFileName(String name) {
-        name = name.substring(name.lastIndexOf("_"));
+        name = name.substring(name.lastIndexOf("_") + 1);
         name = name.substring(0, name.indexOf("pivot"));
         return Integer.parseInt(name);
     }

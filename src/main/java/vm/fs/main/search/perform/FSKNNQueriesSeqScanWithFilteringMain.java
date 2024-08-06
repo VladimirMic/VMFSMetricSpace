@@ -43,7 +43,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
-        vm.javatools.Tools.sleep(420);
+//        vm.javatools.Tools.sleep(420);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
@@ -191,11 +191,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-            //            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering,
+            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering,
             //            dataDependentMetricFiltering, dataDependentMetricFiltering,
             //            metricFiltering, metricFiltering,
-            fourPointPropertyBased, fourPointPropertyBased
-        //            ptolemaicFiltering, ptolemaicFiltering
+            fourPointPropertyBased, fourPointPropertyBased, //            ptolemaicFiltering, ptolemaicFiltering
         };
 //        return new BoundsOnDistanceEstimation[]{
         //            dataDependentMetricFiltering,
