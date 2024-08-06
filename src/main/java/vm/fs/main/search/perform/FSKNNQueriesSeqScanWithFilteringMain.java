@@ -191,10 +191,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering,
+            ptolemaicFiltering, ptolemaicFiltering,
+            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering
             //            dataDependentMetricFiltering, dataDependentMetricFiltering,
             //            metricFiltering, metricFiltering,
-            fourPointPropertyBased, fourPointPropertyBased, //            ptolemaicFiltering, ptolemaicFiltering
+            //            fourPointPropertyBased, fourPointPropertyBased
         };
 //        return new BoundsOnDistanceEstimation[]{
         //            dataDependentMetricFiltering,

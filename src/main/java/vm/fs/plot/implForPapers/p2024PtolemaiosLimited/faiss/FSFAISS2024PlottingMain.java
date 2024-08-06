@@ -26,8 +26,8 @@ public class FSFAISS2024PlottingMain {
 //        Y2024_PlotFaissCLIPSimulatedCandSetSizes.makePlots();
 //        Y2024_PlotFaissDeCAFSimulatedCandSetSizes.makePlots();
 //        Y2024_PlotFaissDeCAF_PCA256_FinalFiltering.makePlots();
-        Y2024_PlotFaiss_CLIP_PCA256_FinalFiltering.makePlots();
-//        Y2024_PlotFaissDeCAF_FinalFiltering.makePlots();
+//        Y2024_PlotFaiss_CLIP_PCA256_FinalFiltering.makePlots();
+        Y2024_PlotFaissDeCAF_FinalFiltering.makePlots();
     }
 
 }
