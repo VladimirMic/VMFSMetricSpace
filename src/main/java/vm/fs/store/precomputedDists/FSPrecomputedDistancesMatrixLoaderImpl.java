@@ -3,6 +3,7 @@ package vm.fs.store.precomputedDists;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -91,9 +92,30 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
         File ret = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         if (!willBeDeleted && !ret.exists()) {
-            LOG.log(Level.WARNING, "File with precomputed distances does not exist: {0}", ret.getAbsolutePath());
+            FilenameFilter filter = (File file, String string) -> string.contains(datasetName + "_" + pivotSetName);
+            File folder = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER);
+            File[] candidates = folder.listFiles(filter);
+            int bestCount = Integer.MAX_VALUE;
+            for (File candidate : candidates) {
+                int pivotCountInFile = parsePivotCountFromFileName(candidate.getName());
+                if (pivotCountInFile >= pivotCount && pivotCountInFile < bestCount) {
+                    bestCount = pivotCountInFile;
+                    ret = candidate;
+                }
+            }
+            if (bestCount == Integer.MAX_VALUE) {
+                LOG.log(Level.WARNING, "File with precomputed distances does not exist: {0}", ret.getAbsolutePath());
+            } else {
+                LOG.log(Level.WARNING, "Since file with precomputed distances to {0} pivots does not exist, returning file with distances to {1} pivots", new Object[]{pivotCount, bestCount});
+            }
         }
         return ret;
+    }
+
+    private int parsePivotCountFromFileName(String name) {
+        name = name.substring(name.lastIndexOf("_"));
+        name = name.substring(0, name.indexOf("pivot"));
+        return Integer.parseInt(name);
     }
 
 }

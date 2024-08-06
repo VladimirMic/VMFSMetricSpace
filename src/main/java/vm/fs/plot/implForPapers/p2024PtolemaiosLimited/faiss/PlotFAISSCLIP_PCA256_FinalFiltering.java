@@ -32,8 +32,9 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
                 "Four Point Prop.",
+                "Ptolemaic Filtering",
                 "Ptolemaic with Dyn. Pivots",
-                "Data-dep. Ptolemaic Filering",
+                "Data-dep. Ptolemaic Filtering",
                 "Sequential Brute Force"
         );
     }
@@ -41,11 +42,12 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_06_" + 64 + "_pivots_30NN_seq_triangle_inequality",
-                "2024_06_" + 64 + "_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_06_" + 64 + "_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_06_" + 64 + "_pivots_30NN_seq_ptolemaios_" + 64 + "LB",
-                "2024_06_" + 64 + "_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_" + 64 + "LB",
+                "2024_06_64_pivots_30NN_seq_triangle_inequality",
+                "2024_06_64_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_06_64_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_08_64_pivots_30NN_seq_ptolemaios_64LB_random_pivots",
+                "2024_06_64_pivots_30NN_seq_ptolemaios_64LB",
+                "2024_06_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
                 "ground_truth"
         );
     }
@@ -57,6 +59,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
             AbstractPlotter.COLOUR_NAMES.C2_RED,
             AbstractPlotter.COLOUR_NAMES.C3_GREEN,
             AbstractPlotter.COLOUR_NAMES.C4_ORANGE,
+            AbstractPlotter.COLOUR_NAMES.C6_BROWN,
             AbstractPlotter.COLOUR_NAMES.C5_VIOLET,
             AbstractPlotter.COLOUR_NAMES.CX_BLACK};
     }

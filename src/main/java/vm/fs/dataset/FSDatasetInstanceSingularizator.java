@@ -52,6 +52,11 @@ public class FSDatasetInstanceSingularizator {
         public DeCAF100M_Dataset() {
             super("decaf_100m");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 16;
+        }
     }
 
     private static final Integer PIVOTS_RANDOM_DATASETS = 128;
@@ -218,6 +223,12 @@ public class FSDatasetInstanceSingularizator {
         public SIFTdataset() {
             super("sift_1m");
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 256;
+        }
+
     }
 
     public static class MPEG7dataset extends Dataset<Map<String, Object>> {
@@ -769,6 +780,11 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public String getPivotSetName() {
             return "laion2B-en-clip768v2-n=100M.h5_20000pivots_PCA256";
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 32;
         }
 
     }

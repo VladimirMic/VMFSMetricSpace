@@ -51,7 +51,7 @@ public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomDat
                 "2024_05_128_pivots_30NN_seq_triangle_inequality",
                 "2024_05_128_pivots_30NN_seq_data-dependent_metric_filtering",
                 "2024_05_128_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_08_128_pivots_30NN_seq_ptolemaios_128LBrandom_pivots",
+                "2024_08_128_pivots_30NN_seq_ptolemaios_128LB_random_pivots",
                 "2024_05_128_pivots_30NN_seq_ptolemaios_128LB",
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
                 "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB_25perc_50000objMem",
@@ -78,6 +78,11 @@ public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomDat
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
         return firstValue / 10120191;
+    }
+
+    @Override
+    public String getXAxisLabel() {
+        return null;
     }
 
 }
