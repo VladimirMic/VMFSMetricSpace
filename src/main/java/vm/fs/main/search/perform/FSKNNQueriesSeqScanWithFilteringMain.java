@@ -46,9 +46,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //        vm.javatools.Tools.sleep(420);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+                        new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
             //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
         //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
@@ -84,8 +84,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             BoundsOnDistanceEstimation[] filters = initTestedFilters(pivots, dataset, k);
             for (BoundsOnDistanceEstimation filter : filters) {
                 run(dataset, filter, pivots, k);
-                System.gc();
             }
+            System.gc();
             pd = null;
         }
     }
@@ -193,9 +193,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         return new BoundsOnDistanceEstimation[]{
             ptolemaicFiltering, ptolemaicFiltering,
             dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering
-            //            dataDependentMetricFiltering, dataDependentMetricFiltering,
-            //            metricFiltering, metricFiltering,
-            //            fourPointPropertyBased, fourPointPropertyBased
+        //            dataDependentMetricFiltering, dataDependentMetricFiltering,
+        //            metricFiltering, metricFiltering,
+        //            fourPointPropertyBased, fourPointPropertyBased
         };
 //        return new BoundsOnDistanceEstimation[]{
         //            dataDependentMetricFiltering,
