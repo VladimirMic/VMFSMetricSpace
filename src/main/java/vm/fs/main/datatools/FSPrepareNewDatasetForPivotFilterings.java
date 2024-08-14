@@ -18,7 +18,6 @@ import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFil
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
-import vm.search.algorithm.SearchingAlgorithm;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 
 /**
@@ -29,15 +28,15 @@ public class FSPrepareNewDatasetForPivotFilterings {
 
     public static final Boolean SKIP_EVERYTHING_EVALUATED = false;
     public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 50 * 1000 * 1000; // decide by yourself, smaller datasets can be kept as a map in the main memory only, and creation of the map is efficient. This is implemented, e.g., in FSFloatVectorDataset and FSHammingSpaceDataset in class FSDatasetInstanceSingularizator
-    public static final Integer MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 1000 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
+    public static final Integer MIN_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 50 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetForPivotFilterings.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
             //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
-//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
 //                        new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
@@ -91,11 +90,11 @@ public class FSPrepareNewDatasetForPivotFilterings {
 //        plotDistanceDensity(dataset);
 //        selectRandomPivotsAndQueryObjects(origDataset);
 //        evaluateGroundTruth(dataset);
-//        evaluateSampleOfSmallestDistances(dataset);
-        precomputeObjectToPivotDists(origDataset);
+        evaluateSampleOfSmallestDistances(dataset);
+//        precomputeObjectToPivotDists(origDataset);
 //        createKeyValueStorageForBigDataset(origDataset);
-//        learnDataDependentMetricFiltering(dataset);
-//        learnDataDependentPtolemaicFiltering(dataset);
+        learnDataDependentMetricFiltering(dataset);
+        learnDataDependentPtolemaicFiltering(dataset);
     }
 
     /**
@@ -195,7 +194,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
             prohibited = askForRewriting("Dists to pivots", dataset);
         }
         int datasetSize = dataset.getPrecomputedDatasetSize();
-        if (!prohibited && datasetSize <= MAX_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS) {
+        if (!prohibited && datasetSize >= MIN_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS) {
             LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
             FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, dataset.getRecommendedNumberOfPivotsForFiltering());
         }

@@ -43,34 +43,34 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
-//        vm.javatools.Tools.sleep(420);
+//        vm.javatools.Tools.sleep(10);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-                        new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-            //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
 //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
-//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+        //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
         //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
-//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+        //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
-//            new FSDatasetInstanceSingularizator.RandomDataset10Uniform()
-//            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-//            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+        //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform()
+        //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
@@ -83,6 +83,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             List pivots = dataset.getPivots(pivotCount);
             BoundsOnDistanceEstimation[] filters = initTestedFilters(pivots, dataset, k);
             for (BoundsOnDistanceEstimation filter : filters) {
+                Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
                 run(dataset, filter, pivots, k);
             }
             System.gc();
@@ -184,24 +185,27 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         );
         AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(namePrefix);
 
-        AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFiltering(namePrefix, pivotsData, dataset.getDistanceFunction());
+        AbstractPtolemaicBasedFiltering ptolemaicFilteringRandomPivots = new PtolemaicFiltering(namePrefix, pivotsData, dataset.getDistanceFunction(), false);
+        AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFiltering(namePrefix, pivotsData, dataset.getDistanceFunction(), true);
         DataDependentGeneralisedPtolemaicFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(
                 namePrefix,
                 dataset,
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-            ptolemaicFiltering, ptolemaicFiltering,
-            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering
-        //            dataDependentMetricFiltering, dataDependentMetricFiltering,
-        //            metricFiltering, metricFiltering,
-        //            fourPointPropertyBased, fourPointPropertyBased
+            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering,
+            metricFiltering, metricFiltering,
+//            dataDependentMetricFiltering, dataDependentMetricFiltering,
+//            fourPointPropertyBased, fourPointPropertyBased,
+            ptolemaicFilteringRandomPivots, ptolemaicFilteringRandomPivots,
+            ptolemaicFiltering, ptolemaicFiltering
         };
 //        return new BoundsOnDistanceEstimation[]{
-        //            dataDependentMetricFiltering,
-        //            metricFiltering,
-        //            fourPointPropertyBased,
-//            ptolemaicFiltering
+//            metricFiltering,
+//            dataDependentMetricFiltering,
+//            fourPointPropertyBased,
+//            ptolemaicFilteringRandomPivots,
+//            ptolemaicFiltering,
 //            dataDependentPtolemaicFiltering
 //        };
     }

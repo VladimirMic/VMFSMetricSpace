@@ -1,9 +1,7 @@
 package vm.fs.main.search.filtering.learning;
 
 import java.io.File;
-import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
 import vm.metricSpace.Dataset;
@@ -59,7 +57,7 @@ public class FSLearnCoefsForDataDepenentMetricFilteringMain {
     }
 
     public static void run(Dataset dataset) {
-        int pivotCount = SearchingAlgorithm.IMPLICIT_PIVOT_COUNT;
+        int pivotCount = dataset.getRecommendedNumberOfPivotsForFiltering();
         AbstractPrecomputedPairsOfDistancesStorage smallDistSample = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_O_COUNT, SAMPLE_Q_COUNT);
 
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();

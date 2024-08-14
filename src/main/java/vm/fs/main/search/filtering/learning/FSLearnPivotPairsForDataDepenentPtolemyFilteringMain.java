@@ -7,7 +7,6 @@ package vm.fs.main.search.filtering.learning;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain.PIVOTS;
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain.SAMPLE_QUERY_SET_SIZE;
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain.SAMPLE_SET_SIZE;
 import vm.fs.store.auxiliaryForDistBounding.FSDataDependentPtolemyInequalityPivotPairsStorageImpl;
@@ -47,7 +46,7 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
     private static void run(Dataset dataset) {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        List<Object> pivots = dataset.getPivots(PIVOTS);
+        List<Object> pivots = dataset.getPivots(dataset.getRecommendedNumberOfPivotsForFiltering());
 
         DataDependentGeneralisedPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(null, dataset, pivots.size());
 

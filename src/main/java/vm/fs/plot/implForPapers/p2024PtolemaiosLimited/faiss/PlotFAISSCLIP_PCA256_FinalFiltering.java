@@ -42,12 +42,12 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_06_64_pivots_30NN_seq_triangle_inequality",
-                "2024_06_64_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_06_64_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_08_64_pivots_30NN_seq_ptolemaios_64LB_random_pivots",
-                "2024_06_64_pivots_30NN_seq_ptolemaios_64LB",
-                "2024_06_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_08_24_pivots_30NN_seq_triangle_inequality",
+                "2024_08_24_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_08_24_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_08_24_pivots_30NN_seq_ptolemaios_24LB_random_pivots",
+                "2024_08_24_pivots_30NN_seq_ptolemaios_24LB",
+                "2024_08_24_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_24LB",
                 "ground_truth"
         );
     }

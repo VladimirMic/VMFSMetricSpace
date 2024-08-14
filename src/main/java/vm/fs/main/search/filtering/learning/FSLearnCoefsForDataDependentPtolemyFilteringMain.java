@@ -22,7 +22,6 @@ public class FSLearnCoefsForDataDependentPtolemyFilteringMain {
 
     public static final Integer SAMPLE_SET_SIZE = 10000;
     public static final Integer SAMPLE_QUERY_SET_SIZE = 1000;
-    public static final Integer PIVOTS = SearchingAlgorithm.IMPLICIT_PIVOT_COUNT;
     public static final Boolean ALL_PIVOT_PAIRS = true;
 
     public static void main(String[] args) throws IOException {
@@ -59,7 +58,7 @@ public class FSLearnCoefsForDataDependentPtolemyFilteringMain {
     }
 
     public static void run(Dataset dataset) {
-        List<Object> pivots = dataset.getPivots(PIVOTS);
+        List<Object> pivots = dataset.getPivots(dataset.getRecommendedNumberOfPivotsForFiltering());
         AbstractPrecomputedPairsOfDistancesStorage smallDistSample = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE);
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
 
@@ -70,7 +69,7 @@ public class FSLearnCoefsForDataDependentPtolemyFilteringMain {
 
     public static boolean existsForDataset(Dataset dataset) {
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
-        String fileName = storage.getNameOfFileWithCoefs(dataset.getDatasetName(), PIVOTS, true);
+        String fileName = storage.getNameOfFileWithCoefs(dataset.getDatasetName(), dataset.getRecommendedNumberOfPivotsForFiltering(), true);
         File file = getFile(fileName, false);
         return file.exists();
     }

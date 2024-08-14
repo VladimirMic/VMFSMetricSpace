@@ -113,7 +113,7 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
             if (bestCount == Integer.MAX_VALUE) {
                 LOG.log(Level.WARNING, "File with precomputed distances does not exist: {0}", ret.getAbsolutePath());
             } else {
-                LOG.log(Level.WARNING, "Since the file with precomputed distances to {0} pivots does not exist, returning file with distances to {1} pivots", new Object[]{pivotCount, bestCount});
+                LOG.log(Level.INFO, "Since the file with precomputed distances to {0} pivots does not exist, returning file with distances to {1} pivots", new Object[]{pivotCount, bestCount});
             }
         }
         return ret;

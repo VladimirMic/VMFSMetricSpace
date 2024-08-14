@@ -784,7 +784,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 32;
+            return 24;
         }
 
     }
@@ -1331,7 +1331,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 64;
+            return 24;
         }
 
     }
