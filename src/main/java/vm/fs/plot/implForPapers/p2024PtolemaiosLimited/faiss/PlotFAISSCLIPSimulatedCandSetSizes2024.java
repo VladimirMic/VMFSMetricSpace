@@ -46,11 +46,12 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
         if (kCands == null) {
             initCands();
         }
-        String[] ret = new String[3 * kCands.length];
+        String[] ret = new String[4 * kCands.length];
         for (int i = 0; i < kCands.length; i++) {
-            ret[3 * i] = "nprobe64_" + kCands[i] + "Cands";
-            ret[3 * i + 1] = "nprobe128_" + kCands[i] + "Cands";
-            ret[3 * i + 2] = "nprobe256_" + kCands[i] + "Cands";
+            ret[4 * i] = "nprobe16_" + kCands[i] + "Cands";
+            ret[4 * i + 1] = "nprobe32_" + kCands[i] + "Cands";
+            ret[4 * i + 2] = "nprobe64_" + kCands[i] + "Cands";
+            ret[4 * i + 3] = "nprobe128_" + kCands[i] + "Cands";
         }
         return ret;
     }
@@ -64,11 +65,12 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
         if (kCands == null) {
             initCands();
         }
-        String[] ret = new String[3 * kCands.length];
+        String[] ret = new String[4 * kCands.length];
         for (int i = 0; i < kCands.length; i++) {
-            ret[3 * i] = "nprobe64____" + kCands[i] + "__";
-            ret[3 * i + 1] = "nprobe128____" + kCands[i] + "__";
-            ret[3 * i + 2] = "nprobe256____" + kCands[i] + "__";
+            ret[4 * i] = "nprobe16____" + kCands[i] + "__";
+            ret[4 * i + 1] = "nprobe32____" + kCands[i] + "__";
+            ret[4 * i + 2] = "nprobe64____" + kCands[i] + "__";
+            ret[4 * i + 3] = "nprobe128____" + kCands[i] + "__";
         }
         return ret;
     }

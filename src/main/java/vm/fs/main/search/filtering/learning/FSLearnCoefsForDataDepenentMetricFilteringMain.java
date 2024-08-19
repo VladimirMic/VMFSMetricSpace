@@ -67,7 +67,7 @@ public class FSLearnCoefsForDataDepenentMetricFilteringMain {
 
     public static boolean existsForDataset(Dataset dataset) {
         FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl storage = new FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl();
-        String result = storage.getResultDescription(dataset.getDatasetName(), SearchingAlgorithm.IMPLICIT_PIVOT_COUNT, SAMPLE_O_COUNT, SAMPLE_Q_COUNT, RATIO_OF_SMALLEST_DISTS);
+        String result = storage.getResultDescription(dataset.getDatasetName(), dataset.getRecommendedNumberOfPivotsForFiltering(), SAMPLE_O_COUNT, SAMPLE_Q_COUNT, RATIO_OF_SMALLEST_DISTS);
         File file = storage.getFile(result, false);
         return file.exists();
     }

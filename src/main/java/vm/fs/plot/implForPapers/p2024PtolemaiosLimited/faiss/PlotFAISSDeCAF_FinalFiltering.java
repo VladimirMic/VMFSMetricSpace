@@ -11,7 +11,7 @@ import vm.plot.impl.BoxPlotPlotter;
  */
 public class PlotFAISSDeCAF_FinalFiltering extends FSAbstractPlotterFromResults {
 
-    public static final Integer PIVOTS = 32;
+    public static final Integer PIVOTS = 64;
     public static final Integer LB = PIVOTS;
 
     public PlotFAISSDeCAF_FinalFiltering(boolean plotOnlyPDF) {

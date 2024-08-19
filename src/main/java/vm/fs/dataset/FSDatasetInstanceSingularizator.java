@@ -55,7 +55,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 32;
+            return 64;
         }
     }
 
@@ -784,7 +784,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 24;
+            return 32;
         }
 
     }
@@ -1331,7 +1331,29 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 24;
+            return 64;
+        }
+
+    }
+
+    public static class FaissDyn_Clip_100M_PCA256_Candidates extends FSDatasetOfCandidates<float[]> {
+
+        public FaissDyn_Clip_100M_PCA256_Candidates(int faissCands) {
+            super(
+                    new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+                    "Faiss" + faissCands + "_Clip_100M_PCA256_Candidates",
+                    new FSNearestNeighboursStorageImpl(),
+                    "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750",
+                    "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750-nprobe256",
+                    "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000_QueriesSample",
+                    "query_results-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k10000-nprobe256");
+
+            setMaxNumberOfCandidatesToReturn(faissCands);
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 32;
         }
 
     }
@@ -1351,7 +1373,7 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 32;
+            return 64;
         }
 
     }

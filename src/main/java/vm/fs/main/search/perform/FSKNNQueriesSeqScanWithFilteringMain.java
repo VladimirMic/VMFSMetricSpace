@@ -43,11 +43,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
-//        vm.javatools.Tools.sleep(10);
+//        vm.javatools.Tools.sleep(20);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
+//            new FSDatasetInstanceSingularizator.FaissDyn_Clip_100M_PCA256_Candidates(300)
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
 //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
@@ -67,10 +68,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
+//                    new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+//                    new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
@@ -83,8 +84,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             List pivots = dataset.getPivots(pivotCount);
             BoundsOnDistanceEstimation[] filters = initTestedFilters(pivots, dataset, k);
             for (BoundsOnDistanceEstimation filter : filters) {
-                Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
-                run(dataset, filter, pivots, k);
+                for (int i = 0; i < 2; i++) {
+                    Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
+                    run(dataset, filter, pivots, k);
+                }
             }
             System.gc();
             pd = null;
@@ -193,12 +196,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-            dataDependentPtolemaicFiltering, dataDependentPtolemaicFiltering,
-            metricFiltering, metricFiltering,
-//            dataDependentMetricFiltering, dataDependentMetricFiltering,
-//            fourPointPropertyBased, fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots, ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering, ptolemaicFiltering
+            metricFiltering,
+//            dataDependentPtolemaicFiltering,
+            dataDependentMetricFiltering,
+            fourPointPropertyBased,
+            ptolemaicFilteringRandomPivots,
+            ptolemaicFiltering
         };
 //        return new BoundsOnDistanceEstimation[]{
 //            metricFiltering,

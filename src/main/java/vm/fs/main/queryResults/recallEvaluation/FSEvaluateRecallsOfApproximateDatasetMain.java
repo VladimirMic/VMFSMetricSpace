@@ -19,9 +19,9 @@ import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
  */
 public class FSEvaluateRecallsOfApproximateDatasetMain {
 
-//    public static final Integer[] kCands = new Integer[]{300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; // null if dynamic, otherwise fixed number
-//    public static final Integer[] kCands = new Integer[]{691}; // {null} if dynamic, otherwise fixed number
-    public static final Integer[] kCands = new Integer[]{76895, 80000}; // {null} if dynamic, otherwise fixed number
+//    public static final Integer[] kCands = new Integer[]{500, 750, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000}; // null if dynamic, otherwise fixed number
+    public static final Integer[] kCands = new Integer[]{641}; // {null} if dynamic, otherwise fixed number
+//    public static final Integer[] kCands = new Integer[]{71066}; // {null} if dynamic, otherwise fixed number
 
     public static void main(String[] args) throws InterruptedException {
         directFiles();
@@ -66,16 +66,21 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
         if (candidateNNCount != null) {
             attributesForFileName.put(FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME.cand_set_fixed_size, candidateNNCount.toString());
         }
-        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(attributesForFileName);
-        RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(groundTruthStorage, recallStorage);
-        evaluator.evaluateAndStoreRecallsOfQueries(groundTruthDatasetName, groundTruthQuerySetName, groundTruthNNCount, candSetName, candSetQuerySetName, resultSetName, candidateNNCount);
-        recallStorage.save();
+        try {
+            FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(attributesForFileName);
+            RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(groundTruthStorage, recallStorage);
+            evaluator.evaluateAndStoreRecallsOfQueries(groundTruthDatasetName, groundTruthQuerySetName, groundTruthNNCount, candSetName, candSetQuerySetName, resultSetName, candidateNNCount);
+            recallStorage.save();
+        } catch (Exception e) {
+            Logger.getLogger(FSEvaluateRecallsOfApproximateDatasetMain.class.getName()).log(Level.WARNING, "File skipped", e);
+        }
     }
 
     private static void directFiles() {
         String[] folderNames = {
-            "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k100000"
-//            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750"
+            //            "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k100000"
+//            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
+            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750"
 //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1-k30"
         //                                    "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
         //            "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000",
@@ -98,9 +103,9 @@ public class FSEvaluateRecallsOfApproximateDatasetMain {
             for (String fileName : files) {
                 Logger.getLogger(FSEvaluateRecallsOfApproximateDatasetMain.class.getName()).log(Level.INFO, "Processing file {0}", fileName);
                 fileName = fileName.trim().substring(0, fileName.length() - 3);
-//                run(folderName, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", fileName, "");
-//                run(folderName, "decaf_100m_PCA256", "decaf_100m_PCA256", fileName, "");
-                run(folderName, "decaf_100m", "decaf_100m", fileName, "");
+                run(folderName, "laion2B-en-clip768v2-n=100M.h5_PCA256", "laion2B-en-clip768v2-n=100M.h5_PCA256", fileName, "");
+////                run(folderName, "decaf_100m_PCA256", "decaf_100m_PCA256", fileName, "");
+//                run(folderName, "decaf_100m", "decaf_100m", fileName, "");
             }
         }
     }
