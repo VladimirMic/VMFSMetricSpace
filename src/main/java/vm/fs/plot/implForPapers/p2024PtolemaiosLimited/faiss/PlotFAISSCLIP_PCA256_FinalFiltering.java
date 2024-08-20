@@ -8,6 +8,7 @@ import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotPlotter;
+import vm.search.algorithm.SearchingAlgorithm;
 
 /**
  *
@@ -35,6 +36,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
                 "Ptolemaic Filtering",
                 "Ptolemaic with Dyn. Pivots",
                 "Data-dep. Ptolemaic Filtering",
+                "Data-dep. Ptolemaic Filtering STRAIN_60_150",
                 "Sequential Brute Force"
         );
     }
@@ -48,6 +50,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
                 "2024_08_64_pivots_30NN_seq_ptolemaios_64LB_random_pivots",
                 "2024_08_64_pivots_30NN_seq_ptolemaios_64LB",
                 "2024_08_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_08_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB_60perc_150objMem",
                 "ground_truth"
         );
     }
@@ -61,6 +64,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
             AbstractPlotter.COLOUR_NAMES.C4_ORANGE,
             AbstractPlotter.COLOUR_NAMES.C6_BROWN,
             AbstractPlotter.COLOUR_NAMES.C5_VIOLET,
+            AbstractPlotter.COLOUR_NAMES.C7_PURPLE,
             AbstractPlotter.COLOUR_NAMES.CX_BLACK};
     }
 
@@ -97,7 +101,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
 
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
-        return firstValue / 750;
+        return firstValue / (750 - SearchingAlgorithm.K_IMPLICIT_FOR_QUERIES);
     }
 
 }

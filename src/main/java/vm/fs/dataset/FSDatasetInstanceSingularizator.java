@@ -1,7 +1,6 @@
 package vm.fs.dataset;
 
 import java.util.HashMap;
-import java.util.List;
 import vm.metricSpace.DatasetOfCandidates;
 import java.util.Map;
 import org.h2.mvstore.MVStoreException;
@@ -1497,7 +1496,7 @@ public class FSDatasetInstanceSingularizator {
 
     public static class FSDatasetOfCandidates<T> extends DatasetOfCandidates<T> {
 
-        private Map<String, VMMVStorage<Comparable[]>> singularizator;
+        private static Map<String, VMMVStorage<Comparable[]>> singularizator;
 
         public FSDatasetOfCandidates(Dataset origDataset, String newDatasetName, QueryNearestNeighboursStoreInterface resultsStorage, String resultFolderName, String directResultFileName, String trainingResultFolderName, String trainingDirectResultFileName) {
             super(origDataset, newDatasetName, resultsStorage, resultFolderName, directResultFileName, trainingResultFolderName, trainingDirectResultFileName);

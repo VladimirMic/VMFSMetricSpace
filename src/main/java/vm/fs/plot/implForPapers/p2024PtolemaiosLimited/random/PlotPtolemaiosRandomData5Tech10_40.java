@@ -9,6 +9,7 @@ import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
 import vm.plot.AbstractPlotter.COLOUR_NAMES;
 import vm.plot.impl.BoxPlotPlotter;
+import vm.search.algorithm.SearchingAlgorithm;
 
 /**
  *
@@ -112,7 +113,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
 
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
-        return firstValue / 1000000;
+        return firstValue / (1000000 - SearchingAlgorithm.K_IMPLICIT_FOR_QUERIES);
     }
 
     @Override

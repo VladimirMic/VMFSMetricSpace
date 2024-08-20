@@ -6,6 +6,7 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
 import vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random.PlotPtolemaiosRandomData5Tech40_100Recall;
 import vm.plot.AbstractPlotter;
+import vm.search.algorithm.SearchingAlgorithm;
 
 /**
  *
@@ -77,7 +78,7 @@ public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomDat
 
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
-        return firstValue / 10120191;
+        return firstValue / (10120191 - SearchingAlgorithm.K_IMPLICIT_FOR_QUERIES);
     }
 
     @Override

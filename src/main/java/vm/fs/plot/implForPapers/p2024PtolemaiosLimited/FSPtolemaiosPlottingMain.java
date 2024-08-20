@@ -34,6 +34,7 @@ public class FSPtolemaiosPlottingMain {
 //        Y2024_PlotPtolemaiosRandomData5Tech40_100Recall.makePlots();
         Y2024_PlotPtolemaiosTransformedClips5Tech.makePlots();
 //        Y2024_PlotPtolemaiosDeCAF1M5Tech.makePlots();
+//        
 //        Y2024_PlotPtolemaiosPivotSelection.makePlots();
 //        Y2024_PlotPtolemaiosCLIP_DF.makePlots();
 //        Y2024_PlotPtolemaiosRandom100D_AbblationStudy.makePlots();

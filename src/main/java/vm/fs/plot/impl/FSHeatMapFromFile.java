@@ -18,7 +18,11 @@ import vm.plot.impl.HeatMapPlotter;
 public class FSHeatMapFromFile {
 
     public static void main(String[] args) {
-        String filePath = "h:\\Similarity_search\\Trials\\Skittle_time_estimations_complete_simulation.csv";
+        String filePath = "h:\\Similarity_search\\Trials\\Skittle_time_estimations_2024_08_19.csv";
+        run(filePath);
+    }
+
+    public static void run(String filePath) {
         File file = new File(filePath);
 
         File resultFile = new File(FSGlobal.FOLDER_PLOTS, "HeatMaps");
@@ -32,7 +36,7 @@ public class FSHeatMapFromFile {
 
         HeatMapPlotter plotter = new HeatMapPlotter();
         String xLabel = "Threshold on # LB per avg. obj";
-        String yLabel = "Checked obj until attempt for the SKITTLE";
+        String yLabel = "Checked obj until attempt for the STRAIN";
         String traceName = "Estimated time per q (ms)";
         JFreeChart createPlot = plotter.createPlot(file.getName(), xLabel, yLabel, traceName, values, columnHeaders, rowHeaders);
         plotter.storePlotPNG(resultFile.getAbsolutePath(), createPlot);

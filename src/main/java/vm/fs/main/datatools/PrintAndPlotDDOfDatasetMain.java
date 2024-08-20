@@ -29,8 +29,9 @@ public class PrintAndPlotDDOfDatasetMain {
     public static void main(String[] args) {
         Dataset[] datasets = {
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
-            new FSDatasetInstanceSingularizator.DeCAFDataset()
-        //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset()
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -56,7 +57,11 @@ public class PrintAndPlotDDOfDatasetMain {
         PrintStream ps = null;
         Map<Float, Float> ret = new TreeMap<>();
         try {
-            ps = new PrintStream(f);
+            if (f.exists()) {
+                ps = System.out;
+            } else {
+                ps = new PrintStream(f);
+            }
             ps.println("Distance;Density of random sample");
             float lastDist = 0;
             float distInterval = ToolsMetricDomain.computeBasicDistInterval(histogram.lastKey());

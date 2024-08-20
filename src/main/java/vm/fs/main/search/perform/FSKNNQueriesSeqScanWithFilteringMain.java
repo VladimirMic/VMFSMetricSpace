@@ -43,12 +43,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
 
     public static void main(String[] args) {
-//        vm.javatools.Tools.sleep(20);
+//        vm.javatools.Tools.sleep(15);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
 //            new FSDatasetInstanceSingularizator.FaissDyn_Clip_100M_PCA256_Candidates(300)
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
 //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
@@ -83,8 +83,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             }
             List pivots = dataset.getPivots(pivotCount);
             BoundsOnDistanceEstimation[] filters = initTestedFilters(pivots, dataset, k);
+            int repetitions = dataset instanceof DatasetOfCandidates ? 3 : 2;
             for (BoundsOnDistanceEstimation filter : filters) {
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < repetitions; i++) {
                     Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
                     run(dataset, filter, pivots, k);
                 }
@@ -104,7 +105,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
 
-        initPODists(dataset, pivotCount, maxObjectsCount, pivots, metricSpace, df);
+        initPODists(dataset, pivotCount, maxObjectsCount, pivots);
 
         List queries = dataset.getQueryObjects(1000);
 
@@ -118,6 +119,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //STRAIN
                 tmp.setObjBeforeSeqScan(100000);
                 tmp.setThresholdOnLBsPerObjForSeqScan(20);
+            }
+            if (filter instanceof DataDependentGeneralisedPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates())) {
+                KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
+//STRAIN
+                tmp.setObjBeforeSeqScan(50);
+                tmp.setThresholdOnLBsPerObjForSeqScan(62.5f);
             }
         } else if (filter instanceof AbstractTwoPivotsFilter) {
             alg = new KNNSearchWithGenericTwoPivotFiltering(metricSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pivotPivotDists, df);
@@ -154,7 +161,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         recallStorage.save();
     }
 
-    private static void initPODists(Dataset dataset, int pivotCount, int maxObjectsCount, List pivots, AbstractMetricSpace metricSpace, DistanceFunctionInterface df) {
+    public static void initPODists(Dataset dataset, int pivotCount, int maxObjectsCount, List pivots) {
+        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
+        DistanceFunctionInterface df = dataset.getDistanceFunction();
         Dataset origDataset = dataset;
         if (dataset instanceof DatasetOfCandidates) {
             origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
@@ -168,6 +177,15 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             pd = ToolsMetricDomain.evaluateMatrixOfDistances(origDataset.getMetricObjectsFromDataset(maxObjectsCount), pivots, metricSpace, df, precomputedDatasetSize);
             poDists = pd.loadPrecomPivotsToObjectsDists(null, -1);
         }
+
+    }
+
+    public static AbstractPrecomputedDistancesMatrixLoader getPd() {
+        return pd;
+    }
+
+    public static float[][] getPoDists() {
+        return poDists;
     }
 
     private static BoundsOnDistanceEstimation[] initTestedFilters(List pivots, Dataset dataset, int k) {
@@ -196,12 +214,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-            metricFiltering,
-//            dataDependentPtolemaicFiltering,
-            dataDependentMetricFiltering,
-            fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering
+            //            metricFiltering,
+            dataDependentPtolemaicFiltering
+        //            dataDependentMetricFiltering,
+        //            fourPointPropertyBased,
+        //            ptolemaicFilteringRandomPivots,
+        //            ptolemaicFiltering
         };
 //        return new BoundsOnDistanceEstimation[]{
 //            metricFiltering,

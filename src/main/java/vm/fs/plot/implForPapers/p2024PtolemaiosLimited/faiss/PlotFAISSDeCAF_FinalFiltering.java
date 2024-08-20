@@ -4,6 +4,7 @@ import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotPlotter;
+import vm.search.algorithm.SearchingAlgorithm;
 
 /**
  *
@@ -97,7 +98,7 @@ public class PlotFAISSDeCAF_FinalFiltering extends FSAbstractPlotterFromResults 
 
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
-        return firstValue / 100000;
+        return firstValue / (100000 - SearchingAlgorithm.K_IMPLICIT_FOR_QUERIES);
     }
 
 }

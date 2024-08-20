@@ -7,7 +7,7 @@ package vm.fs.main.datatools;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.data.RandomVectorsGenerator2;
+import vm.metricSpace.data.RandomVectorsGenerator;
 import vm.metricSpace.data.toStringConvertors.impl.FloatVectorConvertor;
 
 /**
@@ -21,7 +21,7 @@ public class FSGenerateRandomDatasetsMain {
         FSMetricSpaceImpl<float[]> metricSpace = new FSMetricSpaceImpl<>();
         AbstractMetricSpacesStorage storage = new FSMetricSpacesStorage(metricSpace, floatVectorConvertor);
 
-        RandomVectorsGenerator2 generator = new RandomVectorsGenerator2(metricSpace, storage);
+        RandomVectorsGenerator generator = new RandomVectorsGenerator(metricSpace, storage);
         generator.generate();
     }
 
