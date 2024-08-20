@@ -23,33 +23,46 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
 
     private final Logger LOG = Logger.getLogger(FSMetricSpaceImpl.class.getName());
 
+    private final DistanceFunctionInterface<T> implicitDF;
+
+    public FSMetricSpaceImpl(DistanceFunctionInterface<T> implicitDF) {
+        this.implicitDF = implicitDF;
+    }
+
+    public FSMetricSpaceImpl() {
+        this(null);
+    }
+
     @Override
-    public DistanceFunctionInterface getDistanceFunctionForDataset(String datasetName, Object... params) {
+    public DistanceFunctionInterface<T> getDistanceFunctionForDataset(String datasetName, Object... params) {
+        if (implicitDF != null) {
+            return implicitDF;
+        }
         if (datasetName.contains("Angular")) {
-            return new AngularDistance();
+            return (DistanceFunctionInterface<T>) new AngularDistance();
         }
         if (datasetName.contains("DotPro")) {
-            return new DotProduct();
+            return (DistanceFunctionInterface<T>) new DotProduct();
         }
         if (datasetName.toLowerCase().contains("pca") || datasetName.toLowerCase().contains("euclid")) {
-            return new L2OnFloatsArray();
+            return (DistanceFunctionInterface<T>) new L2OnFloatsArray();
         }
         if (datasetName.contains("_GHP_50_") || datasetName.contains("_GHP_80_")) {
-            return new HammingDistanceLongs();
+            return (DistanceFunctionInterface<T>) new HammingDistanceLongs();
         }
         if (datasetName.contains("laion2B-en")) {
-            return new CosineDistance();
+            return (DistanceFunctionInterface<T>) new CosineDistance();
         }
         if (datasetName.contains("random_") && datasetName.toLowerCase().contains("_uniform_1m")) {
-            return new L2OnFloatsArray();
+            return (DistanceFunctionInterface<T>) new L2OnFloatsArray();
         }
         switch (datasetName) {
             case ("decaf_1m"):
             case ("decaf_100m"):
             case ("sift_1m"):
-                return new L2OnFloatsArray();
+                return (DistanceFunctionInterface<T>) new L2OnFloatsArray();
             case ("mpeg7_1m"): {
-                return new Sapir3DistanceFunction();
+                return (DistanceFunctionInterface<T>) new Sapir3DistanceFunction();
             }
         }
         throw new IllegalArgumentException("Unknown dataset name " + datasetName + ". No distance function provided.");

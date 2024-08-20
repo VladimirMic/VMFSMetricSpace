@@ -35,12 +35,27 @@ public abstract class FSAbstractPlotterFromResults {
 
     private final boolean plotOnlyPDF;
     private AbstractPlotter plotter = getPlotter();
-    private final Object[] xTicks = getDisplayedNamesOfGroupsThatMeansFiles();
-    private final AbstractPlotter.COLOUR_NAMES[] colourIndexesForTraces = getVoluntaryColoursForTracesOrNull();
-    private final String[] folderNames = getFolderNamesForDisplayedTraces();
+    private final Object[] xTicks;
+    private final AbstractPlotter.COLOUR_NAMES[] colourIndexesForTraces;
+    private final String[] folderNames;
+
+    protected FSAbstractPlotterFromResults(boolean plotOnlyPDF, Object[] xTicks, String[] folderNames) {
+        this.plotOnlyPDF = plotOnlyPDF;
+        this.xTicks = xTicks == null ? new Object[]{"X"} : xTicks;
+        this.folderNames = folderNames;
+        this.colourIndexesForTraces = getVoluntaryColoursForTracesOrNull();
+        check();
+    }
 
     public FSAbstractPlotterFromResults(boolean plotOnlyPDF) {
+        this.folderNames = getFolderNamesForDisplayedTraces();
+        this.colourIndexesForTraces = getVoluntaryColoursForTracesOrNull();
+        this.xTicks = getDisplayedNamesOfGroupsThatMeansFiles();
         this.plotOnlyPDF = plotOnlyPDF;
+        check();
+    }
+
+    private void check() {
         if (plotter instanceof BoxPlotPlotter && Tools.isParseableToFloats(xTicks)) {
             plotter = new BoxPlotXYPlotter();
         }
@@ -80,7 +95,7 @@ public abstract class FSAbstractPlotterFromResults {
         return getFileNameFilterArray(folderNames);
     }
 
-    private String getResultFullNameWithDate(QUERY_STATS statName) {
+    protected String getResultFullNameWithDate(QUERY_STATS statName) {
         int datasetsCount = xTicks.length;
         int techCount = folderNames.length;
         String plotName = plotter.getSimpleName();
@@ -94,7 +109,7 @@ public abstract class FSAbstractPlotterFromResults {
         return file.getAbsolutePath();
     }
 
-    private QUERY_STATS[] getStatsToPrint() {
+    protected QUERY_STATS[] getStatsToPrint() {
         return new QUERY_STATS[]{QUERY_STATS.recall, QUERY_STATS.frr, QUERY_STATS.cand_set_dynamic_size, QUERY_STATS.query_execution_time, QUERY_STATS.error_on_dist, QUERY_STATS.additional_stats};
     }
 
@@ -358,6 +373,9 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     private String setUnitForTime(List<Float>[][] timeValues) {
+        if (timeValues == null) {
+            return "";
+        }
         List<Float> all = new ArrayList<>();
         for (List<Float>[] timeValue : timeValues) {
             for (List<Float> list : timeValue) {

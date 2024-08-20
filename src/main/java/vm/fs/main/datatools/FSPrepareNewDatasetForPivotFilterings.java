@@ -26,18 +26,21 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  */
 public class FSPrepareNewDatasetForPivotFilterings {
 
-    public static final Boolean SKIP_EVERYTHING_EVALUATED = false;
+    private static Boolean skipEverythingEvaluated = false;
+
+    public static void setSkipEverythingEvaluated(Boolean skipEverythingEvaluated) {
+        FSPrepareNewDatasetForPivotFilterings.skipEverythingEvaluated = skipEverythingEvaluated;
+    }
     public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 50 * 1000 * 1000; // decide by yourself, smaller datasets can be kept as a map in the main memory only, and creation of the map is efficient. This is implemented, e.g., in FSFloatVectorDataset and FSHammingSpaceDataset in class FSDatasetInstanceSingularizator
     public static final Integer MIN_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 50 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetForPivotFilterings.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
-        Dataset[] datasets = {
-            //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
-//            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
+        Dataset[] datasets = { //            new M2DatasetInstanceSingularizator.DeCAF100MDatasetAndromeda(),
+        //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
         //                    new FSDatasetInstanceSingularizator.FaissDyn_Clip_100M_PCA256_Candidates(300),
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
         //                        new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
@@ -105,7 +108,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
      * @return true iff the file CANNOT be overwritten
      */
     private static boolean askForRewriting(String type, Dataset dataset) {
-        if (SKIP_EVERYTHING_EVALUATED) {
+        if (skipEverythingEvaluated) {
             return true;
         }
         if (!FSGlobal.ASK_FOR_EXISTENCE) {
@@ -124,7 +127,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static int precomputeDatasetSize(Dataset dataset) {
+    public static final int precomputeDatasetSize(Dataset dataset) {
         int precomputedDatasetSize = dataset.getPrecomputedDatasetSize();
         if (precomputedDatasetSize < 0) {
             LOG.log(Level.INFO, "Dataset {0} -- going to recompute number of stored objects", new Object[]{dataset.getDatasetName()});
@@ -134,7 +137,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         return precomputedDatasetSize;
     }
 
-    private static void plotDistanceDensity(Dataset dataset) {
+    public static final void plotDistanceDensity(Dataset dataset) {
         boolean prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
         if (!prohibited) {
             LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", dataset.getDatasetName());
@@ -161,8 +164,12 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void evaluateGroundTruth(Dataset dataset) {
-        boolean prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset, null);
+    public static final void evaluateGroundTruth(Dataset dataset) {
+        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
+    }
+
+    public static final void evaluateGroundTruth(Dataset dataset, int k) {
+        boolean prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset, k);
         String datasetName = dataset.getDatasetName();
         if (prohibited) {
             LOG.log(Level.WARNING, "Ground already exists for dataset {0}", datasetName);
@@ -170,11 +177,11 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
         if (!prohibited) {
             LOG.log(Level.INFO, "Dataset: {0}, evaluating ground truth", datasetName);
-            FSEvaluateGroundTruthMain.run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
+            FSEvaluateGroundTruthMain.run(dataset, k);
         }
     }
 
-    private static void evaluateSampleOfSmallestDistances(Dataset dataset) {
+    public static final void evaluateSampleOfSmallestDistances(Dataset dataset) {
         boolean prohibited = FSEvalAndStoreSampleOfSmallestDistsMain.existsForDataset(dataset);
         String datasetName = dataset.getDatasetName();
         if (prohibited) {
@@ -187,7 +194,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void precomputeObjectToPivotDists(Dataset dataset) {
+    public static final void precomputeObjectToPivotDists(Dataset dataset) {
         String datasetName = dataset.getDatasetName();
         boolean prohibited = FSEvalAndStoreObjectsToPivotsDistsMain.existsForDataset(dataset, dataset.getRecommendedNumberOfPivotsForFiltering());
         if (prohibited) {
@@ -201,7 +208,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void learnDataDependentMetricFiltering(Dataset dataset) {
+    public static final void learnDataDependentMetricFiltering(Dataset dataset) {
         String datasetName = dataset.getDatasetName();
         boolean prohibited = FSLearnCoefsForDataDepenentMetricFilteringMain.existsForDataset(dataset);
         if (prohibited) {
@@ -214,7 +221,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    private static void learnDataDependentPtolemaicFiltering(Dataset dataset) {
+    public static final void learnDataDependentPtolemaicFiltering(Dataset dataset) {
         String datasetName = dataset.getDatasetName();
         boolean prohibited = FSLearnCoefsForDataDependentPtolemyFilteringMain.existsForDataset(dataset);
         if (prohibited) {

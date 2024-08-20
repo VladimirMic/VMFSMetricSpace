@@ -22,7 +22,7 @@ public class FSGenerateRandomDatasetsMain {
         AbstractMetricSpacesStorage storage = new FSMetricSpacesStorage(metricSpace, floatVectorConvertor);
 
         RandomVectorsGenerator generator = new RandomVectorsGenerator(metricSpace, storage);
-        generator.generate();
+        generator.run();
     }
 
 }

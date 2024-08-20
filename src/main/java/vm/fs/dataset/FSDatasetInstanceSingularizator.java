@@ -233,9 +233,11 @@ public class FSDatasetInstanceSingularizator {
     public static class MPEG7dataset extends Dataset<Map<String, Object>> {
 
         public MPEG7dataset() {
-            this.datasetName = "mpeg7_1m";
-            this.metricSpace = new FSMetricSpaceImpl();
-            this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.MPEG7_SPACE);
+            super(
+                    "mpeg7_1m",
+                    new FSMetricSpaceImpl(),
+                    new FSMetricSpacesStorage<>(new FSMetricSpaceImpl(), SingularisedConvertors.MPEG7_SPACE)
+            );
         }
 
         @Override
@@ -1395,9 +1397,7 @@ public class FSDatasetInstanceSingularizator {
     public static class FSFloatVectorDataset extends Dataset<float[]> {
 
         public FSFloatVectorDataset(String datasetName) {
-            this.datasetName = datasetName;
-            this.metricSpace = new FSMetricSpaceImpl();
-            this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+            super(datasetName, new FSMetricSpaceImpl(), new FSMetricSpacesStorage<>(new FSMetricSpaceImpl(), SingularisedConvertors.FLOAT_VECTOR_SPACE));
         }
 
         @Override
@@ -1437,9 +1437,11 @@ public class FSDatasetInstanceSingularizator {
     public static class H5FloatVectorDataset extends Dataset<float[]> {
 
         public H5FloatVectorDataset(String datasetName) {
-            this.datasetName = datasetName;
-            this.metricSpace = new FSMetricSpaceImpl();
-            this.metricSpacesStorage = new H5MetricSpacesStorage<>(metricSpace, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+            super(
+                    datasetName,
+                    new FSMetricSpaceImpl<>(),
+                    new H5MetricSpacesStorage<>(new FSMetricSpaceImpl<>(), SingularisedConvertors.FLOAT_VECTOR_SPACE)
+            );
         }
 
         @Override
@@ -1468,9 +1470,11 @@ public class FSDatasetInstanceSingularizator {
     public static class FSHammingSpaceDataset extends Dataset<long[]> {
 
         public FSHammingSpaceDataset(String datasetName) {
-            this.datasetName = datasetName;
-            this.metricSpace = new FSMetricSpaceImpl();
-            this.metricSpacesStorage = new FSMetricSpacesStorage<>(metricSpace, SingularisedConvertors.LONG_VECTOR_SPACE);
+            super(
+                    datasetName,
+                    new FSMetricSpaceImpl<>(),
+                    new FSMetricSpacesStorage<>(new FSMetricSpaceImpl<>(), SingularisedConvertors.LONG_VECTOR_SPACE)
+            );
         }
 
         @Override

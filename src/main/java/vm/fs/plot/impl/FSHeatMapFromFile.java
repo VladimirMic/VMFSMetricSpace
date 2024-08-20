@@ -22,7 +22,7 @@ public class FSHeatMapFromFile {
         run(filePath);
     }
 
-    public static void run(String filePath) {
+    public static void run(String filePath, int legendCount) {
         File file = new File(filePath);
 
         File resultFile = new File(FSGlobal.FOLDER_PLOTS, "HeatMaps");
@@ -39,6 +39,13 @@ public class FSHeatMapFromFile {
         String yLabel = "Checked obj until attempt for the STRAIN";
         String traceName = "Estimated time per q (ms)";
         JFreeChart createPlot = plotter.createPlot(file.getName(), xLabel, yLabel, traceName, values, columnHeaders, rowHeaders);
+        if (legendCount > 0) {
+            plotter.setLegendCount(legendCount);
+        }
         plotter.storePlotPNG(resultFile.getAbsolutePath(), createPlot);
+    }
+
+    public static void run(String filePath) {
+        run(filePath, -1);
     }
 }
