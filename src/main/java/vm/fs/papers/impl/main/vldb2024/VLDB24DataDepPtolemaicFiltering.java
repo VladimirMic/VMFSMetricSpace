@@ -42,11 +42,11 @@ public class VLDB24DataDepPtolemaicFiltering {
         // params. Feel free to modify.
         int[] dimensionalities = {10, 40, 70, 100, 150};
         // number of vectors in each dataset
-        int datasetObjectCount = 1000 * 1000;
+        int datasetObjectCount = 100 * 1000;
         // number of pivots used for the filterings. It current settings, it equals the number of lower bounds per each distance
-        int pivotsCount = 128;
+        int pivotsCount = 64;
         // number of generated and examined query objects
-        int queriesCount = 1000;
+        int queriesCount = 100;
         // the result set size for kNN search
         int k = 30;
 

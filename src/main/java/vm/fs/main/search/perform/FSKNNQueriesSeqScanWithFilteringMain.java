@@ -155,7 +155,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         if (dataset instanceof DatasetOfCandidates) {
             origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
         }
-        if (pd == null && allowCache) {
+        if (!allowCache) {
+            pd = null;
+        }
+        if (pd == null) {
             pd = new FSPrecomputedDistancesMatrixLoaderImpl();
             poDists = pd.loadPrecomPivotsToObjectsDists(origDataset, pivotCount);
         }
