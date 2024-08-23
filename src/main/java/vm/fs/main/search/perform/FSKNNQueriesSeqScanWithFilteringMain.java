@@ -145,13 +145,17 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     }
 
     public static void initPODists(Dataset dataset, int pivotCount, int maxObjectsCount, List pivots) {
+        initPODists(dataset, pivotCount, maxObjectsCount, pivots, true);
+    }
+
+    public static void initPODists(Dataset dataset, int pivotCount, int maxObjectsCount, List pivots, boolean allowCache) {
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         Dataset origDataset = dataset;
         if (dataset instanceof DatasetOfCandidates) {
             origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
         }
-        if (pd == null) {
+        if (pd == null && allowCache) {
             pd = new FSPrecomputedDistancesMatrixLoaderImpl();
             poDists = pd.loadPrecomPivotsToObjectsDists(origDataset, pivotCount);
         }

@@ -51,11 +51,11 @@ public class VLDB24DataDepPtolemaicFiltering {
         int k = 30;
 
         Dataset[] datasets = createOrGetRandomUniformDatasetQueriesPivots(datasetObjectCount, pivotsCount, queriesCount, dimensionalities);
-        FSPrepareNewDatasetForPivotFilterings.setSkipEverythingEvaluated(SKIP_EVERYHING_PREPARED);
         for (Dataset dataset : datasets) {
+            FSPrepareNewDatasetForPivotFilterings.setSkipEverythingEvaluated(SKIP_EVERYHING_PREPARED);
             learnFilterings(dataset);
             List pivots = dataset.getPivots(pivotsCount);
-            FSKNNQueriesSeqScanWithFilteringMain.initPODists(dataset, pivotsCount, -1, pivots);
+            FSKNNQueriesSeqScanWithFilteringMain.initPODists(dataset, pivotsCount, -1, pivots, false);
             BoundsOnDistanceEstimation[] filters = FSKNNQueriesSeqScanWithFilteringMain.initTestedFilters("VLDB_", pivots, dataset, k);
             FSPrepareNewDatasetForPivotFilterings.evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
             FSPrepareNewDatasetForPivotFilterings.evaluateGroundTruth(dataset, k);
