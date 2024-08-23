@@ -40,7 +40,7 @@ public class VLDB24DataDepPtolemaicFiltering {
 
     public static void main(String[] args) {
         // params. Feel free to modify.
-        int[] dimensionalities = {10, 40, 70, 100, 150}; //
+        int[] dimensionalities = {10, 40, 70, 100, 150};
         // number of vectors in each dataset
         int datasetObjectCount = 1000 * 1000;
         // number of pivots used for the filterings. It current settings, it equals the number of lower bounds per each distance
@@ -58,8 +58,8 @@ public class VLDB24DataDepPtolemaicFiltering {
             FSKNNQueriesSeqScanWithFilteringMain.initPODists(dataset, pivotsCount, -1, pivots);
             BoundsOnDistanceEstimation[] filters = FSKNNQueriesSeqScanWithFilteringMain.initTestedFilters("VLDB_", pivots, dataset, k);
             FSPrepareNewDatasetForPivotFilterings.evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
-            FSPrepareNewDatasetForPivotFilterings.setSkipEverythingEvaluated(false);
             FSPrepareNewDatasetForPivotFilterings.evaluateGroundTruth(dataset, k);
+            FSPrepareNewDatasetForPivotFilterings.setSkipEverythingEvaluated(false);
             FSKNNQueriesSeqScanWithFilteringMain.run(dataset, filters, pivots, k);
             createPlotsForDataset(dataset, filters, k, pivots);
         }

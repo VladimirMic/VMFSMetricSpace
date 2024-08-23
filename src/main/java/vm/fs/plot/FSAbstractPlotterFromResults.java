@@ -59,7 +59,7 @@ public abstract class FSAbstractPlotterFromResults {
         if (plotter instanceof BoxPlotPlotter && Tools.isParseableToFloats(xTicks)) {
             plotter = new BoxPlotXYPlotter();
         }
-        if (colourIndexesForTraces != null && colourIndexesForTraces.length != folderNames.length) {
+        if (colourIndexesForTraces != null && colourIndexesForTraces.length < folderNames.length) {
             throw new IllegalArgumentException("Incosistent specification of colours and folders. The counts do not match. Colours: " + colourIndexesForTraces.length + ", folders: " + folderNames.length);
         }
     }
@@ -197,9 +197,12 @@ public abstract class FSAbstractPlotterFromResults {
     public void makePlots() {
         int groupsCount = xTicks.length;
         int boxplotsCount = getDisplayedNamesOfTracesThatMatchesFolders().length;
-        if (boxplotsCount != folderNames.length) {
+        if (boxplotsCount < folderNames.length) {
             throw new IllegalArgumentException("Inconsistent numbers: the number of folders returned by getFolderNamesForDisplayedTraces() " + folderNames.length + " does not match the number of names given by getDisplayedNamesOfTracesThatMatchesFolders() " + boxplotsCount);
+        } else if (boxplotsCount > folderNames.length) {
+            LOG.log(Level.WARNING, "Inconsistent numbers: the number of folders returned by getFolderNamesForDisplayedTraces() {0} does not match the number of names given by getDisplayedNamesOfTracesThatMatchesFolders() {1}", new Object[]{folderNames.length, boxplotsCount});
         }
+
         List<File> files = getFilesWithResultsToBePlotted(groupsCount, boxplotsCount);
         Map<QUERY_STATS, List<Float>[][]> dataForStats = loadStatsFromFileAsListOfXYValues(files, groupsCount, boxplotsCount);
         Set<QUERY_STATS> keyForPlots = dataForStats.keySet();
