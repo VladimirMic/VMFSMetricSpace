@@ -26,15 +26,19 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  */
 public class VLDB24DataDepPtolemaicFiltering {
 
+    /**
+     * Just for naming produces files.
+     */
     public static final String DATASET_PREFIX_NAME = "VLDB_random";
     /**
-     * Not necessary for small dataset, useful if time-consuming
+     * Not necessary for small dataset, useful if time-consuming.
      */
     public static final Boolean STORE_DISTANCES_TO_PIVOTS = false;
     /**
      * If true, checks whether the filterings are learnt, and if so, asks for
-     * re-learning them. If false and they are learnt, they are immediatelly
-     * re-learnt
+     * re-learning them. If false and filterings are learnt, they are
+     * immediatelly re-learnt without asking. Results of the filtering are
+     * rewritten with each new run.
      */
     public static final Boolean SKIP_EVERYHING_PREPARED = true;
 
@@ -43,13 +47,14 @@ public class VLDB24DataDepPtolemaicFiltering {
         int[] dimensionalities = {10, 40, 50, 60, 70, 80, 90, 100, 150};
         // number of vectors in each dataset
         int datasetObjectCount = 1000 * 1000;
-        // number of pivots used for the filterings. It current settings, it equals the number of lower bounds per each distance
+        // number of pivots used for the filterings. In current settings, it also equals the number of defined lower bounds per each distance.
         int pivotsCount = 128;
         // number of generated and examined query objects
         int queriesCount = 1000;
         // the result set size for kNN search
         int k = 30;
 
+        // Do not modify from here.
         Dataset[] datasets = createOrGetRandomUniformDatasetQueriesPivots(datasetObjectCount, pivotsCount, queriesCount, dimensionalities);
         for (Dataset dataset : datasets) {
             FSPrepareNewDatasetForPivotFilterings.setSkipEverythingEvaluated(SKIP_EVERYHING_PREPARED);
