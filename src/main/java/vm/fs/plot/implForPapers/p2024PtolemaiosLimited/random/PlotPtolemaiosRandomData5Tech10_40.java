@@ -68,32 +68,32 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
         );
     }
 
+    public int[] getDims() {
+        return new int[]{10, 15, 20, 25, 30, 35, 40};
+    }
     @Override
     public Object[] getDisplayedNamesOfGroupsThatMeansFiles() {
-        return array(
-                10,
-                15,
-                20,
-                25,
-                30,
-                35,
-                40
-        );
+        int[] dims = getDims();
+        Object[] ret = new Object[dims.length];
+        for (int i = 0; i < dims.length; i++) {
+            ret[i] = "Dimensionality " + dims[i];
+        }
+        return ret;
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
-        Object[] dims = getDisplayedNamesOfGroupsThatMeansFiles();
+        int[] dims = getDims();
         String[] ret = new String[dims.length];
         for (int i = 0; i < dims.length; i++) {
-            ret[i] = dims[i].toString() + "dim_uniform_1M__30";
+            ret[i] = dims[i] + "dim_uniform_1M__30";
         }
         return ret;
     }
 
     @Override
     public String getXAxisLabel() {
-        return "Dimensionality";
+        return null;
     }
 
     @Override

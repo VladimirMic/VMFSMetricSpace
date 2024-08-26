@@ -15,15 +15,8 @@ public class PlotPtolemaiosRandomData5Tech50_100 extends PlotPtolemaiosRandomDat
     }
 
     @Override
-    public Object[] getDisplayedNamesOfGroupsThatMeansFiles() {
-        return array(
-                50,
-                60,
-                70,
-                80,
-                90,
-                100
-        );
+    public int[] getDims() {
+        return new int[]{50, 60, 70, 80, 90, 100};
     }
 
 }
