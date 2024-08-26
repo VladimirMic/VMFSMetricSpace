@@ -71,6 +71,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
     public int[] getDims() {
         return new int[]{10, 15, 20, 25, 30, 35, 40};
     }
+
     @Override
     public Object[] getDisplayedNamesOfGroupsThatMeansFiles() {
         int[] dims = getDims();

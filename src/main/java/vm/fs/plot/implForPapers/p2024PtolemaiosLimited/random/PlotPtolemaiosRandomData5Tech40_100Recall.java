@@ -47,4 +47,19 @@ public class PlotPtolemaiosRandomData5Tech40_100Recall extends PlotPtolemaiosRan
         return new int[]{50, 60, 70, 80, 90, 100};
     }
 
+    @Override
+    public Object[] getDisplayedNamesOfGroupsThatMeansFiles() {
+        int[] dims = getDims();
+        Object[] ret = new Object[dims.length];
+        for (int i = 0; i < dims.length; i++) {
+            ret[i] = dims[i];
+        }
+        return ret;
+    }
+
+    @Override
+    public String getXAxisLabel() {
+        return "Dimensionality";
+    }
+
 }
