@@ -15,7 +15,7 @@ import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.math.Tools;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.Dataset;
-import vm.plot.impl.XYLinesPlotter;
+import vm.plot.impl.LinesPlotter;
 
 /**
  *
@@ -99,7 +99,7 @@ public class PrintAndPlotDDOfDatasetMain {
     }
 
     private static void createPlot(File f, Map<Float, Float> mapOfValues) {
-        XYLinesPlotter plotter = new XYLinesPlotter();
+        LinesPlotter plotter = new LinesPlotter();
         float[] traceXValues = new float[mapOfValues.size()];
         float[] traceYValues = new float[mapOfValues.size()];
         Iterator<Map.Entry<Float, Float>> it = mapOfValues.entrySet().iterator();
