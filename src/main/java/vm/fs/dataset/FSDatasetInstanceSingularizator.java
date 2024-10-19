@@ -20,6 +20,8 @@ import vm.queryResults.QueryNearestNeighboursStoreInterface;
  */
 public class FSDatasetInstanceSingularizator {
 
+    public static final Integer FORCED_PIVOT_COUNT = 256;
+
     public static class DeCAFDataset extends FSFloatVectorDataset {
 
         public DeCAFDataset() {
@@ -28,6 +30,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 256;
         }
     }
@@ -54,11 +59,14 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 64;
         }
     }
 
-    private static final Integer PIVOTS_RANDOM_DATASETS = 128;
+    private static final Integer PIVOTS_RANDOM_DATASETS = FORCED_PIVOT_COUNT > 0 ? FORCED_PIVOT_COUNT : 128;
 
     public static class RandomDataset10Uniform extends FSFloatVectorDataset {
 
@@ -225,6 +233,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 256;
         }
 
@@ -257,6 +268,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return -1;
         }
     }
@@ -750,6 +764,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 128;
         }
 
@@ -785,6 +802,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 32;
         }
 
@@ -1332,6 +1352,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 64;
         }
 
@@ -1354,6 +1377,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 32;
         }
 
@@ -1374,6 +1400,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 64;
         }
 
@@ -1402,6 +1431,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return -1;
         }
 
@@ -1462,6 +1494,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return -1;
         }
 
@@ -1493,6 +1528,9 @@ public class FSDatasetInstanceSingularizator {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return -1;
         }
 

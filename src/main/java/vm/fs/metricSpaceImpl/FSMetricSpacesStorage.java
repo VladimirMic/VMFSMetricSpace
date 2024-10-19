@@ -206,14 +206,10 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
             if (!fGZ.exists() && !willBeDeleted) {
                 LOG.log(Level.WARNING, "File on the path {0} does not exist. The params are: folder: {1}, fileName: {2}. Returning zipped file: {3}", new Object[]{f.getAbsolutePath(), folder, fileName, fGZ.getName()});
             }
-            if (fGZ.exists() && Files.isSymbolicLink(fGZ.toPath()) && (folder.equals(FSGlobal.DATASET_FOLDER) || folder.equals(FSGlobal.DATASET_MVSTORAGE_FOLDER))) {
-                LOG.log(Level.WARNING, "Returned file {0} is a symbolic file. Reading might be slow", fGZ.getAbsolutePath());
-            }
+            checkBigTertiaryDatasetStorage(fGZ);
             return fGZ;
         }
-        if (Files.isSymbolicLink(f.toPath())) {
-            LOG.log(Level.WARNING, "Returned file {0} is a symbolic file. Reading might be slow", f.getAbsolutePath());
-        }
+        checkBigTertiaryDatasetStorage(f);
         return f;
     }
 
@@ -341,6 +337,25 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
         } finally {
             try {
                 os.close();
+            } catch (IOException ex) {
+                Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public static void checkBigTertiaryDatasetStorage(File fGZ) {
+        File folder = fGZ.getParentFile();
+        File datasetFolder = new File(FSGlobal.DATASET_FOLDER);
+        File keyValueFolder = new File(FSGlobal.DATASET_MVSTORAGE_FOLDER);
+        if (fGZ.exists() && Files.isSymbolicLink(fGZ.toPath()) && (folder.equals(datasetFolder) || folder.equals(keyValueFolder))) {
+            LOG.log(Level.WARNING, "Returned file {0} is a symbolic file. Reading might be slow", fGZ.getAbsolutePath());
+            try {
+                String realPath = fGZ.toPath().toRealPath().toFile().getAbsolutePath();
+                boolean startsWith = realPath.toLowerCase().contains("nas");
+                if (startsWith && FSGlobal.STOP_ON_READING_FROM_NAS) {
+                    System.err.println("");
+                    throw new RuntimeException("File " + realPath + " is on the tertiary storage. Stopping. The symbolic link path is " + fGZ.getAbsolutePath());
+                }
             } catch (IOException ex) {
                 Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -3,31 +3,29 @@ package vm.fs.store.partitioning;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.datasetPartitioning.StorageDatasetPartitionsInterface;
 
 /**
  *
  * @author Vlada
  */
-public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInterface {
+public class FSVoronoiPartitioningStorage implements FSStorageDatasetPartitionsInterface {
     
     public final Logger LOG = Logger.getLogger(FSVoronoiPartitioningStorage.class.getName());
     
     @Override
-    public void store(Map<Comparable, SortedSet<Comparable>> mapping, String datasetName, int origPivotCount) {
+    public void store(Map<Comparable, Collection<Comparable>> mapping, String datasetName, int origPivotCount) {
         if (mapping == null || mapping.isEmpty()) {
             LOG.log(Level.WARNING, "Nothing to store: {0}", mapping);
             return;
@@ -36,9 +34,9 @@ public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInt
         try {
             File file = getFile(datasetName, origPivotCount, true);
             os = new GZIPOutputStream(new FileOutputStream(file, false), true);
-            for (Map.Entry<Comparable, SortedSet<Comparable>> cell : mapping.entrySet()) {
+            for (Map.Entry<Comparable, Collection<Comparable>> cell : mapping.entrySet()) {
                 String pivotID = cell.getKey().toString();
-                Set<Comparable> ids = cell.getValue();
+                Collection<Comparable> ids = cell.getValue();
                 os.write(pivotID.getBytes());
                 os.write(';');
                 for (Object id : ids) {
@@ -60,6 +58,7 @@ public class FSVoronoiPartitioningStorage implements StorageDatasetPartitionsInt
         
     }
     
+    @Override
     public File getFile(String datasetName, int pivotCount, boolean willBeDeleted) {
         String name = datasetName + "_" + pivotCount + "pivots.csv.gz";
         File ret = new File(FSGlobal.VORONOI_PARTITIONING_STORAGE, name);

@@ -12,6 +12,12 @@ import javax.swing.JOptionPane;
 public class FSGlobal {
 
     public static final Boolean ASK_FOR_EXISTENCE = false;
+    /**
+     * N drive is the tertiary storage with slow reading. If dataset is stored
+     * there and should be read, the flag decides whether the Exception is fired
+     * instead.
+     */
+    public static final Boolean STOP_ON_READING_FROM_NAS = true;
 
     private static String initRoot() {
         String separator = System.getProperty("file.separator");
@@ -63,7 +69,7 @@ public class FSGlobal {
     public static final String AUXILIARY_FOR_PTOLEMAIOS_WITH_LIMITED_ANGLES = AUXILIARY_FOR_DATA_FILTERING + "Ptolemaios_limited_angles\\";
     public static final String AUXILIARY_FOR_PTOLEMAIOS_COEFS_WITH_LIMITED_ANGLES = AUXILIARY_FOR_PTOLEMAIOS_WITH_LIMITED_ANGLES + "Simple_coefs\\";
 
-    public static final String PARTITIONED_DATASETS = DATASET_FOLDER + "Partitioning\\";
+    public static final String PARTITIONED_DATASETS = DATA_FOLDER + "Partitioning\\";
     public static final String VORONOI_PARTITIONING_STORAGE = PARTITIONED_DATASETS + "Voronoi_partitioning\\";
     public static final String GRAPPLE_PARTITIONING_STORAGE = AUXILIARY_FOR_DATA_FILTERING + "GRAPPLE_partitioning\\";
 

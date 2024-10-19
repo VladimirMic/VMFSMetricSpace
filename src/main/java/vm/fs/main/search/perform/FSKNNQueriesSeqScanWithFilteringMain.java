@@ -46,8 +46,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //        vm.javatools.Tools.sleep(15);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
-//            new FSDatasetInstanceSingularizator.FaissDyn_Clip_100M_PCA256_Candidates(300)
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
 //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
 //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
@@ -204,11 +206,14 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         return alg;
     }
 
-    public static final BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, Dataset dataset, int k) {
+    public static final BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, Dataset dataset, Integer k) {
         int pivotCount = pivots.size();
         List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
         if (resultSetPrefix == null) {
-            resultSetPrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots_" + k + "NN";
+            resultSetPrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots";
+        }
+        if (k != null) {
+            resultSetPrefix += "_" + k + "NN";
         }
         AbstractOnePivotFilter metricFiltering = new TriangleInequality(resultSetPrefix);
         AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(
