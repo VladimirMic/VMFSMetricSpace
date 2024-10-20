@@ -72,6 +72,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         };
         for (Dataset dataset : datasets) {
             run(dataset);
+            return;
         }
     }
 
@@ -88,7 +89,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         evaluateSampleOfSmallestDistances(dataset);
 //        precomputeObjectToPivotDists(origDataset);
 //        createKeyValueStorageForBigDataset(origDataset);
-        learnDataDependentMetricFiltering(dataset);
+//        learnDataDependentMetricFiltering(dataset);
         learnDataDependentPtolemaicFiltering(dataset);
     }
 

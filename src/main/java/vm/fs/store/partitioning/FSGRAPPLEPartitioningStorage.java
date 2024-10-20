@@ -24,7 +24,7 @@ import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
 public class FSGRAPPLEPartitioningStorage extends FSVoronoiPartitioningStorage {
 
     @Override
-    public File getFile(String datasetName, int pivotCount, boolean willBeDeleted) {
+    public File getFile(String datasetName, String suffix, int pivotCount, boolean willBeDeleted) {
         String name = datasetName + "_" + pivotCount + "pivots.csv.gz";
         File ret = new File(FSGlobal.GRAPPLE_PARTITIONING_STORAGE, name);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
@@ -32,8 +32,8 @@ public class FSGRAPPLEPartitioningStorage extends FSVoronoiPartitioningStorage {
     }
 
     @Override
-    public Map<Comparable, TreeSet<Comparable>> load(String datasetName, int origPivotCount) {
-        File f = getFile(datasetName, origPivotCount, false);
+    public Map<Comparable, TreeSet<Comparable>> load(String datasetName, String suffix, int origPivotCount) {
+        File f = getFile(datasetName, suffix, origPivotCount, false);
         SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
         Map<Comparable, TreeSet<Comparable>> ret = new HashMap<>();
         Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();
@@ -42,7 +42,7 @@ public class FSGRAPPLEPartitioningStorage extends FSVoronoiPartitioningStorage {
             String[] values = entry.getValue();
             List<GRAPPLEPartitioning.ObjectMetadata> list = new ArrayList();
             for (int i = 1; i < values.length; i++) {
-                String value = values[i];                
+                String value = values[i];
                 list.add(GRAPPLEPartitioning.getObjectMetadataInstance(value));
             }
             ret.put(entry.getKey(), new TreeSet(list));

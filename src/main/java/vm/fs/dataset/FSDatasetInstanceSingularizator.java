@@ -20,7 +20,7 @@ import vm.queryResults.QueryNearestNeighboursStoreInterface;
  */
 public class FSDatasetInstanceSingularizator {
 
-    public static final Integer FORCED_PIVOT_COUNT = 256;
+    public static final Integer FORCED_PIVOT_COUNT = 512;
 
     public static class DeCAFDataset extends FSFloatVectorDataset {
 

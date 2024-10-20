@@ -11,8 +11,8 @@ import vm.metricSpace.datasetPartitioning.StorageDatasetPartitionsInterface;
  *
  * @author Vlada
  */
-public interface FSStorageDatasetPartitionsInterface extends StorageDatasetPartitionsInterface {
+public abstract class FSStorageDatasetPartitionsInterface extends StorageDatasetPartitionsInterface {
 
-    public File getFile(String datasetName, int pivotCount, boolean willBeDeleted);
+    public abstract File getFile(String datasetName, String suffix, int pivotCount, boolean willBeDeleted);
 
 }

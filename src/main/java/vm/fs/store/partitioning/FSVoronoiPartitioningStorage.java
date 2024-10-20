@@ -20,19 +20,19 @@ import vm.fs.FSGlobal;
  *
  * @author Vlada
  */
-public class FSVoronoiPartitioningStorage implements FSStorageDatasetPartitionsInterface {
-    
+public class FSVoronoiPartitioningStorage extends FSStorageDatasetPartitionsInterface {
+
     public final Logger LOG = Logger.getLogger(FSVoronoiPartitioningStorage.class.getName());
-    
+
     @Override
-    public void store(Map<Comparable, Collection<Comparable>> mapping, String datasetName, int origPivotCount) {
+    public void store(Map<Comparable, Collection<Comparable>> mapping, String datasetName, String filterName, int origPivotCount) {
         if (mapping == null || mapping.isEmpty()) {
             LOG.log(Level.WARNING, "Nothing to store: {0}", mapping);
             return;
         }
         GZIPOutputStream os = null;
         try {
-            File file = getFile(datasetName, origPivotCount, true);
+            File file = getFile(datasetName, filterName, origPivotCount, true);
             os = new GZIPOutputStream(new FileOutputStream(file, false), true);
             for (Map.Entry<Comparable, Collection<Comparable>> cell : mapping.entrySet()) {
                 String pivotID = cell.getKey().toString();
@@ -55,20 +55,43 @@ public class FSVoronoiPartitioningStorage implements FSStorageDatasetPartitionsI
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
-        
     }
-    
-    @Override
+
     public File getFile(String datasetName, int pivotCount, boolean willBeDeleted) {
-        String name = datasetName + "_" + pivotCount + "pivots.csv.gz";
+        return getFile(datasetName, null, pivotCount, willBeDeleted);
+    }
+
+    @Override
+    public File getFile(String datasetName, String filterName, int pivotCount, boolean willBeDeleted) {
+        String name = datasetName;
+        if (filterName != null && !filterName.trim().isEmpty()) {
+            name += "_" + filterName;
+        }
+        name += "_" + pivotCount + "pivots.csv.gz";
         File ret = new File(FSGlobal.VORONOI_PARTITIONING_STORAGE, name);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;
     }
-    
+
     @Override
-    public Map<Comparable, TreeSet<Comparable>> load(String datasetName, int origPivotCount) {
-        File f = getFile(datasetName, origPivotCount, false);
+    public Map<Comparable, TreeSet<Comparable>> load(String datasetName, String suffix, int origPivotCount) {
+        File f = getFile(datasetName, suffix, origPivotCount, false);
+        return load(f);
+    }
+
+    public File[] filesWithApproximatePartitionings(String groundTruthDatasetName, int pivotCount) {
+        File folder = new File(FSGlobal.VORONOI_PARTITIONING_STORAGE);
+        String pivotString = pivotCount + "pivots";
+        File[] ret = folder.listFiles((File file, String string) -> {
+            boolean start = string.startsWith(groundTruthDatasetName + "_" + pivotString);
+            boolean log = !string.contains("log");
+            boolean end = string.endsWith("gz");
+            return start && log && end;
+        });
+        return ret;
+    }
+
+    public Map<Comparable, TreeSet<Comparable>> load(File f) {
         SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
         Map<Comparable, TreeSet<Comparable>> ret = new HashMap<>();
         Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();
@@ -79,8 +102,8 @@ public class FSVoronoiPartitioningStorage implements FSStorageDatasetPartitionsI
             list.remove(0);
             ret.put(entry.getKey(), new TreeSet(list));
         }
-        LOG.log(Level.INFO, "The Voronoi partitioning has {0} non empty cells", ret.size());
+        LOG.log(Level.INFO, "The Voronoi partitioning in {1} has {0} non empty cells", new Object[]{ret.size(), f.getName()});
         return ret;
     }
-    
+
 }
