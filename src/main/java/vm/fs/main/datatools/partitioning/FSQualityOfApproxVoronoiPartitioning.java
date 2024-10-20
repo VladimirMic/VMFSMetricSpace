@@ -28,8 +28,8 @@ public class FSQualityOfApproxVoronoiPartitioning {
             //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
-            new FSDatasetInstanceSingularizator.SIFTdataset()
-        //            //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform()
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            new FSDatasetInstanceSingularizator.RandomDataset15Uniform()
         };
 
         int pivotCount = 256;
@@ -54,8 +54,10 @@ public class FSQualityOfApproxVoronoiPartitioning {
             }
             System.err.flush();
             System.err.close();
+
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(FSQualityOfApproxVoronoiPartitioning.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FSQualityOfApproxVoronoiPartitioning.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

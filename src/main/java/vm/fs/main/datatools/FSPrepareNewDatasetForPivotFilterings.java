@@ -72,7 +72,6 @@ public class FSPrepareNewDatasetForPivotFilterings {
         };
         for (Dataset dataset : datasets) {
             run(dataset);
-            return;
         }
     }
 
