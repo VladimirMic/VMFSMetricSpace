@@ -31,13 +31,14 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void setSkipEverythingEvaluated(Boolean skipEverythingEvaluated) {
         FSPrepareNewDatasetForPivotFilterings.skipEverythingEvaluated = skipEverythingEvaluated;
     }
-    public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 50 * 1000 * 1000; // decide by yourself, smaller datasets can be kept as a map in the main memory only, and creation of the map is efficient. This is implemented, e.g., in FSFloatVectorDataset and FSHammingSpaceDataset in class FSDatasetInstanceSingularizator
+    public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 10 * 1000 * 1000; // decide by yourself, smaller datasets can be kept as a map in the main memory only, and creation of the map is efficient. This is implemented, e.g., in FSFloatVectorDataset and FSHammingSpaceDataset in class FSDatasetInstanceSingularizator
     public static final Integer MIN_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 50 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetForPivotFilterings.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
+            new FSDatasetInstanceSingularizator.DeCAF20M_PCA256Dataset(),
             new FSDatasetInstanceSingularizator.DeCAFDataset(),
             new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
             new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
@@ -88,7 +89,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         evaluateSampleOfSmallestDistances(dataset);
 //        precomputeObjectToPivotDists(origDataset);
 //        createKeyValueStorageForBigDataset(origDataset);
-//        learnDataDependentMetricFiltering(dataset);
+        learnDataDependentMetricFiltering(dataset);
         learnDataDependentPtolemaicFiltering(dataset);
     }
 

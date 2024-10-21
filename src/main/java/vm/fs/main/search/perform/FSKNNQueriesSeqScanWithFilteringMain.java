@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
@@ -23,7 +22,7 @@ import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
 import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
 import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentGeneralisedPtolemaicFiltering;
+import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
@@ -184,13 +183,13 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         SearchingAlgorithm alg;
         if (filter instanceof AbstractPtolemaicBasedFiltering) {
             alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), df);
-            if (filter instanceof DataDependentGeneralisedPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset())) {
+            if (filter instanceof DataDependentPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset())) {
                 KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
 //STRAIN
                 tmp.setObjBeforeSeqScan(100000);
                 tmp.setThresholdOnLBsPerObjForSeqScan(20);
             }
-            if (filter instanceof DataDependentGeneralisedPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates())) {
+            if (filter instanceof DataDependentPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates())) {
                 KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
 //STRAIN
                 tmp.setObjBeforeSeqScan(20);
@@ -216,18 +215,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             resultSetPrefix += "_" + k + "NN";
         }
         AbstractOnePivotFilter metricFiltering = new TriangleInequality(resultSetPrefix);
-        AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(
-                resultSetPrefix,
-                pivotCount,
-                FSLearnCoefsForDataDepenentMetricFilteringMain.SAMPLE_O_COUNT,
-                FSLearnCoefsForDataDepenentMetricFilteringMain.SAMPLE_Q_COUNT,
-                dataset
-        );
+        AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(resultSetPrefix, pivotCount, dataset);
         AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(resultSetPrefix);
 
         AbstractPtolemaicBasedFiltering ptolemaicFilteringRandomPivots = new PtolemaicFiltering(resultSetPrefix, pivotsData, dataset.getDistanceFunction(), false);
         AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFiltering(resultSetPrefix, pivotsData, dataset.getDistanceFunction(), true);
-        DataDependentGeneralisedPtolemaicFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(
+        DataDependentPtolemaicFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(
                 resultSetPrefix,
                 dataset,
                 pivotCount
