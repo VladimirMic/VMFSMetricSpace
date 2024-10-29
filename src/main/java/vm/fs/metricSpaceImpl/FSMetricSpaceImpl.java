@@ -76,7 +76,7 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
 
     @Override
     public T getDataOfMetricObject(Object o) {
-        Map.Entry<Object, T> entry = (Map.Entry<Object, T>) o;
+        Map.Entry<Comparable, T> entry = (Map.Entry<Comparable, T>) o;
         return entry.getValue();
     }
 

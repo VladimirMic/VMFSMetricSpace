@@ -6,12 +6,15 @@ import java.util.Map;
 import org.h2.mvstore.MVStoreException;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
+import vm.fs.metricSpaceImpl.FSPDBeStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.metricSpace.Dataset;
+import vm.metricSpace.MetricSpaceWithIDsAsObjects;
 import vm.metricSpace.ToolsMetricDomain;
+import vm.metricSpace.distance.impl.QScore;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 
 /**
@@ -21,6 +24,40 @@ import vm.queryResults.QueryNearestNeighboursStoreInterface;
 public class FSDatasetInstanceSingularizator {
 
     public static final Integer FORCED_PIVOT_COUNT = 512;
+
+    public static class PDBePtoteinChainsDataset extends Dataset<String> {
+
+        public PDBePtoteinChainsDataset() {
+            super(
+                    "PDBe_clone_binary",
+                    new MetricSpaceWithIDsAsObjects(new QScore(0)),
+                    new FSPDBeStorage()
+            );
+        }
+
+        @Override
+        public Map getKeyValueStorage() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public boolean hasKeyValueStorage() {
+            return true;
+        }
+
+        @Override
+        public void deleteKeyValueStorage() {
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
+            return 512;
+        }
+
+    }
 
     public static class DeCAFDataset extends FSFloatVectorDataset {
 
