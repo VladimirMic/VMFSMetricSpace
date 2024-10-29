@@ -38,12 +38,12 @@ public class FSPartitioningMain {
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.SIFTdataset()
-//            new FSDatasetInstanceSingularizator.RandomDataset15Uniform()
-//            new FSDatasetInstanceSingularizator.DeCAFDataset()
-        //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
+//                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         //        //                        new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
         //        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
@@ -130,14 +130,14 @@ public class FSPartitioningMain {
         DataDependentPtolemaicFilteringForVoronoiPartitioning dataDependentPtolemaicFilteringRandomPivots = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, false);
         DataDependentPtolemaicFilteringForVoronoiPartitioning dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, true);
         return new BoundsOnDistanceEstimation[]{
-            //            null,
-            //            metricFiltering,
-            //            dataDependentMetricFiltering,
+            null,
+            metricFiltering,
+            dataDependentMetricFiltering,
             //            //            fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots
-        //            ptolemaicFiltering
-        //            dataDependentPtolemaicFilteringRandomPivots
-        //            dataDependentPtolemaicFiltering
+            ptolemaicFilteringRandomPivots,
+//            ptolemaicFiltering,
+            dataDependentPtolemaicFilteringRandomPivots,
+            dataDependentPtolemaicFiltering
         };
     }
 
