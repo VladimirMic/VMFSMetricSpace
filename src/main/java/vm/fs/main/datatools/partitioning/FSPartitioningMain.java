@@ -55,19 +55,18 @@ public class FSPartitioningMain {
         }
     }
 
-    private static void runVoronoiPartitioning(Dataset dataset, int pivotCount) {
+    public static void runVoronoiPartitioning(Dataset dataset, int pivotCount) {
         List<Object> pivots = dataset.getPivots(pivotCount);
-        String resultSetPrefix = pivotCount + "pivots";
-
-        BoundsOnDistanceEstimation[] filters = initTestedFilters(resultSetPrefix, pivots, dataset);
+//        String resultSetPrefix = pivotCount + "pivots";
+//        BoundsOnDistanceEstimation[] filters = initTestedFilters(resultSetPrefix, pivots, dataset);
         boolean readAtOnce = true;
 //        readAtOnce = filters.length > 1;
-        for (BoundsOnDistanceEstimation filter : filters) {
-            VoronoiPartitioning vp = new VoronoiPartitioning(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots, filter);
-            FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
-            partition(dataset, vp, pivotCount, storage, readAtOnce);
-            System.gc();
-        }
+//        for (BoundsOnDistanceEstimation filter : filters) {
+        VoronoiPartitioning vp = new VoronoiPartitioning(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
+        FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
+        partition(dataset, vp, pivotCount, storage, readAtOnce);
+        System.gc();
+//        }
     }
 
     private static void runGRAPPLEPartitioning(Dataset dataset, BoundsOnDistanceEstimation filter, int pivotCount) {
@@ -115,7 +114,8 @@ public class FSPartitioningMain {
         return ret;
     }
 
-    public static final BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, Dataset dataset) {
+    @Deprecated
+    private static final BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, Dataset dataset) {
         int pivotCount = pivots.size();
         List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
         if (resultSetPrefix == null) {
@@ -135,7 +135,7 @@ public class FSPartitioningMain {
             dataDependentMetricFiltering,
             //            //            fourPointPropertyBased,
             ptolemaicFilteringRandomPivots,
-//            ptolemaicFiltering,
+            //            ptolemaicFiltering,
             dataDependentPtolemaicFilteringRandomPivots,
             dataDependentPtolemaicFiltering
         };

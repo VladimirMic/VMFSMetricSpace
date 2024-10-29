@@ -6,6 +6,7 @@ package vm.fs.store.partitioning;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,10 +33,10 @@ public class FSGRAPPLEPartitioningStorage extends FSVoronoiPartitioningStorage {
     }
 
     @Override
-    public Map<Comparable, TreeSet<Comparable>> load(String datasetName, String suffix, int origPivotCount) {
+    public Map<Comparable, Collection<Comparable>> load(String datasetName, String suffix, int origPivotCount) {
         File f = getFile(datasetName, suffix, origPivotCount, false);
         SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
-        Map<Comparable, TreeSet<Comparable>> ret = new HashMap<>();
+        Map<Comparable, Collection<Comparable>> ret = new HashMap<>();
         Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, String[]> entry = it.next();

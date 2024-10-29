@@ -74,7 +74,7 @@ public class FSVoronoiPartitioningStorage extends FSStorageDatasetPartitionsInte
     }
 
     @Override
-    public Map<Comparable, TreeSet<Comparable>> load(String datasetName, String suffix, int origPivotCount) {
+    public Map<Comparable, Collection<Comparable>> load(String datasetName, String suffix, int origPivotCount) {
         File f = getFile(datasetName, suffix, origPivotCount, false);
         return load(f);
     }
@@ -91,9 +91,14 @@ public class FSVoronoiPartitioningStorage extends FSStorageDatasetPartitionsInte
         return ret;
     }
 
-    public Map<Comparable, TreeSet<Comparable>> load(File f) {
+    public Map<Comparable, TreeSet<Comparable>> loadAsTreeSets(File f) {
+        Map<Comparable, Collection<Comparable>> load = load(f);
+        return transformToTreeSets(load);
+    }
+
+    public Map<Comparable, Collection<Comparable>> load(File f) {
         SortedMap<String, String[]> keyValueMap = Tools.parseCsvMapKeyValues(f.getAbsolutePath());
-        Map<Comparable, TreeSet<Comparable>> ret = new HashMap<>();
+        Map<Comparable, Collection<Comparable>> ret = new HashMap<>();
         Iterator<Map.Entry<String, String[]>> it = keyValueMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, String[]> entry = it.next();
