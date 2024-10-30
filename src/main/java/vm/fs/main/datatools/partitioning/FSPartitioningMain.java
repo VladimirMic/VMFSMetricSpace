@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
-import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.partitioning.FSGRAPPLEPartitioningStorage;
 import vm.fs.store.partitioning.FSStorageDatasetPartitionsInterface;
 import vm.fs.store.partitioning.FSVoronoiPartitioningStorage;
@@ -20,14 +18,7 @@ import vm.metricSpace.datasetPartitioning.AbstractDatasetPartitioning;
 import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
 import vm.metricSpace.datasetPartitioning.impl.VoronoiPartitioning;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
-import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
-import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
-import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
-import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFilteringForVoronoiPartitioning;
-import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
-import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFilteringForVoronoiPartitioning;
 
 /**
  *
@@ -57,14 +48,9 @@ public class FSPartitioningMain {
 
     public static void runVoronoiPartitioning(Dataset dataset, int pivotCount) {
         List<Object> pivots = dataset.getPivots(pivotCount);
-//        String resultSetPrefix = pivotCount + "pivots";
-//        BoundsOnDistanceEstimation[] filters = initTestedFilters(resultSetPrefix, pivots, dataset);
-        boolean readAtOnce = true;
-//        readAtOnce = filters.length > 1;
-//        for (BoundsOnDistanceEstimation filter : filters) {
         VoronoiPartitioning vp = new VoronoiPartitioning(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
-        partition(dataset, vp, pivotCount, storage, readAtOnce);
+        partition(dataset, vp, pivotCount, storage);
         System.gc();
 //        }
     }
@@ -74,22 +60,12 @@ public class FSPartitioningMain {
         filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset, pivotCount);
         AbstractDatasetPartitioning partitioning = new GRAPPLEPartitioning((DataDependentPtolemaicFiltering) filter, dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSGRAPPLEPartitioningStorage storage = new FSGRAPPLEPartitioningStorage();
-        partition(dataset, partitioning, pivotCount, storage, true);
+        partition(dataset, partitioning, pivotCount, storage);
         System.gc();
     }
 
-    private static List<Object> lastList;
-    private static Dataset lastDataset;
-
-    private static Map<Comparable, List<Comparable>> partition(Dataset dataset, AbstractDatasetPartitioning partitioning, int pivotCount, FSStorageDatasetPartitionsInterface storage, boolean readAtOnce) {
+    private static Map<Comparable, List<Comparable>> partition(Dataset dataset, AbstractDatasetPartitioning partitioning, int pivotCount, FSStorageDatasetPartitionsInterface storage) {
         Iterator it = dataset.getMetricObjectsFromDataset();
-        if (dataset.getPrecomputedDatasetSize() < 2000000 && readAtOnce) {
-            if (!dataset.equals(lastDataset)) {
-                lastList = Tools.getObjectsFromIterator(-1, it);
-                lastDataset = dataset;
-            }
-            it = lastList.iterator();
-        }
         Map ret = partitioning.partitionObjects(it, dataset.getDatasetName(), storage, pivotCount);
         try {
             String path = storage.getFile(dataset.getDatasetName(), null, pivotCount, true).getAbsolutePath();
@@ -112,33 +88,6 @@ public class FSPartitioningMain {
             Logger.getLogger(FSPartitioningMain.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ret;
-    }
-
-    @Deprecated
-    private static final BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, Dataset dataset) {
-        int pivotCount = pivots.size();
-        List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
-        if (resultSetPrefix == null) {
-            resultSetPrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots";
-        }
-        AbstractOnePivotFilter metricFiltering = new TriangleInequality(resultSetPrefix);
-        AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(resultSetPrefix, pivotCount, dataset);
-        AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(resultSetPrefix);
-
-        AbstractPtolemaicBasedFiltering ptolemaicFilteringRandomPivots = new PtolemaicFilteringForVoronoiPartitioning(resultSetPrefix, pivotsData, dataset.getDistanceFunction(), false);
-        AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFilteringForVoronoiPartitioning(resultSetPrefix, pivotsData, dataset.getDistanceFunction(), true);
-        DataDependentPtolemaicFilteringForVoronoiPartitioning dataDependentPtolemaicFilteringRandomPivots = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, false);
-        DataDependentPtolemaicFilteringForVoronoiPartitioning dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, true);
-        return new BoundsOnDistanceEstimation[]{
-            null,
-            metricFiltering,
-            dataDependentMetricFiltering,
-            //            //            fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots,
-            //            ptolemaicFiltering,
-            dataDependentPtolemaicFilteringRandomPivots,
-            dataDependentPtolemaicFiltering
-        };
     }
 
 }
