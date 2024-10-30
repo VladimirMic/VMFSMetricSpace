@@ -14,7 +14,6 @@ import vm.fs.FSGlobal;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
-import vm.vmtrials.deprecated.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFilteringForVoronoiPartitioning;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
@@ -56,23 +55,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         return new DataDependentPtolemaicFiltering(resultPreffixName, coefsToArrays, queryDynamicPivotPairsSelection);
     }
 
-    public static DataDependentPtolemaicFilteringForVoronoiPartitioning getLearnedInstanceForVoronoiPartitioning(String resultPreffixName, Dataset dataset, int pivotCount) {
-        return getLearnedInstanceForVoronoiPartitioning(resultPreffixName, dataset, pivotCount, true);
-    }
-
-    public static DataDependentPtolemaicFilteringForVoronoiPartitioning getLearnedInstanceForVoronoiPartitioning(String resultPreffixName, Dataset dataset, int pivotCount, boolean wisePivotSelection) {
-        FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storageOfCoefs = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
-        String fileName = storageOfCoefs.getNameOfFileWithCoefs(dataset.getDatasetName(), pivotCount, true);
-        File file = getFile(fileName, false);
-        Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
-        List pivots = dataset.getPivots(pivotCount);
-        List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
-        List pivotIDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), dataset.getMetricSpace());
-        float[][][] coefsToArrays = transformsCoefsToArrays(coefs, pivotIDs);
-        return new DataDependentPtolemaicFilteringForVoronoiPartitioning(resultPreffixName, coefsToArrays, pivotsData, dataset.getDistanceFunction(), wisePivotSelection);
-    }
-
-    private static float[][][] transformsCoefsToArrays(Map<String, float[]> coefs, List pivotIDs) {
+    public static final float[][][] transformsCoefsToArrays(Map<String, float[]> coefs, List pivotIDs) {
         Iterator<String> it = coefs.keySet().iterator();
         float[][][] ret = new float[pivotIDs.size()][pivotIDs.size()][4];
         while (it.hasNext()) {
