@@ -23,7 +23,7 @@ import vm.queryResults.QueryNearestNeighboursStoreInterface;
  */
 public class FSDatasetInstanceSingularizator {
 
-    public static final Integer FORCED_PIVOT_COUNT = 512;
+    public static final Integer FORCED_PIVOT_COUNT = -1;
 
     public static class PDBePtoteinChainsDataset extends Dataset<String> {
 

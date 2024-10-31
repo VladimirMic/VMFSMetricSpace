@@ -14,6 +14,7 @@ import vm.fs.FSGlobal;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
+import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFilteringForStreamKNNClassifier;
 import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
 import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
@@ -80,6 +81,22 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static DataDependentPtolemaicFilteringForStreamKNNClassifier getLearnedInstanceForVoronoiPartitioning(String resultPreffixName, Dataset dataset, int pivotCount) {
+        return getLearnedInstanceForVoronoiPartitioning(resultPreffixName, dataset, pivotCount, true);
+    }
+
+    public static DataDependentPtolemaicFilteringForStreamKNNClassifier getLearnedInstanceForVoronoiPartitioning(String resultPreffixName, Dataset dataset, int pivotCount, boolean wisePivotSelection) {
+        FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storageOfCoefs = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
+        String fileName = storageOfCoefs.getNameOfFileWithCoefs(dataset.getDatasetName(), pivotCount, true);
+        File file = getFile(fileName, false);
+        Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
+        List pivots = dataset.getPivots(pivotCount);
+        List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
+        List pivotIDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), dataset.getMetricSpace());
+        float[][][] coefsToArrays = transformsCoefsToArrays(coefs, pivotIDs);
+        return new DataDependentPtolemaicFilteringForStreamKNNClassifier(resultPreffixName, coefsToArrays, pivotsData, dataset.getDistanceFunction(), wisePivotSelection);
     }
 
     public String getNameOfFileWithCoefs(String datasetName, int pivotCount, boolean allPivotPairs) {

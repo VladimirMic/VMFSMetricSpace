@@ -16,7 +16,7 @@ import vm.fs.store.partitioning.FSVoronoiPartitioningStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.datasetPartitioning.AbstractDatasetPartitioning;
 import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
-import vm.metricSpace.datasetPartitioning.impl.VoronoiPartitioning;
+import vm.metricSpace.datasetPartitioning.impl.VoronoiPartitioningWithoutFilter;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
 
@@ -48,7 +48,7 @@ public class FSPartitioningMain {
 
     public static void runVoronoiPartitioning(Dataset dataset, int pivotCount) {
         List<Object> pivots = dataset.getPivots(pivotCount);
-        VoronoiPartitioning vp = new VoronoiPartitioning(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
+        VoronoiPartitioningWithoutFilter vp = new VoronoiPartitioningWithoutFilter(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
         FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
         partition(dataset, vp, pivotCount, storage);
         System.gc();
