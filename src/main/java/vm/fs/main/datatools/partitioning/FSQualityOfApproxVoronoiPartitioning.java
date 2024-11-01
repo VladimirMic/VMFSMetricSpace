@@ -34,18 +34,22 @@ public class FSQualityOfApproxVoronoiPartitioning {
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.RandomDataset15Uniform()
         };
-        int pivotCount = 256;
+        int clustersCount = 1000;
 
         for (Dataset dataset : datasets) {
-            run(dataset, pivotCount);
+            int pivotCountForFilter = dataset.getRecommendedNumberOfPivotsForFiltering();
+            run(dataset, pivotCountForFilter, clustersCount);
         }
     }
 
-    private static void run(Dataset groundTruthDataset, int pivotCount) {
+    private static void run(Dataset groundTruthDataset, int pivotCount, int clustersCount) {
         FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
-        File gtFile = storage.getFile(groundTruthDataset.getDatasetName(), null, pivotCount, false);
+        File gtFile = storage.getFile(groundTruthDataset.getDatasetName(), null, clustersCount, false);
+        if (!gtFile.exists()) {
+            return;
+        }
         Map<Comparable, TreeSet<Comparable>> gt = storage.loadAsTreeSets(gtFile);
-        File[] files = storage.filesWithApproximatePartitionings(groundTruthDataset.getDatasetName(), pivotCount);
+        File[] files = storage.filesWithApproximatePartitionings(groundTruthDataset.getDatasetName(), pivotCount, clustersCount);
         File output = new File(gtFile.getAbsolutePath() + "_quality_WRT_groundTruth.csv");
         try {
             System.setErr(new PrintStream(new FileOutputStream(output, false)));
@@ -58,8 +62,7 @@ public class FSQualityOfApproxVoronoiPartitioning {
             System.err.close();
 
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(FSQualityOfApproxVoronoiPartitioning.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FSQualityOfApproxVoronoiPartitioning.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -77,6 +80,8 @@ public class FSQualityOfApproxVoronoiPartitioning {
             for (Comparable idFromGTCell : gtCell) {
                 if (approxCell.contains(idFromGTCell)) {
                     numerator++;
+                } else {
+                    System.out.println(idFromGTCell);
                 }
             }
         }

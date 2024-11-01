@@ -31,13 +31,13 @@ public class FSPartitioningMain {
         Dataset[] datasets = new Dataset[]{
             new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
-//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
-//                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
-        //        //                        new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
-        //        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
-        //        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
+//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
         };
         int pivotCount = 256;
 
@@ -80,7 +80,7 @@ public class FSPartitioningMain {
             System.err.print(";Dist comps;");
             System.err.print(partitioning.getDcOfPartitioning());
             System.err.print(";");
-            System.err.print(partitioning.getAdditionalStats());
+            System.err.print(partitioning.getLastAdditionalStats());
             System.err.println();
             System.err.flush();
             System.setErr(tmp);

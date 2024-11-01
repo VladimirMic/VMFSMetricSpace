@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
@@ -16,8 +15,7 @@ import vm.fs.store.partitioning.FSStorageDatasetPartitionsInterface;
 import vm.fs.store.partitioning.FSVoronoiPartitioningStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.datasetPartitioning.AbstractDatasetPartitioning;
-import vm.metricSpace.datasetPartitioning.impl.StreamKNNClassifierWithFilter;
-import vm.metricSpace.datasetPartitioning.impl.VoronoiPartitioningWithoutFilter;
+import vm.metricSpace.datasetPartitioning.impl.Stream1NNClassifierWithFilter;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
 import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
@@ -36,10 +34,11 @@ public class FSStreamKNNPartitioning {
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
             new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(), //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
+            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+            new FSDatasetInstanceSingularizator.DeCAFDataset()
+        //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
         //                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         //        //                        new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
@@ -48,25 +47,36 @@ public class FSStreamKNNPartitioning {
         int clusterCount = 1000;
 
         for (Dataset dataset : datasets) {
-            int pivotCount = dataset.getRecommendedNumberOfPivotsForFiltering();
-            run(dataset, pivotCount, clusterCount);
+            int pivotCountForFilter = dataset.getRecommendedNumberOfPivotsForFiltering();
+            run(dataset, pivotCountForFilter, clusterCount);
         }
     }
 
-    public static void run(Dataset dataset, int pivotCount, int clusterCount) {
+    public static void run(Dataset dataset, int pivotCountForFilter, int clusterCount) {
+        if (pivotCountForFilter > clusterCount) {
+            throw new IllegalArgumentException("The number of filterts for the filtering cannot be higher than the cluster count" + pivotCountForFilter + ", " + clusterCount);
+        }
         List<Object> centroids = dataset.getPivots(clusterCount);
-        List<Object> pivots = centroids.subList(0, pivotCount);
-        String resultSetPrefix = pivotCount + "pivotsFilt_" + clusterCount + "clusters";
-        BoundsOnDistanceEstimation[] filters = initTestedFilters(resultSetPrefix, pivots, dataset);
+        List<Object> pivots = centroids.subList(0, pivotCountForFilter);
+        if (centroids.size() != clusterCount || pivots.size() != pivotCountForFilter) {
+            throw new RuntimeException("Not enough number of object: " + centroids.size() + ", " + clusterCount + "; " + pivots.size() + ", " + pivotCountForFilter);
+        }
+        String resultSetPrefix = pivotCountForFilter + "pivotsFilt_" + clusterCount + "clusters";
+        BoundsOnDistanceEstimation[] filters = initTestedFilters(resultSetPrefix, pivots, centroids, dataset);
         for (BoundsOnDistanceEstimation filter : filters) {
-            StreamKNNClassifierWithFilter classifier = new StreamKNNClassifierWithFilter<>(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots, filter);
+            Stream1NNClassifierWithFilter classifier = new Stream1NNClassifierWithFilter<>(
+                    dataset.getMetricSpace(),
+                    dataset.getDistanceFunction(),
+                    pivotCountForFilter,
+                    centroids,
+                    filter);
             FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
-            partition(dataset, classifier, pivotCount, storage);
+            partition(dataset, classifier, centroids.size(), storage);
             System.gc();
         }
     }
 
-    private static Map<Comparable, List<Comparable>> partition(Dataset dataset, AbstractDatasetPartitioning partitioning, int pivotCount, FSStorageDatasetPartitionsInterface storage) {
+    private static Map<Comparable, List<Comparable>> partition(Dataset dataset, Stream1NNClassifierWithFilter partitioning, int pivotCount, FSStorageDatasetPartitionsInterface storage) {
         Iterator it = dataset.getMetricObjectsFromDataset();
         Map ret = partitioning.partitionObjects(it, dataset.getDatasetName(), storage, pivotCount);
         try {
@@ -81,8 +91,8 @@ public class FSStreamKNNPartitioning {
             System.err.print(partitioning.getLastTimeOfPartitioning());
             System.err.print(";Dist comps;");
             System.err.print(partitioning.getDcOfPartitioning());
-            System.err.print(";");
-            System.err.print(partitioning.getAdditionalStats());
+            System.err.print(";LB checked;");
+            System.err.print(partitioning.getLastAdditionalStats());
             System.err.println();
             System.err.flush();
             System.setErr(tmp);
@@ -92,29 +102,27 @@ public class FSStreamKNNPartitioning {
         return ret;
     }
 
-    private static final BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, Dataset dataset) {
+    private static BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, List centroids, Dataset dataset) {
         int pivotCount = pivots.size();
         List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
-        if (resultSetPrefix == null) {
-            resultSetPrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots";
-        }
+        List centroidsData = dataset.getMetricSpace().getDataOfMetricObjects(centroids);
         AbstractOnePivotFilter metricFiltering = new TriangleInequality(resultSetPrefix);
         AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(resultSetPrefix, pivotCount, dataset);
         AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(resultSetPrefix);
 
-        AbstractPtolemaicBasedFiltering ptolemaicFilteringRandomPivots = new PtolemaicFilteringForStreamKNNClassifier(resultSetPrefix, pivotsData, dataset.getDistanceFunction(), false);
-        AbstractPtolemaicBasedFiltering ptolemaicFiltering = new PtolemaicFilteringForStreamKNNClassifier(resultSetPrefix, pivotsData, dataset.getDistanceFunction(), true);
+        AbstractPtolemaicBasedFiltering ptolemaicFilteringRandomPivots = new PtolemaicFilteringForStreamKNNClassifier(resultSetPrefix, pivotsData, centroidsData, dataset.getDistanceFunction(), false);
+        AbstractPtolemaicBasedFiltering ptolemaicFiltering =             new PtolemaicFilteringForStreamKNNClassifier(resultSetPrefix, pivotsData, centroidsData, dataset.getDistanceFunction(), true);
         DataDependentPtolemaicFilteringForStreamKNNClassifier dataDependentPtolemaicFilteringRandomPivots = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, false);
         DataDependentPtolemaicFilteringForStreamKNNClassifier dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, true);
         return new BoundsOnDistanceEstimation[]{
-            null,
-            metricFiltering,
-            dataDependentMetricFiltering,
-            fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering,
-            dataDependentPtolemaicFilteringRandomPivots,
-            dataDependentPtolemaicFiltering
+            //            null,
+            //            metricFiltering,
+//            ptolemaicFilteringRandomPivots,
+            ptolemaicFiltering
+//                        fourPointPropertyBased
+        //            dataDependentMetricFiltering
+//            dataDependentPtolemaicFilteringRandomPivots,
+//            dataDependentPtolemaicFiltering
         };
     }
 

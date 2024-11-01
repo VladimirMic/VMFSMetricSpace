@@ -79,14 +79,16 @@ public class FSVoronoiPartitioningStorage extends FSStorageDatasetPartitionsInte
         return load(f);
     }
 
-    public File[] filesWithApproximatePartitionings(String groundTruthDatasetName, int pivotCount) {
+    public File[] filesWithApproximatePartitionings(String groundTruthDatasetName, int pivotCount, int clustersCount) {
         File folder = new File(FSGlobal.VORONOI_PARTITIONING_STORAGE);
-        String pivotString = pivotCount + "pivots";
+        String pivotString = clustersCount < 0 ? pivotCount + "pivots" : pivotCount + "pivotsFilt";
+        String clustersString = clustersCount < 0 ? "" : clustersCount + "clusters";
         File[] ret = folder.listFiles((File file, String string) -> {
             boolean start = string.startsWith(groundTruthDatasetName + "_" + pivotString);
+            boolean clusters = string.contains(clustersString);
             boolean log = !string.contains("log");
             boolean end = string.endsWith("gz");
-            return start && log && end;
+            return start && clusters && log && end;
         });
         return ret;
     }
