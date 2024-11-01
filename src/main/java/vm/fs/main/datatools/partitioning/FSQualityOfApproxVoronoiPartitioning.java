@@ -4,13 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.datatools.DataTypeConvertor;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.store.partitioning.FSVoronoiPartitioningStorage;
 import vm.metricSpace.Dataset;
@@ -28,7 +25,7 @@ public class FSQualityOfApproxVoronoiPartitioning {
             new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-            //            //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+//                        //            new FSDatasetInstanceSingulraizator.LAION_100M_PCA256Dataset(),
             //            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
             //            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
             new FSDatasetInstanceSingularizator.SIFTdataset(),

@@ -14,12 +14,10 @@ import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAngle
 import vm.fs.store.partitioning.FSStorageDatasetPartitionsInterface;
 import vm.fs.store.partitioning.FSVoronoiPartitioningStorage;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.datasetPartitioning.AbstractDatasetPartitioning;
 import vm.metricSpace.datasetPartitioning.impl.Stream1NNClassifierWithFilter;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
 import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
-import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
 import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFilteringForStreamKNNClassifier;
 import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
@@ -34,15 +32,15 @@ public class FSStreamKNNPartitioning {
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+//            new FSDatasetInstanceSingularizator.SIFTdataset(),
+//            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
             new FSDatasetInstanceSingularizator.DeCAFDataset()
         //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
         //                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
-        //        //                        new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
-        //        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
-        //        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
+        //                        new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)
         };
         int clusterCount = 1000;
 
@@ -110,19 +108,19 @@ public class FSStreamKNNPartitioning {
         AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(resultSetPrefix, pivotCount, dataset);
         AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(resultSetPrefix);
 
-        AbstractPtolemaicBasedFiltering ptolemaicFilteringRandomPivots = new PtolemaicFilteringForStreamKNNClassifier(resultSetPrefix, pivotsData, centroidsData, dataset.getDistanceFunction(), false);
-        AbstractPtolemaicBasedFiltering ptolemaicFiltering =             new PtolemaicFilteringForStreamKNNClassifier(resultSetPrefix, pivotsData, centroidsData, dataset.getDistanceFunction(), true);
-        DataDependentPtolemaicFilteringForStreamKNNClassifier dataDependentPtolemaicFilteringRandomPivots = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, false);
-        DataDependentPtolemaicFilteringForStreamKNNClassifier dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, true);
+        PtolemaicFilteringForStreamKNNClassifier ptolemaicFilteringRandomPivots = new PtolemaicFilteringForStreamKNNClassifier(resultSetPrefix, pivotsData, centroidsData, dataset.getDistanceFunction(), false);
+        PtolemaicFilteringForStreamKNNClassifier ptolemaicFiltering = new PtolemaicFilteringForStreamKNNClassifier(resultSetPrefix, pivotsData, centroidsData, dataset.getDistanceFunction(), true);
+        DataDependentPtolemaicFilteringForStreamKNNClassifier dataDependentPtolemaicFilteringRandomPivots = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, centroidsData.size(), false);
+        DataDependentPtolemaicFilteringForStreamKNNClassifier dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceForVoronoiPartitioning(resultSetPrefix, dataset, pivotCount, centroidsData.size(), true);
         return new BoundsOnDistanceEstimation[]{
-            //            null,
-            //            metricFiltering,
-//            ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering
-//                        fourPointPropertyBased
-        //            dataDependentMetricFiltering
-//            dataDependentPtolemaicFilteringRandomPivots,
-//            dataDependentPtolemaicFiltering
+            null,
+            metricFiltering,
+            dataDependentMetricFiltering,
+            ptolemaicFilteringRandomPivots,
+            ptolemaicFiltering,
+            fourPointPropertyBased,
+            dataDependentPtolemaicFilteringRandomPivots,
+            dataDependentPtolemaicFiltering
         };
     }
 

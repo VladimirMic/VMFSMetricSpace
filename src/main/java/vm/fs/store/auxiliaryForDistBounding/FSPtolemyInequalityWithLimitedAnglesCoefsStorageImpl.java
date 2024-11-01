@@ -83,20 +83,21 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         }
     }
 
-    public static DataDependentPtolemaicFilteringForStreamKNNClassifier getLearnedInstanceForVoronoiPartitioning(String resultPreffixName, Dataset dataset, int pivotCount) {
-        return getLearnedInstanceForVoronoiPartitioning(resultPreffixName, dataset, pivotCount, true);
+    public static DataDependentPtolemaicFilteringForStreamKNNClassifier getLearnedInstanceForVoronoiPartitioning(String resultPreffixName, Dataset dataset, int pivotCount, int centroidsCount) {
+        return getLearnedInstanceForVoronoiPartitioning(resultPreffixName, dataset, pivotCount, centroidsCount, true);
     }
 
-    public static DataDependentPtolemaicFilteringForStreamKNNClassifier getLearnedInstanceForVoronoiPartitioning(String resultPreffixName, Dataset dataset, int pivotCount, boolean wisePivotSelection) {
+    public static DataDependentPtolemaicFilteringForStreamKNNClassifier getLearnedInstanceForVoronoiPartitioning(String resultPreffixName, Dataset dataset, int pivotCount, int centroidsCount, boolean wisePivotSelection) {
         FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl storageOfCoefs = new FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl();
         String fileName = storageOfCoefs.getNameOfFileWithCoefs(dataset.getDatasetName(), pivotCount, true);
         File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
         List pivots = dataset.getPivots(pivotCount);
-        List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
         List pivotIDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), dataset.getMetricSpace());
         float[][][] coefsToArrays = transformsCoefsToArrays(coefs, pivotIDs);
-        return new DataDependentPtolemaicFilteringForStreamKNNClassifier(resultPreffixName, coefsToArrays, pivotsData, dataset.getDistanceFunction(), wisePivotSelection);
+        List centroids = dataset.getPivots(centroidsCount);
+        List centroidsData = dataset.getMetricSpace().getDataOfMetricObjects(centroids);
+        return new DataDependentPtolemaicFilteringForStreamKNNClassifier(resultPreffixName, coefsToArrays, centroidsData, dataset.getDistanceFunction(), wisePivotSelection);
     }
 
     public String getNameOfFileWithCoefs(String datasetName, int pivotCount, boolean allPivotPairs) {
