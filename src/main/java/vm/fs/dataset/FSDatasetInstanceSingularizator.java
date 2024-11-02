@@ -6,14 +6,16 @@ import java.util.Map;
 import org.h2.mvstore.MVStoreException;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.fs.metricSpaceImpl.FSPDBeStorage;
+import vm.fs.metricSpaceImpl.otherParsers.FSPDBeStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
+import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.MetricSpaceWithIDsAsObjects;
 import vm.metricSpace.ToolsMetricDomain;
+import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.impl.QScore;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 
@@ -1463,7 +1465,11 @@ public class FSDatasetInstanceSingularizator {
     public static class FSFloatVectorDataset extends Dataset<float[]> {
 
         public FSFloatVectorDataset(String datasetName) {
-            super(datasetName, new FSMetricSpaceImpl(), new FSMetricSpacesStorage<>(new FSMetricSpaceImpl(), SingularisedConvertors.FLOAT_VECTOR_SPACE));
+            this(datasetName, new FSMetricSpacesStorage<>(new FSMetricSpaceImpl(), SingularisedConvertors.FLOAT_VECTOR_SPACE));
+        }
+
+        public FSFloatVectorDataset(String datasetName, AbstractMetricSpacesStorage storage) {
+            super(datasetName, storage.getMetricSpace(), storage);
         }
 
         @Override

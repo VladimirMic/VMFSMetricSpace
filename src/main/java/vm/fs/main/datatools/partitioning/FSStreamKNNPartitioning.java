@@ -32,12 +32,12 @@ public class FSStreamKNNPartitioning {
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstanceSingularizator.SIFTdataset(),
-//            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-            new FSDatasetInstanceSingularizator.DeCAFDataset()
-        //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
-        //                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+            new FSDatasetInstanceSingularizator.SIFTdataset(),
+            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
         //                        new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)

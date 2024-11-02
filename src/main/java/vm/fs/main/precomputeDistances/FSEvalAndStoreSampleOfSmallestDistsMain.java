@@ -38,8 +38,10 @@ public class FSEvalAndStoreSampleOfSmallestDistsMain {
 
     public static void run(Dataset dataset) {
         TreeSet result = dataset.evaluateSmallestDistances(AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_QUERY_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.IMPLICIT_K);
-        FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_QUERY_SET_SIZE);
-        storage.storePrecomputedDistances(result);
+        if (result != null) {
+            FSPrecomputedDistPairsStorageImpl storage = new FSPrecomputedDistPairsStorageImpl(dataset.getDatasetName(), AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.SAMPLE_QUERY_SET_SIZE);
+            storage.storePrecomputedDistances(result);
+        }
     }
 
     public static boolean existsForDataset(Dataset dataset) {

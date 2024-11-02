@@ -25,18 +25,16 @@ import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
+import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
  *
  * @author xmic
  * @param <T>
  */
-public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
+public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
 
     public static final Logger LOG = Logger.getLogger(FSMetricSpacesStorage.class.getName());
-
-    protected final AbstractMetricSpace metricSpace;
-    protected final MetricObjectDataToStringInterface<T> dataSerializator;
 
     private VMMVStorage singularizatorOfDiskStorage = null;
 
@@ -46,11 +44,11 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
      * the "key-value" format
      *
      * @param metricSpace
-     * @param dataSerializator transforms T to string and vice versa
+     * @param dataSerializator transforms T to string and vice versa see
+     * @SingularisedConvertors
      */
     public FSMetricSpacesStorage(AbstractMetricSpace<T> metricSpace, MetricObjectDataToStringInterface<T> dataSerializator) {
-        this.metricSpace = metricSpace;
-        this.dataSerializator = dataSerializator;
+        super(metricSpace, dataSerializator);
     }
 
     /**
@@ -59,6 +57,10 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
      */
     public FSMetricSpacesStorage(MetricObjectDataToStringInterface<T> dataSerializator) {
         this(new FSMetricSpaceImpl<T>(), dataSerializator);
+    }
+
+    public FSMetricSpacesStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
+        this(new FSMetricSpaceImpl<T>(df), dataSerializator);
     }
 
     @Override
@@ -78,15 +80,15 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
         return Tools.getObjectsFromIterator(it);
     }
 
-    protected Iterator<Object> getIteratorOfObjects(String folder, String file, Object... params) {
-        File f = getFileForObjects(folder, file, false);
+    protected Iterator<Object> getIteratorOfObjects(String folder, String setName, Object... params) {
+        File f = getFileForObjects(folder, setName, false);
         if (!f.exists()) {
             if (!folder.equals(FSGlobal.DATASET_FOLDER)) {
                 LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
                 return null;
             }
             if (singularizatorOfDiskStorage == null) {
-                singularizatorOfDiskStorage = new VMMVStorage(file, false);
+                singularizatorOfDiskStorage = new VMMVStorage(setName, false);
             }
             if (singularizatorOfDiskStorage == null) {
                 LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
@@ -110,7 +112,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
         this.singularizatorOfDiskStorage = singularizatorOfDiskStorage;
     }
 
-    public Iterator<Object> getIteratorOfObjects(File f, Object... params) {
+    protected Iterator getIteratorOfObjects(File f, Object... params) {
         BufferedReader br;
         try {
             br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));
@@ -118,7 +120,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
             if (count < 0) {
                 count = Integer.MAX_VALUE;
             }
-            return new MetricObjectFileIterator(br, count);
+            return getIteratorForReader(br, count, f.getAbsolutePath());
         } catch (IOException ex) {
             Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -328,7 +330,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
     public void updateDatasetSize(String datasetName, int count) {
         FileOutputStream os = null;
         try {
-            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", true);
+            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", false);
             os = new FileOutputStream(f);
             byte[] bytes = Integer.toString(count).getBytes();
             os.write(bytes);
@@ -362,7 +364,11 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage {
         }
     }
 
-    private class MetricObjectFileIterator<T> implements Iterator<AbstractMap.SimpleEntry<String, T>> {
+    protected Iterator<AbstractMap.SimpleEntry<String, T>> getIteratorForReader(BufferedReader br, int count, String filePath) {
+        return new MetricObjectFileIterator(br, count);
+    }
+
+    protected class MetricObjectFileIterator<T> implements Iterator<AbstractMap.SimpleEntry<String, T>> {
 
         protected AbstractMap.SimpleEntry<String, T>[] nextObjects;
         private int pointer;

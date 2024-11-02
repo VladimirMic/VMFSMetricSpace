@@ -2,11 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.metricSpaceImpl;
+package vm.fs.metricSpaceImpl.otherParsers;
 
 import java.io.File;
 import java.util.Iterator;
 import vm.fs.FSGlobal;
+import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.metricSpace.MetricSpaceWithIDsAsObjects;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.metricSpace.distance.impl.QScore;

@@ -16,6 +16,7 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
+import vm.fs.metricSpaceImpl.otherParsers.FSMetricSpacesKasperStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
@@ -63,34 +64,44 @@ public class FSPrepareNewDatasetForPivotFilterings {
             //            new FSDatasetInstanceSingularizator.SIFTdataset(),
             new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
             new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
+            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
             new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
-//            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
+            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries), //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(true)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(true)
         //                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(true)
         };
-        for (Dataset dataset : datasets) {
-            run(dataset);
+        //        for (Dataset dataset : datasets) {
+        //            run(dataset);
+        //        }
+
+        int dim = 8;
+        while (dim < 1500) {
+            for (int type = 0; type < 4; type++) {
+                Dataset<float[]> dataset = FSMetricSpacesKasperStorage.createDataset(type, dim);
+                if (dataset != null) {
+                    run(dataset);
+                }
+            }
+            dim = dim * 2;
         }
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {
         precomputeDatasetSize(dataset);
-        Dataset origDataset = dataset;
-        if (dataset instanceof DatasetOfCandidates) {
-            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
-            plotDistanceDensity(origDataset);
-        }
+//        Dataset origDataset = dataset;
+//        if (dataset instanceof DatasetOfCandidates) {
+//            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
+//            plotDistanceDensity(origDataset);
+//        }
 //        plotDistanceDensity(dataset);
 //        selectRandomPivotsAndQueryObjects(origDataset);
 //        evaluateGroundTruth(dataset);
-        evaluateSampleOfSmallestDistances(dataset);
+//        evaluateSampleOfSmallestDistances(dataset);
 //        precomputeObjectToPivotDists(origDataset);
 //        createKeyValueStorageForBigDataset(origDataset);
-        learnDataDependentMetricFiltering(dataset);
-        learnDataDependentPtolemaicFiltering(dataset);
+//        learnDataDependentMetricFiltering(dataset);
+//        learnDataDependentPtolemaicFiltering(dataset);
     }
 
     /**
