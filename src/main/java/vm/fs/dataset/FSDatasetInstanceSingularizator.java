@@ -497,6 +497,14 @@ public class FSDatasetInstanceSingularizator {
             datasetName += "euclid";
         }
 
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
+            return 128;
+        }
+
     }
 
     public static class LAION_10M_Dataset_Dot extends LAION_10M_Dataset {
@@ -573,6 +581,14 @@ public class FSDatasetInstanceSingularizator {
         @Override
         public String getPivotSetName() {
             return "laion2B-en-clip768v2-n=100M.h5_20000pivots";
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
+            return 128;
         }
     }
 

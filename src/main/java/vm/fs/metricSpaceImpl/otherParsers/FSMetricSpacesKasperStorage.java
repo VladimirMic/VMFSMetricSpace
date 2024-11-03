@@ -7,7 +7,6 @@ package vm.fs.metricSpaceImpl.otherParsers;
 import java.io.File;
 import java.util.AbstractMap;
 import java.util.Iterator;
-import jdk.jshell.spi.ExecutionControl;
 import vm.datatools.DataTypeConvertor;
 import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
@@ -40,6 +39,9 @@ public class FSMetricSpacesKasperStorage<T> extends AbstractFSWithDifferentDatas
 
     public static final Dataset<float[]> createDataset(int type, int dimSquareRooted) {
         if (type == 1 && dimSquareRooted == 512) {
+            return null;
+        }
+        if (type == 1 && dimSquareRooted == 1024) {
             return null;
         }
         String name = null;

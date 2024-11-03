@@ -89,12 +89,12 @@ public class FSPrepareNewDatasetForPivotFilterings {
 
     private static void run(Dataset dataset) throws FileNotFoundException {
         precomputeDatasetSize(dataset);
-//        Dataset origDataset = dataset;
-//        if (dataset instanceof DatasetOfCandidates) {
-//            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
-//            plotDistanceDensity(origDataset);
-//        }
-//        plotDistanceDensity(dataset);
+        Dataset origDataset = dataset;
+        if (dataset instanceof DatasetOfCandidates) {
+            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
+            plotDistanceDensity(origDataset);
+        }
+        plotDistanceDensity(dataset);
 //        selectRandomPivotsAndQueryObjects(origDataset);
 //        evaluateGroundTruth(dataset);
 //        evaluateSampleOfSmallestDistances(dataset);

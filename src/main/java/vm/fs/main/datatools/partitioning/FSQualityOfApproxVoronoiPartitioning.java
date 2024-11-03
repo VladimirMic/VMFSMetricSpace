@@ -77,8 +77,6 @@ public class FSQualityOfApproxVoronoiPartitioning {
             for (Comparable idFromGTCell : gtCell) {
                 if (approxCell.contains(idFromGTCell)) {
                     numerator++;
-                } else {
-                    System.out.println(idFromGTCell);
                 }
             }
         }
