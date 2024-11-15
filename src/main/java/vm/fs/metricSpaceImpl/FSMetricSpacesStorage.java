@@ -112,7 +112,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
         this.singularizatorOfDiskStorage = singularizatorOfDiskStorage;
     }
 
-    protected Iterator getIteratorOfObjects(File f, Object... params) {
+    public Iterator getIteratorOfObjects(File f, Object... params) {
         BufferedReader br;
         try {
             br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));

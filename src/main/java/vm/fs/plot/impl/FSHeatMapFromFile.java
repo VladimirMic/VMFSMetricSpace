@@ -22,6 +22,10 @@ public class FSHeatMapFromFile {
         run(filePath);
     }
 
+    public static void run(String filePath) {
+        run(filePath, -1);
+    }
+
     public static void run(String filePath, int legendCount) {
         File file = new File(filePath);
 
@@ -45,7 +49,4 @@ public class FSHeatMapFromFile {
         plotter.storePlotPNG(resultFile.getAbsolutePath(), createPlot);
     }
 
-    public static void run(String filePath) {
-        run(filePath, -1);
-    }
 }

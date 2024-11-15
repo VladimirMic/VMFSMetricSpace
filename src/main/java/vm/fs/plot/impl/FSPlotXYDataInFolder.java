@@ -2,13 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot;
+package vm.fs.plot.impl;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jfree.chart.JFreeChart;
 import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
@@ -73,7 +75,7 @@ public class FSPlotXYDataInFolder {
                     xAxisValues[i - 1] = strings[i];
                 }
             }
-            if (rowName.equals(TRACE)) {
+            if (rowName.toLowerCase().equals(TRACE.toLowerCase())) {
                 String traceName = Tools.removeQuotes(strings[1]);
                 if (!tracesNumbers.containsKey(traceName)) {
                     int idx = tracesNumbers.size();
@@ -97,23 +99,22 @@ public class FSPlotXYDataInFolder {
                 plotTitle = Tools.removeQuotes(strings[1]);
             }
         }
-        if (plotTitle != null) {
-            String[] tracesNames = transformTracesNumbers(tracesNumbers);
-            plot(plotter, plotTitle, xName, yName, tracesNames, xAxisValues, yDataValues);
-        }
+        String[] tracesNames = transformTracesNumbers(tracesNumbers);
+        plot(plotter, plotTitle, xName, yName, tracesNames, xAxisValues, yDataValues);
     }
 
     private static void plot(AbstractPlotter plotter, String plotTitle, String xName, String yName, String[] tracesNames, String[] xAxisValues, List<float[]> yDataValues) {
         float[][] xPlotValues = transformXStringValues(xAxisValues, yDataValues.size());
         float[][] yPlotValues = DataTypeConvertor.listOfFloatsToMatrix(yDataValues);
-        String fileName = plotTitle;
         if (yName == null) {
             yName = plotTitle;
             plotTitle = null;
         }
-        JFreeChart plot = plotter.createPlot(plotTitle, xName, yName, tracesNames, xPlotValues, yPlotValues);
-        File fileForPlot = getFileForPlot(FSGlobal.FOLDER_PLOTS, fileName);
+        plotter.setXAxisUpperBound(1.05);
+        JFreeChart plot = plotter.createPlot(plotTitle, xName, yName, tracesNames, null, xPlotValues, yPlotValues);
+        File fileForPlot = getFileForPlot(FSGlobal.FOLDER_PLOTS, plotTitle);
         plotter.storePlotPDF(fileForPlot.getAbsolutePath(), plot);
+        plotter.storePlotPNG(fileForPlot.getAbsolutePath(), plot);
     }
 
     private static float[][] transformXStringValues(String[] xAxisValues, int numberOfTraces) {
@@ -136,6 +137,7 @@ public class FSPlotXYDataInFolder {
     private static File getFileForPlot(String folder, String fileName) {
         File f = new File(folder, Tools.getDateYYYYMM() + "_" + fileName + ".svg");
         f = FSGlobal.checkFileExistence(f, true);
+        Logger.getLogger(FSPlotXYDataInFolder.class.getName()).log(Level.INFO, "Storing plot to file {0}", f.getAbsolutePath());
         return f;
     }
 }
