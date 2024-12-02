@@ -183,7 +183,7 @@ public abstract class FSAbstractPlotterFromResults {
                 List<Float> values = listOfValues[traceIdx][groupIdx];
                 update(values, results, stat);
                 if (stat.equals(QUERY_STATS.recall) && !values.isEmpty()) {
-                    float min = (float) vm.math.Tools.getMin(DataTypeConvertor.floatToPrimitiveArray(values));
+                    float min = (float) vm.mathtools.Tools.getMin(DataTypeConvertor.floatToPrimitiveArray(values));
                     plotter.updateMinRecall(min);
                 }
                 if (values.isEmpty()) {
@@ -390,7 +390,7 @@ public abstract class FSAbstractPlotterFromResults {
         if (all.isEmpty()) {
             return "s";
         }
-        double max = vm.math.Tools.getMax(DataTypeConvertor.floatToPrimitiveArray(all));
+        double max = vm.mathtools.Tools.getMax(DataTypeConvertor.floatToPrimitiveArray(all));
         if (max >= 1300) {
             for (List<Float>[] timeValue : timeValues) {
                 for (List<Float> list : timeValue) {

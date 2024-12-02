@@ -30,7 +30,7 @@ public class FSMetricSpacesKasperStorage<T> extends AbstractFSWithDifferentDatas
     @Override
     protected File getFileForDataset(String datasetName) {
         int dimSqrt = parseDim(datasetName);
-        String folderName = vm.math.Tools.formatFirstZeros(dimSqrt * dimSqrt, 7) + "dim";
+        String folderName = vm.mathtools.Tools.formatFirstZeros(dimSqrt * dimSqrt, 7) + "dim";
         File ret = new File(FSGlobal.DATASET_FOLDER, folderName);
         ret = new File(ret, datasetName + ".gz");
         return ret;

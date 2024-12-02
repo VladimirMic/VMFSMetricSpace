@@ -65,7 +65,7 @@ public class PrintiiDimOfDatasetMain {
                 Logger.getLogger(PrintiiDimOfDatasetMain.class.getName()).log(Level.INFO, "Evaluated {0} distances out of {1}", new Object[]{i, distances.length});
             }
         }
-        double iDim = vm.math.Tools.getIDim(distances, true);
+        double iDim = vm.mathtools.Tools.getIDim(distances, true);
         System.out.println("");
         System.out.println("iDim: of dataset " + dataset.getDatasetName() + " is : " + iDim);
     }

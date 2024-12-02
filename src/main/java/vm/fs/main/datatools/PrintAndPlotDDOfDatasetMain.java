@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import org.jfree.chart.JFreeChart;
 import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import vm.math.Tools;
+import vm.mathtools.Tools;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.Dataset;
 import vm.plot.impl.LinesPlotter;
