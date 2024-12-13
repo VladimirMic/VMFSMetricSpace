@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
+import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 
@@ -105,7 +106,7 @@ public class FSVoronoiPartitioningStorage extends FSStorageDatasetPartitionsInte
         while (it.hasNext()) {
             Map.Entry<String, String[]> entry = it.next();
             Object[] values = entry.getValue();
-            List<Object> list = Tools.arrayToList(values);
+            List<Object> list = DataTypeConvertor.arrayToList(values);
             list.remove(0);
             ret.put(entry.getKey(), new TreeSet(list));
         }

@@ -155,7 +155,7 @@ public abstract class FSAbstractPlotterFromResults {
             if (files.length != 0) {
                 files = reorder(files, uniqueArtifactsForFiles, false);
                 LOG.log(Level.INFO, "Folder {0} contains {1} matching files", new Object[]{folder.getName(), files.length});
-                List list = Tools.arrayToList(files);
+                List list = DataTypeConvertor.arrayToList(files);
                 ret.addAll(list);
             }
         }
