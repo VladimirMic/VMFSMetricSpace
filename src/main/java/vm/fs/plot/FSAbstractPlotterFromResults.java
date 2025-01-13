@@ -366,8 +366,8 @@ public abstract class FSAbstractPlotterFromResults {
         for (QUERY_STATS stat : statsToPrint) {
             List[][] lists = new List[boxplotsCount][groupsCount];
             for (int g = 0; g < groupsCount; g++) {
-                for (int t = 0; t < boxplotsCount; t++) {
-                    lists[t][g] = new ArrayList();
+                for (int b = 0; b < boxplotsCount; b++) {
+                    lists[b][g] = new ArrayList();
                 }
             }
             ret.put(stat, lists);
