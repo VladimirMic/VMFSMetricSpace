@@ -116,7 +116,7 @@ public class PlotPtolemaiosTransformedClipsAbblation extends FSAbstractPlotterFr
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
+    protected AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
         return null;
     }
 

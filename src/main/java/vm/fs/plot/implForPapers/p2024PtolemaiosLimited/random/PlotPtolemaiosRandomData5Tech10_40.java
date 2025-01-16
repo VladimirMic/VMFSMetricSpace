@@ -7,7 +7,7 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.AbstractPlotter.COLOUR_NAMES;
+import vm.plot.AbstractPlotter.COLOUR_NAME;
 import vm.plot.impl.BoxPlotPlotter;
 import vm.search.algorithm.SearchingAlgorithm;
 
@@ -37,15 +37,15 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
     }
 
     @Override
-    protected COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
-        return new COLOUR_NAMES[]{
-            COLOUR_NAMES.C1_BLUE,
-            COLOUR_NAMES.C2_RED,
-            COLOUR_NAMES.C3_GREEN,
-            COLOUR_NAMES.C4_ORANGE,
-            COLOUR_NAMES.C6_BROWN,
-            COLOUR_NAMES.C5_VIOLET,
-            COLOUR_NAMES.CX_BLACK
+    protected COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+        return new COLOUR_NAME[]{
+            COLOUR_NAME.C1_BLUE,
+            COLOUR_NAME.C2_RED,
+            COLOUR_NAME.C3_GREEN,
+            COLOUR_NAME.C4_ORANGE,
+            COLOUR_NAME.C6_BROWN,
+            COLOUR_NAME.C5_VIOLET,
+            COLOUR_NAME.CX_BLACK
         };
     }
 

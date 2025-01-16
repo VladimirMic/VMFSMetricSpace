@@ -30,7 +30,7 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
+    protected AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
         return null;
     }
 

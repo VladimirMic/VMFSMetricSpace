@@ -36,7 +36,7 @@ public abstract class FSAbstractPlotterFromResults {
     private final boolean plotOnlyPDF;
     private AbstractPlotter plotter = getPlotter();
     private final Object[] xTicks;
-    private final AbstractPlotter.COLOUR_NAMES[] colourIndexesForTraces;
+    private final AbstractPlotter.COLOUR_NAME[] colourIndexesForTraces;
     private final String[] folderNames;
 
     protected FSAbstractPlotterFromResults(boolean plotOnlyPDF, Object[] xTicks, String[] folderNames) {
@@ -84,7 +84,7 @@ public abstract class FSAbstractPlotterFromResults {
 
     protected abstract Float transformAdditionalStatsForQueryToFloat(float firstValue);
 
-    protected abstract AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull();
+    protected abstract AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull();
 
     public FilenameFilter getFilenameFilterStatsFiles() {
         String[] array = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();

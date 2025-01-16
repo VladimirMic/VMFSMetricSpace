@@ -53,15 +53,15 @@ public class PlotFAISSDeCAF_FinalFiltering extends FSAbstractPlotterFromResults 
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
-        return new AbstractPlotter.COLOUR_NAMES[]{
-            AbstractPlotter.COLOUR_NAMES.C1_BLUE,
-            AbstractPlotter.COLOUR_NAMES.C2_RED,
-            AbstractPlotter.COLOUR_NAMES.C3_GREEN,
-            AbstractPlotter.COLOUR_NAMES.C4_ORANGE,
-            AbstractPlotter.COLOUR_NAMES.C6_BROWN,
-            AbstractPlotter.COLOUR_NAMES.C5_VIOLET,
-            AbstractPlotter.COLOUR_NAMES.CX_BLACK};
+    protected AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+        return new AbstractPlotter.COLOUR_NAME[]{
+            AbstractPlotter.COLOUR_NAME.C1_BLUE,
+            AbstractPlotter.COLOUR_NAME.C2_RED,
+            AbstractPlotter.COLOUR_NAME.C3_GREEN,
+            AbstractPlotter.COLOUR_NAME.C4_ORANGE,
+            AbstractPlotter.COLOUR_NAME.C6_BROWN,
+            AbstractPlotter.COLOUR_NAME.C5_VIOLET,
+            AbstractPlotter.COLOUR_NAME.CX_BLACK};
     }
 
     @Override

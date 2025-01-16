@@ -12,7 +12,7 @@ import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl.QUERY_STATS;
 import vm.metricSpace.Dataset;
 import vm.plot.AbstractPlotter;
-import vm.plot.AbstractPlotter.COLOUR_NAMES;
+import vm.plot.AbstractPlotter.COLOUR_NAME;
 import vm.plot.impl.BoxPlotPlotter;
 
 /**
@@ -50,15 +50,15 @@ public class VLDBPlotter extends FSAbstractPlotterFromResults {
     }
 
     @Override
-    protected COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
-        return new COLOUR_NAMES[]{
-            COLOUR_NAMES.C1_BLUE,
-            COLOUR_NAMES.C2_RED,
-            COLOUR_NAMES.C3_GREEN,
-            COLOUR_NAMES.C4_ORANGE,
-            COLOUR_NAMES.C6_BROWN,
-            COLOUR_NAMES.C5_VIOLET,
-            COLOUR_NAMES.CX_BLACK
+    protected COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+        return new COLOUR_NAME[]{
+            COLOUR_NAME.C1_BLUE,
+            COLOUR_NAME.C2_RED,
+            COLOUR_NAME.C3_GREEN,
+            COLOUR_NAME.C4_ORANGE,
+            COLOUR_NAME.C6_BROWN,
+            COLOUR_NAME.C5_VIOLET,
+            COLOUR_NAME.CX_BLACK
         };
     }
 

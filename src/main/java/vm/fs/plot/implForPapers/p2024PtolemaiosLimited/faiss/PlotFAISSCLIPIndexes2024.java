@@ -7,7 +7,7 @@ package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.AbstractPlotter.COLOUR_NAMES;
+import vm.plot.AbstractPlotter.COLOUR_NAME;
 import vm.plot.impl.BoxPlotPlotter;
 
 /**
@@ -30,7 +30,7 @@ public class PlotFAISSCLIPIndexes2024 extends FSAbstractPlotterFromResults {
     }
 
     @Override
-    protected COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
+    protected COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
         return null;
     }
 

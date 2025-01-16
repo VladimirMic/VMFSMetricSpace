@@ -4,7 +4,7 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random;
 
-import vm.plot.AbstractPlotter.COLOUR_NAMES;
+import vm.plot.AbstractPlotter.COLOUR_NAME;
 
 /**
  *
@@ -27,10 +27,10 @@ public class PlotPtolemaiosRandomData5Tech40_100Recall extends PlotPtolemaiosRan
     }
 
     @Override
-    protected COLOUR_NAMES[] getVoluntaryColoursForTracesOrNull() {
-        return new COLOUR_NAMES[]{
-            COLOUR_NAMES.C2_RED,
-            COLOUR_NAMES.C5_VIOLET
+    protected COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+        return new COLOUR_NAME[]{
+            COLOUR_NAME.C2_RED,
+            COLOUR_NAME.C5_VIOLET
         };
     }
 
