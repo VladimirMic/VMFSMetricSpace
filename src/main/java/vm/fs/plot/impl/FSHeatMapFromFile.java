@@ -35,14 +35,14 @@ public class FSHeatMapFromFile {
 
         FSPrecomputedDistancesMatrixLoaderImpl pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] values = pd.loadPrecomPivotsToObjectsDists(file, null, -1);
-        Map<Comparable, Integer> columnHeaders = pd.getColumnHeaders();
-        Map<Comparable, Integer> rowHeaders = pd.getRowHeaders();
+        Map<Comparable, Integer> yHeaders = pd.getRowHeaders();
+        Map<Comparable, Integer> xHeaders = pd.getColumnHeaders();
 
         HeatMapPlotter plotter = new HeatMapPlotter();
         String xLabel = "Threshold on # LB per avg. obj";
         String yLabel = "Checked obj until attempt for the STRAIN";
         String traceName = "Estimated time per q (ms)";
-        JFreeChart createPlot = plotter.createPlot(file.getName(), xLabel, yLabel, traceName, values, columnHeaders, rowHeaders);
+        JFreeChart createPlot = plotter.createPlot(file.getName(), xLabel, yLabel, traceName, values, yHeaders, xHeaders);
         if (legendCount > 0) {
             plotter.setLegendCount(legendCount);
         }
