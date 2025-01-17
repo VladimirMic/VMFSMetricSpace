@@ -1,5 +1,6 @@
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 
+import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
@@ -53,15 +54,15 @@ public class PlotFAISSDeCAF_FinalFiltering extends FSAbstractPlotterFromResults 
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
-        return new AbstractPlotter.COLOUR_NAME[]{
-            AbstractPlotter.COLOUR_NAME.C1_BLUE,
-            AbstractPlotter.COLOUR_NAME.C2_RED,
-            AbstractPlotter.COLOUR_NAME.C3_GREEN,
-            AbstractPlotter.COLOUR_NAME.C4_ORANGE,
-            AbstractPlotter.COLOUR_NAME.C6_BROWN,
-            AbstractPlotter.COLOUR_NAME.C5_VIOLET,
-            AbstractPlotter.COLOUR_NAME.CX_BLACK};
+    protected StandardColours.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+        return new StandardColours.COLOUR_NAME[]{
+            StandardColours.COLOUR_NAME.C1_BLUE,
+            StandardColours.COLOUR_NAME.C2_RED,
+            StandardColours.COLOUR_NAME.C3_GREEN,
+            StandardColours.COLOUR_NAME.C4_ORANGE,
+            StandardColours.COLOUR_NAME.C6_BROWN,
+            StandardColours.COLOUR_NAME.C5_VIOLET,
+            StandardColours.COLOUR_NAME.CX_BLACK};
     }
 
     @Override

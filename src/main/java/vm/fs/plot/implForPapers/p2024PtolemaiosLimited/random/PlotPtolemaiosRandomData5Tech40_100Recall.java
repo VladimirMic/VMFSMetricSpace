@@ -4,7 +4,8 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random;
 
-import vm.plot.AbstractPlotter.COLOUR_NAME;
+import vm.colour.StandardColours.COLOUR_NAME;
+
 
 /**
  *

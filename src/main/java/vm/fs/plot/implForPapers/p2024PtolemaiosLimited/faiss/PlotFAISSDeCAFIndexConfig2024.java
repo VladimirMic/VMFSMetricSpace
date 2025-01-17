@@ -4,6 +4,7 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 
+import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
@@ -28,7 +29,7 @@ public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+    protected StandardColours.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
         return null;
     }
 

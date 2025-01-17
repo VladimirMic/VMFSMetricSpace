@@ -5,6 +5,7 @@
 package vm.fs.papers.impl.main.vldb2024;
 
 import java.io.File;
+import vm.colour.StandardColours.COLOUR_NAME;
 import vm.fs.FSGlobal;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
@@ -12,7 +13,6 @@ import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl.QUERY_STATS;
 import vm.metricSpace.Dataset;
 import vm.plot.AbstractPlotter;
-import vm.plot.AbstractPlotter.COLOUR_NAME;
 import vm.plot.impl.BoxPlotPlotter;
 
 /**

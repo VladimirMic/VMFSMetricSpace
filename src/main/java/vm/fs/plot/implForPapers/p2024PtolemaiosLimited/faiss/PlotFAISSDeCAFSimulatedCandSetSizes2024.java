@@ -4,6 +4,7 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.faiss;
 
+import vm.colour.StandardColours;
 import vm.fs.main.queryResults.recallEvaluation.FSEvaluateRecallsOfApproximateDatasetMain;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
@@ -30,7 +31,7 @@ public class PlotFAISSDeCAFSimulatedCandSetSizes2024 extends FSAbstractPlotterFr
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+    protected StandardColours.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
         return null;
     }
 

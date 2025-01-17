@@ -4,6 +4,7 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited;
 
+import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
@@ -37,19 +38,19 @@ public class PlotPtolemaiosTransformedClips5TechSTRAIN extends FSAbstractPlotter
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
-        return new AbstractPlotter.COLOUR_NAME[]{
-            AbstractPlotter.COLOUR_NAME.C1_BLUE,
-            AbstractPlotter.COLOUR_NAME.C2_RED,
-            AbstractPlotter.COLOUR_NAME.C3_GREEN,
-            AbstractPlotter.COLOUR_NAME.C4_ORANGE,
-            AbstractPlotter.COLOUR_NAME.C5_VIOLET,
-            AbstractPlotter.COLOUR_NAME.C6_BROWN,
-            AbstractPlotter.COLOUR_NAME.C7_PURPLE,
-            AbstractPlotter.COLOUR_NAME.C8_GREY,
-            AbstractPlotter.COLOUR_NAME.C9_LIME,
-            AbstractPlotter.COLOUR_NAME.C10_CYAN,
-            AbstractPlotter.COLOUR_NAME.CX_BLACK
+    protected StandardColours.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+        return new StandardColours.COLOUR_NAME[]{
+            StandardColours.COLOUR_NAME.C1_BLUE,
+            StandardColours.COLOUR_NAME.C2_RED,
+            StandardColours.COLOUR_NAME.C3_GREEN,
+            StandardColours.COLOUR_NAME.C4_ORANGE,
+            StandardColours.COLOUR_NAME.C5_VIOLET,
+            StandardColours.COLOUR_NAME.C6_BROWN,
+            StandardColours.COLOUR_NAME.C7_PURPLE,
+            StandardColours.COLOUR_NAME.C8_GREY,
+            StandardColours.COLOUR_NAME.C9_LIME,
+            StandardColours.COLOUR_NAME.C10_CYAN,
+            StandardColours.COLOUR_NAME.CX_BLACK
         };
     }
 

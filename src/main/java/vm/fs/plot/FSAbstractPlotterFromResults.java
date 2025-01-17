@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.chart.JFreeChart;
+import vm.colour.StandardColours;
 import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
@@ -36,7 +37,7 @@ public abstract class FSAbstractPlotterFromResults {
     private final boolean plotOnlyPDF;
     private AbstractPlotter plotter = getPlotter();
     private final Object[] xTicks;
-    private final AbstractPlotter.COLOUR_NAME[] colourIndexesForTraces;
+    private final StandardColours.COLOUR_NAME[] colourIndexesForTraces;
     private final String[] folderNames;
 
     protected FSAbstractPlotterFromResults(boolean plotOnlyPDF, Object[] xTicks, String[] folderNames) {
@@ -84,7 +85,7 @@ public abstract class FSAbstractPlotterFromResults {
 
     protected abstract Float transformAdditionalStatsForQueryToFloat(float firstValue);
 
-    protected abstract AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull();
+    protected abstract StandardColours.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull();
 
     public FilenameFilter getFilenameFilterStatsFiles() {
         String[] array = getUniqueArtifactIdentifyingFileNameForDisplaydGroup();

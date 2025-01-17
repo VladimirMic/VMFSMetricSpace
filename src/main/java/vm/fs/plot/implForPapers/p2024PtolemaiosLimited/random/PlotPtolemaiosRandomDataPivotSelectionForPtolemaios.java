@@ -4,10 +4,11 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random;
 
+import vm.colour.StandardColours;
+import vm.colour.StandardColours.COLOUR_NAME;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.AbstractPlotter.COLOUR_NAME;
 import vm.plot.impl.BoxPlotPlotter;
 
 /**
@@ -86,7 +87,7 @@ public class PlotPtolemaiosRandomDataPivotSelectionForPtolemaios extends FSAbstr
     }
 
     @Override
-    protected AbstractPlotter.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
+    protected StandardColours.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
         return new COLOUR_NAME[]{COLOUR_NAME.CX_BLACK,
             COLOUR_NAME.C4_ORANGE,
             COLOUR_NAME.C5_VIOLET

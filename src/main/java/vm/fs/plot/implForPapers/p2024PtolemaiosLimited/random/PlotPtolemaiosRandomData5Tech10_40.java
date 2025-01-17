@@ -4,10 +4,10 @@
  */
 package vm.fs.plot.implForPapers.p2024PtolemaiosLimited.random;
 
+import vm.colour.StandardColours.COLOUR_NAME;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.AbstractPlotter.COLOUR_NAME;
 import vm.plot.impl.BoxPlotPlotter;
 import vm.search.algorithm.SearchingAlgorithm;
 
