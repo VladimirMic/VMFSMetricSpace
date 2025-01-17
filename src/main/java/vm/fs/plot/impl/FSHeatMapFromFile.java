@@ -46,6 +46,7 @@ public class FSHeatMapFromFile {
         if (legendCount > 0) {
             plotter.setLegendCount(legendCount);
         }
+        plotter.storePlotPDF(resultFile.getAbsolutePath(), createPlot);
         plotter.storePlotPNG(resultFile.getAbsolutePath(), createPlot);
     }
 
