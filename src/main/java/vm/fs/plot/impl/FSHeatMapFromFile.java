@@ -38,7 +38,7 @@ public class FSHeatMapFromFile {
         Map<Comparable, Integer> yHeaders = pd.getRowHeaders();
         Map<Comparable, Integer> xHeaders = pd.getColumnHeaders();
 
-        HeatMapPlotter plotter = new HeatMapPlotter(HeatMapPlotter.IMPLICIT_Z_COLOUR_COUNT);
+        HeatMapPlotter plotter = new HeatMapPlotter(false);
         String xLabel = "Threshold on # LB per avg. obj";
         String yLabel = "Checked obj until attempt for the STRAIN";
         String traceName = "Estimated time per q (ms)";
