@@ -69,7 +69,6 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
                 if (batchCounter == 0) {
                     outputStream.write(';');
                     for (Comparable pivotID : pivotIDs) {
-                        Integer index = columnHeaders.get(pivotID);
                         outputStream.write(pivotID.toString().getBytes());
                         outputStream.write(';');
                     }
