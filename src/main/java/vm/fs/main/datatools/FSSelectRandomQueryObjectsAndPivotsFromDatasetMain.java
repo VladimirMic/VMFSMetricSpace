@@ -54,7 +54,7 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
         } else if (numberOfQueries != 0 && numberOfPivots != 0) {
             batchSizeForPivots = (Long) datasetSize / numberOfPivots;
             batchSizeForQueries = (Long) datasetSize / numberOfQueries;
-            lcm = (float) vm.mathtools.Tools.lcm(batchSizeForQueries, batchSizeForPivots);
+            lcm = (float) vm.mathtools.Tools.getLcm(batchSizeForQueries, batchSizeForPivots);
             lcm = Math.min(lcm, datasetSize);
         } else {
             throw new IllegalArgumentException("Cannot select zero pivots and zero queries!");
