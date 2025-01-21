@@ -16,7 +16,7 @@ import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.LinesPlotter;
+import vm.plot.impl.LinesOrPointsPlotter;
 
 /**
  *
@@ -36,7 +36,7 @@ public class FSPlotXYDataInFolder {
         folder.mkdirs();
         File[] files = folder.listFiles((File dir, String name) -> name.toLowerCase().endsWith(".csv"));
 
-        AbstractPlotter plotter = new LinesPlotter();
+        AbstractPlotter plotter = new LinesOrPointsPlotter();
 
         for (File file : files) {
             plotFile(plotter, file);

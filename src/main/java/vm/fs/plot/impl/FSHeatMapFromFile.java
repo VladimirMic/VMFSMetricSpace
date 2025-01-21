@@ -19,6 +19,7 @@ public class FSHeatMapFromFile {
 
     public static void main(String[] args) {
         String filePath = "h:\\Similarity_search\\Trials\\Skittle_time_estimations_2024_08_19.csv";
+        filePath = "c:\\Data\\Skittle_time_estimations_2024_08_19.csv";
         run(filePath);
     }
 
