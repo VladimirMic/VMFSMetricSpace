@@ -69,7 +69,7 @@ public class PlotFAISSCLIPIndexConfig2024 extends FSAbstractPlotterFromResults {
     @Override
     public AbstractPlotter getPlotter() {
         BoxPlotPlotter ret = new BoxPlotPlotter();
-        ret.setEnforceInvolvingZeroToYAxis(true);
+        ret.setIncludeZeroForYAxis(true);
         return ret;
     }
 
