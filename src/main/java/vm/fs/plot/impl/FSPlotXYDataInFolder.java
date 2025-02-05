@@ -94,25 +94,26 @@ public class FSPlotXYDataInFolder {
             if (rowName.equals(PLOT_TITLE)) {
                 if (plotTitle != null) {
                     String[] tracesNames = transformTracesNumbers(tracesNumbers);
-                    plot(plotter, plotTitle, xName, yName, tracesNames, xAxisValues, yDataValues);
+                    plot(plotter, file.getName(), plotTitle, xName, yName, tracesNames, xAxisValues, yDataValues);
                 }
                 plotTitle = Tools.removeQuotes(strings[1]);
             }
         }
         String[] tracesNames = transformTracesNumbers(tracesNumbers);
-        plot(plotter, plotTitle, xName, yName, tracesNames, xAxisValues, yDataValues);
+        plot(plotter, file.getName(), plotTitle, xName, yName, tracesNames, xAxisValues, yDataValues);
     }
 
-    private static void plot(AbstractPlotter plotter, String plotTitle, String xName, String yName, String[] tracesNames, String[] xAxisValues, List<float[]> yDataValues) {
+    private static void plot(AbstractPlotter plotter, String fileName, String plotTitle, String xName, String yName, String[] tracesNames, String[] xAxisValues, List<float[]> yDataValues) {
         float[][] xPlotValues = transformXStringValues(xAxisValues, yDataValues.size());
         float[][] yPlotValues = DataTypeConvertor.listOfFloatsToMatrix(yDataValues);
         if (yName == null) {
             yName = plotTitle;
             plotTitle = null;
         }
-        plotter.setXAxisUpperBound(1.05);
+        plotter.setxThousandDelimit(false);
         JFreeChart plot = plotter.createPlot(plotTitle, xName, yName, tracesNames, null, xPlotValues, yPlotValues);
-        File fileForPlot = getFileForPlot(FSGlobal.FOLDER_PLOTS, plotTitle);
+        fileName = fileName.substring(0, fileName.lastIndexOf("."));
+        File fileForPlot = getFileForPlot(FSGlobal.FOLDER_PLOTS, fileName);
         plotter.storePlotPDF(fileForPlot.getAbsolutePath(), plot);
         plotter.storePlotPNG(fileForPlot.getAbsolutePath(), plot);
     }
