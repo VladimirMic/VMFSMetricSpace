@@ -36,7 +36,9 @@ public class FSPlotXYDataInFolder {
         folder.mkdirs();
         File[] files = folder.listFiles((File dir, String name) -> name.toLowerCase().endsWith(".csv"));
 
-        AbstractPlotter plotter = new LinesOrPointsPlotter();
+        LinesOrPointsPlotter plotter = new LinesOrPointsPlotter();
+        plotter.setIncludeZeroForXAxis(false);
+        plotter.setLogarithmicScaleOfColours(true);
 
         for (File file : files) {
             plotFile(plotter, file);
