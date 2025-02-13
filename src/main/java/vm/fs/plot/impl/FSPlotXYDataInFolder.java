@@ -16,6 +16,7 @@ import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.plot.AbstractPlotter;
+import vm.plot.impl.BarPlotter;
 import vm.plot.impl.LinesOrPointsPlotter;
 
 /**
@@ -36,9 +37,8 @@ public class FSPlotXYDataInFolder {
         folder.mkdirs();
         File[] files = folder.listFiles((File dir, String name) -> name.toLowerCase().endsWith(".csv"));
 
-        LinesOrPointsPlotter plotter = new LinesOrPointsPlotter();
+        LinesOrPointsPlotter plotter = new LinesOrPointsPlotter(true);
         plotter.setIncludeZeroForXAxis(false);
-        plotter.setLogarithmicScaleOfColours(true);
 
         for (File file : files) {
             plotFile(plotter, file);
