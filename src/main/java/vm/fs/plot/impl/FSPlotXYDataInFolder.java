@@ -37,7 +37,7 @@ public class FSPlotXYDataInFolder {
         folder.mkdirs();
         File[] files = folder.listFiles((File dir, String name) -> name.toLowerCase().endsWith(".csv"));
 
-        LinesOrPointsPlotter plotter = new LinesOrPointsPlotter(true);
+        LinesOrPointsPlotter plotter = new BarPlotter(true);
         plotter.setIncludeZeroForXAxis(false);
 
         for (File file : files) {
