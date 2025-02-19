@@ -5,6 +5,8 @@
 package vm.fs.plot.impl;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,14 +41,16 @@ public class FSPlotXYDataInFolder {
 
         LinesOrPointsPlotter plotter = new BarPlotter(true);
         plotter.setIncludeZeroForXAxis(false);
-
+        NumberFormat nf = new DecimalFormat("0");
+        plotter.setNumberFormatForTraceLabel(0, nf);
+        plotter.setNumberFormatForTraceLabel(1, nf);
         for (File file : files) {
-            plotFile(plotter, file);
+            plotFile(plotter, file, nf);
         }
     }
 
     @SuppressWarnings("null")
-    private static void plotFile(AbstractPlotter plotter, File file) {
+    private static void plotFile(AbstractPlotter plotter, File file, NumberFormat nf) {
         String path = file.getAbsolutePath();
         List<String[]> csv = Tools.parseCsvRowOriented(path, ";");
         String[] xAxisValues = null;
