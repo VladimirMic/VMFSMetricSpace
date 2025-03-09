@@ -27,6 +27,11 @@ import vm.plot.impl.LinesOrPointsPlotter;
  */
 public class FSPlotXYDataInFolder {
 
+    public static final Integer Y_TICKS = 10; // or null
+    public static final Integer X_TICKS = 9; // or null
+    public static final Integer WIDTH = 250; // or null
+    public static final Integer HEIGHT = 190; // or null
+
     public static final String X_NAME = "xName";
     public static final String Y_NAME = "yName";
     public static final String X_VALUES = "xValues";
@@ -39,8 +44,14 @@ public class FSPlotXYDataInFolder {
         folder.mkdirs();
         File[] files = folder.listFiles((File dir, String name) -> name.toLowerCase().endsWith(".csv"));
 
-        LinesOrPointsPlotter plotter = new BarPlotter(true);
-        plotter.setIncludeZeroForXAxis(false);
+        LinesOrPointsPlotter plotter = new BarPlotter(false);
+        plotter.setIncludeZeroForXAxis(true);
+        if (Y_TICKS != null) {
+            plotter.setyTicksCount(Y_TICKS);
+        }
+        if (X_TICKS != null) {
+            plotter.setxTicksMaxCountForShort(X_TICKS);
+        }
         NumberFormat nf = new DecimalFormat("0");
         plotter.setNumberFormatForTraceLabel(0, nf);
         plotter.setNumberFormatForTraceLabel(1, nf);
@@ -120,7 +131,7 @@ public class FSPlotXYDataInFolder {
         JFreeChart plot = plotter.createPlot(plotTitle, xName, yName, tracesNames, null, xPlotValues, yPlotValues);
         fileName = fileName.substring(0, fileName.lastIndexOf("."));
         File fileForPlot = getFileForPlot(FSGlobal.FOLDER_PLOTS, fileName);
-        plotter.storePlotPDF(fileForPlot.getAbsolutePath(), plot);
+        plotter.storePlotPDF(fileForPlot.getAbsolutePath(), plot, WIDTH, HEIGHT);
         plotter.storePlotPNG(fileForPlot.getAbsolutePath(), plot);
     }
 
