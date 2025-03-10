@@ -132,7 +132,7 @@ public class FSPlotXYDataInFolder {
         fileName = fileName.substring(0, fileName.lastIndexOf("."));
         File fileForPlot = getFileForPlot(FSGlobal.FOLDER_PLOTS, fileName);
         plotter.storePlotPDF(fileForPlot.getAbsolutePath(), plot, WIDTH, HEIGHT);
-        plotter.storePlotPNG(fileForPlot.getAbsolutePath(), plot);
+        plotter.storePlotPNG(fileForPlot.getAbsolutePath(), plot, WIDTH, HEIGHT);
     }
 
     private static float[][] transformXStringValues(String[] xAxisValues, int numberOfTraces) {
