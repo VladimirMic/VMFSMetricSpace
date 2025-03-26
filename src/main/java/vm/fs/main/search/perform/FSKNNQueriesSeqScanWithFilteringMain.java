@@ -40,17 +40,18 @@ import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
+    public static final float[] RATIOS_OF_CANDIDATES_TO_TEST = new float[]{1f, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f};
 
     public static void main(String[] args) {
-//        vm.javatools.Tools.sleep(15);
+        vm.javatools.Tools.setSleepDuringTheNight(true);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+            //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+            //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
             new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
         //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
@@ -69,10 +70,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
-//                    new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
+        //                    new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-//                    new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+        //                    new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
@@ -84,10 +85,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             }
             List pivots = dataset.getPivots(pivotCount);
             BoundsOnDistanceEstimation[] filters = initTestedFilters(null, pivots, dataset, k);
-            int repetitions = dataset instanceof DatasetOfCandidates ? 3 : 2;
-            for (int i = 0; i < repetitions; i++) {
-                run(dataset, filters, pivots, k);
-            }
+            run(dataset, filters, pivots, k);
             System.gc();
             pd = null;
         }
@@ -116,33 +114,22 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
-        SearchingAlgorithm alg = initAlg(filter, dataset, metricSpace, pivots, df, pivotPivotDists);
-
-        TreeSet[] results;
+        int repetitions = dataset instanceof DatasetOfCandidates ? 3 : 2;
         if (dataset instanceof DatasetOfCandidates) {
-            results = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, queries, k);
+            DatasetOfCandidates cast = (DatasetOfCandidates) dataset;
+            int candidatesProvided = cast.getCandidatesProvided();
+            if (candidatesProvided < 0) {
+                evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
+            } else {
+                for (float ratio : RATIOS_OF_CANDIDATES_TO_TEST) {
+                    cast.setMaxNumberOfCandidatesToReturn((int) (candidatesProvided * ratio));
+                    evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
+                }
+            }
         } else {
-            results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(maxObjectsCount), 1);
+            evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
         }
 
-        LOG.log(Level.INFO, "Storing statistics of queries");
-        FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
-        statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries(), alg.getAddditionalStats());
-        statsStorage.save();
-
-        LOG.log(Level.INFO, "Storing results of queries");
-        FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
-        resultsStorage.storeQueryResults(metricSpace, queries, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName());
-
-        LOG.log(Level.INFO, "Evaluating accuracy of queries");
-        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
-        RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(new FSNearestNeighboursStorageImpl(), recallStorage);
-        Dataset groundTruthDataset = dataset;
-        if (dataset instanceof DatasetOfCandidates) {
-            groundTruthDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
-        }
-        evaluator.evaluateAndStoreRecallsOfQueries(groundTruthDataset.getDatasetName(), groundTruthDataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), k);
-        recallStorage.save();
     }
 
     public static void initPODists(Dataset dataset, int pivotCount, int maxObjectsCount, List pivots) {
@@ -226,12 +213,47 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-            metricFiltering,
+//            metricFiltering,
             dataDependentMetricFiltering,
-            fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering,
+//            fourPointPropertyBased,
+//            ptolemaicFilteringRandomPivots,
+//            ptolemaicFiltering,
             dataDependentPtolemaicFiltering
         };
     }
+
+    private static void store(SearchingAlgorithm alg, TreeSet[] results, Dataset dataset, AbstractMetricSpace metricSpace, List queries, int k) {
+        LOG.log(Level.INFO, "Storing statistics of queries");
+        FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
+        statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries(), alg.getAddditionalStats());
+        statsStorage.save();
+
+        LOG.log(Level.INFO, "Storing results of queries");
+        FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
+        resultsStorage.storeQueryResults(metricSpace, queries, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName());
+
+        LOG.log(Level.INFO, "Evaluating accuracy of queries");
+        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
+        RecallOfCandsSetsEvaluator evaluator = new RecallOfCandsSetsEvaluator(new FSNearestNeighboursStorageImpl(), recallStorage);
+        Dataset groundTruthDataset = dataset;
+        if (dataset instanceof DatasetOfCandidates) {
+            groundTruthDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
+        }
+        evaluator.evaluateAndStoreRecallsOfQueries(groundTruthDataset.getDatasetName(), groundTruthDataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), k);
+        recallStorage.save();
+    }
+
+    private static void evalAndStore(Dataset dataset, List queries, int k, AbstractMetricSpace metricSpace, BoundsOnDistanceEstimation filter, List pivots, DistanceFunctionInterface df, float[][] pivotPivotDists, int repetitions) {
+        for (int i = 0; i < repetitions; i++) {
+            SearchingAlgorithm alg = initAlg(filter, dataset, metricSpace, pivots, df, pivotPivotDists);
+            TreeSet[] results;
+            if (dataset instanceof DatasetOfCandidates) {
+                results = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, queries, k);
+            } else {
+                results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(-1), 1);
+            }
+            store(alg, results, dataset, metricSpace, queries, k);
+        }
+    }
+
 }

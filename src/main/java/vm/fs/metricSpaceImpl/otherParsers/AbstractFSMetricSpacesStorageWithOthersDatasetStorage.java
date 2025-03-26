@@ -18,9 +18,9 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  * @author Vlada
  * @param <T>
  */
-public abstract class AbstractFSWithDifferentDatasetStorage<T> extends FSMetricSpacesStorage<T> {
+public abstract class AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> extends FSMetricSpacesStorage<T> {
 
-    public AbstractFSWithDifferentDatasetStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
+    public AbstractFSMetricSpacesStorageWithOthersDatasetStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
         super(df, dataSerializator);
     }
 
