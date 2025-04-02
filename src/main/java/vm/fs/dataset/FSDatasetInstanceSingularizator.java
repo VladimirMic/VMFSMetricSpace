@@ -6,7 +6,7 @@ import java.util.Map;
 import org.h2.mvstore.MVStoreException;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.fs.metricSpaceImpl.otherParsers.FSPDBeStorage;
+import vm.fs.metricSpaceImpl.otherAuthorsParsers.FSPDBeStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;

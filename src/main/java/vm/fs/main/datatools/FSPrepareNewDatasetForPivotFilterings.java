@@ -16,7 +16,7 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
-import vm.fs.metricSpaceImpl.otherParsers.FSMetricSpacesKasperStorage;
+import vm.fs.metricSpaceImpl.otherAuthorsParsers.FSMetricSpacesKasperStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
