@@ -12,7 +12,6 @@ import java.util.TreeMap;
 import org.jfree.chart.JFreeChart;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
-import static vm.fs.main.search.perform.FSKNNQueriesSeqScanWithFilteringMain.RATIOS_OF_CANDIDATES_TO_TEST;
 import static vm.fs.plot.FSPlotFolders.Y2025_AFTER_VLDB_PTOLEMAIOS_LIMITED_FILTERING_INDEXES;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
@@ -29,6 +28,7 @@ import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFil
 import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
 import vm.plot.impl.LinesOrPointsPlotter;
+import static vm.search.algorithm.SearchingAlgorithm.STEP_COUNTS_FOR_CAND_SE_PROCESSING_FROM_INDEX;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 
 /**
@@ -50,7 +50,7 @@ public class AfterVLDBTimeRecallIndexesPlots {
             if (pivotCount < 0) {
                 throw new IllegalArgumentException("Dataset " + dataset.getDatasetName() + " does not specify the number of pivots");
             }
-            List<Integer> cands = getCandCounts(dataset.getCandidatesProvided(), RATIOS_OF_CANDIDATES_TO_TEST);
+            List<Integer> cands = getCandCounts(dataset.getCandidatesProvided(), STEP_COUNTS_FOR_CAND_SE_PROCESSING_FROM_INDEX);
             BoundsOnDistanceEstimation[] filters = initTestedFilters(null, dataset.getPivots(pivotCount), dataset, k);
             run(dataset, filters, cands, k);
             System.gc();
@@ -92,10 +92,11 @@ public class AfterVLDBTimeRecallIndexesPlots {
         plotter.storePlotPDF(f, plot);
     }
 
-    private static List<Integer> getCandCounts(int candidatesProvided, float[] ratios) {
+    private static List<Integer> getCandCounts(int candidatesProvided, int numberOfPoints) {
         List<Integer> ret = new ArrayList<>();
-        for (float ratio : ratios) {
-            ret.add((int) (ratio * candidatesProvided));
+        float step = candidatesProvided / numberOfPoints;
+        for (int i = 1; i <= numberOfPoints; i++) {
+            ret.add((int) (i * step));
         }
         return ret;
     }

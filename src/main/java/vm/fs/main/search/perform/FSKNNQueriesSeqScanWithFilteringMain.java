@@ -1,6 +1,7 @@
 package vm.fs.main.search.perform;
 
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +41,6 @@ import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
-    public static final float[] RATIOS_OF_CANDIDATES_TO_TEST = new float[]{1f, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f};
 
     public static void main(String[] args) {
         vm.javatools.Tools.setSleepDuringTheNight(true);
@@ -48,8 +48,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
+//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
@@ -115,21 +115,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
         int repetitions = dataset instanceof DatasetOfCandidates ? 3 : 2;
-        if (dataset instanceof DatasetOfCandidates) {
-            DatasetOfCandidates cast = (DatasetOfCandidates) dataset;
-            int candidatesProvided = cast.getCandidatesProvided();
-            if (candidatesProvided < 0) {
-                evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
-            } else {
-                for (float ratio : RATIOS_OF_CANDIDATES_TO_TEST) {
-                    cast.setMaxNumberOfCandidatesToReturn((int) (candidatesProvided * ratio));
-                    evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
-                }
-            }
-        } else {
-            evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
-        }
-
+        evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
     }
 
     public static void initPODists(Dataset dataset, int pivotCount, int maxObjectsCount, List pivots) {
@@ -213,11 +199,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-//            metricFiltering,
+            //            metricFiltering,
             dataDependentMetricFiltering,
-//            fourPointPropertyBased,
-//            ptolemaicFilteringRandomPivots,
-//            ptolemaicFiltering,
+            //            fourPointPropertyBased,
+            //            ptolemaicFilteringRandomPivots,
+            //            ptolemaicFiltering,
             dataDependentPtolemaicFiltering
         };
     }
@@ -244,15 +230,25 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     }
 
     private static void evalAndStore(Dataset dataset, List queries, int k, AbstractMetricSpace metricSpace, BoundsOnDistanceEstimation filter, List pivots, DistanceFunctionInterface df, float[][] pivotPivotDists, int repetitions) {
+        if (dataset == null) {
+            return;
+        }
         for (int i = 0; i < repetitions; i++) {
             SearchingAlgorithm alg = initAlg(filter, dataset, metricSpace, pivots, df, pivotPivotDists);
-            TreeSet[] results;
             if (dataset instanceof DatasetOfCandidates) {
-                results = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, queries, k);
+                DatasetOfCandidates cast = (DatasetOfCandidates) dataset;
+                int candidatesProvided = cast.getCandidatesProvided();
+                Map<Integer, TreeSet<Map.Entry<Comparable, Float>>[]> mapOfResultsForCandidateSetSizes = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, queries, k, false, candidatesProvided);
+                for (Map.Entry<Integer, TreeSet<Map.Entry<Comparable, Float>>[]> entry : mapOfResultsForCandidateSetSizes.entrySet()) {
+                    Integer candSetSize = entry.getKey();
+                    TreeSet<Map.Entry<Comparable, Float>>[] results = entry.getValue();
+                    cast.setMaxNumberOfCandidatesToReturn(candSetSize);
+                    store(alg, results, dataset, metricSpace, queries, k);
+                }
             } else {
-                results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(-1), 1);
+                TreeSet[] results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, dataset.getMetricObjectsFromDataset(-1), 1);
+                store(alg, results, dataset, metricSpace, queries, k);
             }
-            store(alg, results, dataset, metricSpace, queries, k);
         }
     }
 
