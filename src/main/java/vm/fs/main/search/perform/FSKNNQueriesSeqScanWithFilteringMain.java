@@ -199,11 +199,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-            //            metricFiltering,
+            metricFiltering,
             dataDependentMetricFiltering,
-            //            fourPointPropertyBased,
-            //            ptolemaicFilteringRandomPivots,
-            //            ptolemaicFiltering,
+            fourPointPropertyBased,
+            ptolemaicFilteringRandomPivots,
+            ptolemaicFiltering,
             dataDependentPtolemaicFiltering
         };
     }
@@ -238,7 +238,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             if (dataset instanceof DatasetOfCandidates) {
                 DatasetOfCandidates cast = (DatasetOfCandidates) dataset;
                 int candidatesProvided = cast.getCandidatesProvided();
-                Map<Integer, TreeSet<Map.Entry<Comparable, Float>>[]> mapOfResultsForCandidateSetSizes = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, queries, k, false, candidatesProvided);
+                Map<Integer, TreeSet<Map.Entry<Comparable, Float>>[]> mapOfResultsForCandidateSetSizes = alg.evaluateIteratorsSequentiallyForEachQuery(dataset, queries, k, true, candidatesProvided);
                 for (Map.Entry<Integer, TreeSet<Map.Entry<Comparable, Float>>[]> entry : mapOfResultsForCandidateSetSizes.entrySet()) {
                     Integer candSetSize = entry.getKey();
                     TreeSet<Map.Entry<Comparable, Float>>[] results = entry.getValue();
