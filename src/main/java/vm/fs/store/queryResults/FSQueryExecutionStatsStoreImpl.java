@@ -140,6 +140,7 @@ public class FSQueryExecutionStatsStoreImpl extends QueryExecutionStatsStoreInte
             return ret;
         }
         List<String[]> lines = Tools.parseCsvRowOriented(output.getAbsolutePath(), ";");
+        LOG.log(Level.INFO, "Found {0} rows", lines.size());
         Iterator<String[]> it = lines.iterator();
         while (it.hasNext()) {
             String[] line = it.next();
