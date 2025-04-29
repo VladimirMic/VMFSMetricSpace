@@ -16,7 +16,7 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
-import vm.fs.metricSpaceImpl.otherAuthorsParsers.FSMetricSpacesKasperStorage;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMetricSpacePhilipStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
@@ -39,52 +39,54 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new FSDatasetInstanceSingularizator.DeCAF20M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
-            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
-            //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-            //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates(),
-            //            new FSDatasetInstanceSingularizator.FaissDyn_Clip_100M_PCA256_Candidates(300),
-            //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-            //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
-            //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            //            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries), //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
+            FSMetricSpacePhilipStorage.createDataset()
+//            new FSDatasetInstanceSingularizator.DeCAF20M_PCA256Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
+//            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
+        //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
+        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates(),
+        //            new FSDatasetInstanceSingularizator.FaissDyn_Clip_100M_PCA256_Candidates(300),
+        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
+        //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
+        //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
+        //            new FSDatasetInstanceSingularizator.SIFTdataset(),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(true)
         //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(true)
         //                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(true)
         };
-        //        for (Dataset dataset : datasets) {
-        //            run(dataset);
-        //        }
-
-        int dim = 8;
-        while (dim < 1500) {
-            for (int type = 0; type < 4; type++) {
-                Dataset<float[]> dataset = FSMetricSpacesKasperStorage.createDataset(type, dim);
-                if (dataset != null) {
-                    run(dataset);
-                }
-            }
-            dim = dim * 2;
+        for (Dataset dataset : datasets) {
+            run(dataset);
         }
+
+//        int dim = 8;
+//        while (dim < 1500) {
+//            for (int type = 0; type < 4; type++) {
+//                Dataset<float[]> dataset = FSMetricSpaceKasperStorage.createDataset(type, dim);
+//                if (dataset != null) {
+//                    run(dataset);
+//                }
+//            }
+//            dim = dim * 2;
+//        }
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.metricSpaceImpl.otherAuthorsParsers;
+package vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl;
 
 import java.io.File;
 import java.util.AbstractMap;
@@ -10,6 +10,7 @@ import java.util.Iterator;
 import vm.datatools.DataTypeConvertor;
 import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.AbstractFSMetricSpacesStorageWithOthersDatasetStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
@@ -21,9 +22,9 @@ import vm.metricSpace.distance.impl.L2OnFloatsArray;
  * @author Vlada
  * @param <T>
  */
-public class FSMetricSpacesKasperStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
+public class FSMetricSpaceKasperStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
 
-    public FSMetricSpacesKasperStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
+    public FSMetricSpaceKasperStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
         super(df, dataSerializator);
     }
 
@@ -61,7 +62,7 @@ public class FSMetricSpacesKasperStorage<T> extends AbstractFSMetricSpacesStorag
             default:
                 throw new IllegalArgumentException("Type: " + type);
         }
-        FSMetricSpacesKasperStorage storage = new FSMetricSpacesKasperStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
+        FSMetricSpaceKasperStorage storage = new FSMetricSpaceKasperStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
         return new FSDatasetInstanceSingularizator.FSFloatVectorDataset(name, storage);
     }
 

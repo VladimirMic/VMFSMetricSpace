@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMetricSpacePhilipStorage;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
@@ -22,13 +22,15 @@ public class PrintiiDimOfDatasetMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
+            FSMetricSpacePhilipStorage.createDataset()
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(publicQueries),
+//            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
+            
 //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
@@ -52,7 +54,7 @@ public class PrintiiDimOfDatasetMain {
 
     }
 
-    private static void run(Dataset dataset) {
+    public static void run(Dataset dataset) {
         List sampleOfDataset = dataset.getSampleOfDataset(PrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT);
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.h2.mvstore.MVStoreException;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.fs.metricSpaceImpl.otherAuthorsParsers.FSPDBeStorage;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.FSPDBeStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;
@@ -15,7 +15,6 @@ import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.MetricSpaceWithIDsAsObjects;
 import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.impl.QScore;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 
