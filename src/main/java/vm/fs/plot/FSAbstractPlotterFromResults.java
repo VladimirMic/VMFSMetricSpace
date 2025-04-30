@@ -268,7 +268,7 @@ public abstract class FSAbstractPlotterFromResults {
         };
     }
 
-    protected String[] strings(String... strings) {
+    public static String[] strings(String... strings) {
         return strings;
     }
 

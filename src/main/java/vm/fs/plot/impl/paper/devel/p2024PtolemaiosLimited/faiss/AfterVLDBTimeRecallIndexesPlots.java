@@ -12,9 +12,12 @@ import java.util.TreeMap;
 import org.jfree.chart.JFreeChart;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.main.search.perform.FSKNNQueriesSeqScanWithFilteringMain;
+import vm.fs.plot.FSAbstractPlotterFromResults;
 import static vm.fs.plot.FSPlotFolders.Y2025_AFTER_VLDB_PTOLEMAIOS_LIMITED_FILTERING_INDEXES;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.metricSpace.Dataset;
@@ -27,6 +30,7 @@ import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
 import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
 import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
+import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.plot.impl.LinesOrPointsPlotter;
 import static vm.search.algorithm.SearchingAlgorithm.STEP_COUNTS_FOR_CAND_SE_PROCESSING_FROM_INDEX;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
@@ -39,8 +43,7 @@ public class AfterVLDBTimeRecallIndexesPlots {
 
     public static void main(String[] args) {
         DatasetOfCandidates[] datasets = new DatasetOfCandidates[]{
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(), //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
@@ -63,21 +66,24 @@ public class AfterVLDBTimeRecallIndexesPlots {
         plotter.setIncludeZeroForXAxis(true);
         plotter.setIncludeZeroForYAxis(false);
         float[][] xValues = new float[filters.length][cands.size()];
+        AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] yValues = new float[filters.length][cands.size()];
         for (int i = 0; i < filters.length; i++) {
             BoundsOnDistanceEstimation filter = filters[i];
+            String resultName = FSKNNQueriesSeqScanWithFilteringMain.initAlg(filter, dataset, dataset.getMetricSpace(), dataset.getPivots(dataset.getRecommendedNumberOfPivotsForFiltering()), dataset.getDistanceFunction(), null).getResultName();
             for (int j = 0; j < cands.size(); j++) {
                 Integer cand = cands.get(j);
                 float sumTimes = 0;
                 float sumRecall = 0;
                 dataset.setMaxNumberOfCandidatesToReturn(cand);
-                String resultName = filter.getTechFullName();
                 FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), resultName, null);
                 Map<String, TreeMap<FSQueryExecutionStatsStoreImpl.QUERY_STATS, String>> map = recallStorage.getContent();
                 for (Map.Entry<String, TreeMap<FSQueryExecutionStatsStoreImpl.QUERY_STATS, String>> entry : map.entrySet()) {
                     TreeMap<FSQueryExecutionStatsStoreImpl.QUERY_STATS, String> queryResult = entry.getValue();
                     String recall = queryResult.get(FSQueryExecutionStatsStoreImpl.QUERY_STATS.recall);
-                    String time = queryResult.get(FSQueryExecutionStatsStoreImpl.QUERY_STATS.query_execution_time);
+//                    String time = queryResult.get(FSQueryExecutionStatsStoreImpl.QUERY_STATS.query_execution_time);
+                    String[] additional = queryResult.get(FSQueryExecutionStatsStoreImpl.QUERY_STATS.additional_stats).split(",");
+                    String time = additional[2 * j + 1];
                     sumRecall += Float.parseFloat(recall);
                     sumTimes += Float.parseFloat(time);
                 }
@@ -102,12 +108,15 @@ public class AfterVLDBTimeRecallIndexesPlots {
     }
 
     private static String[] transformFiltersToTracesNames(BoundsOnDistanceEstimation[] filters) {
-        String[] ret = new String[filters.length];
-        for (int i = 0; i < filters.length; i++) {
-            BoundsOnDistanceEstimation filter = filters[i];
-            ret[i] = filter.getTechName();
-        }
-        return ret;
+        return FSAbstractPlotterFromResults.strings(
+                "Triangle Ineq.",
+                "Data-dep. Metric Filtering",
+                "Four Point Prop.",
+                "Ptolemaic Filtering Random pivots",
+                "Ptolemaic with Dyn. Pivots",
+                "Data-dep. Ptolemaic Filering"
+//                "Sequential Brute Force"
+        ); 
     }
 
     public static final BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, Dataset dataset, Integer k) {

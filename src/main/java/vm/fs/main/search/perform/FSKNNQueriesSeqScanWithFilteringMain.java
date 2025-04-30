@@ -19,6 +19,7 @@ import vm.metricSpace.DatasetOfCandidates;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
+import vm.metricSpace.distance.bounding.nopivot.NoPivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
 import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
@@ -48,8 +49,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         Dataset[] datasets = new Dataset[]{
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
-//            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+            //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
+            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
@@ -154,8 +155,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static SearchingAlgorithm initAlg(BoundsOnDistanceEstimation filter, Dataset dataset, AbstractMetricSpace metricSpace, List pivots, DistanceFunctionInterface df, float[][] pivotPivotDists) {
         SearchingAlgorithm alg;
+        Map<Comparable, Integer> rowHeaders = pd == null ? null : pd.getRowHeaders();
+        Map<Comparable, Integer> columnHeaders = pd == null ? null : pd.getColumnHeaders();
         if (filter instanceof AbstractPtolemaicBasedFiltering) {
-            alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, pd.getRowHeaders(), df);
+            alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, rowHeaders, df);
             if (filter instanceof DataDependentPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset())) {
                 KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
 //STRAIN
@@ -169,9 +172,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 tmp.setThresholdOnLBsPerObjForSeqScan(62.5f);
             }
         } else if (filter instanceof AbstractTwoPivotsFilter) {
-            alg = new KNNSearchWithGenericTwoPivotFiltering(metricSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, pd.getRowHeaders(), pivotPivotDists, df);
+            alg = new KNNSearchWithGenericTwoPivotFiltering(metricSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, rowHeaders, pivotPivotDists, df);
         } else if (filter instanceof AbstractOnePivotFilter) {
-            alg = new KNNSearchWithOnePivotFiltering(metricSpace, (AbstractOnePivotFilter) filter, pivots, poDists, pd.getRowHeaders(), pd.getColumnHeaders(), df);
+            alg = new KNNSearchWithOnePivotFiltering(metricSpace, (AbstractOnePivotFilter) filter, pivots, poDists, rowHeaders, columnHeaders, df);
         } else {
             throw new IllegalArgumentException("What a weird algorithm ... This class is for the pivot filtering, did you notice?");
         }
