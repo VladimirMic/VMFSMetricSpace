@@ -115,7 +115,11 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
     public Iterator getIteratorOfObjects(File f, Object... params) {
         BufferedReader br;
         try {
-            br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));
+            if (f.getName().toLowerCase().endsWith(".txt")) {
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
+            } else {
+                br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));
+            }
             int count = params.length > 0 && params[0] instanceof Integer ? (int) params[0] : Integer.MAX_VALUE;
             if (count < 0) {
                 count = Integer.MAX_VALUE;

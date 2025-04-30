@@ -5,15 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeSet;
-import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
-import vm.metricSpace.data.toStringConvertors.impl.FloatVectorConvertor;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 
 /**
