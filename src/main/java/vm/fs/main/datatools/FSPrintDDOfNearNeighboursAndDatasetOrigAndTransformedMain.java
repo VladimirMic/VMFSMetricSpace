@@ -16,7 +16,7 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
  *
  * @author Vlada
  */
-public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
+public class FSPrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
 
     public static void main(String[] args) {
         Dataset datasetOrig = new FSDatasetInstanceSingularizator.DeCAFDataset();
@@ -26,8 +26,8 @@ public class PrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         float transformedDistInterval = 1.0f;
 
 //      getHistogramsForRandomAndNearestNeighbours
-        int objCount = PrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT;//100,000
-        int distCount = PrintAndPlotDDOfDatasetMain.IMPLICIT_DIST_COUNT;//1000,000
+        int objCount = FSPrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT;//100,000
+        int distCount = FSPrintAndPlotDDOfDatasetMain.IMPLICIT_DIST_COUNT;//1000,000
         int queriesCount = 1;//1000
         int k = 100;
         List<Object[]> idsOfRandomPairs = new ArrayList<>();

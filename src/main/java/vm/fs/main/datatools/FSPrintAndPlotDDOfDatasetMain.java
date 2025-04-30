@@ -21,7 +21,7 @@ import vm.plot.impl.LinesOrPointsPlotter;
  *
  * @author xmic
  */
-public class PrintAndPlotDDOfDatasetMain {
+public class FSPrintAndPlotDDOfDatasetMain {
 
     public static final int IMPLICIT_OBJ_COUNT = 1000 * 1000;//1,000,000
     public static final int IMPLICIT_DIST_COUNT = 1000 * 10000;//10,000,000
@@ -78,7 +78,7 @@ public class PrintAndPlotDDOfDatasetMain {
                 lastDist = dist;
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(PrintAndPlotDDOfDatasetMain.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FSPrintAndPlotDDOfDatasetMain.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ps.flush();
             ps.close();

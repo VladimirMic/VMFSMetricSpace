@@ -22,9 +22,9 @@ import vm.metricSpace.distance.impl.L2OnFloatsArray;
  * @author Vlada
  * @param <T>
  */
-public class FSMetricSpaceKasperStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
+public class FSLayersKasperStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
 
-    public FSMetricSpaceKasperStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
+    public FSLayersKasperStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
         super(df, dataSerializator);
     }
 
@@ -62,7 +62,7 @@ public class FSMetricSpaceKasperStorage<T> extends AbstractFSMetricSpacesStorage
             default:
                 throw new IllegalArgumentException("Type: " + type);
         }
-        FSMetricSpaceKasperStorage storage = new FSMetricSpaceKasperStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
+        FSLayersKasperStorage storage = new FSLayersKasperStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
         return new FSDatasetInstanceSingularizator.FSFloatVectorDataset(name, storage);
     }
 

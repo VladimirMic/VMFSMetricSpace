@@ -115,10 +115,10 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
     public Iterator getIteratorOfObjects(File f, Object... params) {
         BufferedReader br;
         try {
-            if (f.getName().toLowerCase().endsWith(".txt")) {
-                br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-            } else {
+            if (f.getName().toLowerCase().endsWith(".gz")) {
                 br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(f))));
+            } else {
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
             }
             int count = params.length > 0 && params[0] instanceof Integer ? (int) params[0] : Integer.MAX_VALUE;
             if (count < 0) {
@@ -368,6 +368,13 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
         }
     }
 
+    /**
+     *
+     * @param br
+     * @param count
+     * @param filePath allows to distinguish in overriden methods
+     * @return
+     */
     protected Iterator<AbstractMap.SimpleEntry<String, T>> getIteratorForReader(BufferedReader br, int count, String filePath) {
         return new MetricObjectFileIterator(br, count);
     }

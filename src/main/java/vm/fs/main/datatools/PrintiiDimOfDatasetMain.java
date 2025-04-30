@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMetricSpacePhilipStorage;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSSpectraPhilipStorage;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.distance.DistanceFunctionInterface;
@@ -22,7 +22,7 @@ public class PrintiiDimOfDatasetMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            FSMetricSpacePhilipStorage.createDataset()
+            FSSpectraPhilipStorage.createDataset()
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
@@ -55,10 +55,10 @@ public class PrintiiDimOfDatasetMain {
     }
 
     public static void run(Dataset dataset) {
-        List sampleOfDataset = dataset.getSampleOfDataset(PrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT);
+        List sampleOfDataset = dataset.getSampleOfDataset(FSPrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT);
         AbstractMetricSpace metricSpace = dataset.getMetricSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        double[] distances = new double[PrintAndPlotDDOfDatasetMain.IMPLICIT_DIST_COUNT];
+        double[] distances = new double[FSPrintAndPlotDDOfDatasetMain.IMPLICIT_DIST_COUNT];
         for (int i = 0; i < distances.length; i++) {
             Object o1 = metricSpace.getDataOfMetricObject(Tools.randomObject(sampleOfDataset));
             Object o2 = metricSpace.getDataOfMetricObject(Tools.randomObject(sampleOfDataset));

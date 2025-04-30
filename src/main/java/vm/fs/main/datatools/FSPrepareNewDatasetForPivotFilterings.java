@@ -10,13 +10,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import vm.fs.FSGlobal;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
 import vm.fs.main.datatools.storage.VMMVStorageInsertMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMetricSpacePhilipStorage;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMocapJanStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
@@ -39,7 +38,8 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            FSMetricSpacePhilipStorage.createDataset()
+            FSMocapJanStorage.createDataset()
+//            FSSpectraPhilipStorage.createDataset()
 //            new FSDatasetInstanceSingularizator.DeCAF20M_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
@@ -143,10 +143,10 @@ public class FSPrepareNewDatasetForPivotFilterings {
     }
 
     public static final void plotDistanceDensity(Dataset dataset) {
-        boolean prohibited = PrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
+        boolean prohibited = FSPrintAndPlotDDOfDatasetMain.existsForDataset(dataset);
         if (!prohibited) {
             LOG.log(Level.INFO, "Dataset: {0}, printing distance density plots", dataset.getDatasetName());
-            PrintAndPlotDDOfDatasetMain.run(dataset);
+            FSPrintAndPlotDDOfDatasetMain.run(dataset);
         } else {
             LOG.log(Level.INFO, "Dataset: {0}, distance density plot already exists", dataset.getDatasetName());
         }

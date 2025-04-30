@@ -22,10 +22,10 @@ import vm.metricSpace.distance.impl.L2OnFloatsArray;
  * @author au734419
  * @param <T>
  */
-public class FSMetricSpacePhilipStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
+public class FSSpectraPhilipStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
 
     public static final String DATASET_NAME = "data95_dyn.txt";
-    public FSMetricSpacePhilipStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
+    public FSSpectraPhilipStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
         super(df, dataSerializator);
     }
 
@@ -38,7 +38,7 @@ public class FSMetricSpacePhilipStorage<T> extends AbstractFSMetricSpacesStorage
 ///////////////////////////////// priprietary
 
     public static final Dataset<float[]> createDataset() {
-        FSMetricSpacePhilipStorage storage = new FSMetricSpacePhilipStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
+        FSSpectraPhilipStorage storage = new FSSpectraPhilipStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
         return new FSDatasetInstanceSingularizator.FSFloatVectorDataset(DATASET_NAME, storage);
     }
 
