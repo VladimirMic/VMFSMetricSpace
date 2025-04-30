@@ -99,7 +99,7 @@ public class FSEvaluateGroundTruthMain {
         }
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth", null);
-        statsStorage.storeStatsForQueries(gte.getDistCompsPerQueries(), gte.getTimesPerQueries(), gte.getAddditionalStats());
+        statsStorage.storeStatsForQueries(gte.getDistCompsPerQueries(), gte.getTimesPerQueries(), gte.getAdditionalStats());
         statsStorage.save();
 
         LOG.log(Level.INFO, "Storing results of queries");

@@ -211,7 +211,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     private static void store(SearchingAlgorithm alg, TreeSet[] results, Dataset dataset, AbstractMetricSpace metricSpace, List queries, int k) {
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
-        statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries(), alg.getAddditionalStats());
+        statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries(), alg.getAdditionalStats());
         statsStorage.save();
 
         LOG.log(Level.INFO, "Storing results of queries");
