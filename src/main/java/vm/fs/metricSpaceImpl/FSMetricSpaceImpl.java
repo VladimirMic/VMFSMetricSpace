@@ -64,7 +64,10 @@ public class FSMetricSpaceImpl<T> extends AbstractMetricSpace<T> {
             case ("mpeg7_1m"): {
                 return (DistanceFunctionInterface<T>) new Sapir3DistanceFunction();
             }
-            case (FSMocapJanStorage.DATASET_NAME):
+            case (FSMocapJanStorage.DATASET_NAME_10FPS):
+            case (FSMocapJanStorage.DATASET_NAME_30FPS):
+            case (FSMocapJanStorage.DATASET_NAME_10FPS + "_selected.txt"):
+            case (FSMocapJanStorage.DATASET_NAME_30FPS + "_selected.txt"):
                 return (DistanceFunctionInterface<T>) new DTWOnFloatsArray();
         }
         throw new IllegalArgumentException("Unknown dataset name " + datasetName + ". No distance function provided.");

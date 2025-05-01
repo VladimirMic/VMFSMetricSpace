@@ -10,17 +10,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import vm.fs.FSGlobal;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.main.datatools.storage.VMMVStorageInsertMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMocapJanStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 
 /**
+ * No not run this in paralel for more datasets It is already paralelised in
+ * many ways so your PC would stuck.
  *
  * @author au734419
  */
@@ -38,9 +40,10 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            FSMocapJanStorage.createDataset()
+            new FSDatasetInstances.MOCAP10FPS(),
+            new FSDatasetInstances.MOCAP30FPS()
 //            FSSpectraPhilipStorage.createDataset()
-//            new FSDatasetInstanceSingularizator.DeCAF20M_PCA256Dataset(),
+//            new FSDatasetInstances.DeCAF20M_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
@@ -96,14 +99,14 @@ public class FSPrepareNewDatasetForPivotFilterings {
             origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
             plotDistanceDensity(origDataset);
         }
-        plotDistanceDensity(dataset);
+//        plotDistanceDensity(dataset);
 //        selectRandomPivotsAndQueryObjects(origDataset);
-//        evaluateGroundTruth(dataset);
-//        evaluateSampleOfSmallestDistances(dataset);
-//        precomputeObjectToPivotDists(origDataset);
-//        createKeyValueStorageForBigDataset(origDataset);
-//        learnDataDependentMetricFiltering(dataset);
-//        learnDataDependentPtolemaicFiltering(dataset);
+        evaluateGroundTruth(dataset);
+        evaluateSampleOfSmallestDistances(dataset);
+        precomputeObjectToPivotDists(origDataset);
+        createKeyValueStorageForBigDataset(origDataset);
+        learnDataDependentMetricFiltering(dataset);
+        learnDataDependentPtolemaicFiltering(dataset);
     }
 
     /**
@@ -153,16 +156,16 @@ public class FSPrepareNewDatasetForPivotFilterings {
     }
 
     private static void selectRandomPivotsAndQueryObjects(Dataset dataset) {
-        boolean exists = dataset.getPivots(1) != null;
+        boolean existsPivots = dataset.getPivots(1) != null;
         String datasetName = dataset.getDatasetName();
-        if (!exists) {
-            LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots and queries", datasetName);
+        if (!existsPivots) {
+            LOG.log(Level.INFO, "Dataset: {0}, trying to select pivots", datasetName);
             FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
         } else {
             LOG.log(Level.INFO, "Dataset: {0}, pivots already preselected", datasetName);
             List queryObjects = dataset.getQueryObjects();
-            exists = queryObjects != null && !queryObjects.isEmpty();
-            if (!exists) {
+            boolean existsQueries = queryObjects != null && !queryObjects.isEmpty();
+            if (!existsQueries) {
                 LOG.log(Level.INFO, "Dataset: {0}, trying to select queries", datasetName);
                 FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset, FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.IMPLICIT_NUMBER_OF_QUERIES, 0);
             }

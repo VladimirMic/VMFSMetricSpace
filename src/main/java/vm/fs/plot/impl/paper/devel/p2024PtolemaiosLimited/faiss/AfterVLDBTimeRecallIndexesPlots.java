@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.jfree.chart.JFreeChart;
 import vm.datatools.Tools;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.main.search.perform.FSKNNQueriesSeqScanWithFilteringMain;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import static vm.fs.plot.FSPlotFolders.Y2025_AFTER_VLDB_PTOLEMAIOS_LIMITED_FILTERING_INDEXES;
@@ -43,7 +43,7 @@ public class AfterVLDBTimeRecallIndexesPlots {
 
     public static void main(String[] args) {
         DatasetOfCandidates[] datasets = new DatasetOfCandidates[]{
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(), //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates(), //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;

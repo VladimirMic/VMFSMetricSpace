@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.partitioning.FSGRAPPLEPartitioningStorage;
 import vm.fs.store.partitioning.FSStorageDatasetPartitionsInterface;
@@ -29,8 +29,8 @@ public class FSPartitioningMain {
     public static void main(String[] args) {
         boolean publicQueries = false;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
+            new FSDatasetInstances.SIFTdataset(),
+            new FSDatasetInstances.RandomDataset15Uniform(),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),

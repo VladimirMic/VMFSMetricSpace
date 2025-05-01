@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  */
 public class FSGlobal {
 
-    public static final Boolean ASK_FOR_EXISTENCE = false;
+    public static final Boolean ASK_FOR_EXISTENCE = true;
     /**
      * N drive is the tertiary storage with slow reading. If dataset is stored
      * there and should be read, the flag decides whether the Exception is fired

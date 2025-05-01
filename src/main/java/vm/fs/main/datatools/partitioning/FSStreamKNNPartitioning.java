@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.partitioning.FSStorageDatasetPartitionsInterface;
@@ -36,8 +36,8 @@ public class FSStreamKNNPartitioning {
 //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
-            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
+            new FSDatasetInstances.LAION_10M_Dataset_Euclid(publicQueries),
+            new FSDatasetInstances.LAION_10M_Dataset(publicQueries)
         //                        new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries),
         //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries)

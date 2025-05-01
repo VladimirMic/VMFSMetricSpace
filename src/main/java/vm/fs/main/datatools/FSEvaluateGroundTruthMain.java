@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
@@ -69,8 +69,8 @@ public class FSEvaluateGroundTruthMain {
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
             //            new FSDatasetInstanceSingularizator.DeCAFDataset()
-            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
+            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates(),
+            new FSDatasetInstances.Faiss_DeCAF_100M_PCA256_Candidates()
         };
         for (Dataset dataset : datasets) {
             run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);

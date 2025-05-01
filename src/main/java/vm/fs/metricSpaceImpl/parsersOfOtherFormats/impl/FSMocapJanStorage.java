@@ -7,16 +7,15 @@ package vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import vm.datatools.DataTypeConvertor;
 import vm.fs.FSGlobal;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.parsersOfOtherFormats.AbstractFSMetricSpacesStorageWithOthersDatasetStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.ToolsMetricDomain;
+import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.metricSpace.distance.impl.DTWOnFloatsArray;
 
 /**
@@ -25,10 +24,11 @@ import vm.metricSpace.distance.impl.DTWOnFloatsArray;
  */
 public class FSMocapJanStorage extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<List<float[][]>> {
 
-    public static final String DATASET_NAME = "actions-single-subject-all-POS-fps10.data";
+    public static final String DATASET_NAME_10FPS = "actions-single-subject-all-POS-fps10.data";
+    public static final String DATASET_NAME_30FPS = "actions-single-subject-all-POS.data";
 
     public FSMocapJanStorage() {
-        super(new DTWOnFloatsArray(), null);
+        super(new DTWOnFloatsArray(), SingularisedConvertors.MOCAP_SPACE);
     }
 
     @Override
@@ -55,9 +55,9 @@ public class FSMocapJanStorage extends AbstractFSMetricSpacesStorageWithOthersDa
     }
 
 ///////////////////////////////// priprietary
-    public static final Dataset<List<float[][]>> createDataset() {
+    public static final Dataset<List<float[][]>> createInstanceOfOriginalDataset(String datasetNameSeeConstants) {
         FSMocapJanStorage storage = new FSMocapJanStorage();
-        return new Dataset<List<float[][]>>(DATASET_NAME, new FSMetricSpaceImpl<List<float[][]>>(), storage) {
+        return new Dataset<List<float[][]>>(datasetNameSeeConstants, new FSMetricSpaceImpl<>(), storage) {
             @Override
             public Map<Comparable, List<float[][]>> getKeyValueStorage() {
                 Iterator<Object> it = storage.getObjectsFromDataset(datasetName, -1);
@@ -114,23 +114,18 @@ public class FSMocapJanStorage extends AbstractFSMetricSpacesStorageWithOthersDa
             if (hasNext()) {
                 String[] split = nextLine.split(" ");
                 String id = split[2];
-                List<float[][]> movement = new ArrayList<>();
+                StringBuilder sb = new StringBuilder();
                 nextLine = lines.next();
                 nextLine = lines.next();
                 while (nextLine != null && !nextLine.contains("key")) {
-                    split = nextLine.split(";");
-                    float[][] matrix = new float[split.length][3];
-                    for (int i = 0; i < split.length; i++) {
-                        String[] coords = split[i].split(",");
-                        matrix[i] = DataTypeConvertor.stringArrayToFloats(coords);
-                    }
-                    movement.add(matrix);
+                    sb.append(nextLine).append("|");
                     if (lines.hasNext()) {
                         nextLine = lines.next();
                     } else {
                         nextLine = null;
                     }
                 }
+                List<float[][]> movement = dataSerializator.parseString(sb.toString());
                 AbstractMap.SimpleEntry<String, List<float[][]>> ret = new AbstractMap.SimpleEntry(id, movement);
                 counter++;
                 return ret;

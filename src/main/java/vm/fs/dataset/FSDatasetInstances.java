@@ -1,6 +1,7 @@
 package vm.fs.dataset;
 
 import java.util.HashMap;
+import java.util.List;
 import vm.metricSpace.DatasetOfCandidates;
 import java.util.Map;
 import org.h2.mvstore.MVStoreException;
@@ -10,11 +11,13 @@ import vm.fs.metricSpaceImpl.parsersOfOtherFormats.FSPDBeStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMocapJanStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.metricSpace.AbstractMetricSpacesStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.MetricSpaceWithIDsAsObjects;
 import vm.metricSpace.ToolsMetricDomain;
+import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
 import vm.metricSpace.distance.impl.QScore;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 
@@ -22,9 +25,38 @@ import vm.queryResults.QueryNearestNeighboursStoreInterface;
  *
  * @author xmic
  */
-public class FSDatasetInstanceSingularizator {
+public class FSDatasetInstances {
 
     public static final Integer FORCED_PIVOT_COUNT = -1;
+
+    public static final Dataset MOCAP10FPS_ORIG_ALL = FSMocapJanStorage.createInstanceOfOriginalDataset(FSMocapJanStorage.DATASET_NAME_10FPS);
+    public static final Dataset MOCAP30FPS_ORIG_ALL = FSMocapJanStorage.createInstanceOfOriginalDataset(FSMocapJanStorage.DATASET_NAME_30FPS);
+
+    public static class MOCAP10FPS extends FSGenericDataset<List<float[][]>> {
+
+        public MOCAP10FPS() {
+            super("actions-single-subject-all-POS.data_selected.txt", SingularisedConvertors.MOCAP_SPACE);
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 64;
+        }
+
+    }
+
+    public static class MOCAP30FPS extends FSGenericDataset<List<float[][]>> {
+
+        public MOCAP30FPS() {
+            super("actions-single-subject-all-POS-fps10.data_selected.txt", SingularisedConvertors.MOCAP_SPACE);
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 64;
+        }
+
+    }
 
     public static class PDBePtoteinChainsDataset extends Dataset<String> {
 
@@ -1394,8 +1426,7 @@ public class FSDatasetInstanceSingularizator {
     public static class Faiss_Clip_100M_PCA256_Candidates extends FSDatasetOfCandidates<float[]> {
 
         public Faiss_Clip_100M_PCA256_Candidates() {
-            super(
-                    new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+            super(new FSDatasetInstances.LAION_100M_PCA256Dataset(),
                     "Faiss_Clip_100M_PCA256_Candidates",
                     new FSNearestNeighboursStorageImpl(),
                     "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750",
@@ -1417,8 +1448,7 @@ public class FSDatasetInstanceSingularizator {
     public static class FaissDyn_Clip_100M_PCA256_Candidates extends FSDatasetOfCandidates<float[]> {
 
         public FaissDyn_Clip_100M_PCA256_Candidates(int faissCands) {
-            super(
-                    new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+            super(new FSDatasetInstances.LAION_100M_PCA256Dataset(),
                     "Faiss" + faissCands + "_Clip_100M_PCA256_Candidates",
                     new FSNearestNeighboursStorageImpl(),
                     "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750",
@@ -1442,8 +1472,7 @@ public class FSDatasetInstanceSingularizator {
     public static class Faiss_DeCAF_100M_Candidates extends FSDatasetOfCandidates<float[]> {
 
         public Faiss_DeCAF_100M_Candidates() {
-            super(
-                    new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
+            super(new FSDatasetInstances.DeCAF100M_Dataset(),
                     "Faiss_DeCAF_100M_Candidates",
                     new FSNearestNeighboursStorageImpl(),
                     "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k100000",
@@ -1465,8 +1494,7 @@ public class FSDatasetInstanceSingularizator {
     public static class Faiss_DeCAF_100M_PCA256_Candidates extends FSDatasetOfCandidates<float[]> {
 
         public Faiss_DeCAF_100M_PCA256_Candidates() {
-            super(
-                    new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
+            super(new FSDatasetInstances.DeCAF100M_PCA256Dataset(),
                     "Faiss_DeCAF_100M_PCA256_Candidates",
                     new FSNearestNeighboursStorageImpl(),
                     "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000",
@@ -1477,26 +1505,14 @@ public class FSDatasetInstanceSingularizator {
 
     }
 
-    public static class FSFloatVectorDataset extends Dataset<float[]> {
+    public static abstract class FSGenericDataset<T> extends Dataset<T> {
 
-        public FSFloatVectorDataset(String datasetName) {
-            this(datasetName, new FSMetricSpacesStorage<>(new FSMetricSpaceImpl(), SingularisedConvertors.FLOAT_VECTOR_SPACE));
-        }
-
-        public FSFloatVectorDataset(String datasetName, AbstractMetricSpacesStorage storage) {
-            super(datasetName, storage.getMetricSpace(), storage);
+        public FSGenericDataset(String datasetName, MetricObjectDataToStringInterface<T> dataSerializator) {
+            super(datasetName, new FSMetricSpaceImpl(), new FSMetricSpacesStorage<>(new FSMetricSpaceImpl(), dataSerializator));
         }
 
         @Override
-        public int getRecommendedNumberOfPivotsForFiltering() {
-            if (FORCED_PIVOT_COUNT > 0) {
-                return FORCED_PIVOT_COUNT;
-            }
-            return -1;
-        }
-
-        @Override
-        public Map<Comparable, float[]> getKeyValueStorage() {
+        public Map<Comparable, T> getKeyValueStorage() {
             try {
                 VMMVStorage storage = ((FSMetricSpacesStorage) metricSpacesStorage).getSingularizatorOfDiskStorage();
                 if (storage == null) {
@@ -1522,6 +1538,51 @@ public class FSDatasetInstanceSingularizator {
         public void deleteKeyValueStorage() {
             VMMVStorage.delete(datasetName);
         }
+
+    }
+
+    public static class FSDatasetWithOtherSource<T> extends Dataset<T> {
+
+        public FSDatasetWithOtherSource(String datasetName, AbstractMetricSpacesStorage metricSpacesStorage) {
+            super(datasetName, new FSMetricSpaceImpl<>(), metricSpacesStorage);
+        }
+
+        @Override
+        public Map<Comparable, T> getKeyValueStorage() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public boolean hasKeyValueStorage() {
+            return false;
+        }
+
+        @Override
+        public void deleteKeyValueStorage() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+    }
+
+    public static class FSFloatVectorDataset extends FSGenericDataset<float[]> {
+
+        public FSFloatVectorDataset(String datasetName) {
+            super(datasetName, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
+            return -1;
+        }
+
     }
 
     public static class H5FloatVectorDataset extends Dataset<float[]> {
@@ -1634,4 +1695,5 @@ public class FSDatasetInstanceSingularizator {
             return VMMVStorage.exists(datasetName);
         }
     }
+
 }

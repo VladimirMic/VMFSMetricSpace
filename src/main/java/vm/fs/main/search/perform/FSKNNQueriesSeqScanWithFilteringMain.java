@@ -6,7 +6,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
@@ -50,7 +50,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
             //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
-            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
@@ -159,13 +159,13 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         Map<Comparable, Integer> columnHeaders = pd == null ? null : pd.getColumnHeaders();
         if (filter instanceof AbstractPtolemaicBasedFiltering) {
             alg = new KNNSearchWithPtolemaicFiltering(metricSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, rowHeaders, df);
-            if (filter instanceof DataDependentPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset())) {
+            if (filter instanceof DataDependentPtolemaicFiltering && dataset.equals(new FSDatasetInstances.LAION_10M_PCA256Dataset())) {
                 KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
 //STRAIN
                 tmp.setObjBeforeSeqScan(100000);
                 tmp.setThresholdOnLBsPerObjForSeqScan(20);
             }
-            if (filter instanceof DataDependentPtolemaicFiltering && dataset.equals(new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates())) {
+            if (filter instanceof DataDependentPtolemaicFiltering && dataset.equals(new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates())) {
                 KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
 //STRAIN
                 tmp.setObjBeforeSeqScan(20);

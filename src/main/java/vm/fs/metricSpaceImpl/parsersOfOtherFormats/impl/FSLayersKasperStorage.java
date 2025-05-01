@@ -9,7 +9,7 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import vm.datatools.DataTypeConvertor;
 import vm.fs.FSGlobal;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.metricSpaceImpl.parsersOfOtherFormats.AbstractFSMetricSpacesStorageWithOthersDatasetStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
@@ -63,7 +63,7 @@ public class FSLayersKasperStorage<T> extends AbstractFSMetricSpacesStorageWithO
                 throw new IllegalArgumentException("Type: " + type);
         }
         FSLayersKasperStorage storage = new FSLayersKasperStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
-        return new FSDatasetInstanceSingularizator.FSFloatVectorDataset(name, storage);
+        return new FSDatasetInstances.FSDatasetWithOtherSource(name, storage);
     }
 
     private int parseDim(String datasetName) {

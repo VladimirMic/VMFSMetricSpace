@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.chart.JFreeChart;
 import vm.fs.FSGlobal;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.mathtools.Tools;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.Dataset;
@@ -29,7 +29,7 @@ public class FSPrintAndPlotDDOfDatasetMain {
     public static void main(String[] args) {
         Dataset[] datasets = {
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
-            new FSDatasetInstanceSingularizator.DeCAFDataset(),
+            new FSDatasetInstances.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
         };

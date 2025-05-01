@@ -143,7 +143,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
     public void storeObjectToDataset(Object metricObject, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
         GZIPOutputStream datasetOutputStream = null;
         try {
-            File f = getFileForObjects(FSGlobal.DATA_FOLDER, datasetName, false);
+            File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
             datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
             storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
         } catch (IOException ex) {

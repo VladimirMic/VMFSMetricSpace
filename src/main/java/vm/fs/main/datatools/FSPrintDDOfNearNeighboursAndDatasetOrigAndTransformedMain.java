@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeSet;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
@@ -19,8 +19,8 @@ import vm.metricSpace.distance.DistanceFunctionInterface;
 public class FSPrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
 
     public static void main(String[] args) {
-        Dataset datasetOrig = new FSDatasetInstanceSingularizator.DeCAFDataset();
-        Dataset datasetTransformed = new FSDatasetInstanceSingularizator.DeCAF_PCA10Dataset();
+        Dataset datasetOrig = new FSDatasetInstances.DeCAFDataset();
+        Dataset datasetTransformed = new FSDatasetInstances.DeCAF_PCA10Dataset();
         String datasetName = datasetOrig.getDatasetName();
         String transformedDatasetName = datasetTransformed.getDatasetName();
         float transformedDistInterval = 1.0f;

@@ -9,7 +9,7 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import vm.datatools.DataTypeConvertor;
 import vm.fs.FSGlobal;
-import vm.fs.dataset.FSDatasetInstanceSingularizator;
+import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.metricSpaceImpl.parsersOfOtherFormats.AbstractFSMetricSpacesStorageWithOthersDatasetStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
@@ -39,7 +39,7 @@ public class FSSpectraPhilipStorage<T> extends AbstractFSMetricSpacesStorageWith
 
     public static final Dataset<float[]> createDataset() {
         FSSpectraPhilipStorage storage = new FSSpectraPhilipStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
-        return new FSDatasetInstanceSingularizator.FSFloatVectorDataset(DATASET_NAME, storage);
+        return new FSDatasetInstances.FSDatasetWithOtherSource(DATASET_NAME, storage);
     }
 
     @Override
