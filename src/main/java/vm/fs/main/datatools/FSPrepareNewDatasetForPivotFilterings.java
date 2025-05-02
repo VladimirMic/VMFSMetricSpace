@@ -16,6 +16,7 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSLayersKasperStorage;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
@@ -41,6 +42,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         Dataset[] datasets = {
             new FSDatasetInstances.MOCAP10FPS(),
             new FSDatasetInstances.MOCAP30FPS()
+//            FSLayersKasperStorage.createDataset(FSLayersKasperStorage.TYPE_0_small, FSLayersKasperStorage.DIMENSION_0_small)
 //            FSSpectraPhilipStorage.createDataset()
 //            new FSDatasetInstances.DeCAF20M_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),

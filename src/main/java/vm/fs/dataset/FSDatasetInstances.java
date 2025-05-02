@@ -40,7 +40,7 @@ public class FSDatasetInstances {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 64;
+            return 128;
         }
 
         @Override
@@ -50,7 +50,7 @@ public class FSDatasetInstances {
 
         @Override
         public boolean shouldCreateKeyValueStorage() {
-            return true;
+            return false;
         }
 
     }
@@ -63,7 +63,7 @@ public class FSDatasetInstances {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 64;
+            return 128;
         }
 
         @Override
@@ -73,7 +73,7 @@ public class FSDatasetInstances {
 
         @Override
         public boolean shouldCreateKeyValueStorage() {
-            return true;
+            return false;
         }
 
     }

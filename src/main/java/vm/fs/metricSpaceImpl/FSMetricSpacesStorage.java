@@ -83,8 +83,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
     protected Iterator<Object> getIteratorOfObjects(String folder, String setName, Object... params) {
         File f = getFileForObjects(folder, setName, false);
         if (!f.exists()) {
+            LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
             if (!folder.equals(FSGlobal.DATASET_FOLDER)) {
-                LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
                 return null;
             }
             if (singularizatorOfDiskStorage == null) {

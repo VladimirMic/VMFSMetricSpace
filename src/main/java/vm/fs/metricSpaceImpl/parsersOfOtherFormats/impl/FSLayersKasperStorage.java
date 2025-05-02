@@ -24,6 +24,9 @@ import vm.metricSpace.distance.impl.L2OnFloatsArray;
  */
 public class FSLayersKasperStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
 
+    public static final int TYPE_0_small = 0;
+    public static final int DIMENSION_0_small = 8;
+
     public FSLayersKasperStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
         super(df, dataSerializator);
     }

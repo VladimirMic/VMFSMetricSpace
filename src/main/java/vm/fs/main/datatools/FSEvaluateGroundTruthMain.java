@@ -86,6 +86,9 @@ public class FSEvaluateGroundTruthMain {
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
 
         List<Object> queryObjects = dataset.getQueryObjects(1000);
+//        if (k == GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES) {
+//            queryObjects = queryObjects.subList(0, 20);
+//        }
         GroundTruthEvaluator gte = new GroundTruthEvaluator(dataset, k, Float.MAX_VALUE, queryObjects.size());
         TreeSet[] results;
         if (dataset instanceof DatasetOfCandidates) {
