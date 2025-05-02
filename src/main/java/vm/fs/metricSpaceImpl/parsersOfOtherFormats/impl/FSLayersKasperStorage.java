@@ -63,7 +63,17 @@ public class FSLayersKasperStorage<T> extends AbstractFSMetricSpacesStorageWithO
                 throw new IllegalArgumentException("Type: " + type);
         }
         FSLayersKasperStorage storage = new FSLayersKasperStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
-        return new FSDatasetInstances.FSDatasetWithOtherSource(name, storage);
+        return new FSDatasetInstances.FSDatasetWithOtherSource(name, storage) {
+            @Override
+            public boolean shouldStoreDistsToPivots() {
+                return true;
+            }
+
+            @Override
+            public boolean shouldCreateKeyValueStorage() {
+                return true;
+            }
+        };
     }
 
     private int parseDim(String datasetName) {

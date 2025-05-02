@@ -79,6 +79,16 @@ public class FSMocapJanStorage extends AbstractFSMetricSpacesStorageWithOthersDa
             public int getRecommendedNumberOfPivotsForFiltering() {
                 return 64;
             }
+
+            @Override
+            public boolean shouldStoreDistsToPivots() {
+                return true;
+            }
+
+            @Override
+            public boolean shouldCreateKeyValueStorage() {
+                return true;
+            }
         };
     }
 

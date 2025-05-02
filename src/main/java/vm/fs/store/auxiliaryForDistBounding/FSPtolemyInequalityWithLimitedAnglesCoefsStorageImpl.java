@@ -62,8 +62,22 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         while (it.hasNext()) {
             String key = it.next();
             String[] pivots = key.split("-");
-            int idx1 = pivotIDs.indexOf(pivots[0]);
-            int idx2 = pivotIDs.indexOf(pivots[1]);
+            String[] pairs = new String[2];
+            if (pivots.length > 2 && pivots.length % 2 == 0) {
+                pairs[0] = pivots[0];
+                pairs[1] = pivots[pivots.length / 2];
+                for (int i = 1; i < pivots.length / 2; i++) {
+                    pairs[0] = pairs[0] + "-" + pivots[i];
+                    pairs[1] = pairs[1] + "-" + pivots[i + pivots.length / 2];
+                }
+            } else {
+                pairs = pivots;
+            }
+            int idx1 = pivotIDs.indexOf(pairs[0]);
+            int idx2 = pivotIDs.indexOf(pairs[1]);
+            if (idx1 == -1 || idx2 == -1) {
+                throw new IllegalArgumentException("Bad pivot IDs. Do they contain unequal number of - in it? " + pivots[0] + "   " + pivots[1]);
+            }
             ret[idx1][idx2] = coefs.get(key);
             ret[idx2][idx1] = coefs.get(key);
         }

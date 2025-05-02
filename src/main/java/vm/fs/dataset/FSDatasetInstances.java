@@ -43,6 +43,16 @@ public class FSDatasetInstances {
             return 64;
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
+
     }
 
     public static class MOCAP30FPS extends FSGenericDataset<List<float[][]>> {
@@ -54,6 +64,16 @@ public class FSDatasetInstances {
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
             return 64;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
         }
 
     }
@@ -90,6 +110,16 @@ public class FSDatasetInstances {
             return 512;
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
+
     }
 
     public static class DeCAFDataset extends FSFloatVectorDataset {
@@ -105,6 +135,16 @@ public class FSDatasetInstances {
             }
             return 256;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
     }
 
     public static class DeCAF20M_PCA256Dataset extends FSFloatVectorDataset {
@@ -112,12 +152,32 @@ public class FSDatasetInstances {
         public DeCAF20M_PCA256Dataset() {
             super("decaf_20m_PCA256");
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
     }
 
     public static class DeCAF100M_PCA256Dataset extends FSFloatVectorDataset {
 
         public DeCAF100M_PCA256Dataset() {
             super("decaf_100m_PCA256");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
         }
     }
 
@@ -134,6 +194,16 @@ public class FSDatasetInstances {
             }
             return 64;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
     }
 
     private static final Integer PIVOTS_RANDOM_DATASETS = FORCED_PIVOT_COUNT > 0 ? FORCED_PIVOT_COUNT : 128;
@@ -149,6 +219,16 @@ public class FSDatasetInstances {
             return PIVOTS_RANDOM_DATASETS;
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
+
     }
 
     public static class RandomDataset15Uniform extends FSFloatVectorDataset {
@@ -160,6 +240,16 @@ public class FSDatasetInstances {
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -173,6 +263,16 @@ public class FSDatasetInstances {
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class RandomDataset25Uniform extends FSFloatVectorDataset {
@@ -184,6 +284,16 @@ public class FSDatasetInstances {
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -197,6 +307,16 @@ public class FSDatasetInstances {
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class RandomDataset35Uniform extends FSFloatVectorDataset {
@@ -208,6 +328,16 @@ public class FSDatasetInstances {
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -221,6 +351,16 @@ public class FSDatasetInstances {
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class RandomDataset50Uniform extends FSFloatVectorDataset {
@@ -232,6 +372,16 @@ public class FSDatasetInstances {
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -245,6 +395,16 @@ public class FSDatasetInstances {
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class RandomDataset70Uniform extends FSFloatVectorDataset {
@@ -256,6 +416,16 @@ public class FSDatasetInstances {
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -269,6 +439,16 @@ public class FSDatasetInstances {
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class RandomDataset90Uniform extends FSFloatVectorDataset {
@@ -281,6 +461,16 @@ public class FSDatasetInstances {
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class RandomDataset100Uniform extends FSFloatVectorDataset {
@@ -292,6 +482,16 @@ public class FSDatasetInstances {
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
             return PIVOTS_RANDOM_DATASETS;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -309,6 +509,15 @@ public class FSDatasetInstances {
             return 256;
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
     }
 
     public static class MPEG7dataset extends Dataset<Map<String, Object>> {
@@ -343,6 +552,16 @@ public class FSDatasetInstances {
             }
             return -1;
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
     }
 
     public static class DeCAF_PCA8Dataset extends FSFloatVectorDataset {
@@ -351,12 +570,31 @@ public class FSDatasetInstances {
             super("decaf_1m_PCA8");
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class DeCAF_PCA10Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA10Dataset() {
             super("decaf_1m_PCA10");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -365,12 +603,32 @@ public class FSDatasetInstances {
         public DeCAF_PCA12Dataset() {
             super("decaf_1m_PCA12");
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class DeCAF_PCA16Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA16Dataset() {
             super("decaf_1m_PCA16");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -379,12 +637,32 @@ public class FSDatasetInstances {
         public DeCAF_PCA24Dataset() {
             super("decaf_1m_PCA24");
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class DeCAF_PCA32Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA32Dataset() {
             super("decaf_1m_PCA32");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -393,12 +671,32 @@ public class FSDatasetInstances {
         public DeCAF_PCA46Dataset() {
             super("decaf_1m_PCA46");
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class DeCAF_PCA68Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA68Dataset() {
             super("decaf_1m_PCA68");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -407,12 +705,32 @@ public class FSDatasetInstances {
         public DeCAF_PCA128Dataset() {
             super("decaf_1m_PCA128");
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
     }
 
     public static class DeCAF_PCA256Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA256Dataset() {
             super("decaf_1m_PCA256");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
         }
     }
 
@@ -421,6 +739,16 @@ public class FSDatasetInstances {
         public DeCAF_PCA670Dataset() {
             super("decaf_1m_PCA670");
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
     }
 
     public static class DeCAF_PCA1540Dataset extends FSFloatVectorDataset {
@@ -428,12 +756,32 @@ public class FSDatasetInstances {
         public DeCAF_PCA1540Dataset() {
             super("decaf_1m_PCA1540");
         }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
     }
 
     public static class DeCAF_GHP_50_256Dataset extends FSHammingSpaceDataset {
 
         public DeCAF_GHP_50_256Dataset() {
             super("decaf_1m_GHP_50_256");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -472,6 +820,16 @@ public class FSDatasetInstances {
         @Override
         public String getPivotSetName() {
             return "laion2B-en-clip768v2-n=100M.h5_20000pivots";
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
         }
     }
 
@@ -856,6 +1214,16 @@ public class FSDatasetInstances {
             return 128;
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
+
     }
 
     public static class LAION_30M_PCA256Dataset extends FSFloatVectorDataset {
@@ -872,6 +1240,16 @@ public class FSDatasetInstances {
         @Override
         public String getPivotSetName() {
             return "laion2B-en-clip768v2-n=100M.h5_PCA256";
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
         }
     }
 
@@ -894,12 +1272,32 @@ public class FSDatasetInstances {
             return 32;
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
+
     }
 
     public static class LAION_30M_PCA256Prefixes24Dataset extends FSFloatVectorDataset {
 
         public LAION_30M_PCA256Prefixes24Dataset() {
             super("laion2B-en-clip768v2-n=30M.h5_PCA_pref24of256");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
 
     }
@@ -910,12 +1308,32 @@ public class FSDatasetInstances {
             super("laion2B-en-clip768v2-n=10M.h5_PCA_pref24of256");
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
+
     }
 
     public static class LAION_100M_PCA256Prefixes24Dataset extends FSFloatVectorDataset {
 
         public LAION_100M_PCA256Prefixes24Dataset() {
             super("laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256");
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
 
     }
@@ -934,6 +1352,16 @@ public class FSDatasetInstances {
         @Override
         public String getPivotSetName() {
             return "laion2B-en-clip768v2-n=100M.h5_PCA_pref32of256";
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 
@@ -1541,7 +1969,7 @@ public class FSDatasetInstances {
 
     }
 
-    public static class FSDatasetWithOtherSource<T> extends Dataset<T> {
+    public static abstract class FSDatasetWithOtherSource<T> extends Dataset<T> {
 
         public FSDatasetWithOtherSource(String datasetName, AbstractMetricSpacesStorage metricSpacesStorage) {
             super(datasetName, new FSMetricSpaceImpl<>(), metricSpacesStorage);
@@ -1569,7 +1997,7 @@ public class FSDatasetInstances {
 
     }
 
-    public static class FSFloatVectorDataset extends FSGenericDataset<float[]> {
+    public static abstract class FSFloatVectorDataset extends FSGenericDataset<float[]> {
 
         public FSFloatVectorDataset(String datasetName) {
             super(datasetName, SingularisedConvertors.FLOAT_VECTOR_SPACE);
@@ -1619,6 +2047,16 @@ public class FSDatasetInstances {
             return -1;
         }
 
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
+        }
+
     }
 
     public static class FSHammingSpaceDataset extends Dataset<long[]> {
@@ -1651,6 +2089,16 @@ public class FSDatasetInstances {
                 return FORCED_PIVOT_COUNT;
             }
             return -1;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
 
     }
@@ -1693,6 +2141,16 @@ public class FSDatasetInstances {
         @Override
         public boolean hasKeyValueStorage() {
             return VMMVStorage.exists(datasetName);
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return false;
         }
     }
 

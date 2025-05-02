@@ -34,7 +34,6 @@ public class FSPrepareNewDatasetForPivotFilterings {
         FSPrepareNewDatasetForPivotFilterings.skipEverythingEvaluated = skipEverythingEvaluated;
     }
     public static final Integer MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE = 10 * 1000 * 1000; // decide by yourself, smaller datasets can be kept as a map in the main memory only, and creation of the map is efficient. This is implemented, e.g., in FSFloatVectorDataset and FSHammingSpaceDataset in class FSDatasetInstanceSingularizator
-    public static final Integer MIN_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS = 50 * 1000 * 1000; // decide by yourself  according to the cost of a distance computation
     public static final Logger LOG = Logger.getLogger(FSPrepareNewDatasetForPivotFilterings.class.getName());
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -99,14 +98,15 @@ public class FSPrepareNewDatasetForPivotFilterings {
             origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
             plotDistanceDensity(origDataset);
         }
-//        plotDistanceDensity(dataset);
-//        selectRandomPivotsAndQueryObjects(origDataset);
-        evaluateGroundTruth(dataset);
+        plotDistanceDensity(dataset);
+        selectRandomPivotsAndQueryObjects(origDataset);
+        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
         evaluateSampleOfSmallestDistances(dataset);
         precomputeObjectToPivotDists(origDataset);
         createKeyValueStorageForBigDataset(origDataset);
         learnDataDependentMetricFiltering(dataset);
         learnDataDependentPtolemaicFiltering(dataset);
+        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
     }
 
     /**
@@ -172,10 +172,6 @@ public class FSPrepareNewDatasetForPivotFilterings {
         }
     }
 
-    public static final void evaluateGroundTruth(Dataset dataset) {
-        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
-    }
-
     public static final void evaluateGroundTruth(Dataset dataset, int k) {
         boolean prohibited = FSEvaluateGroundTruthMain.existsForDataset(dataset, k);
         String datasetName = dataset.getDatasetName();
@@ -210,7 +206,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
             prohibited = askForRewriting("Dists to pivots", dataset);
         }
         int datasetSize = dataset.getPrecomputedDatasetSize();
-        if (!prohibited && datasetSize >= MIN_DATASET_SIZE_TO_STORE_OBJECT_PIVOT_DISTS) {
+        if (!prohibited && dataset.shouldStoreDistsToPivots()) {
             LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
             FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, dataset.getRecommendedNumberOfPivotsForFiltering());
         }
@@ -244,8 +240,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
 
     private static void createKeyValueStorageForBigDataset(Dataset dataset) {
         String datasetName = dataset.getDatasetName();
-        int datasetSize = dataset.getPrecomputedDatasetSize();
-        if (datasetSize >= MIN_NUMBER_OF_OBJECTS_TO_CREATE_KEY_VALUE_STORAGE) {
+        if (dataset.shouldCreateKeyValueStorage()) {
             boolean prohibited = dataset.hasKeyValueStorage();
             if (prohibited) {
                 LOG.log(Level.WARNING, "The key value storage already exists for dataset {0}", datasetName);

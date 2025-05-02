@@ -25,6 +25,7 @@ import vm.metricSpace.distance.impl.L2OnFloatsArray;
 public class FSSpectraPhilipStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
 
     public static final String DATASET_NAME = "data95_dyn.txt";
+
     public FSSpectraPhilipStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
         super(df, dataSerializator);
     }
@@ -39,7 +40,17 @@ public class FSSpectraPhilipStorage<T> extends AbstractFSMetricSpacesStorageWith
 
     public static final Dataset<float[]> createDataset() {
         FSSpectraPhilipStorage storage = new FSSpectraPhilipStorage(new L2OnFloatsArray(), SingularisedConvertors.FLOAT_VECTOR_SPACE);
-        return new FSDatasetInstances.FSDatasetWithOtherSource(DATASET_NAME, storage);
+        return new FSDatasetInstances.FSDatasetWithOtherSource(DATASET_NAME, storage) {
+            @Override
+            public boolean shouldStoreDistsToPivots() {
+                return false;
+            }
+
+            @Override
+            public boolean shouldCreateKeyValueStorage() {
+                return false;
+            }
+        };
     }
 
     @Override

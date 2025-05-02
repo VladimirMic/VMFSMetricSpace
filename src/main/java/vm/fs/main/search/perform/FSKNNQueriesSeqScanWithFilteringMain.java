@@ -19,7 +19,6 @@ import vm.metricSpace.DatasetOfCandidates;
 import vm.metricSpace.ToolsMetricDomain;
 import vm.metricSpace.distance.DistanceFunctionInterface;
 import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
-import vm.metricSpace.distance.bounding.nopivot.NoPivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
 import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
@@ -47,10 +46,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         vm.javatools.Tools.setSleepDuringTheNight(true);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
+                        new FSDatasetInstances.MOCAP10FPS(),
+                        new FSDatasetInstances.MOCAP30FPS(),
             //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
             //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
             //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates()
-            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
+//            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
