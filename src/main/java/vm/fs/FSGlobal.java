@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import vm.javatools.Tools;
 
 /**
  *
@@ -33,7 +34,10 @@ public class FSGlobal {
         for (String path : paths) {
             File f = new File(path);
             if (f.exists()) {
-                Map<String, String> env = System.getenv();
+                String env = System.getenv("USERDOMAIN");
+                if (env != null) {
+                    Tools.setSleepDuringTheNight(env.equals("VLADUV-POCITAC"));
+                }
                 return path;
             }
         }
