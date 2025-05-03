@@ -1,6 +1,7 @@
 package vm.fs;
 
 import java.io.File;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -32,6 +33,7 @@ public class FSGlobal {
         for (String path : paths) {
             File f = new File(path);
             if (f.exists()) {
+                Map<String, String> env = System.getenv();
                 return path;
             }
         }

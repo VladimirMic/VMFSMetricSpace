@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.devel.p2024PtolemaiosLimited.random;
+package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.random;
 
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
 
 /**
  *
@@ -75,7 +75,7 @@ public class PlotPtolemaiosRandom100Abblation extends FSAbstractPlotterFromResul
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        return new BoxPlotXValuesPlotter();
     }
 
     @Override

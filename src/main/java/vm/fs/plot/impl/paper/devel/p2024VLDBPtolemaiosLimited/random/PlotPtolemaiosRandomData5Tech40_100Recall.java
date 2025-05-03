@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.devel.p2024PtolemaiosLimited.random;
+package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.random;
 
 import vm.colour.StandardColours.COLOUR_NAME;
 

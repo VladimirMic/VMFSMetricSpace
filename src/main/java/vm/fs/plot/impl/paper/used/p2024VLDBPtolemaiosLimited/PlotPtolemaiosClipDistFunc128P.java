@@ -2,21 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.used.p2024PtolemaiosLimited;
+package vm.fs.plot.impl.paper.used.p2024VLDBPtolemaiosLimited;
 
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
 
 /**
  *
  * @author Vlada
  */
-public class PlotPtolemaiosClipDistFunc64P extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosClipDistFunc128P extends FSAbstractPlotterFromResults {
 
-    public PlotPtolemaiosClipDistFunc64P(boolean plotOnlyPDF) {
+    public PlotPtolemaiosClipDistFunc128P(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
@@ -35,11 +35,11 @@ public class PlotPtolemaiosClipDistFunc64P extends FSAbstractPlotterFromResults 
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_05_64_pivots_30NN_seq_triangle_inequality",
-                "2024_05_64_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_05_64_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_05_64_pivots_30NN_seq_ptolemaios_64LB",
-                "2024_05_64_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_64LB",
+                "2024_05_128_pivots_30NN_seq_triangle_inequality",
+                "2024_05_128_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2024_05_128_pivots_30NN_seq_FourPointBasedFiltering",
+                "2024_05_128_pivots_30NN_seq_ptolemaios_128LB",
+                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
                 "ground_truth"
         );
     }
@@ -74,7 +74,7 @@ public class PlotPtolemaiosClipDistFunc64P extends FSAbstractPlotterFromResults 
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        return new BoxPlotXValuesPlotter();
     }
 
     @Override

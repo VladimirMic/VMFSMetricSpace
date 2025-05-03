@@ -1,4 +1,4 @@
-package vm.fs.plot.impl.paper.devel.p2024PtolemaiosLimited.faiss;
+package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss;
 
 import vm.fs.plot.FSAbstractPlotterFromResults;
 

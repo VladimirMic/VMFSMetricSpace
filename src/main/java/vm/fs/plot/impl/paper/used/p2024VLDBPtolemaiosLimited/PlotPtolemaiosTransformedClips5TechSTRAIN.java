@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.used.p2024PtolemaiosLimited;
+package vm.fs.plot.impl.paper.used.p2024VLDBPtolemaiosLimited;
 
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
 
 /**
  *
@@ -97,7 +97,7 @@ public class PlotPtolemaiosTransformedClips5TechSTRAIN extends FSAbstractPlotter
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        return new BoxPlotXValuesPlotter();
     }
 
     @Override

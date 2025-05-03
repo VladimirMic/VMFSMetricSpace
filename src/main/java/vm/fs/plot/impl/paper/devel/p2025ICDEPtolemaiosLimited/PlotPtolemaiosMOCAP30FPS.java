@@ -2,21 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.used.p2024PtolemaiosLimited;
+package vm.fs.plot.impl.paper.devel.p2025ICDEPtolemaiosLimited;
 
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
+import static vm.fs.plot.FSAbstractPlotterFromResults.strings;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
 
 /**
  *
- * @author Vlada
+ * @author xmic
  */
-public class PlotPtolemaiosClipDistFunc128P extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosMOCAP30FPS extends FSAbstractPlotterFromResults {
 
-    public PlotPtolemaiosClipDistFunc128P(boolean plotOnlyPDF) {
+    public PlotPtolemaiosMOCAP30FPS(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
@@ -25,8 +26,9 @@ public class PlotPtolemaiosClipDistFunc128P extends FSAbstractPlotterFromResults
         return strings(
                 "Triangle Ineq.",
                 "Data-dep. Metric Filtering",
-                "Four Point Property",
+                "Four Point Prop.",
                 "Ptolemaic Filtering",
+                "Ptolemaic with Dyn. Pivots",
                 "Data-dep. Ptolemaic Filering",
                 "Sequential Brute Force"
         );
@@ -35,11 +37,12 @@ public class PlotPtolemaiosClipDistFunc128P extends FSAbstractPlotterFromResults
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2024_05_128_pivots_30NN_seq_triangle_inequality",
-                "2024_05_128_pivots_30NN_seq_data-dependent_metric_filtering",
-                "2024_05_128_pivots_30NN_seq_FourPointBasedFiltering",
-                "2024_05_128_pivots_30NN_seq_ptolemaios_128LB",
-                "2024_05_128_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_128LB",
+                "2025_05_64_pivots_30NN_triangle_inequality",
+                "2025_05_64_pivots_30NN_data-dependent_metric_filtering",
+                "2025_05_64_pivots_30NN_FourPointBasedFiltering",
+                "2025_05_64_pivots_30NN_ptolemaios_randomPivots_64LB_random_pivots",
+                "2025_05_64_pivots_30NN_ptolemaios_64LB",
+                "2025_05_64_pivots_30NN_data-dependent_ptolemaic_filtering_64LB",
                 "ground_truth"
         );
     }
@@ -47,24 +50,22 @@ public class PlotPtolemaiosClipDistFunc128P extends FSAbstractPlotterFromResults
     @Override
     public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
         return strings(
-                "Dot product",
-                "Euclidean",
-                "Angular"
+                "10 FPS",
+                "30 FPS"
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "laion2B-en-clip768v2-n=10M.h5DotPro__public-queries-10k-clip768v2.h5__30",
-                "laion2B-en-clip768v2-n=10M.h5euclid__public-queries-10k-clip768v2.h5__30",
-                "laion2B-en-clip768v2-n=10M.h5Angular__public-queries-10k-clip768v2.h5__30"
+                "actions-single-subject-all-POS-fps10.data_selected.txt__actions-single-subject-all-POS-fps10.data_selected.txt__30__actions-single-subject-all-POS-fps10.data_selected.txt__actions-single-subject-all-POS-fps10.data_selected.txt__.csv",
+                "actions-single-subject-all-POS.data_selected.txt__actions-single-subject-all-POS.data_selected.txt__30__actions-single-subject-all-POS.data_selected.txt__actions-single-subject-all-POS.data_selected.txt__.csv"
         );
     }
 
     @Override
     protected Float transformAdditionalStatsForQueryToFloat(float firstValue) {
-        return firstValue / 10120191;
+        return firstValue / 17311;
     }
 
     @Override
@@ -74,17 +75,17 @@ public class PlotPtolemaiosClipDistFunc128P extends FSAbstractPlotterFromResults
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        return new BoxPlotXValuesPlotter();
     }
 
     @Override
     public String getResultName() {
-        return "Filterings_Clip_DF";
+        return "Filterings";
     }
 
     @Override
     public String getFolderForPlots() {
-        return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED_DF;
+        return FSPlotFolders.Y2025_PTOLEMAIOS_LIMITED;
     }
 
     @Override
@@ -99,9 +100,10 @@ public class PlotPtolemaiosClipDistFunc128P extends FSAbstractPlotterFromResults
             StandardColours.COLOUR_NAME.C2_RED,
             StandardColours.COLOUR_NAME.C3_GREEN,
             StandardColours.COLOUR_NAME.C4_ORANGE,
+            StandardColours.COLOUR_NAME.C6_BROWN,
             StandardColours.COLOUR_NAME.C5_VIOLET,
-            StandardColours.COLOUR_NAME.CX_BLACK
-        };
+            StandardColours.COLOUR_NAME.CX_BLACK};
     }
+
 
 }

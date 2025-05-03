@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.devel.p2024PtolemaiosLimited.faiss;
+package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss;
 
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
 import vm.search.algorithm.SearchingAlgorithm;
 
 /**
@@ -82,7 +82,7 @@ public class PlotFAISSCLIP_PCA256_FinalFiltering extends FSAbstractPlotterFromRe
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        return new BoxPlotXValuesPlotter();
     }
 
     @Override

@@ -2,18 +2,18 @@ package vm.fs.main.datatools;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 import vm.fs.dataset.FSDatasetInstances;
-import vm.metricSpace.DatasetOfCandidates;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
+import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.metricSpace.AbstractMetricSpace;
 import vm.metricSpace.Dataset;
+import vm.metricSpace.DatasetOfCandidates;
 
 /**
  *
@@ -27,6 +27,8 @@ public class FSEvaluateGroundTruthMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
+                        new FSDatasetInstances.MOCAP10FPS(),
+                        new FSDatasetInstances.MOCAP30FPS()
             //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
             //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
@@ -69,13 +71,13 @@ public class FSEvaluateGroundTruthMain {
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries), 
             //            new FSDatasetInstanceSingularizator.DeCAFDataset()
-            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates(),
-            new FSDatasetInstances.Faiss_DeCAF_100M_PCA256_Candidates()
+//            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates(),
+//            new FSDatasetInstances.Faiss_DeCAF_100M_PCA256_Candidates()
         };
         for (Dataset dataset : datasets) {
             run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
             run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
-//            run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
+            run(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
         }
     }
 
@@ -86,9 +88,9 @@ public class FSEvaluateGroundTruthMain {
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
 
         List<Object> queryObjects = dataset.getQueryObjects(1000);
-//        if (k == GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES) {
-//            queryObjects = queryObjects.subList(0, 20);
-//        }
+        if (k == GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES) {
+            queryObjects = queryObjects.subList(0, 20);
+        }
         GroundTruthEvaluator gte = new GroundTruthEvaluator(dataset, k, Float.MAX_VALUE, queryObjects.size());
         TreeSet[] results;
         if (dataset instanceof DatasetOfCandidates) {
@@ -108,6 +110,8 @@ public class FSEvaluateGroundTruthMain {
         LOG.log(Level.INFO, "Storing results of queries");
         groundTruthStorage.storeQueryResults(space, queryObjects, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth");
 
+        FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth", null);
+        storeRecallAlwaysOne(dataset.getMetricSpace(), queryObjects, recallStorage);
         System.gc();
     }
 
@@ -118,6 +122,14 @@ public class FSEvaluateGroundTruthMain {
         FSNearestNeighboursStorageImpl groundTruthStorage = new FSNearestNeighboursStorageImpl();
         File fileWithResults = groundTruthStorage.getFileWithResults("ground_truth", dataset.getDatasetName(), dataset.getQuerySetName(), k, false);
         return fileWithResults.exists();
+    }
+
+    private static void storeRecallAlwaysOne(AbstractMetricSpace metricSpace, List<Object> queryObjects, FSRecallOfCandidateSetsStorageImpl recallStorage) {
+        for (Object queryObject : queryObjects) {
+            Comparable queryID = metricSpace.getIDOfMetricObject(queryObject);
+            recallStorage.storeRecallForQuery(queryID, 1f);
+        }
+        recallStorage.save();
     }
 
 }

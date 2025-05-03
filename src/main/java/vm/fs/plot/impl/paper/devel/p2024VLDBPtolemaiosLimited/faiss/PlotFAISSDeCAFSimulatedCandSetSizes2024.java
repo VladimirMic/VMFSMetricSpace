@@ -2,31 +2,31 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.devel.p2024PtolemaiosLimited.faiss;
+package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss;
 
 import vm.colour.StandardColours;
 import vm.fs.main.queryResults.recallEvaluation.FSEvaluateRecallsOfApproximateDatasetMain;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
 
 /**
  *
  * @author Vlada
  */
-public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFromResults {
+public class PlotFAISSDeCAFSimulatedCandSetSizes2024 extends FSAbstractPlotterFromResults {
 
     private Integer[] kCands;
 
-    public PlotFAISSCLIPSimulatedCandSetSizes2024(boolean plotOnlyPDF) {
+    public PlotFAISSDeCAFSimulatedCandSetSizes2024(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
         );
     }
 
@@ -38,7 +38,7 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k100000"
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000"
         );
     }
 
@@ -47,12 +47,11 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
         if (kCands == null) {
             initCands();
         }
-        String[] ret = new String[4 * kCands.length];
+        String[] ret = new String[3 * kCands.length];
         for (int i = 0; i < kCands.length; i++) {
-            ret[4 * i] = "nprobe16_" + kCands[i] + "Cands";
-            ret[4 * i + 1] = "nprobe32_" + kCands[i] + "Cands";
-            ret[4 * i + 2] = "nprobe64_" + kCands[i] + "Cands";
-            ret[4 * i + 3] = "nprobe128_" + kCands[i] + "Cands";
+            ret[3 * i] = "nprobe64_" + kCands[i] + "Cands";
+            ret[3 * i + 1] = "nprobe128_" + kCands[i] + "Cands";
+            ret[3 * i + 2] = "nprobe256_" + kCands[i] + "Cands";
         }
         return ret;
     }
@@ -66,12 +65,11 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
         if (kCands == null) {
             initCands();
         }
-        String[] ret = new String[4 * kCands.length];
+        String[] ret = new String[3 * kCands.length];
         for (int i = 0; i < kCands.length; i++) {
-            ret[4 * i] = "nprobe16____" + kCands[i] + "__";
-            ret[4 * i + 1] = "nprobe32____" + kCands[i] + "__";
-            ret[4 * i + 2] = "nprobe64____" + kCands[i] + "__";
-            ret[4 * i + 3] = "nprobe128____" + kCands[i] + "__";
+            ret[3 * i] = "nprobe64____" + kCands[i] + "__";
+            ret[3 * i + 1] = "nprobe128____" + kCands[i] + "__";
+            ret[3 * i + 2] = "nprobe256____" + kCands[i] + "__";
         }
         return ret;
     }
@@ -83,7 +81,7 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        return new BoxPlotXValuesPlotter();
     }
 
     @Override

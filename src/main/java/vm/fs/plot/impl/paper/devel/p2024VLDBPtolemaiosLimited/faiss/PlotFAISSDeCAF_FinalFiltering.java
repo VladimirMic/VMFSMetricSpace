@@ -1,10 +1,10 @@
-package vm.fs.plot.impl.paper.devel.p2024PtolemaiosLimited.faiss;
+package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss;
 
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
 import vm.search.algorithm.SearchingAlgorithm;
 
 /**
@@ -79,7 +79,7 @@ public class PlotFAISSDeCAF_FinalFiltering extends FSAbstractPlotterFromResults 
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotPlotter();
+        return new BoxPlotXValuesPlotter();
     }
 
     @Override

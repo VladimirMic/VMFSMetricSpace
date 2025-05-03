@@ -2,30 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.devel.p2024PtolemaiosLimited.faiss;
+package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss;
 
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
 
 /**
  *
  * @author Vlada
  */
-public class PlotFAISSCLIPIndexConfig2024 extends FSAbstractPlotterFromResults {
+public class PlotFAISSDeCAFIndexConfig2024  extends FSAbstractPlotterFromResults {
 
-    public PlotFAISSCLIPIndexConfig2024(boolean plotOnlyPDF) {
+    public PlotFAISSDeCAFIndexConfig2024(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000"
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000",
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits16-qc1000-k10000"
         );
     }
 
@@ -37,9 +36,8 @@ public class PlotFAISSCLIPIndexConfig2024 extends FSAbstractPlotterFromResults {
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k750",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k50000",
-                "faiss-100M_CLIP_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k75000"
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m32-nbits8-qc1000-k10000",
+                "faiss-100M_DeCAF_PCA256-IVFPQ-tr1000000-cc262144-m64-nbits16-qc1000-k10000"
         );
     }
 
@@ -48,16 +46,24 @@ public class PlotFAISSCLIPIndexConfig2024 extends FSAbstractPlotterFromResults {
         return array(
                 "nprobe64",
                 "nprobe128",
-                "nprobe256"
+                "nprobe256",
+                "nprobe384",
+                "nprobe512",
+                "nprobe768",
+                "nprobe1024"
         );
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "nprobe64",
-                "nprobe128",
-                "nprobe256"
+                "nprobe64____.csv",
+                "nprobe128____.csv",
+                "nprobe256____.csv",
+                "nprobe384____.csv",
+                "nprobe512____.csv",
+                "nprobe768____.csv",
+                "nprobe1024____.csv"
         );
     }
 
@@ -68,7 +74,7 @@ public class PlotFAISSCLIPIndexConfig2024 extends FSAbstractPlotterFromResults {
 
     @Override
     public AbstractPlotter getPlotter() {
-        BoxPlotPlotter ret = new BoxPlotPlotter();
+        BoxPlotXValuesPlotter ret = new BoxPlotXValuesPlotter();
         ret.setIncludeZeroForYAxis(true);
         return ret;
     }

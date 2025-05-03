@@ -23,8 +23,8 @@ import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl.QUERY_STATS;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotPlotter;
-import vm.plot.impl.BoxPlotXYPlotter;
+import vm.plot.impl.BoxPlotXValuesPlotter;
+import vm.plot.impl.BoxPlotXCategoryPlotter;
 
 /**
  *
@@ -57,8 +57,8 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     private void check() {
-        if (plotter instanceof BoxPlotPlotter && Tools.isParseableToFloats(xTicks)) {
-            plotter = new BoxPlotXYPlotter();
+        if (plotter instanceof BoxPlotXValuesPlotter && Tools.isParseableToFloats(xTicks)) {
+            plotter = new BoxPlotXCategoryPlotter();
         }
         if (colourIndexesForTraces != null && colourIndexesForTraces.length < folderNames.length) {
             throw new IllegalArgumentException("Incosistent specification of colours and folders. The counts do not match. Colours: " + colourIndexesForTraces.length + ", folders: " + folderNames.length);
@@ -143,9 +143,6 @@ public abstract class FSAbstractPlotterFromResults {
                 System.err.println();
                 String message = "You have wrong uniqueArtifactIdentifyingFileNameForDisplaydGroup filter as number of files after the filtering " + files.length + " of folder " + folderWithStats.getAbsolutePath() + " differs from the number of name artifacts " + groupsCount;
                 LOG.log(Level.SEVERE, message);
-                for (int i = 0; i < Math.max(0, groupsCount - files.length); i++) {
-                    ret.add(null);
-                }
                 if (files.length > groupsCount) {
                     for (File file : files) {
                         System.err.println(file.getName());
@@ -181,6 +178,14 @@ public abstract class FSAbstractPlotterFromResults {
             Map<String, TreeMap<QUERY_STATS, String>> results = storage.getContent();
             for (QUERY_STATS stat : statsToPrint) {
                 List<Float>[][] listOfValues = ret.get(stat);
+                if (traceIdx >= listOfValues.length || groupIdx >= listOfValues[traceIdx].length) {
+                    LOG.log(Level.SEVERE, "Too many files remained after the filtering ({0}). Only {1} are expected!", new Object[]{files.size(), groupsCount * boxplotsCount});
+                    for (int j = 0; j < files.size(); j++) {
+                        File file1 = files.get(j);
+                        String s = file1 == null ? "null" : file1.getAbsolutePath();
+                        System.err.println(s);
+                    }
+                }
                 List<Float> values = listOfValues[traceIdx][groupIdx];
                 update(values, results, stat);
                 if (stat.equals(QUERY_STATS.recall) && !values.isEmpty()) {
