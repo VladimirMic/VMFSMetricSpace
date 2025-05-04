@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.jfree.chart.JFreeChart;
 import vm.colour.StandardColours;
 import vm.datatools.DataTypeConvertor;
@@ -97,7 +98,7 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     protected String getResultFullNameWithDate(QUERY_STATS statName) {
-        int datasetsCount = xTicks.length;
+        int datasetsCount = xTicks == null ? 1 : xTicks.length;
         int techCount = folderNames.length;
         String plotName = plotter.getSimpleName();
         String className = getClass().getCanonicalName();
@@ -148,6 +149,9 @@ public abstract class FSAbstractPlotterFromResults {
                         System.err.println(file.getName());
                     }
                     throw new IllegalArgumentException(message);
+                } else {
+                    String s = ""; // zeptat se, ze je min boxu nez by melo byt, jestli to je umysl
+                    System.err.println("!!!" + folder.getName());
                 }
             }
             if (files.length != 0) {
@@ -155,6 +159,10 @@ public abstract class FSAbstractPlotterFromResults {
                 LOG.log(Level.INFO, "Folder {0} contains {1} matching files", new Object[]{folder.getName(), files.length});
                 List list = DataTypeConvertor.arrayToList(files);
                 ret.addAll(list);
+            } else {
+                for (int i = 0; i < groupsCount; i++) {
+                    ret.add(null);
+                }
             }
         }
         LOG.log(Level.INFO, "The final plot will have {0} values in {1} traces which means {2} values per trace on average", new Object[]{ret.size(), folders.length, (ret.size() / folders.length)});
@@ -201,7 +209,7 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     public void makePlots() {
-        int groupsCount = xTicks.length;
+        int groupsCount = xTicks == null ? 1 : xTicks.length;
         int boxplotsCount = getDisplayedNamesOfTracesThatMatchesFolders().length;
         if (boxplotsCount < folderNames.length) {
             throw new IllegalArgumentException("Inconsistent numbers: the number of folders returned by getFolderNamesForDisplayedTraces() " + folderNames.length + " does not match the number of names given by getDisplayedNamesOfTracesThatMatchesFolders() " + boxplotsCount);

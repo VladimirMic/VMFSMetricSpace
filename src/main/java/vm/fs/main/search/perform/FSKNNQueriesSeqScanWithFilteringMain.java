@@ -6,7 +6,6 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
-import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
@@ -42,17 +41,17 @@ import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
+    private static final Integer QUERIES_COUNT = 50;
 
     public static void main(String[] args) {
         vm.javatools.Tools.setSleepDuringTheNight(true);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            //                        new FSDatasetInstances.MOCAP10FPS(),
-            //                        new FSDatasetInstances.MOCAP30FPS(),
-            //            new FSDatasetInstances.DeCAFDataset(),
-            //                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
-            //                        new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
-            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
+            new FSDatasetInstances.MOCAP10FPS(),
+            new FSDatasetInstances.MOCAP30FPS(), //            new FSDatasetInstances.DeCAFDataset(),
+        //                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
+        //                        new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
+        //            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
@@ -101,6 +100,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
             run(dataset, filter, pivots, k);
         }
+        if (dataset instanceof DatasetOfCandidates) {
+            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filters[0].getTechFullName());
+            run(dataset, filters[0], pivots, k);
+        }
     }
 
     private static void run(Dataset dataset, BoundsOnDistanceEstimation filter, List pivots, int k) {
@@ -113,6 +116,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         initPODists(dataset, pivotCount, maxObjectsCount, pivots);
 
         List queries = dataset.getQueryObjects(1000);
+        if (QUERIES_COUNT > 0) {
+            queries = queries.subList(0, QUERIES_COUNT);
+        }
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
@@ -205,11 +211,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         return new BoundsOnDistanceEstimation[]{
             metricFiltering,
             dataDependentMetricFiltering,
-            //            fourPointPropertyBased,
+            fourPointPropertyBased,
             ptolemaicFilteringRandomPivots,
-            //            ptolemaicFiltering,
-            dataDependentPtolemaicFiltering,
-            metricFiltering
+            ptolemaicFiltering,
+            dataDependentPtolemaicFiltering
         };
     }
 
@@ -238,8 +243,6 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         if (dataset == null) {
             return;
         }
-        boolean askForFileExistence = FSGlobal.getAskForFileExistence();
-        FSGlobal.setAskForFileExistence(false);
         for (int i = 0; i < repetitions; i++) {
             SearchingAlgorithm alg = initAlg(filter, dataset, metricSpace, pivots, df, pivotPivotDists);
             if (dataset instanceof DatasetOfCandidates) {
@@ -257,7 +260,6 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 store(alg, results, dataset, metricSpace, queries, k);
             }
         }
-        FSGlobal.setAskForFileExistence(askForFileExistence);
     }
 
 }

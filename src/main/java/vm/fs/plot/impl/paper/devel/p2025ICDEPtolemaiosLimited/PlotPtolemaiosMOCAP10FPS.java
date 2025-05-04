@@ -15,18 +15,17 @@ import vm.plot.impl.BoxPlotXValuesPlotter;
  *
  * @author xmic
  */
-public class PlotPtolemaiosMOCAPBothFPS extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosMOCAP10FPS extends FSAbstractPlotterFromResults {
 
-    private static int pivotCount;
+    protected static int pivotCount;
 
-    public PlotPtolemaiosMOCAPBothFPS(boolean plotOnlyPDF) {
+    public PlotPtolemaiosMOCAP10FPS(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
     public static void setPivotCount(int pivotCount) {
-        PlotPtolemaiosMOCAPBothFPS.pivotCount = pivotCount;
+        PlotPtolemaiosMOCAP10FPS.pivotCount = pivotCount;
     }
-
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
@@ -56,17 +55,13 @@ public class PlotPtolemaiosMOCAPBothFPS extends FSAbstractPlotterFromResults {
 
     @Override
     public String[] getDisplayedNamesOfGroupsThatMeansFiles() {
-        return strings(
-                "10 FPS",
-                "30 FPS"
-        );
+        return null;
     }
 
     @Override
     public String[] getUniqueArtifactIdentifyingFileNameForDisplaydGroup() {
         return strings(
-                "actions-single-subject-all-POS-fps10.data_selected.txt__actions-single-subject-all-POS-fps10.data_selected.txt__30__actions-single-subject-all-POS-fps10.data_selected.txt__actions-single-subject-all-POS-fps10.data_selected.txt__.csv",
-                "actions-single-subject-all-POS.data_selected.txt__actions-single-subject-all-POS.data_selected.txt__30__actions-single-subject-all-POS.data_selected.txt__actions-single-subject-all-POS.data_selected.txt__.csv"
+                "actions-single-subject-all-POS-fps10.data_selected.txt__actions-single-subject-all-POS-fps10.data_selected.txt__30__actions-single-subject-all-POS-fps10.data_selected.txt__actions-single-subject-all-POS-fps10.data_selected.txt__.csv"
         );
     }
 
@@ -87,12 +82,12 @@ public class PlotPtolemaiosMOCAPBothFPS extends FSAbstractPlotterFromResults {
 
     @Override
     public String getResultName() {
-        return "Filterings " + pivotCount + "pivots";
+        return "Filterings " + pivotCount + "pivots_10FPS";
     }
 
     @Override
     public String getFolderForPlots() {
-        return FSPlotFolders.Y2025_PTOLEMAIOS_LIMITED;
+        return FSPlotFolders.Y2025_PTOLEMAIOS_LIMITED10FPS;
     }
 
     @Override

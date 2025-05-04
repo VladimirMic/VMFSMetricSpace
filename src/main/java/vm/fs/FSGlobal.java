@@ -12,7 +12,19 @@ import vm.javatools.Tools;
  */
 public class FSGlobal {
 
-    private static boolean askForFileExistence = true;
+    public static final boolean ASK_WHEN_GOING_TO_OVERRIDE_FILE;
+
+    static {
+        String question = "Should I ask when going to rewrite existing file?";
+        boolean answer = true;
+        try {
+            Object[] options = new String[]{"Yes", "No"};
+            int banOverloadingFiles = JOptionPane.showOptionDialog(null, question, "Ask when overriding?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
+            answer = banOverloadingFiles == 1;
+        } catch (Exception e) {
+        }
+        ASK_WHEN_GOING_TO_OVERRIDE_FILE = answer;
+    }
     /**
      * N drive is the tertiary storage with slow reading. If dataset is stored
      * there and should be read, the flag decides whether the Exception is fired
@@ -89,10 +101,10 @@ public class FSGlobal {
         Object[] options = new String[]{"Yes", "No"};
         file = new File(checkUnixPath(file.getAbsolutePath()));
         file.getParentFile().mkdirs();
-        if (file.exists() && willBeDeleted && askForFileExistence) {
+        if (file.exists() && willBeDeleted && ASK_WHEN_GOING_TO_OVERRIDE_FILE) {
             LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0}", file.getAbsolutePath());
             String question = "File " + file.getName() + " at " + file.getAbsolutePath() + " already exists. Do you want to delete its content? Answer no causes immediate stop.";
-            int add = JOptionPane.showOptionDialog(null, question, "New file?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
+            int add = JOptionPane.showOptionDialog(null, question, "Override file?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
             if (add == 1) {
                 System.exit(1);
             }
@@ -115,13 +127,4 @@ public class FSGlobal {
         }
         return path;
     }
-
-    public static boolean getAskForFileExistence() {
-        return askForFileExistence;
-    }
-
-    public static void setAskForFileExistence(boolean askForFileExistence) {
-        FSGlobal.askForFileExistence = askForFileExistence;
-    }
-
 }

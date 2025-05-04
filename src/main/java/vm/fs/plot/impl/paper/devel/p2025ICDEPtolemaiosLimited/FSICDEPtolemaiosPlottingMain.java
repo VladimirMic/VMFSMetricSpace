@@ -10,12 +10,14 @@ import static vm.fs.plot.impl.paper.used.p2024VLDBPtolemaiosLimited.FSPtolemaios
  *
  * @author xmic
  */
-public class FSPtolemaiosPlottingMain {
+public class FSICDEPtolemaiosPlottingMain {
 
     public static void main(String[] args) {
-        PlotPtolemaiosMOCAPBothFPS.setPivotCount(64);
-        new PlotPtolemaiosMOCAPBothFPS(PLOT_ONLY_PDF).makePlots();
-        PlotPtolemaiosMOCAPBothFPS.setPivotCount(128);
-        new PlotPtolemaiosMOCAPBothFPS(PLOT_ONLY_PDF).makePlots();
+        int[] pivots = new int[]{64, 128, 256};
+        for (int pivot : pivots) {
+            PlotPtolemaiosMOCAP10FPS.setPivotCount(pivot);
+            new PlotPtolemaiosMOCAP10FPS(PLOT_ONLY_PDF).makePlots();
+            new PlotPtolemaiosMOCAP30FPS(PLOT_ONLY_PDF).makePlots();
+        }
     }
 }
