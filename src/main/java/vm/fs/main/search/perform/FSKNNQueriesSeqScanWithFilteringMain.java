@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
+import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
@@ -46,13 +47,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         vm.javatools.Tools.setSleepDuringTheNight(true);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-                        new FSDatasetInstances.MOCAP10FPS(),
-                        new FSDatasetInstances.MOCAP30FPS(),
+            //                        new FSDatasetInstances.MOCAP10FPS(),
+            //                        new FSDatasetInstances.MOCAP30FPS(),
             //            new FSDatasetInstances.DeCAFDataset(),
-//                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
-//                        new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
-//            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
-        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates()
+            //                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
+            //                        new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
+            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
         //            new FSDatasetInstanceSingularizator.SIFTdataset(),
@@ -113,11 +113,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         initPODists(dataset, pivotCount, maxObjectsCount, pivots);
 
         List queries = dataset.getQueryObjects(1000);
-        queries = queries.subList(0, 50);;
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
-        int repetitions = dataset instanceof DatasetOfCandidates ? 3 : 2;
+        int repetitions = dataset instanceof DatasetOfCandidates ? 1 : 2;
         evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
     }
 
@@ -206,10 +205,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         return new BoundsOnDistanceEstimation[]{
             metricFiltering,
             dataDependentMetricFiltering,
-            fourPointPropertyBased,
+            //            fourPointPropertyBased,
             ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering,
-            dataDependentPtolemaicFiltering
+            //            ptolemaicFiltering,
+            dataDependentPtolemaicFiltering,
+            metricFiltering
         };
     }
 
@@ -238,6 +238,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         if (dataset == null) {
             return;
         }
+        boolean askForFileExistence = FSGlobal.getAskForFileExistence();
+        FSGlobal.setAskForFileExistence(false);
         for (int i = 0; i < repetitions; i++) {
             SearchingAlgorithm alg = initAlg(filter, dataset, metricSpace, pivots, df, pivotPivotDists);
             if (dataset instanceof DatasetOfCandidates) {
@@ -255,6 +257,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 store(alg, results, dataset, metricSpace, queries, k);
             }
         }
+        FSGlobal.setAskForFileExistence(askForFileExistence);
     }
 
 }
