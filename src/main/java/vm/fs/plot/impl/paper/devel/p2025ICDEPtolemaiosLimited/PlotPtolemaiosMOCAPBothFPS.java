@@ -17,13 +17,13 @@ import vm.plot.impl.BoxPlotXValuesPlotter;
  */
 public class PlotPtolemaiosMOCAPBothFPS extends FSAbstractPlotterFromResults {
 
-    private int pivotCount;
+    private static int pivotCount;
 
     public PlotPtolemaiosMOCAPBothFPS(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
-    public void setPivotCount(int pivotCount) {
+    public static void setPivotCount(int pivotCount) {
         this.pivotCount = pivotCount;
     }
 

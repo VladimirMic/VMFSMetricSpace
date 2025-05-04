@@ -13,12 +13,10 @@ import static vm.fs.plot.impl.paper.used.p2024VLDBPtolemaiosLimited.FSPtolemaios
  */
 public class FSPtolemaiosPlottingMain {
 
-    public static final PlotPtolemaiosMOCAPBothFPS Y2025_PlotPtolemaiosMocapBothFPS = new PlotPtolemaiosMOCAPBothFPS(PLOT_ONLY_PDF);
-
     public static void main(String[] args) {
-        Y2025_PlotPtolemaiosMocapBothFPS.setPivotCount(64);
-        Y2025_PlotPtolemaiosMocapBothFPS.makePlots();
-        Y2025_PlotPtolemaiosMocapBothFPS.setPivotCount(128);
-        Y2025_PlotPtolemaiosMocapBothFPS.makePlots();
+        PlotPtolemaiosMOCAPBothFPS.setPivotCount(64);
+        new PlotPtolemaiosMOCAPBothFPS(PLOT_ONLY_PDF).makePlots();
+        PlotPtolemaiosMOCAPBothFPS.setPivotCount(128);
+        new PlotPtolemaiosMOCAPBothFPS(PLOT_ONLY_PDF).makePlots();
     }
 }
