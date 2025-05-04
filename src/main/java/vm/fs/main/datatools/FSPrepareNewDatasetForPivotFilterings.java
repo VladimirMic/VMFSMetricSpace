@@ -120,7 +120,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         if (skipEverythingEvaluated) {
             return true;
         }
-        if (!FSGlobal.ASK_FOR_EXISTENCE) {
+        if (!FSGlobal.getAskForFileExistence()) {
             return false;
         }
         try {

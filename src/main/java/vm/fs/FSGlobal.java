@@ -12,7 +12,7 @@ import vm.javatools.Tools;
  */
 public class FSGlobal {
 
-    public static final Boolean ASK_FOR_EXISTENCE = false;
+    private static boolean askForFileExistence = true;
     /**
      * N drive is the tertiary storage with slow reading. If dataset is stored
      * there and should be read, the flag decides whether the Exception is fired
@@ -89,7 +89,7 @@ public class FSGlobal {
         Object[] options = new String[]{"Yes", "No"};
         file = new File(checkUnixPath(file.getAbsolutePath()));
         file.getParentFile().mkdirs();
-        if (file.exists() && willBeDeleted && ASK_FOR_EXISTENCE) {
+        if (file.exists() && willBeDeleted && askForFileExistence) {
             LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0}", file.getAbsolutePath());
             String question = "File " + file.getName() + " at " + file.getAbsolutePath() + " already exists. Do you want to delete its content? Answer no causes immediate stop.";
             int add = JOptionPane.showOptionDialog(null, question, "New file?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
@@ -114,6 +114,14 @@ public class FSGlobal {
             return path.replace("\\", "/");
         }
         return path;
+    }
+
+    public static boolean getAskForFileExistence() {
+        return askForFileExistence;
+    }
+
+    public static void setAskForFileExistence(boolean askForFileExistence) {
+        FSGlobal.askForFileExistence = askForFileExistence;
     }
 
 }

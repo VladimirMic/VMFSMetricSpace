@@ -1,6 +1,14 @@
-package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss;
+package vm.fs.plot.impl.paper.used.p2024VLDBPtolemaiosLimited;
 
 import vm.fs.plot.FSAbstractPlotterFromResults;
+import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss.PlotFAISSCLIPIndexConfig2024;
+import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss.PlotFAISSCLIPIndexes2024;
+import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss.PlotFAISSCLIPSimulatedCandSetSizes2024;
+import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss.PlotFAISSCLIP_PCA256_FinalFiltering;
+import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss.PlotFAISSDeCAFIndexConfig2024;
+import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss.PlotFAISSDeCAFSimulatedCandSetSizes2024;
+import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss.PlotFAISSDeCAF_FinalFiltering;
+import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss.PlotFAISSDeCAF_PCA256_FinalFiltering;
 
 /**
  *
