@@ -13,7 +13,7 @@ import static vm.fs.plot.impl.paper.used.p2024VLDBPtolemaiosLimited.FSPtolemaios
  */
 public class FSPtolemaiosPlottingMain {
 
-    public static final FSAbstractPlotterFromResults Y2025_PlotPtolemaiosMocapBothFPS = new PlotPtolemaiosMOCAP30FPS(PLOT_ONLY_PDF);
+    public static final PlotPtolemaiosMOCAPBothFPS Y2025_PlotPtolemaiosMocapBothFPS = new PlotPtolemaiosMOCAPBothFPS(PLOT_ONLY_PDF);
 
     public static void main(String[] args) {
         Y2025_PlotPtolemaiosMocapBothFPS.setPivotCount(64);

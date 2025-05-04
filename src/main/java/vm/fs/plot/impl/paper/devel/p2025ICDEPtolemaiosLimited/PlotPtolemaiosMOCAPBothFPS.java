@@ -15,11 +15,11 @@ import vm.plot.impl.BoxPlotXValuesPlotter;
  *
  * @author xmic
  */
-public class PlotPtolemaiosMOCAP30FPS extends FSAbstractPlotterFromResults {
+public class PlotPtolemaiosMOCAPBothFPS extends FSAbstractPlotterFromResults {
 
     private int pivotCount;
 
-    public PlotPtolemaiosMOCAP30FPS(boolean plotOnlyPDF) {
+    public PlotPtolemaiosMOCAPBothFPS(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 
