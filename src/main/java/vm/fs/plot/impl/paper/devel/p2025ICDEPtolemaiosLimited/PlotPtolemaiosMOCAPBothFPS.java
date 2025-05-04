@@ -24,8 +24,9 @@ public class PlotPtolemaiosMOCAPBothFPS extends FSAbstractPlotterFromResults {
     }
 
     public static void setPivotCount(int pivotCount) {
-        this.pivotCount = pivotCount;
+        PlotPtolemaiosMOCAPBothFPS.pivotCount = pivotCount;
     }
+
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
@@ -86,7 +87,7 @@ public class PlotPtolemaiosMOCAPBothFPS extends FSAbstractPlotterFromResults {
 
     @Override
     public String getResultName() {
-        return "Filterings";
+        return "Filterings " + pivotCount + "pivots";
     }
 
     @Override
