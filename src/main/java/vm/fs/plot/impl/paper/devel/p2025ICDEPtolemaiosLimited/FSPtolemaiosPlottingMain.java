@@ -4,7 +4,6 @@
  */
 package vm.fs.plot.impl.paper.devel.p2025ICDEPtolemaiosLimited;
 
-import vm.fs.plot.FSAbstractPlotterFromResults;
 import static vm.fs.plot.impl.paper.used.p2024VLDBPtolemaiosLimited.FSPtolemaiosPlottingMain.PLOT_ONLY_PDF;
 
 /**
