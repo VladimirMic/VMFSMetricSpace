@@ -40,7 +40,7 @@ public class FSDatasetInstances {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 128;
+            return 256;
         }
 
         @Override
@@ -63,7 +63,7 @@ public class FSDatasetInstances {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 128;
+            return 256;
         }
 
         @Override

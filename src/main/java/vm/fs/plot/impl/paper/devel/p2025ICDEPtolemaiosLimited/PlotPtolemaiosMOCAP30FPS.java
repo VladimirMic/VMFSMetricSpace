@@ -17,8 +17,14 @@ import vm.plot.impl.BoxPlotXValuesPlotter;
  */
 public class PlotPtolemaiosMOCAP30FPS extends FSAbstractPlotterFromResults {
 
+    private int pivotCount;
+
     public PlotPtolemaiosMOCAP30FPS(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
+    }
+
+    public void setPivotCount(int pivotCount) {
+        this.pivotCount = pivotCount;
     }
 
     @Override
@@ -37,12 +43,12 @@ public class PlotPtolemaiosMOCAP30FPS extends FSAbstractPlotterFromResults {
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2025_05_64_pivots_30NN_triangle_inequality",
-                "2025_05_64_pivots_30NN_data-dependent_metric_filtering",
-                "2025_05_64_pivots_30NN_FourPointBasedFiltering",
-                "2025_05_64_pivots_30NN_ptolemaios_randomPivots_64LB_random_pivots",
-                "2025_05_64_pivots_30NN_ptolemaios_64LB",
-                "2025_05_64_pivots_30NN_data-dependent_ptolemaic_filtering_64LB",
+                "2025_05_" + pivotCount + "_pivots_30NN_triangle_inequality",
+                "2025_05_" + pivotCount + "_pivots_30NN_data-dependent_metric_filtering",
+                "2025_05_" + pivotCount + "_pivots_30NN_FourPointBasedFiltering",
+                "2025_05_" + pivotCount + "_pivots_30NN_ptolemaios_randomPivots_" + pivotCount + "LB_random_pivots",
+                "2025_05_" + pivotCount + "_pivots_30NN_ptolemaios_" + pivotCount + "LB",
+                "2025_05_" + pivotCount + "_pivots_30NN_data-dependent_ptolemaic_filtering_" + pivotCount + "LB",
                 "ground_truth"
         );
     }
@@ -104,6 +110,5 @@ public class PlotPtolemaiosMOCAP30FPS extends FSAbstractPlotterFromResults {
             StandardColours.COLOUR_NAME.C5_VIOLET,
             StandardColours.COLOUR_NAME.CX_BLACK};
     }
-
 
 }
