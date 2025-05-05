@@ -41,7 +41,7 @@ import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
-    private static final Integer QUERIES_COUNT = 50;
+    private static final Integer QUERIES_COUNT = -1;
 
     public static void main(String[] args) {
         vm.javatools.Tools.setSleepDuringTheNight(true);
@@ -116,10 +116,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         initPODists(dataset, pivotCount, maxObjectsCount, pivots);
 
-        List queries = dataset.getQueryObjects(1000);
-        if (QUERIES_COUNT > 0) {
-            queries = queries.subList(0, QUERIES_COUNT);
-        }
+        List queries = dataset.getQueryObjects(QUERIES_COUNT);
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
