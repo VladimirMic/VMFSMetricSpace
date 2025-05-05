@@ -28,7 +28,7 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  */
 public class FSPrepareNewDatasetForPivotFilterings {
 
-    private static Boolean skipEverythingEvaluated = true;
+    private static Boolean skipEverythingEvaluated = false;
 
     public static void setSkipEverythingEvaluated(Boolean skipEverythingEvaluated) {
         FSPrepareNewDatasetForPivotFilterings.skipEverythingEvaluated = skipEverythingEvaluated;
@@ -93,20 +93,21 @@ public class FSPrepareNewDatasetForPivotFilterings {
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {
-        precomputeDatasetSize(dataset);
+//        precomputeDatasetSize(dataset);
         Dataset origDataset = dataset;
-        if (dataset instanceof DatasetOfCandidates) {
-            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
-            plotDistanceDensity(origDataset);
-        }
-        plotDistanceDensity(dataset);
-        selectRandomPivotsAndQueryObjects(origDataset);
+//        if (dataset instanceof DatasetOfCandidates) {
+//            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
+//            plotDistanceDensity(origDataset);
+//        } else {
+//            plotDistanceDensity(dataset);
+//        }
+//        selectRandomPivotsAndQueryObjects(origDataset);
         evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
-        evaluateSampleOfSmallestDistances(dataset);
-        precomputeObjectToPivotDists(origDataset);
-        createKeyValueStorageForBigDataset(origDataset);
-        learnDataDependentMetricFiltering(dataset);
-        learnDataDependentPtolemaicFiltering(dataset);
+//        evaluateSampleOfSmallestDistances(dataset);
+//        precomputeObjectToPivotDists(origDataset);
+//        createKeyValueStorageForBigDataset(origDataset);
+//        learnDataDependentMetricFiltering(dataset);
+//        learnDataDependentPtolemaicFiltering(dataset);
         evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
     }
 

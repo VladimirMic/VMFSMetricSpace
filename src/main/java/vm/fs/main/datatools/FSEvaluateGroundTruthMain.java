@@ -87,19 +87,16 @@ public class FSEvaluateGroundTruthMain {
 
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
 
-        List<Object> queryObjects = dataset.getQueryObjects(1000);
-//        if (k == GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES) {
-//            queryObjects = queryObjects.subList(0, 20);
-//        }
+        List<Object> queryObjects = dataset.getQueryObjects();
         GroundTruthEvaluator gte = new GroundTruthEvaluator(dataset, k, Float.MAX_VALUE, queryObjects.size());
         TreeSet[] results;
         if (dataset instanceof DatasetOfCandidates) {
             results = gte.evaluateIteratorsSequentiallyForEachQuery(dataset, queryObjects, k);
         } else {
-            if (k == GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH) {
-                results = gte.evaluateIteratorInParallel(dataset.getMetricObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());
+            if (k == GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES) {
+                results = gte.evaluateIteratorSequentially(dataset);
             } else {
-                results = gte.evaluateIteratorSequentially(dataset.getMetricObjectsFromDataset(), datasetName, dataset.getQuerySetName());
+                results = gte.evaluateIteratorInParallel(dataset.getMetricObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());
             }
         }
         LOG.log(Level.INFO, "Storing statistics of queries");
