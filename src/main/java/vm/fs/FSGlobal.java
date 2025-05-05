@@ -20,7 +20,7 @@ public class FSGlobal {
         try {
             Object[] options = new String[]{"Yes", "No"};
             int banOverloadingFiles = JOptionPane.showOptionDialog(null, question, "Ask when overriding?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
-            answer = banOverloadingFiles == 1;
+            answer = banOverloadingFiles != 1;
         } catch (Exception e) {
         }
         ASK_WHEN_GOING_TO_OVERRIDE_FILE = answer;
