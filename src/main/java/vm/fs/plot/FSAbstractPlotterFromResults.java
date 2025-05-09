@@ -24,8 +24,8 @@ import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl.QUERY_STATS;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotXValuesPlotter;
-import vm.plot.impl.BoxPlotXCategoryPlotter;
+import vm.plot.impl.BoxPlotXCategoriesPlotter;
+import vm.plot.impl.BoxPlotXNumbersPlotter;
 
 /**
  *
@@ -58,8 +58,8 @@ public abstract class FSAbstractPlotterFromResults {
     }
 
     private void check() {
-        if (plotter instanceof BoxPlotXValuesPlotter && Tools.isParseableToFloats(xTicks)) {
-            plotter = new BoxPlotXCategoryPlotter();
+        if (plotter instanceof BoxPlotXCategoriesPlotter && Tools.isParseableToFloats(xTicks)) {
+            plotter = new BoxPlotXNumbersPlotter();
         }
         if (colourIndexesForTraces != null && colourIndexesForTraces.length < folderNames.length) {
             throw new IllegalArgumentException("Incosistent specification of colours and folders. The counts do not match. Colours: " + colourIndexesForTraces.length + ", folders: " + folderNames.length);

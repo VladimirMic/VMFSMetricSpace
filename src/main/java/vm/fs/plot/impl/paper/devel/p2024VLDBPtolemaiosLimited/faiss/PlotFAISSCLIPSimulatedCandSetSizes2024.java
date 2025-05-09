@@ -9,7 +9,7 @@ import vm.fs.main.queryResults.recallEvaluation.FSEvaluateRecallsOfApproximateDa
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotXValuesPlotter;
+import vm.plot.impl.BoxPlotXCategoriesPlotter;
 
 /**
  *
@@ -83,7 +83,7 @@ public class PlotFAISSCLIPSimulatedCandSetSizes2024 extends FSAbstractPlotterFro
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotXValuesPlotter();
+        return new BoxPlotXCategoriesPlotter();
     }
 
     @Override

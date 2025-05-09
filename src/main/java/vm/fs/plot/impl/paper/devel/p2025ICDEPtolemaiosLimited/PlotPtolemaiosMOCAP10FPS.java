@@ -9,7 +9,7 @@ import vm.fs.plot.FSAbstractPlotterFromResults;
 import static vm.fs.plot.FSAbstractPlotterFromResults.strings;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotXValuesPlotter;
+import vm.plot.impl.BoxPlotXCategoriesPlotter;
 
 /**
  *
@@ -77,7 +77,7 @@ public class PlotPtolemaiosMOCAP10FPS extends FSAbstractPlotterFromResults {
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotXValuesPlotter();
+        return new BoxPlotXCategoriesPlotter();
     }
 
     @Override

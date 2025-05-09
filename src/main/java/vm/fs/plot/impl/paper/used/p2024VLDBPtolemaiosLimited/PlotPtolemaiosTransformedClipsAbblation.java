@@ -8,7 +8,7 @@ import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotXValuesPlotter;
+import vm.plot.impl.BoxPlotXCategoriesPlotter;
 
 /**
  *
@@ -98,7 +98,7 @@ public class PlotPtolemaiosTransformedClipsAbblation extends FSAbstractPlotterFr
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotXValuesPlotter();
+        return new BoxPlotXCategoriesPlotter();
     }
 
     @Override

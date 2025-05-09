@@ -13,7 +13,7 @@ import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl.QUERY_STATS;
 import vm.metricSpace.Dataset;
 import vm.plot.AbstractPlotter;
-import vm.plot.impl.BoxPlotXValuesPlotter;
+import vm.plot.impl.BoxPlotXCategoriesPlotter;
 
 /**
  *
@@ -85,7 +85,7 @@ public class VLDBPlotter extends FSAbstractPlotterFromResults {
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotXValuesPlotter();
+        return new BoxPlotXCategoriesPlotter();
     }
 
     @Override
