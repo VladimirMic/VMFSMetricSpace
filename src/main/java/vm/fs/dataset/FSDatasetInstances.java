@@ -11,6 +11,7 @@ import vm.fs.metricSpaceImpl.parsersOfOtherFormats.FSPDBeStorage;
 import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
 import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.fs.metricSpaceImpl.VMMVStorage;
+import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSLayersKasperStorage;
 import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMocapJanStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.metricSpace.AbstractMetricSpacesStorage;
@@ -31,6 +32,27 @@ public class FSDatasetInstances {
 
     public static final Dataset MOCAP10FPS_ORIG_ALL = FSMocapJanStorage.createInstanceOfOriginalDataset(FSMocapJanStorage.DATASET_NAME_10FPS);
     public static final Dataset MOCAP30FPS_ORIG_ALL = FSMocapJanStorage.createInstanceOfOriginalDataset(FSMocapJanStorage.DATASET_NAME_30FPS);
+
+    public static class Kasper extends FSFloatVectorDataset {
+
+        private final FSLayersKasperStorage.DIMENSIONALITY dim;
+
+        public Kasper(FSLayersKasperStorage.DIMENSIONALITY dim) {
+            super(FSLayersKasperStorage.TYPE.LARGE2_gr_flake_full_h5 + "_" + dim);
+            this.dim = dim;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
+
+    }
 
     public static class MOCAP10FPS extends FSGenericDataset<List<float[][]>> {
 
