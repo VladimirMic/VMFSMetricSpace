@@ -13,6 +13,7 @@ import vm.javatools.Tools;
 public class FSGlobal {
 
     public static final boolean ASK_WHEN_GOING_TO_OVERRIDE_FILE;
+    private static final Logger LOG;
 
     static {
         String question = "Should I ask when going to rewrite existing file?";
@@ -24,6 +25,8 @@ public class FSGlobal {
         } catch (Exception e) {
         }
         ASK_WHEN_GOING_TO_OVERRIDE_FILE = answer;
+        LOG = Logger.getLogger(FSGlobal.class.getName());
+        LOG.log(Level.INFO, "Will ask when rewritting a file? {0}", ASK_WHEN_GOING_TO_OVERRIDE_FILE);
     }
     /**
      * N drive is the tertiary storage with slow reading. If dataset is stored
@@ -94,8 +97,6 @@ public class FSGlobal {
     public static final String FOLDER_PLOTS = ROOT + "Plots\\";
     public static final String FOLDER_DATA_FOR_PLOTS = FOLDER_PLOTS + "Data\\";
     public static final String DIST_DISTRIBUTION_PLOTS_FOLDER = DATA_FOLDER + "DD_Plots\\";
-
-    private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
     public static final File checkFileExistence(File file, boolean willBeDeleted) {
         Object[] options = new String[]{"Yes", "No"};

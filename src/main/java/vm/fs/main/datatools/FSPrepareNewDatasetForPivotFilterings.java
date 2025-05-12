@@ -28,7 +28,7 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  */
 public class FSPrepareNewDatasetForPivotFilterings {
 
-    private static Boolean skipEverythingEvaluated = false;
+    private static Boolean skipEverythingEvaluated = true;
 
     public static void setSkipEverythingEvaluated(Boolean skipEverythingEvaluated) {
         FSPrepareNewDatasetForPivotFilterings.skipEverythingEvaluated = skipEverythingEvaluated;
@@ -93,21 +93,21 @@ public class FSPrepareNewDatasetForPivotFilterings {
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {
-//        precomputeDatasetSize(dataset);
+        precomputeDatasetSize(dataset);
         Dataset origDataset = dataset;
-//        if (dataset instanceof DatasetOfCandidates) {
-//            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
-//            plotDistanceDensity(origDataset);
-//        } else {
-//            plotDistanceDensity(dataset);
-//        }
-//        selectRandomPivotsAndQueryObjects(origDataset);
+        if (dataset instanceof DatasetOfCandidates) {
+            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
+            plotDistanceDensity(origDataset);
+        } else {
+            plotDistanceDensity(dataset);
+        }
+        selectRandomPivotsAndQueryObjects(origDataset);
         evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
-//        evaluateSampleOfSmallestDistances(dataset);
-//        precomputeObjectToPivotDists(origDataset);
-//        createKeyValueStorageForBigDataset(origDataset);
-//        learnDataDependentMetricFiltering(dataset);
-//        learnDataDependentPtolemaicFiltering(dataset);
+        evaluateSampleOfSmallestDistances(dataset);
+        precomputeObjectToPivotDists(origDataset);
+        createKeyValueStorageForBigDataset(origDataset);
+        learnDataDependentMetricFiltering(dataset);
+        learnDataDependentPtolemaicFiltering(dataset);
         evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
     }
 
@@ -165,7 +165,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
             FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.run(dataset);
         } else {
             LOG.log(Level.INFO, "Dataset: {0}, pivots already preselected", datasetName);
-            List queryObjects = dataset.getQueryObjects();
+            List queryObjects = dataset.getQueryObjects(1);
             boolean existsQueries = queryObjects != null && !queryObjects.isEmpty();
             if (!existsQueries) {
                 LOG.log(Level.INFO, "Dataset: {0}, trying to select queries", datasetName);
@@ -207,7 +207,6 @@ public class FSPrepareNewDatasetForPivotFilterings {
             LOG.log(Level.WARNING, "Dists to pivots already evaluated for dataset {0}", datasetName);
             prohibited = askForRewriting("Dists to pivots", dataset);
         }
-        int datasetSize = dataset.getPrecomputedDatasetSize();
         if (!prohibited && dataset.shouldStoreDistsToPivots()) {
             LOG.log(Level.INFO, "Dataset: {0}, evaluating objects to pivot distances", datasetName);
             FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, dataset.getRecommendedNumberOfPivotsForFiltering());
