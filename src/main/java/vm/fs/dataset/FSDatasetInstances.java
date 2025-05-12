@@ -57,12 +57,12 @@ public class FSDatasetInstances {
     public static class MOCAP10FPS extends FSGenericDataset<List<float[][]>> {
 
         public MOCAP10FPS() {
-            super("actions-single-subject-all-POS.data_selected.txt", SingularisedConvertors.MOCAP_SPACE);
+            super("actions-single-subject-all-POS-fps10.data_selected.txt", SingularisedConvertors.MOCAP_SPACE);
         }
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 64;
+            return 128;
         }
 
         @Override
@@ -80,12 +80,12 @@ public class FSDatasetInstances {
     public static class MOCAP30FPS extends FSGenericDataset<List<float[][]>> {
 
         public MOCAP30FPS() {
-            super("actions-single-subject-all-POS-fps10.data_selected.txt", SingularisedConvertors.MOCAP_SPACE);
+            super("actions-single-subject-all-POS.data_selected.txt", SingularisedConvertors.MOCAP_SPACE);
         }
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
-            return 64;
+            return 128;
         }
 
         @Override
