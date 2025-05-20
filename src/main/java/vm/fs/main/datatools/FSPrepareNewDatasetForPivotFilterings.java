@@ -39,10 +39,11 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new FSDatasetInstances.MOCAP10FPS(),
-            new FSDatasetInstances.MOCAP30FPS()
+            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
+            new FSDatasetInstances.LAION_100M_PCA256Dataset()
+//            new FSDatasetInstances.MOCAP10FPS(),
+//            new FSDatasetInstances.MOCAP30FPS()
 //            FSLayersKasperStorage.createDataset(FSLayersKasperStorage.TYPE_0_small, FSLayersKasperStorage.DIMENSION_0_small)
-//            FSSpectraPhilipStorage.createDataset()
 //            new FSDatasetInstances.DeCAF20M_PCA256Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),

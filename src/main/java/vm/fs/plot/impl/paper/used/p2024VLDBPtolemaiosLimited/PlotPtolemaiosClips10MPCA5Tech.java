@@ -12,9 +12,9 @@ import vm.search.algorithm.SearchingAlgorithm;
  *
  * @author au734419
  */
-public class PlotPtolemaiosTransformedClips5Tech extends PlotPtolemaiosRandomData5Tech40_100Recall {
+public class PlotPtolemaiosClips10MPCA5Tech extends PlotPtolemaiosRandomData5Tech40_100Recall {
 
-    public PlotPtolemaiosTransformedClips5Tech(boolean plotOnlyPDF) {
+    public PlotPtolemaiosClips10MPCA5Tech(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
 

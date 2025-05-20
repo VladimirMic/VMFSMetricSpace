@@ -103,6 +103,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
             run(dataset, filter, pivots, k);
         }
+        // due to caching, first filter is evaluated again
         if (dataset instanceof DatasetOfCandidates) {
             Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filters[0].getTechFullName());
             run(dataset, filters[0], pivots, k);
@@ -122,7 +123,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
-        int repetitions = dataset instanceof DatasetOfCandidates ? 1 : 2;
+        int repetitions = SearchingAlgorithm.getNumberOfRepetitionsDueToCaching(dataset);
         evalAndStore(dataset, queries, k, metricSpace, filter, pivots, df, pivotPivotDists, repetitions);
     }
 

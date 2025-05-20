@@ -1271,8 +1271,17 @@ public class FSDatasetInstances {
 
         @Override
         public boolean shouldCreateKeyValueStorage() {
-            return true;
+            return false;
         }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
+            return 128;
+        }
+
     }
 
     public static class LAION_100M_PCA256Dataset extends FSFloatVectorDataset {
@@ -1970,7 +1979,7 @@ public class FSDatasetInstances {
                         storage = new VMMVStorage(datasetName, false);
                         ((FSMetricSpacesStorage) metricSpacesStorage).setSingularizatorOfDiskStorage(storage);
                     } catch (Exception e) {
-                        return ToolsMetricDomain.getMetricObjectsAsIdDataMap(metricSpace, getMetricObjectsFromDataset());
+                        return ToolsMetricDomain.getMetricObjectsAsIdDataMap(this);
                     }
                 }
                 return storage.getKeyValueStorage();
@@ -2093,7 +2102,7 @@ public class FSDatasetInstances {
 
         @Override
         public Map<Comparable, long[]> getKeyValueStorage() {
-            return ToolsMetricDomain.getMetricObjectsAsIdDataMap(metricSpace, getMetricObjectsFromDataset());
+            return ToolsMetricDomain.getMetricObjectsAsIdDataMap(this);
         }
 
         @Override

@@ -61,7 +61,7 @@ public class FSMocapJanStorage extends AbstractFSMetricSpacesStorageWithOthersDa
             @Override
             public Map<Comparable, List<float[][]>> getKeyValueStorage() {
                 Iterator<Object> it = storage.getObjectsFromDataset(datasetName, -1);
-                Map<Comparable, List<float[][]>> ret = ToolsMetricDomain.getMetricObjectsAsIdDataMap(metricSpace, it);
+                Map<Comparable, List<float[][]>> ret = ToolsMetricDomain.getMetricObjectsAsIdDataMap(this);
                 return ret;
             }
 
