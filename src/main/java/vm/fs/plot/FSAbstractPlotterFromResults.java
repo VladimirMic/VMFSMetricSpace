@@ -228,10 +228,11 @@ public abstract class FSAbstractPlotterFromResults {
 
     private void makePlotsForQueryStats(QUERY_STATS key, Map<QUERY_STATS, List<Float>[][]> dataForStats, AbstractPlotter plotter, String yAxisLabel) {
         List<Float>[][] values = dataForStats.get(key);
+        String path = getResultFullNameWithDate(key);
         if (isEmpty(values)) {
+            LOG.log(Level.WARNING, "NO VALUES FOR KEY {0} AND PATH {1}", new Object[]{key, path});
             return;
         }
-        String path = getResultFullNameWithDate(key);
         LOG.log(Level.INFO, "Path for future plot: {0}", path);
         String xAxisLabel = getXAxisLabel();
         JFreeChart plot = plotter.createPlot("", xAxisLabel, yAxisLabel, getDisplayedNamesOfTracesThatMatchesFolders(), colourIndexesForTraces, xTicks, values);

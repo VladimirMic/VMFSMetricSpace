@@ -40,7 +40,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         boolean publicQueries = true;
         Dataset[] datasets = {
             new FSDatasetInstances.LAION_30M_PCA256Dataset(),
-            new FSDatasetInstances.LAION_100M_PCA256Dataset()
+//            new FSDatasetInstances.LAION_100M_PCA256Dataset()
 //            new FSDatasetInstances.MOCAP10FPS(),
 //            new FSDatasetInstances.MOCAP30FPS()
 //            FSLayersKasperStorage.createDataset(FSLayersKasperStorage.TYPE_0_small, FSLayersKasperStorage.DIMENSION_0_small)

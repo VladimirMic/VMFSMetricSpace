@@ -41,7 +41,7 @@ import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
-    private static final Integer QUERIES_COUNT = -1;
+    private static final Integer QUERIES_COUNT = 1000;
 
     public static void main(String[] args) {
         vm.javatools.Tools.setSleepDuringTheNight(true);
@@ -118,8 +118,14 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         DistanceFunctionInterface df = dataset.getDistanceFunction();
 
         initPODists(dataset, pivotCount, maxObjectsCount, pivots);
-
-        List queries = dataset.getQueryObjects(QUERIES_COUNT);
+        int qCount;
+        String datasetName = dataset.getDatasetName();
+        if (datasetName.contains("actions-single-subject-all-POS")) {
+            qCount = -1;
+        } else {
+            qCount = QUERIES_COUNT;
+        }
+        List queries = dataset.getQueryObjects(qCount);
 
         float[][] pivotPivotDists = metricSpace.getDistanceMap(df, pivots, pivots);
 
@@ -210,8 +216,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-            metricFiltering,
-            dataDependentMetricFiltering,
+//            metricFiltering,
+//            dataDependentMetricFiltering,
             fourPointPropertyBased,
             ptolemaicFilteringRandomPivots,
             ptolemaicFiltering,

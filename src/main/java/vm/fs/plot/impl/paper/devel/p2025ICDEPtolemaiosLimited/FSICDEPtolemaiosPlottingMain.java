@@ -16,12 +16,12 @@ public class FSICDEPtolemaiosPlottingMain {
     public static final FSAbstractPlotterFromResults Y2025_PlotPtolemaiosTransformedClips5Tech = new PlotPtolemaiosClips30MPCA5Tech(PLOT_ONLY_PDF);
 
     public static void main(String[] args) {
-        int[] pivots = new int[]{128};
-        for (int pivot : pivots) {
-            PlotPtolemaiosMOCAP10FPS.setPivotCount(pivot);
-            new PlotPtolemaiosMOCAP10FPS(PLOT_ONLY_PDF).makePlots();
-            new PlotPtolemaiosMOCAP30FPS(PLOT_ONLY_PDF).makePlots();
-        }
+//        int[] pivots = new int[]{128};
+//        for (int pivot : pivots) {
+//            PlotPtolemaiosMOCAP10FPS.setPivotCount(pivot);
+//            new PlotPtolemaiosMOCAP10FPS(PLOT_ONLY_PDF).makePlots();
+//            new PlotPtolemaiosMOCAP30FPS(PLOT_ONLY_PDF).makePlots();
+//        }
         Y2025_PlotPtolemaiosTransformedClips5Tech.makePlots();
 
     }
