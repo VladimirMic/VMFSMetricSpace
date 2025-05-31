@@ -51,8 +51,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstances.MOCAP30FPS()
             //            new FSDatasetInstances.DeCAFDataset(),
             //                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
-            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
-            new FSDatasetInstances.LAION_100M_PCA256Dataset()
+//            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
+//            new FSDatasetInstances.LAION_100M_PCA256Dataset()
 //            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
         //            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
@@ -218,9 +218,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         return new BoundsOnDistanceEstimation[]{
 //            metricFiltering,
 //            dataDependentMetricFiltering,
-            fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering,
+//            fourPointPropertyBased,
+//            ptolemaicFilteringRandomPivots,
+//            ptolemaicFiltering,
             dataDependentPtolemaicFiltering
         };
     }
