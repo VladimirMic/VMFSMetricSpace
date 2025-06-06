@@ -1,3 +1,5 @@
+package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.descriptors;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -5,8 +7,6 @@
 
 
 import vm.fs.plot.FSAbstractPlotterFromResults;
-import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.descriptors.PlotPtolemaiosClipDistFunc128P;
-import vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.descriptors.PlotPtolemaiosClipDistFunc64P;
 
 /**
  *
