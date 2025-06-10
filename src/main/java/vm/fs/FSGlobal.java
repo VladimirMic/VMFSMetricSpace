@@ -13,6 +13,7 @@ import vm.javatools.Tools;
 public class FSGlobal {
 
     public static final boolean ASK_WHEN_GOING_TO_OVERRIDE_FILE;
+    public static final boolean SLEEP_MY_COMP = false;
     private static final Logger LOG;
 
     static {
@@ -49,7 +50,7 @@ public class FSGlobal {
             File f = new File(path);
             if (f.exists()) {
                 String env = System.getenv("USERDOMAIN");
-                if (env != null) {
+                if (env != null && SLEEP_MY_COMP) {
                     Tools.setSleepDuringTheNight(env.equals("VLADUV-POCITAC"));
                 }
                 return path;

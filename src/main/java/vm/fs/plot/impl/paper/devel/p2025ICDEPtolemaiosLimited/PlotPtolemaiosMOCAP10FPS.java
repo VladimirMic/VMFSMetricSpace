@@ -18,6 +18,7 @@ import vm.plot.impl.BoxPlotXCategoriesPlotter;
 public class PlotPtolemaiosMOCAP10FPS extends FSAbstractPlotterFromResults {
 
     protected static int pivotCount;
+    protected static String month  = "06";
 
     public PlotPtolemaiosMOCAP10FPS(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
@@ -43,12 +44,12 @@ public class PlotPtolemaiosMOCAP10FPS extends FSAbstractPlotterFromResults {
     @Override
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
-                "2025_05_" + pivotCount + "_pivots_30NN_triangle_inequality",
-                "2025_05_" + pivotCount + "_pivots_30NN_data-dependent_metric_filtering",
-                "2025_05_" + pivotCount + "_pivots_30NN_FourPointBasedFiltering",
-                "2025_05_" + pivotCount + "_pivots_30NN_ptolemaios_randomPivots_" + pivotCount + "LB_random_pivots",
-                "2025_05_" + pivotCount + "_pivots_30NN_ptolemaios_" + pivotCount + "LB",
-                "2025_05_" + pivotCount + "_pivots_30NN_data-dependent_ptolemaic_filtering_" + pivotCount + "LB",
+                "2025_" + month + "_" + pivotCount + "_pivots_30NN_triangle_inequality",
+                "2025_" + month + "_" + pivotCount + "_pivots_30NN_data-dependent_metric_filtering",
+                "2025_" + month + "_" + pivotCount + "_pivots_30NN_FourPointBasedFiltering",
+                "2025_" + month + "_" + pivotCount + "_pivots_30NN_ptolemaios_randomPivots_" + pivotCount + "LB_random_pivots",
+                "2025_" + month + "_" + pivotCount + "_pivots_30NN_ptolemaios_" + pivotCount + "LB",
+                "2025_" + month + "_" + pivotCount + "_pivots_30NN_data-dependent_ptolemaic_filtering_" + pivotCount + "LB",
                 "ground_truth"
         );
     }

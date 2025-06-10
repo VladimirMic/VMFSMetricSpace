@@ -71,8 +71,8 @@ public class PlotPtolemaiosClips30MPCA5Tech extends PlotPtolemaiosClips10MPCA5Te
     public String getFolderForPlots() {
         return FSPlotFolders.Y2025_PTOLEMAIOS_LIMITED;
     }
-    
-        @Override
+
+    @Override
     protected StandardColours.COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
         return new StandardColours.COLOUR_NAME[]{
             StandardColours.COLOUR_NAME.C1_BLUE,
@@ -84,6 +84,5 @@ public class PlotPtolemaiosClips30MPCA5Tech extends PlotPtolemaiosClips10MPCA5Te
             StandardColours.COLOUR_NAME.CX_BLACK
         };
     }
-
 
 }

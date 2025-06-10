@@ -47,9 +47,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         vm.javatools.Tools.setSleepDuringTheNight(true);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstances.MOCAP10FPS(),
-            new FSDatasetInstances.MOCAP30FPS()
-        //            new FSDatasetInstances.DeCAFDataset(),
+            //            new FSDatasetInstances.MOCAP10FPS(),
+            //            new FSDatasetInstances.MOCAP30FPS()
+            new FSDatasetInstances.DeCAFDataset()
         //                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
 //            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
 //            new FSDatasetInstances.LAION_100M_PCA256Dataset()
@@ -216,7 +216,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 pivotCount
         );
         return new BoundsOnDistanceEstimation[]{
-//            metricFiltering,
+            metricFiltering,
             dataDependentMetricFiltering,
             fourPointPropertyBased,
             ptolemaicFilteringRandomPivots,

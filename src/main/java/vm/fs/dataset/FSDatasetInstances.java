@@ -155,7 +155,7 @@ public class FSDatasetInstances {
             if (FORCED_PIVOT_COUNT > 0) {
                 return FORCED_PIVOT_COUNT;
             }
-            return 256;
+            return 128;
         }
 
         @Override
