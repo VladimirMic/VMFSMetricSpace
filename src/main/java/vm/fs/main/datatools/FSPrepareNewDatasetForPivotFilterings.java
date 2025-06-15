@@ -45,7 +45,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
 //            new FSDatasetInstances.MOCAP30FPS()
 //            FSLayersKasperStorage.createDataset(FSLayersKasperStorage.TYPE_0_small, FSLayersKasperStorage.DIMENSION_0_small)
 //            new FSDatasetInstances.DeCAF20M_PCA256Dataset(),
-            new FSDatasetInstances.DeCAFDataset(),
+            new FSDatasetInstances.DeCAFDataset()
 //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),

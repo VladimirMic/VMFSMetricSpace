@@ -62,6 +62,9 @@ public class FSDatasetInstances {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 64;
         }
 
@@ -85,6 +88,9 @@ public class FSDatasetInstances {
 
         @Override
         public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
             return 64;
         }
 

@@ -1,8 +1,10 @@
+package vm.fs.plot.impl.paper.used.p2025ICDEPtolemaiosLimited;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.plot.impl.paper.devel.p2025ICDEPtolemaiosLimited;
+
 
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
@@ -18,7 +20,7 @@ import vm.plot.impl.BoxPlotXCategoriesPlotter;
 public class PlotPtolemaiosMOCAP10FPS extends FSAbstractPlotterFromResults {
 
     protected static int pivotCount;
-    protected static String month  = "06";
+    protected static String month = "06";
 
     public PlotPtolemaiosMOCAP10FPS(boolean plotOnlyPDF) {
         super(plotOnlyPDF);

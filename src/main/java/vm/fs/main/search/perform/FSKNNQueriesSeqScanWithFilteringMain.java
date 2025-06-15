@@ -41,19 +41,19 @@ import vm.search.algorithm.impl.KNNSearchWithPtolemaicFiltering;
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
-    private static final Integer QUERIES_COUNT = 1000;
+    private static final Integer QUERIES_COUNT = -1;
 
     public static void main(String[] args) {
-        vm.javatools.Tools.setSleepDuringTheNight(true);
         boolean publicQueries = true;
-        Dataset[] datasets = new Dataset[]{
-            //            new FSDatasetInstances.MOCAP10FPS(),
-            //            new FSDatasetInstances.MOCAP30FPS()
-            new FSDatasetInstances.DeCAFDataset()
+        Dataset[] datasets = new Dataset[]{ 
+//            new FSDatasetInstances.DeCAF(),
+//            new FSDatasetInstances.MOCAP10FPS(),
+        //            new FSDatasetInstances.MOCAP30FPS(),
+        //            new FSDatasetInstances.DeCAFDataset()
         //                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
-//            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
-//            new FSDatasetInstances.LAION_100M_PCA256Dataset()
-//            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
+        //            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
+        //            new FSDatasetInstances.LAION_100M_PCA256Dataset()
+        //            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
         //            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
         //            new FSDatasetInstanceSingularizator.DeCAFDataset(),

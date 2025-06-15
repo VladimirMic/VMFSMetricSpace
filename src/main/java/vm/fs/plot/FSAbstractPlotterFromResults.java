@@ -169,7 +169,7 @@ public abstract class FSAbstractPlotterFromResults {
         return ret;
     }
 
-    private Map<QUERY_STATS, List<Float>[][]> loadStatsFromFileAsListOfXYValues(List<File> files, int groupsCount, int boxplotsCount) {
+    public Map<QUERY_STATS, List<Float>[][]> loadStatsFromFileAsListOfXYValues(List<File> files, int groupsCount, int boxplotsCount) {
         QUERY_STATS[] statsToPrint = getStatsToPrint();
 
         Map<QUERY_STATS, List<Float>[][]> ret = initRet(groupsCount, boxplotsCount, statsToPrint);
