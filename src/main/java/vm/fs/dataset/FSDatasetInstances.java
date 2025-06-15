@@ -1,6 +1,7 @@
 package vm.fs.dataset;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import vm.metricSpace.DatasetOfCandidates;
 import java.util.Map;
@@ -161,7 +162,7 @@ public class FSDatasetInstances {
             if (FORCED_PIVOT_COUNT > 0) {
                 return FORCED_PIVOT_COUNT;
             }
-            return 128;
+            return 32;
         }
 
         @Override
@@ -209,9 +210,9 @@ public class FSDatasetInstances {
         }
     }
 
-    public static class DeCAF100M_Dataset extends FSFloatVectorDataset {
+    public static class Yahoo100M_Dataset extends FSFloatVectorDataset {
 
-        public DeCAF100M_Dataset() {
+        public Yahoo100M_Dataset() {
             super("decaf_100m");
         }
 
@@ -231,6 +232,55 @@ public class FSDatasetInstances {
         @Override
         public boolean shouldCreateKeyValueStorage() {
             return true;
+        }
+    }
+
+    public static class Yahoo100M_1MSubset_Dataset extends FSFloatVectorDataset {
+
+        public Yahoo100M_1MSubset_Dataset() {
+            super("decaf_100m_1m_subset");
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
+            return 64;
+        }
+
+        @Override
+        public boolean shouldStoreDistsToPivots() {
+            return true;
+        }
+
+        @Override
+        public boolean shouldCreateKeyValueStorage() {
+            return true;
+        }
+
+        @Override
+        public Iterator<Object> getMetricObjectsFromDataset(Object... params) {
+            int maxCount = 1000000;
+            if (params.length > 0) {
+                int value = Integer.parseInt(params[0].toString());
+                if (value > 0) {
+                    maxCount = value;
+                }
+            }
+            return metricSpacesStorage.getObjectsFromDataset(datasetName, maxCount);
+        }
+
+        @Override
+        public Iterator<Object> getMetricObjectsFromDatasetKeyValueStorage(Object... params) {
+            int maxCount = 1000000;
+            if (params.length > 0) {
+                int value = Integer.parseInt(params[0].toString());
+                if (value > 0) {
+                    maxCount = value;
+                }
+            }
+            return new Dataset.IteratorOfMetricObjectsMadeOfKeyValueMap(maxCount);
         }
     }
 
@@ -1937,7 +1987,7 @@ public class FSDatasetInstances {
     public static class Faiss_DeCAF_100M_Candidates extends FSDatasetOfCandidates<float[]> {
 
         public Faiss_DeCAF_100M_Candidates() {
-            super(new FSDatasetInstances.DeCAF100M_Dataset(),
+            super(new FSDatasetInstances.Yahoo100M_Dataset(),
                     "Faiss_DeCAF_100M_Candidates",
                     new FSNearestNeighboursStorageImpl(),
                     "faiss-100M_DeCAF-IVFPQ-tr1000000-cc262144-m32-nbits8-qc-1000-k100000",
