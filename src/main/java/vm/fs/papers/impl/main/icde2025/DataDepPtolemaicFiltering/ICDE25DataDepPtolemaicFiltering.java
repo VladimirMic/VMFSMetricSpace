@@ -1,14 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package vm.fs.plot.impl.paper.submittedcodes.vldb2024;
+package vm.fs.papers.impl.main.icde2025.DataDepPtolemaicFiltering;
 
 import java.util.List;
 import vm.fs.main.datatools.FSPrepareNewDatasetForPivotFilterings;
 import vm.fs.main.search.perform.FSKNNQueriesSeqScanWithFilteringMain;
 import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
 import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
+import vm.fs.plot.impl.paper.submittedcodes.vldb2024.ICDEPlotter;
 import vm.metricSpace.Dataset;
 import vm.metricSpace.DatasetOfCandidates;
 import vm.metricSpace.data.RandomVectorsGenerator;
@@ -24,12 +21,12 @@ import vm.search.algorithm.impl.GroundTruthEvaluator;
  *
  * @author Vlada
  */
-public class VLDB24DataDepPtolemaicFiltering {
+public class ICDE25DataDepPtolemaicFiltering {
 
     /**
      * Just for naming produces files.
      */
-    public static final String DATASET_PREFIX_NAME = "VLDB_random";
+    public static final String DATASET_PREFIX_NAME = "ICDE_random";
     /**
      * Not necessary for small dataset, useful if time-consuming.
      */
@@ -44,7 +41,7 @@ public class VLDB24DataDepPtolemaicFiltering {
 
     public static void main(String[] args) {
         // params. Feel free to modify.
-        int[] dimensionalities = {10, 40, 50, 60, 70, 80, 90, 100, 150};
+        int[] dimensionalities = {10, 40};
         // number of vectors in each dataset
         int datasetObjectCount = 1000 * 1000;
         // number of pivots used for the filterings. In current settings, it also equals the number of defined lower bounds per each distance.
@@ -61,7 +58,7 @@ public class VLDB24DataDepPtolemaicFiltering {
             learnFilterings(dataset);
             List pivots = dataset.getPivots(pivotsCount);
             FSKNNQueriesSeqScanWithFilteringMain.initPODists(dataset, pivotsCount, -1, pivots, false);
-            BoundsOnDistanceEstimation[] filters = FSKNNQueriesSeqScanWithFilteringMain.initTestedFilters("VLDB_", pivots, dataset, k);
+            BoundsOnDistanceEstimation[] filters = FSKNNQueriesSeqScanWithFilteringMain.initTestedFilters("ICDE_", pivots, dataset, k);
             FSPrepareNewDatasetForPivotFilterings.evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
             FSPrepareNewDatasetForPivotFilterings.evaluateGroundTruth(dataset, k);
             FSPrepareNewDatasetForPivotFilterings.setSkipEverythingEvaluated(false);
@@ -106,7 +103,7 @@ public class VLDB24DataDepPtolemaicFiltering {
             folders[i] = alg.getResultName();
         }
         folders[i] = "ground_truth";
-        VLDBPlotter plotter = new VLDBPlotter(k, dataset, folders);
+        ICDEPlotter plotter = new ICDEPlotter(k, dataset, folders);
         plotter.makePlots();
     }
 }

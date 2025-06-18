@@ -19,7 +19,7 @@ import vm.plot.impl.BoxPlotXCategoriesPlotter;
  *
  * @author Vlada
  */
-public class VLDBPlotter extends FSAbstractPlotterFromResults {
+public class ICDEPlotter extends FSAbstractPlotterFromResults {
 
     private final int k;
     private final int datasetSize;
@@ -27,7 +27,7 @@ public class VLDBPlotter extends FSAbstractPlotterFromResults {
     private final String datasetName;
     private final String querysetName;
 
-    public VLDBPlotter(int k, Dataset dataset, String[] folderNamesForDisplayedTraces) {
+    public ICDEPlotter(int k, Dataset dataset, String[] folderNamesForDisplayedTraces) {
         super(true, null, folderNamesForDisplayedTraces);
         this.k = k;
         this.folderNamesForDisplayedTraces = folderNamesForDisplayedTraces;
