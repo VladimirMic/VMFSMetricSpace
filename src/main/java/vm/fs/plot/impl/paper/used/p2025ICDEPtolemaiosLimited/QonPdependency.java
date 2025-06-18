@@ -42,20 +42,33 @@ public class QonPdependency {
             }
         }
         LinesOrPointsPlotter plotter = new LinesOrPointsPlotter();
-        plotter.setIncludeZeroForXAxis(false);
-        plotter.setIncludeZeroForYAxis(true);
         plotter.setXStep(16d);
+        plotter.setXBounds(16, 144);
         NumberFormat defaultFormat = NumberFormat.getPercentInstance();
-        defaultFormat.setMinimumFractionDigits(0);
+        defaultFormat.setMinimumFractionDigits(1);
         for (int i = 0; i < pToQForDatasets.length; i++) {
             Map<Float, Float> pToQForDataset = pToQForDatasets[i];
             plotter.setLabelsAndPointColours(0, filteringPower[i].values(), null);
             plotter.setColouredLabelledPointsOrBars(false);
             plotter.setNumberFormatForTraceLabel(0, defaultFormat);
+            float[] yScale = getYScale(traces[i]);
+            plotter.setYBounds(yScale[0], yScale[1]);
             JFreeChart plot = plotter.createPlot("", "Pivot count", "Min number of queries", "", StandardColours.COLOUR_NAME.C5_VIOLET, pToQForDataset);
             File file = new File(dep.getFolderForPlots(), traces[i] + "_QonP");
-            plotter.storePlotPDF(file, plot, 550, 550);
+            plotter.storePlotPDF(file, plot,600, 400);
         }
+    }
+
+    private static float[] getYScale(String datasetName) {
+        switch (datasetName) {
+            case "DeCAF":
+                return new float[]{60, 190};
+            case "PKU-MMD_10fps":
+                return new float[]{80, 360};
+            case "PKU-MMD_30fps":
+                return new float[]{60, 300};
+        }
+        return null;
     }
 
     private float getAverageFilteringPower(String trace, int pivot) {

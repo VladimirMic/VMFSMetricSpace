@@ -13,7 +13,7 @@ import vm.javatools.Tools;
 public class FSGlobal {
 
     public static Boolean askWhenGoingToOverrideFile = null;
-    public static final boolean SLEEP_MY_COMP = false;
+    public static final boolean SLEEP_MY_COMP = true;
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
     /**

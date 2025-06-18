@@ -25,7 +25,7 @@ public class FSICDEPtolemaiosPlottingMain {
             new PlotPtolemaiosMOCAP30FPS(PLOT_ONLY_PDF).makePlots();
         }
 //        Y2025_PlotPtolemaiosTransformedClips5Tech.makePlots();
-        Y2025_PlotPtolemaiosDeCAF1M.makePlots();
+//        Y2025_PlotPtolemaiosDeCAF1M.makePlots();
 
     }
 }

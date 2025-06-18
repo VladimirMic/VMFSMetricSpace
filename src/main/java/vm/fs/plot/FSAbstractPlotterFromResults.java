@@ -236,9 +236,10 @@ public abstract class FSAbstractPlotterFromResults {
         LOG.log(Level.INFO, "Path for future plot: {0}", path);
         String xAxisLabel = getXAxisLabel();
         JFreeChart plot = plotter.createPlot("", xAxisLabel, yAxisLabel, getDisplayedNamesOfTracesThatMatchesFolders(), colourIndexesForTraces, xTicks, values);
-        plotter.storePlotPDF(path, plot);
+
+        storePDF(plotter, path, plot);
         if (!plotOnlyPDF) {
-            plotter.storePlotPNG(path, plot);
+            storePNG(plotter, path, plot);
         }
     }
 
@@ -450,5 +451,13 @@ public abstract class FSAbstractPlotterFromResults {
             }
         }
         return ret;
+    }
+
+    protected void storePDF(AbstractPlotter plotter, String path, JFreeChart plot) {
+        plotter.storePlotPDF(path, plot);
+    }
+
+    protected void storePNG(AbstractPlotter plotter, String path, JFreeChart plot) {
+        plotter.storePlotPNG(path, plot);
     }
 }

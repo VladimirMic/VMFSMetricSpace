@@ -4,8 +4,7 @@ package vm.fs.plot.impl.paper.used.p2025ICDEPtolemaiosLimited;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
-
+import org.jfree.chart.JFreeChart;
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import static vm.fs.plot.FSAbstractPlotterFromResults.strings;
@@ -22,8 +21,21 @@ public class PlotPtolemaiosMOCAP10FPS extends FSAbstractPlotterFromResults {
     protected static int pivotCount;
     protected static String month = "06";
 
+    public static final int WIDTH = 535;
+    public static final int HEIGHT = 470;
+
     public PlotPtolemaiosMOCAP10FPS(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
+    }
+
+    @Override
+    protected void storePDF(AbstractPlotter plotter, String path, JFreeChart plot) {
+        plotter.storePlotPDF(path, plot, WIDTH, HEIGHT);
+    }
+
+    @Override
+    protected void storePNG(AbstractPlotter plotter, String path, JFreeChart plot) {
+        plotter.storePlotPNG(path, plot, WIDTH, HEIGHT);
     }
 
     public static void setPivotCount(int pivotCount) {
@@ -80,7 +92,9 @@ public class PlotPtolemaiosMOCAP10FPS extends FSAbstractPlotterFromResults {
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotXCategoriesPlotter();
+        AbstractPlotter ret = new BoxPlotXCategoriesPlotter();
+        ret.setShowLegend(false);
+        return ret;
     }
 
     @Override
