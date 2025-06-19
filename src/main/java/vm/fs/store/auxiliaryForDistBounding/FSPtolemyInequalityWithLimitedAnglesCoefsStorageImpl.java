@@ -11,12 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFilteringForStreamKNNClassifier;
-import vm.metricSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.ToolsSpaceDomain;
+import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
+import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFilteringForStreamKNNClassifier;
+import vm.searchSpace.distance.bounding.twopivots.storeLearned.PtolemyInequalityWithLimitedAnglesCoefsStoreInterface;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
 /**
  *
@@ -51,7 +51,7 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
         List pivots = dataset.getPivots(pivotCount);
-        List pivotIDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), dataset.getMetricSpace());
+        List pivotIDs = ToolsSpaceDomain.getIDsAsList(pivots.iterator(), dataset.getSearchSpace());
         float[][][] coefsToArrays = transformsCoefsToArrays(coefs, pivotIDs);
         return new DataDependentPtolemaicFiltering(resultPreffixName, coefsToArrays, queryDynamicPivotPairsSelection);
     }
@@ -107,10 +107,10 @@ public class FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl implements Pto
         File file = getFile(fileName, false);
         Map<String, float[]> coefs = Tools.parseCsvMapKeyFloatValues(file.getAbsolutePath());
         List pivots = dataset.getPivots(pivotCount);
-        List pivotIDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), dataset.getMetricSpace());
+        List pivotIDs = ToolsSpaceDomain.getIDsAsList(pivots.iterator(), dataset.getSearchSpace());
         float[][][] coefsToArrays = transformsCoefsToArrays(coefs, pivotIDs);
         List centroids = dataset.getPivots(centroidsCount);
-        List centroidsData = dataset.getMetricSpace().getDataOfMetricObjects(centroids);
+        List centroidsData = dataset.getSearchSpace().getDataOfObjects(centroids);
         return new DataDependentPtolemaicFilteringForStreamKNNClassifier(resultPreffixName, coefsToArrays, centroidsData, dataset.getDistanceFunction(), wisePivotSelection);
     }
 

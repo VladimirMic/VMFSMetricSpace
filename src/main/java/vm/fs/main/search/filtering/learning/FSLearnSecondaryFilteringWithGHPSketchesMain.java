@@ -9,9 +9,9 @@ import java.util.logging.Logger;
 import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.filtering.FSSecondaryFilteringWithSketchesStorage;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
-import vm.metricSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringWithSketchesStoreInterface;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
+import vm.searchSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringWithSketchesStoreInterface;
 
 /**
  *

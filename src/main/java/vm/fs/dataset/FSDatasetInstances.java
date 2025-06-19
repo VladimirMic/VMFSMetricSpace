@@ -3,25 +3,31 @@ package vm.fs.dataset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import vm.metricSpace.DatasetOfCandidates;
 import java.util.Map;
 import org.h2.mvstore.MVStoreException;
-import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.FSPDBeStorage;
-import vm.fs.metricSpaceImpl.H5MetricSpacesStorage;
-import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
-import vm.fs.metricSpaceImpl.VMMVStorage;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSLayersKasperStorage;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSMocapJanStorage;
+import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
+import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
+import vm.fs.searchSpaceImpl.H5SearchSpacesStorage;
+import vm.fs.searchSpaceImpl.VMMVStorage;
+import vm.fs.searchSpaceImpl.parsersOfOtherFormats.FSPDBeStorage;
+import vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl.FSLayersKasperStorage;
+import vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl.FSMocapJanStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
-import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.MetricSpaceWithIDsAsObjects;
-import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
-import vm.metricSpace.distance.impl.QScore;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
+import vm.searchSpace.AbstractSearchSpacesStorage;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.DatasetOfCandidates;
+import vm.searchSpace.ToolsSpaceDomain;
+import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
+import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
+import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.impl.AngularDistance;
+import vm.searchSpace.distance.impl.CosineDistance;
+import vm.searchSpace.distance.impl.DTWOnFloatsArray;
+import vm.searchSpace.distance.impl.DotProduct;
+import vm.searchSpace.distance.impl.HammingDistanceLongs;
+import vm.searchSpace.distance.impl.L2OnFloatsArray;
+import vm.searchSpace.distance.impl.Sapir3DistanceFunction;
 
 /**
  *
@@ -39,7 +45,7 @@ public class FSDatasetInstances {
         private final FSLayersKasperStorage.DIMENSIONALITY dim;
 
         public Kasper(FSLayersKasperStorage.DIMENSIONALITY dim) {
-            super(FSLayersKasperStorage.TYPE.LARGE2_gr_flake_full_h5 + "_" + dim);
+            super(FSLayersKasperStorage.TYPE.LARGE2_gr_flake_full_h5 + "_" + dim, new L2OnFloatsArray());
             this.dim = dim;
         }
 
@@ -58,7 +64,7 @@ public class FSDatasetInstances {
     public static class MOCAP10FPS extends FSGenericDataset<List<float[][]>> {
 
         public MOCAP10FPS() {
-            super("actions-single-subject-all-POS-fps10.data_selected.txt", SingularisedConvertors.MOCAP_SPACE);
+            super("actions-single-subject-all-POS-fps10.data_selected.txt", new DTWOnFloatsArray(), SingularisedConvertors.MOCAP_SPACE);
         }
 
         @Override
@@ -84,7 +90,7 @@ public class FSDatasetInstances {
     public static class MOCAP30FPS extends FSGenericDataset<List<float[][]>> {
 
         public MOCAP30FPS() {
-            super("actions-single-subject-all-POS.data_selected.txt", SingularisedConvertors.MOCAP_SPACE);
+            super("actions-single-subject-all-POS.data_selected.txt", new DTWOnFloatsArray(), SingularisedConvertors.MOCAP_SPACE);
         }
 
         @Override
@@ -110,9 +116,7 @@ public class FSDatasetInstances {
     public static class PDBePtoteinChainsDataset extends Dataset<String> {
 
         public PDBePtoteinChainsDataset() {
-            super(
-                    "PDBe_clone_binary",
-                    new MetricSpaceWithIDsAsObjects(new QScore(0)),
+            super("PDBe_clone_binary",
                     new FSPDBeStorage()
             );
         }
@@ -154,7 +158,7 @@ public class FSDatasetInstances {
     public static class DeCAFDataset extends FSFloatVectorDataset {
 
         public DeCAFDataset() {
-            super("decaf_1m");
+            super("decaf_1m", new L2OnFloatsArray());
         }
 
         @Override
@@ -179,7 +183,7 @@ public class FSDatasetInstances {
     public static class DeCAF20M_PCA256Dataset extends FSFloatVectorDataset {
 
         public DeCAF20M_PCA256Dataset() {
-            super("decaf_20m_PCA256");
+            super("decaf_20m_PCA256", new L2OnFloatsArray());
         }
 
         @Override
@@ -196,7 +200,7 @@ public class FSDatasetInstances {
     public static class DeCAF100M_PCA256Dataset extends FSFloatVectorDataset {
 
         public DeCAF100M_PCA256Dataset() {
-            super("decaf_100m_PCA256");
+            super("decaf_100m_PCA256", new L2OnFloatsArray());
         }
 
         @Override
@@ -213,7 +217,7 @@ public class FSDatasetInstances {
     public static class Yahoo100M_Dataset extends FSFloatVectorDataset {
 
         public Yahoo100M_Dataset() {
-            super("decaf_100m");
+            super("decaf_100m", new L2OnFloatsArray());
         }
 
         @Override
@@ -238,7 +242,7 @@ public class FSDatasetInstances {
     public static class Yahoo100M_1MSubset_Dataset extends FSFloatVectorDataset {
 
         public Yahoo100M_1MSubset_Dataset() {
-            super("decaf_100m_1m_subset");
+            super("decaf_100m_1m_subset", new L2OnFloatsArray());
         }
 
         @Override
@@ -260,7 +264,7 @@ public class FSDatasetInstances {
         }
 
         @Override
-        public Iterator<Object> getMetricObjectsFromDataset(Object... params) {
+        public Iterator<Object> getSearchObjectsFromDataset(Object... params) {
             int maxCount = 1000000;
             if (params.length > 0) {
                 int value = Integer.parseInt(params[0].toString());
@@ -268,11 +272,11 @@ public class FSDatasetInstances {
                     maxCount = value;
                 }
             }
-            return metricSpacesStorage.getObjectsFromDataset(datasetName, maxCount);
+            return searchSpacesStorage.getObjectsFromDataset(datasetName, maxCount);
         }
 
         @Override
-        public Iterator<Object> getMetricObjectsFromDatasetKeyValueStorage(Object... params) {
+        public Iterator<Object> getSearchObjectsFromDatasetKeyValueStorage(Object... params) {
             int maxCount = 1000000;
             if (params.length > 0) {
                 int value = Integer.parseInt(params[0].toString());
@@ -280,7 +284,7 @@ public class FSDatasetInstances {
                     maxCount = value;
                 }
             }
-            return new Dataset.IteratorOfMetricObjectsMadeOfKeyValueMap(maxCount);
+            return new Dataset.IteratorOfSearchObjectsMadeOfKeyValueMap(maxCount);
         }
     }
 
@@ -289,7 +293,7 @@ public class FSDatasetInstances {
     public static class RandomDataset10Uniform extends FSFloatVectorDataset {
 
         public RandomDataset10Uniform() {
-            super("random_10dim_uniform_1M");
+            super("random_10dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -312,7 +316,7 @@ public class FSDatasetInstances {
     public static class RandomDataset15Uniform extends FSFloatVectorDataset {
 
         public RandomDataset15Uniform() {
-            super("random_15dim_uniform_1M");
+            super("random_15dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -334,7 +338,7 @@ public class FSDatasetInstances {
     public static class RandomDataset20Uniform extends FSFloatVectorDataset {
 
         public RandomDataset20Uniform() {
-            super("random_20dim_uniform_1M");
+            super("random_20dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -356,7 +360,7 @@ public class FSDatasetInstances {
     public static class RandomDataset25Uniform extends FSFloatVectorDataset {
 
         public RandomDataset25Uniform() {
-            super("random_25dim_uniform_1M");
+            super("random_25dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -378,7 +382,7 @@ public class FSDatasetInstances {
     public static class RandomDataset30Uniform extends FSFloatVectorDataset {
 
         public RandomDataset30Uniform() {
-            super("random_30dim_uniform_1M");
+            super("random_30dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -400,7 +404,7 @@ public class FSDatasetInstances {
     public static class RandomDataset35Uniform extends FSFloatVectorDataset {
 
         public RandomDataset35Uniform() {
-            super("random_35dim_uniform_1M");
+            super("random_35dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -422,7 +426,7 @@ public class FSDatasetInstances {
     public static class RandomDataset40Uniform extends FSFloatVectorDataset {
 
         public RandomDataset40Uniform() {
-            super("random_40dim_uniform_1M");
+            super("random_40dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -444,7 +448,7 @@ public class FSDatasetInstances {
     public static class RandomDataset50Uniform extends FSFloatVectorDataset {
 
         public RandomDataset50Uniform() {
-            super("random_50dim_uniform_1M");
+            super("random_50dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -466,7 +470,7 @@ public class FSDatasetInstances {
     public static class RandomDataset60Uniform extends FSFloatVectorDataset {
 
         public RandomDataset60Uniform() {
-            super("random_60dim_uniform_1M");
+            super("random_60dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -488,7 +492,7 @@ public class FSDatasetInstances {
     public static class RandomDataset70Uniform extends FSFloatVectorDataset {
 
         public RandomDataset70Uniform() {
-            super("random_70dim_uniform_1M");
+            super("random_70dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -510,7 +514,7 @@ public class FSDatasetInstances {
     public static class RandomDataset80Uniform extends FSFloatVectorDataset {
 
         public RandomDataset80Uniform() {
-            super("random_80dim_uniform_1M");
+            super("random_80dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -532,7 +536,7 @@ public class FSDatasetInstances {
     public static class RandomDataset90Uniform extends FSFloatVectorDataset {
 
         public RandomDataset90Uniform() {
-            super("random_90dim_uniform_1M");
+            super("random_90dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -554,7 +558,7 @@ public class FSDatasetInstances {
     public static class RandomDataset100Uniform extends FSFloatVectorDataset {
 
         public RandomDataset100Uniform() {
-            super("random_100dim_uniform_1M");
+            super("random_100dim_uniform_1M", new L2OnFloatsArray());
         }
 
         @Override
@@ -576,7 +580,7 @@ public class FSDatasetInstances {
     public static class SIFTdataset extends FSFloatVectorDataset {
 
         public SIFTdataset() {
-            super("sift_1m");
+            super("sift_1m", new L2OnFloatsArray());
         }
 
         @Override
@@ -601,10 +605,8 @@ public class FSDatasetInstances {
     public static class MPEG7dataset extends Dataset<Map<String, Object>> {
 
         public MPEG7dataset() {
-            super(
-                    "mpeg7_1m",
-                    new FSMetricSpaceImpl(),
-                    new FSMetricSpacesStorage<>(new FSMetricSpaceImpl(), SingularisedConvertors.MPEG7_SPACE)
+            super("mpeg7_1m",
+                    new FSSearchSpacesStorage<>(new FSSearchSpaceImpl(new Sapir3DistanceFunction()), SingularisedConvertors.MPEG7_SPACE)
             );
         }
 
@@ -645,7 +647,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA8Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA8Dataset() {
-            super("decaf_1m_PCA8");
+            super("decaf_1m_PCA8", new L2OnFloatsArray());
         }
 
         @Override
@@ -662,7 +664,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA10Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA10Dataset() {
-            super("decaf_1m_PCA10");
+            super("decaf_1m_PCA10", new L2OnFloatsArray());
         }
 
         @Override
@@ -679,7 +681,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA12Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA12Dataset() {
-            super("decaf_1m_PCA12");
+            super("decaf_1m_PCA12", new L2OnFloatsArray());
         }
 
         @Override
@@ -696,7 +698,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA16Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA16Dataset() {
-            super("decaf_1m_PCA16");
+            super("decaf_1m_PCA16", new L2OnFloatsArray());
         }
 
         @Override
@@ -713,7 +715,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA24Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA24Dataset() {
-            super("decaf_1m_PCA24");
+            super("decaf_1m_PCA24", new L2OnFloatsArray());
         }
 
         @Override
@@ -730,7 +732,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA32Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA32Dataset() {
-            super("decaf_1m_PCA32");
+            super("decaf_1m_PCA32", new L2OnFloatsArray());
         }
 
         @Override
@@ -747,7 +749,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA46Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA46Dataset() {
-            super("decaf_1m_PCA46");
+            super("decaf_1m_PCA46", new L2OnFloatsArray());
         }
 
         @Override
@@ -764,7 +766,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA68Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA68Dataset() {
-            super("decaf_1m_PCA68");
+            super("decaf_1m_PCA68", new L2OnFloatsArray());
         }
 
         @Override
@@ -781,7 +783,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA128Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA128Dataset() {
-            super("decaf_1m_PCA128");
+            super("decaf_1m_PCA128", new L2OnFloatsArray());
         }
 
         @Override
@@ -798,7 +800,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA256Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA256Dataset() {
-            super("decaf_1m_PCA256");
+            super("decaf_1m_PCA256", new L2OnFloatsArray());
         }
 
         @Override
@@ -815,7 +817,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA670Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA670Dataset() {
-            super("decaf_1m_PCA670");
+            super("decaf_1m_PCA670", new L2OnFloatsArray());
         }
 
         @Override
@@ -832,7 +834,7 @@ public class FSDatasetInstances {
     public static class DeCAF_PCA1540Dataset extends FSFloatVectorDataset {
 
         public DeCAF_PCA1540Dataset() {
-            super("decaf_1m_PCA1540");
+            super("decaf_1m_PCA1540", new L2OnFloatsArray());
         }
 
         @Override
@@ -887,7 +889,7 @@ public class FSDatasetInstances {
     public static class LAION_1M_SampleDataset extends FSFloatVectorDataset {
 
         public LAION_1M_SampleDataset() {
-            super("laion2B-en-clip768v2-n=1M_sample.h5.gz");
+            super("laion2B-en-clip768v2-n=1M_sample.h5.gz", new DotProduct());
         }
 
         @Override
@@ -916,7 +918,7 @@ public class FSDatasetInstances {
         private final boolean publicQueries;
 
         public LAION_100k_Dataset(boolean publicQueries) {
-            super("laion2B-en-clip768v2-n=100K.h5");
+            super("laion2B-en-clip768v2-n=100K.h5", new DotProduct());
             this.publicQueries = publicQueries;
         }
 
@@ -939,7 +941,7 @@ public class FSDatasetInstances {
         private final boolean publicQueries;
 
         public LAION_300k_Dataset(boolean publicQueries) {
-            super("laion2B-en-clip768v2-n=300K.h5");
+            super("laion2B-en-clip768v2-n=300K.h5", new DotProduct());
             this.publicQueries = publicQueries;
         }
 
@@ -960,7 +962,7 @@ public class FSDatasetInstances {
     public static class LAION_10M_Dataset_Euclid extends LAION_10M_Dataset {
 
         public LAION_10M_Dataset_Euclid(boolean publicQueries) {
-            super(publicQueries);
+            super(publicQueries, new L2OnFloatsArray());
             datasetName += "euclid";
         }
 
@@ -977,7 +979,7 @@ public class FSDatasetInstances {
     public static class LAION_10M_Dataset_Dot extends LAION_10M_Dataset {
 
         public LAION_10M_Dataset_Dot(boolean publicQueries) {
-            super(publicQueries);
+            super(publicQueries, new DotProduct());
             datasetName += "DotPro";
         }
 
@@ -986,7 +988,7 @@ public class FSDatasetInstances {
     public static class LAION_10M_Dataset_Angular extends LAION_10M_Dataset {
 
         public LAION_10M_Dataset_Angular(boolean publicQueries) {
-            super(publicQueries);
+            super(publicQueries, new AngularDistance());
             datasetName += "Angular";
         }
 
@@ -995,7 +997,7 @@ public class FSDatasetInstances {
     public static class LAION_30M_Dataset_Dot extends LAION_30M_Dataset {
 
         public LAION_30M_Dataset_Dot(boolean publicQueries) {
-            super(publicQueries);
+            super(publicQueries, new DotProduct());
             datasetName += "DotPro";
         }
 
@@ -1004,7 +1006,7 @@ public class FSDatasetInstances {
     public static class LAION_100M_Dataset_Dot extends LAION_100M_Dataset {
 
         public LAION_100M_Dataset_Dot(boolean publicQueries) {
-            super(publicQueries);
+            super(publicQueries, new DotProduct());
             datasetName += "DotPro";
         }
 
@@ -1013,7 +1015,7 @@ public class FSDatasetInstances {
     public static class LAION_30M_Dataset_Euclid extends LAION_30M_Dataset {
 
         public LAION_30M_Dataset_Euclid(boolean publicQueries) {
-            super(publicQueries);
+            super(publicQueries, new DotProduct());
             datasetName += "euclid";
         }
 
@@ -1022,7 +1024,7 @@ public class FSDatasetInstances {
     public static class LAION_100M_Dataset_Euclid extends LAION_100M_Dataset {
 
         public LAION_100M_Dataset_Euclid(boolean publicQueries) {
-            super(publicQueries);
+            super(publicQueries, new DotProduct());
             datasetName += "euclid";
         }
 
@@ -1032,8 +1034,13 @@ public class FSDatasetInstances {
 
         private final boolean publicQueries;
 
+        protected LAION_10M_Dataset(boolean publicQueries, DistanceFunctionInterface<float[]> df) {
+            super("laion2B-en-clip768v2-n=10M.h5", df);
+            this.publicQueries = publicQueries;
+        }
+
         public LAION_10M_Dataset(boolean publicQueries) {
-            super("laion2B-en-clip768v2-n=10M.h5");
+            super("laion2B-en-clip768v2-n=10M.h5", new CosineDistance());
             this.publicQueries = publicQueries;
         }
 
@@ -1063,8 +1070,13 @@ public class FSDatasetInstances {
 
         private final boolean publicQueries;
 
+        protected LAION_30M_Dataset(boolean publicQueries, DistanceFunctionInterface< float[]> df) {
+            super("laion2B-en-clip768v2-n=30M.h5", df);
+            this.publicQueries = publicQueries;
+        }
+
         public LAION_30M_Dataset(boolean publicQueries) {
-            super("laion2B-en-clip768v2-n=30M.h5");
+            super("laion2B-en-clip768v2-n=30M.h5", new CosineDistance());
             this.publicQueries = publicQueries;
         }
 
@@ -1086,8 +1098,13 @@ public class FSDatasetInstances {
 
         private final boolean publicQueries;
 
+        protected LAION_100M_Dataset(boolean publicQueries, DistanceFunctionInterface<float[]> df) {
+            super("laion2B-en-clip768v2-n=100M.h5", df);
+            this.publicQueries = publicQueries;
+        }
+
         public LAION_100M_Dataset(boolean publicQueries) {
-            super("laion2B-en-clip768v2-n=100M.h5");
+            super("laion2B-en-clip768v2-n=100M.h5", new CosineDistance());
             this.publicQueries = publicQueries;
         }
 
@@ -1108,7 +1125,7 @@ public class FSDatasetInstances {
     public static class LAION_100k_PCA32Dataset extends H5FloatVectorDataset {
 
         public LAION_100k_PCA32Dataset() {
-            super("laion2B-en-pca32v2-n=100K.h5");
+            super("laion2B-en-pca32v2-n=100K.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1126,7 +1143,7 @@ public class FSDatasetInstances {
     public static class LAION_300k_PCA32Dataset extends H5FloatVectorDataset {
 
         public LAION_300k_PCA32Dataset() {
-            super("laion2B-en-pca32v2-n=300K.h5");
+            super("laion2B-en-pca32v2-n=300K.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1143,7 +1160,7 @@ public class FSDatasetInstances {
     public static class LAION_10M_PCA32Dataset extends H5FloatVectorDataset {
 
         public LAION_10M_PCA32Dataset() {
-            super("laion2B-en-pca32v2-n=10M.h5");
+            super("laion2B-en-pca32v2-n=10M.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1160,7 +1177,7 @@ public class FSDatasetInstances {
     public static class LAION_30M_PCA32Dataset extends H5FloatVectorDataset {
 
         public LAION_30M_PCA32Dataset() {
-            super("laion2B-en-pca32v2-n=30M.h5");
+            super("laion2B-en-pca32v2-n=30M.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1177,7 +1194,7 @@ public class FSDatasetInstances {
     public static class LAION_100M_PCA32Dataset extends H5FloatVectorDataset {
 
         public LAION_100M_PCA32Dataset() {
-            super("laion2B-en-pca32v2-n=100M.h5");
+            super("laion2B-en-pca32v2-n=100M.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1194,7 +1211,7 @@ public class FSDatasetInstances {
     public static class LAION_100k_PCA96Dataset extends H5FloatVectorDataset {
 
         public LAION_100k_PCA96Dataset() {
-            super("laion2B-en-pca96v2-n=100K.h5");
+            super("laion2B-en-pca96v2-n=100K.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1211,7 +1228,7 @@ public class FSDatasetInstances {
     public static class LAION_300k_PCA96Dataset extends H5FloatVectorDataset {
 
         public LAION_300k_PCA96Dataset() {
-            super("laion2B-en-pca96v2-n=300K.h5");
+            super("laion2B-en-pca96v2-n=300K.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1229,7 +1246,7 @@ public class FSDatasetInstances {
     public static class LAION_10M_PCA96Dataset extends H5FloatVectorDataset {
 
         public LAION_10M_PCA96Dataset() {
-            super("laion2B-en-pca96v2-n=10M.h5");
+            super("laion2B-en-pca96v2-n=10M.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1247,7 +1264,7 @@ public class FSDatasetInstances {
     public static class LAION_30M_PCA96Dataset extends H5FloatVectorDataset {
 
         public LAION_30M_PCA96Dataset() {
-            super("laion2B-en-pca96v2-n=30M.h5");
+            super("laion2B-en-pca96v2-n=30M.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1264,7 +1281,7 @@ public class FSDatasetInstances {
     public static class LAION_100M_PCA96Dataset extends H5FloatVectorDataset {
 
         public LAION_100M_PCA96Dataset() {
-            super("laion2B-en-pca96v2-n=100M.h5");
+            super("laion2B-en-pca96v2-n=100M.h5", new L2OnFloatsArray());
         }
 
         @Override
@@ -1281,7 +1298,7 @@ public class FSDatasetInstances {
     public static class LAION_10M_PCA256Dataset extends FSFloatVectorDataset {
 
         public LAION_10M_PCA256Dataset() {
-            super("laion2B-en-clip768v2-n=10M.h5_PCA256");
+            super("laion2B-en-clip768v2-n=10M.h5_PCA256", new L2OnFloatsArray());
         }
 
         @Override
@@ -1307,7 +1324,7 @@ public class FSDatasetInstances {
     public static class LAION_30M_PCA256Dataset extends FSFloatVectorDataset {
 
         public LAION_30M_PCA256Dataset() {
-            super("laion2B-en-clip768v2-n=30M.h5_PCA256");
+            super("laion2B-en-clip768v2-n=30M.h5_PCA256", new L2OnFloatsArray());
         }
 
         @Override
@@ -1343,7 +1360,7 @@ public class FSDatasetInstances {
     public static class LAION_100M_PCA256Dataset extends FSFloatVectorDataset {
 
         public LAION_100M_PCA256Dataset() {
-            super("laion2B-en-clip768v2-n=100M.h5_PCA256");
+            super("laion2B-en-clip768v2-n=100M.h5_PCA256", new L2OnFloatsArray());
         }
 
         @Override
@@ -1374,7 +1391,7 @@ public class FSDatasetInstances {
     public static class LAION_30M_PCA256Prefixes24Dataset extends FSFloatVectorDataset {
 
         public LAION_30M_PCA256Prefixes24Dataset() {
-            super("laion2B-en-clip768v2-n=30M.h5_PCA_pref24of256");
+            super("laion2B-en-clip768v2-n=30M.h5_PCA_pref24of256", new L2OnFloatsArray());
         }
 
         @Override
@@ -1392,7 +1409,7 @@ public class FSDatasetInstances {
     public static class LAION_10M_PCA256Prefixes24Dataset extends FSFloatVectorDataset {
 
         public LAION_10M_PCA256Prefixes24Dataset() {
-            super("laion2B-en-clip768v2-n=10M.h5_PCA_pref24of256");
+            super("laion2B-en-clip768v2-n=10M.h5_PCA_pref24of256", new L2OnFloatsArray());
         }
 
         @Override
@@ -1410,7 +1427,7 @@ public class FSDatasetInstances {
     public static class LAION_100M_PCA256Prefixes24Dataset extends FSFloatVectorDataset {
 
         public LAION_100M_PCA256Prefixes24Dataset() {
-            super("laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256");
+            super("laion2B-en-clip768v2-n=100M.h5_PCA_pref24of256", new L2OnFloatsArray());
         }
 
         @Override
@@ -1428,7 +1445,7 @@ public class FSDatasetInstances {
     public static class LAION_100M_PCA256Prefixes32Dataset extends FSFloatVectorDataset {
 
         public LAION_100M_PCA256Prefixes32Dataset() {
-            super("laion2B-en-clip768v2-n=100M.h5_PCA_pref32of256");
+            super("laion2B-en-clip768v2-n=100M.h5_PCA_pref32of256", new L2OnFloatsArray());
         }
 
         @Override
@@ -2022,20 +2039,20 @@ public class FSDatasetInstances {
 
     public static abstract class FSGenericDataset<T> extends Dataset<T> {
 
-        public FSGenericDataset(String datasetName, MetricObjectDataToStringInterface<T> dataSerializator) {
-            super(datasetName, new FSMetricSpaceImpl(), new FSMetricSpacesStorage<>(new FSMetricSpaceImpl(), dataSerializator));
+        public FSGenericDataset(String datasetName, DistanceFunctionInterface<T> df, SearchObjectDataToStringInterface<T> dataSerializator) {
+            super(datasetName, new FSSearchSpacesStorage<>(new FSSearchSpaceImpl(df), dataSerializator));
         }
 
         @Override
         public Map<Comparable, T> getKeyValueStorage() {
             try {
-                VMMVStorage storage = ((FSMetricSpacesStorage) metricSpacesStorage).getSingularizatorOfDiskStorage();
+                VMMVStorage storage = ((FSSearchSpacesStorage) searchSpacesStorage).getSingularizatorOfDiskStorage();
                 if (storage == null) {
                     try {
                         storage = new VMMVStorage(datasetName, false);
-                        ((FSMetricSpacesStorage) metricSpacesStorage).setSingularizatorOfDiskStorage(storage);
+                        ((FSSearchSpacesStorage) searchSpacesStorage).setSingularizatorOfDiskStorage(storage);
                     } catch (Exception e) {
-                        return ToolsMetricDomain.getMetricObjectsAsIdDataMap(this);
+                        return ToolsSpaceDomain.getObjectsAsIdDataMap(this);
                     }
                 }
                 return storage.getKeyValueStorage();
@@ -2058,8 +2075,8 @@ public class FSDatasetInstances {
 
     public static abstract class FSDatasetWithOtherSource<T> extends Dataset<T> {
 
-        public FSDatasetWithOtherSource(String datasetName, AbstractMetricSpacesStorage metricSpacesStorage) {
-            super(datasetName, new FSMetricSpaceImpl<>(), metricSpacesStorage);
+        public FSDatasetWithOtherSource(String datasetName, AbstractSearchSpacesStorage searchSpacesStorage) {
+            super(datasetName, searchSpacesStorage);
         }
 
         @Override
@@ -2086,8 +2103,8 @@ public class FSDatasetInstances {
 
     public static abstract class FSFloatVectorDataset extends FSGenericDataset<float[]> {
 
-        public FSFloatVectorDataset(String datasetName) {
-            super(datasetName, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+        public FSFloatVectorDataset(String datasetName, DistanceFunctionInterface<float[]> df) {
+            super(datasetName, df, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
 
         @Override
@@ -2102,17 +2119,15 @@ public class FSDatasetInstances {
 
     public static class H5FloatVectorDataset extends Dataset<float[]> {
 
-        public H5FloatVectorDataset(String datasetName) {
-            super(
-                    datasetName,
-                    new FSMetricSpaceImpl<>(),
-                    new H5MetricSpacesStorage<>(new FSMetricSpaceImpl<>(), SingularisedConvertors.FLOAT_VECTOR_SPACE)
+        public H5FloatVectorDataset(String datasetName, DistanceFunctionInterface<float[]> df) {
+            super(datasetName,
+                    new H5SearchSpacesStorage<>(new FSSearchSpaceImpl<>(df), SingularisedConvertors.FLOAT_VECTOR_SPACE)
             );
         }
 
         @Override
         public Map<Comparable, float[]> getKeyValueStorage() {
-            H5MetricSpacesStorage storage = (H5MetricSpacesStorage) metricSpacesStorage;
+            H5SearchSpacesStorage storage = (H5SearchSpacesStorage) searchSpacesStorage;
             return storage.getAsMap(datasetName);
         }
 
@@ -2149,16 +2164,14 @@ public class FSDatasetInstances {
     public static class FSHammingSpaceDataset extends Dataset<long[]> {
 
         public FSHammingSpaceDataset(String datasetName) {
-            super(
-                    datasetName,
-                    new FSMetricSpaceImpl<>(),
-                    new FSMetricSpacesStorage<>(new FSMetricSpaceImpl<>(), SingularisedConvertors.LONG_VECTOR_SPACE)
+            super(datasetName,
+                    new FSSearchSpacesStorage<>(new FSSearchSpaceImpl<>(new HammingDistanceLongs()), SingularisedConvertors.LONG_VECTOR_SPACE)
             );
         }
 
         @Override
         public Map<Comparable, long[]> getKeyValueStorage() {
-            return ToolsMetricDomain.getMetricObjectsAsIdDataMap(this);
+            return ToolsSpaceDomain.getObjectsAsIdDataMap(this);
         }
 
         @Override

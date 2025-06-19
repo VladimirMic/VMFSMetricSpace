@@ -13,8 +13,8 @@ import org.jfree.chart.JFreeChart;
 import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.mathtools.Tools;
-import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.Dataset;
+import vm.searchSpace.ToolsSpaceDomain;
+import vm.searchSpace.Dataset;
 import vm.plot.impl.LinesOrPointsPlotter;
 
 /**
@@ -46,7 +46,7 @@ public class FSPrintAndPlotDDOfDatasetMain {
         if (f.exists()) {
             ddRandomSample = vm.datatools.Tools.parseCsvMapFloats(f.getAbsolutePath());
         } else {
-            ddRandomSample = ToolsMetricDomain.createDistanceDensityPlot(dataset, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
+            ddRandomSample = ToolsSpaceDomain.createDistanceDensityPlot(dataset, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
         }
 //      print
         Map<Float, Float> mapOfValues = printDD(f, ddRandomSample);
@@ -64,7 +64,7 @@ public class FSPrintAndPlotDDOfDatasetMain {
             }
             ps.println("Distance;Density of random sample");
             float lastDist = 0;
-            float distInterval = ToolsMetricDomain.computeBasicDistInterval(histogram.lastKey());
+            float distInterval = ToolsSpaceDomain.computeBasicDistInterval(histogram.lastKey());
             for (float dist : histogram.keySet()) {
                 while (dist - lastDist > distInterval * 1.1d) {
                     lastDist += distInterval;

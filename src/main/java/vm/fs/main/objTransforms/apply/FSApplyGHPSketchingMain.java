@@ -2,13 +2,13 @@ package vm.fs.main.objTransforms.apply;
 
 import vm.objTransforms.perform.TransformDataToGHPSketches;
 import vm.fs.dataset.FSDatasetInstances;
-import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
+import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
+import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
 import vm.fs.store.dataTransforms.FSGHPSketchesPivotPairsStorageImpl;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
+import vm.searchSpace.AbstractSearchSpacesStorage;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
 
 /**
  *
@@ -31,7 +31,7 @@ public class FSApplyGHPSketchingMain {
     }
 
     private static void run(Dataset dataset) {
-        AbstractMetricSpacesStorage storageForSketches = new FSMetricSpacesStorage(new FSMetricSpaceImpl<>(), SingularisedConvertors.LONG_VECTOR_SPACE);
+        AbstractSearchSpacesStorage storageForSketches = new FSSearchSpacesStorage(dataset.getSearchSpace(), SingularisedConvertors.LONG_VECTOR_SPACE);
         PivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         TransformDataToGHPSketches evaluator = new TransformDataToGHPSketches(dataset, storageOfPivotPairs, storageForSketches, 0.5f, -1);
 //        int[] sketchesLengths = new int[]{192, 256};

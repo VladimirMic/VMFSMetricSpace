@@ -14,16 +14,16 @@ import vm.fs.store.dataTransforms.FSSVDStorageImpl;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.ToolsMetricDomain;
-import vm.objTransforms.perform.PCAMetricObjectTransformer;
+import vm.objTransforms.perform.PCAFloatVectorTransformer;
 import vm.objTransforms.storeLearned.SVDStoreInterface;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.queryResults.errorOnDistEvaluation.ErrorOnDistEvaluator;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.algorithm.SearchingAlgorithm;
 import vm.search.algorithm.impl.SimRelSeqScanKNNCandSet;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.ToolsSpaceDomain;
 import vm.simRel.impl.SimRelEuclideanPCAImplForTesting;
 import vm.simRel.impl.learn.SimRelEuclideanPCAForLearning;
 
@@ -68,7 +68,7 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
 //        /* learn thresholds t(\Omega) */
         float[] learnedErrors = learnTOmegaThresholds(pcaDataset, querySampleCount, dataSampleCount, pcaLength, prefixLength, kPCA, percentile);
         SVDStoreInterface svdStorage = new FSSVDStorageImpl(fullDataset.getDatasetName(), 500000, false);
-        PCAMetricObjectTransformer pcaTransformer = initPCA(fullDataset.getMetricSpace(), pcaDataset.getMetricSpace(), svdStorage, prefixLength);
+        PCAFloatVectorTransformer pcaTransformer = initPCA(fullDataset.getSearchSpace(), pcaDataset.getSearchSpace(), svdStorage, prefixLength);
         // TEST QUERIES
         SimRelEuclideanPCAImplForTesting simRel = new SimRelEuclideanPCAImplForTesting(learnedErrors, prefixLength);
 //        String resultName = "pure_simRel_PCA" + pcaLength + "_decideUsingFirst" + prefixLength + "_learnErrorsOn__queries" + querySampleCount + "_dataSamples" + dataSampleCount + "_kSearching" + k + "_percentile" + percentile;
@@ -102,37 +102,37 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
         for (int i = 0; i < querySamples.size(); i++) {
             Object queryObj = querySamples.get(i);
             simRelLearn.resetCounters(pcaLength);
-            alg.candSetKnnSearch(pcaDataset.getMetricSpace(), queryObj, kPCA, sampleOfDataset.iterator());
+            alg.candSetKnnSearch(pcaDataset.getSearchSpace(), queryObj, kPCA, sampleOfDataset.iterator());
             LOG.log(Level.INFO, "Learning tresholds with the query obj {0}", new Object[]{i + 1});
         }
         float[][] ret = simRelLearn.getDiffWhenWrong(percentileWrong, prefixLength);
         return ret[0];
     }
 
-    private static void testQueries(Dataset<float[]> fullDataset, Dataset<float[]> pcaDataset, SimRelEuclideanPCAImplForTesting simRel, PCAMetricObjectTransformer pcaTransformer, int prefixLength, int kPCA, int k, QueryNearestNeighboursStoreInterface resultsStorage, String resultName, FSQueryExecutionStatsStoreImpl statsStorage, Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> fileNameDataForRecallStorage) {
-        List<Object> pcaData = Tools.getObjectsFromIterator(pcaDataset.getMetricObjectsFromDataset());
-        pcaData = ToolsMetricDomain.getPrefixesOfVectors(pcaDataset.getMetricSpace(), pcaData, prefixLength);
+    private static void testQueries(Dataset<float[]> fullDataset, Dataset<float[]> pcaDataset, SimRelEuclideanPCAImplForTesting simRel, PCAFloatVectorTransformer pcaTransformer, int prefixLength, int kPCA, int k, QueryNearestNeighboursStoreInterface resultsStorage, String resultName, FSQueryExecutionStatsStoreImpl statsStorage, Map<FSQueryExecutionStatsStoreImpl.DATA_NAMES_IN_FILE_NAME, String> fileNameDataForRecallStorage) {
+        List<Object> pcaData = Tools.getObjectsFromIterator(pcaDataset.getSearchObjectsFromDataset());
+        pcaData = ToolsSpaceDomain.getPrefixesOfVectors(pcaDataset.getSearchSpace(), pcaData, prefixLength);
         System.gc();
         Map<Comparable, float[]> mapOfAllFullObjects = null;
         if (FULL_RERANK) {
             mapOfAllFullObjects = fullDataset.getKeyValueStorage();
-//            Iterator<Object> fullDatasetIterator = fullDataset.getMetricObjectsFromDataset();
+//            Iterator<Object> fullDatasetIterator = fullDataset.getObjectsFromDataset();
 //            mapOfAllFullObjects = ToolsMetricDomain.getMetricObjectsAsIdDataMap(fullDataset.getMetricSpace(), fullDatasetIterator, true);
 //            MVStore storage = VMMVStorageMain.openStorage(fullDataset.getDatasetName());
 //            mapOfAllFullObjects = VMMVStorageMain.getStoredMap(storage);
         }
         List<Object> fullQueries = fullDataset.getQueryObjects();
         SimRelSeqScanKNNCandSet alg = new SimRelSeqScanKNNCandSet(simRel, kPCA, INVOLVE_OBJS_UNKNOWN_RELATION);
-        AbstractMetricSpace metricSpaceOfFullDataset = fullDataset.getMetricSpace();
-        AbstractMetricSpace pcaDatasetMetricSpace = pcaDataset.getMetricSpace();
+        AbstractSearchSpace searchSpaceOfFullDataset = fullDataset.getSearchSpace();
+        AbstractSearchSpace pcaDatasetSearchSpace = pcaDataset.getSearchSpace();
         for (int i = 0; i < Math.min(fullQueries.size(), 1000); i++) {
             long time = -System.currentTimeMillis();
             Object fullQueryObj = fullQueries.get(i);
-            Comparable queryObjId = metricSpaceOfFullDataset.getIDOfMetricObject(fullQueryObj);
-            AbstractMap.SimpleEntry<Comparable, float[]> pcaQueryObj = (AbstractMap.SimpleEntry<Comparable, float[]>) pcaTransformer.transformMetricObject(fullQueryObj, prefixLength);
+            Comparable queryObjId = searchSpaceOfFullDataset.getIDOfObject(fullQueryObj);
+            AbstractMap.SimpleEntry<Comparable, float[]> pcaQueryObj = (AbstractMap.SimpleEntry<Comparable, float[]>) pcaTransformer.transformSearchObject(fullQueryObj, prefixLength);
 
-            List<Comparable> candSetObjIDs = alg.candSetKnnSearch(pcaDatasetMetricSpace, pcaQueryObj, kPCA, pcaData.iterator());
-            TreeSet<Map.Entry<Comparable, Float>> rerankCandidateSet = alg.rerankCandidateSet(metricSpaceOfFullDataset, fullQueryObj, k, fullDataset.getDistanceFunction(), mapOfAllFullObjects, candSetObjIDs);
+            List<Comparable> candSetObjIDs = alg.candSetKnnSearch(pcaDatasetSearchSpace, pcaQueryObj, kPCA, pcaData.iterator());
+            TreeSet<Map.Entry<Comparable, Float>> rerankCandidateSet = alg.rerankCandidateSet(searchSpaceOfFullDataset, fullQueryObj, k, fullDataset.getDistanceFunction(), mapOfAllFullObjects, candSetObjIDs);
             time += System.currentTimeMillis();
             alg.incTime(queryObjId, time);
             if (STORE_RESULTS) {
@@ -161,11 +161,11 @@ public class FSKNNQueriesSeqScanWithSimRelMain {
         }
     }
 
-    private static PCAMetricObjectTransformer initPCA(AbstractMetricSpace<float[]> originalMetricSpace, AbstractMetricSpace<float[]> pcaMetricSpace, SVDStoreInterface svdStorage, int pcaPreffixLength) {
+    private static PCAFloatVectorTransformer initPCA(AbstractSearchSpace<float[]> originalSearchSpace, AbstractSearchSpace<float[]> pcaSearchSpace, SVDStoreInterface svdStorage, int pcaPreffixLength) {
         LOG.log(Level.INFO, "Start loading instance of the PCA with length {0}", pcaPreffixLength);
         float[][] vtMatrixFull = svdStorage.getVTMatrix();
         float[][] vtMatrix = Tools.shrinkMatrix(vtMatrixFull, pcaPreffixLength, vtMatrixFull[0].length);
-        return new PCAMetricObjectTransformer(vtMatrix, svdStorage.getMeansOverColumns(), originalMetricSpace, pcaMetricSpace);
+        return new PCAFloatVectorTransformer(vtMatrix, svdStorage.getMeansOverColumns(), originalSearchSpace, pcaSearchSpace);
     }
 
 }

@@ -11,9 +11,9 @@ import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.DatasetOfCandidates;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.DatasetOfCandidates;
 
 /**
  *
@@ -82,7 +82,7 @@ public class FSEvaluateGroundTruthMain {
 
     public static void run(Dataset dataset, int k) {
         String datasetName = dataset.getDatasetName();
-        AbstractMetricSpace space = dataset.getMetricSpace();
+        AbstractSearchSpace space = dataset.getSearchSpace();
 
         QueryNearestNeighboursStoreInterface groundTruthStorage = new FSNearestNeighboursStorageImpl();
 
@@ -95,7 +95,7 @@ public class FSEvaluateGroundTruthMain {
             if (k == GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES) {
                 results = gte.evaluateIteratorSequentially(dataset);
             } else {
-                results = gte.evaluateIteratorInParallel(dataset.getMetricObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());
+                results = gte.evaluateIteratorInParallel(dataset.getSearchObjectsFromDataset(datasetName), datasetName, dataset.getQuerySetName());
             }
         }
         LOG.log(Level.INFO, "Storing statistics of queries");
@@ -107,7 +107,7 @@ public class FSEvaluateGroundTruthMain {
         groundTruthStorage.storeQueryResults(space, queryObjects, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth");
 
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), "ground_truth", null);
-        storeRecallAlwaysOne(dataset.getMetricSpace(), queryObjects, recallStorage);
+        storeRecallAlwaysOne(dataset.getSearchSpace(), queryObjects, recallStorage);
         System.gc();
     }
 
@@ -120,9 +120,9 @@ public class FSEvaluateGroundTruthMain {
         return fileWithResults.exists();
     }
 
-    private static void storeRecallAlwaysOne(AbstractMetricSpace metricSpace, List<Object> queryObjects, FSRecallOfCandidateSetsStorageImpl recallStorage) {
+    private static void storeRecallAlwaysOne(AbstractSearchSpace searchSpace, List<Object> queryObjects, FSRecallOfCandidateSetsStorageImpl recallStorage) {
         for (Object queryObject : queryObjects) {
-            Comparable queryID = metricSpace.getIDOfMetricObject(queryObject);
+            Comparable queryID = searchSpace.getIDOfObject(queryObject);
             recallStorage.storeRecallForQuery(queryID, 1f);
         }
         recallStorage.save();

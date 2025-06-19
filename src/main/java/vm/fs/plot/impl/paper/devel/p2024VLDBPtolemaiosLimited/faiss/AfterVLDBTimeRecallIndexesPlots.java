@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.faiss;
 
 import java.io.File;
@@ -20,20 +16,20 @@ import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAngle
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.DatasetOfCandidates;
-import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
-import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
-import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
-import vm.metricSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
-import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
-import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 import vm.plot.impl.LinesOrPointsPlotter;
 import static vm.search.algorithm.SearchingAlgorithm.STEP_COUNTS_FOR_CAND_SE_PROCESSING_FROM_INDEX;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.DatasetOfCandidates;
+import vm.searchSpace.distance.bounding.BoundsOnDistanceEstimation;
+import vm.searchSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
+import vm.searchSpace.distance.bounding.onepivot.impl.TriangleInequality;
+import vm.searchSpace.distance.bounding.twopivots.AbstractPtolemaicBasedFiltering;
+import vm.searchSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
+import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
+import vm.searchSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
+import vm.searchSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 
 /**
  *
@@ -70,7 +66,7 @@ public class AfterVLDBTimeRecallIndexesPlots {
         float[][] yValues = new float[filters.length][cands.size()];
         for (int i = 0; i < filters.length; i++) {
             BoundsOnDistanceEstimation filter = filters[i];
-            String resultName = FSKNNQueriesSeqScanWithFilteringMain.initAlg(filter, dataset, dataset.getMetricSpace(), dataset.getPivots(dataset.getRecommendedNumberOfPivotsForFiltering()), dataset.getDistanceFunction(), null).getResultName();
+            String resultName = FSKNNQueriesSeqScanWithFilteringMain.initAlg(filter, dataset, dataset.getSearchSpace(), dataset.getPivots(dataset.getRecommendedNumberOfPivotsForFiltering()), dataset.getDistanceFunction(), null).getResultName();
             for (int j = 0; j < cands.size(); j++) {
                 Integer cand = cands.get(j);
                 float sumTimes = 0;
@@ -121,7 +117,7 @@ public class AfterVLDBTimeRecallIndexesPlots {
 
     public static final BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, Dataset dataset, Integer k) {
         int pivotCount = pivots.size();
-        List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
+        List pivotsData = dataset.getSearchSpace().getDataOfObjects(pivots);
         if (resultSetPrefix == null) {
             resultSetPrefix = Tools.getDateYYYYMM() + "_" + pivotCount + "_pivots";
         }

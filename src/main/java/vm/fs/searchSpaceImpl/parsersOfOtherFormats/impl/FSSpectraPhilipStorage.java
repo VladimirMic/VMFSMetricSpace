@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl;
+package vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl;
 
 import java.io.File;
 import java.util.AbstractMap;
@@ -10,24 +10,25 @@ import java.util.Iterator;
 import vm.datatools.DataTypeConvertor;
 import vm.fs.FSGlobal;
 import vm.fs.dataset.FSDatasetInstances;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.AbstractFSMetricSpacesStorageWithOthersDatasetStorage;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
-import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
-import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.impl.L2OnFloatsArray;
+import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
+import vm.fs.searchSpaceImpl.parsersOfOtherFormats.AbstractFSSearchSpacesStorageWithOthersDatasetStorage;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
+import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.impl.L2OnFloatsArray;
+import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 
 /**
  *
  * @author au734419
  * @param <T>
  */
-public class FSSpectraPhilipStorage<T> extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> {
+public class FSSpectraPhilipStorage<T> extends AbstractFSSearchSpacesStorageWithOthersDatasetStorage<T> {
 
     public static final String DATASET_NAME = "data95_dyn.txt";
 
-    public FSSpectraPhilipStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
-        super(df, dataSerializator);
+    public FSSpectraPhilipStorage(DistanceFunctionInterface<T> df, SearchObjectDataToStringInterface<T> dataSerializator) {
+        super(new FSSearchSpaceImpl(df), dataSerializator);
     }
 
     @Override

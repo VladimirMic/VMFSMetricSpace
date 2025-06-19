@@ -1,27 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package vm.fs.metricSpaceImpl.parsersOfOtherFormats;
+package vm.fs.searchSpaceImpl.parsersOfOtherFormats;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import vm.fs.FSGlobal;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
-import vm.metricSpace.distance.DistanceFunctionInterface;
+import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 
 /**
  *
  * @author Vlada
  * @param <T>
  */
-public abstract class AbstractFSMetricSpacesStorageWithOthersDatasetStorage<T> extends FSMetricSpacesStorage<T> {
+public abstract class AbstractFSSearchSpacesStorageWithOthersDatasetStorage<T> extends FSSearchSpacesStorage<T> {
 
-    public AbstractFSMetricSpacesStorageWithOthersDatasetStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
-        super(df, dataSerializator);
+    public AbstractFSSearchSpacesStorageWithOthersDatasetStorage(AbstractSearchSpace space, SearchObjectDataToStringInterface<T> dataSerializator) {
+        super(space, dataSerializator);
     }
 
     @Override

@@ -4,19 +4,19 @@ import java.util.List;
 import vm.fs.FSGlobal;
 import vm.fs.main.datatools.FSPrepareNewDatasetForPivotFilterings;
 import vm.fs.main.search.perform.FSKNNQueriesSeqScanWithFilteringMain;
-import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
 import vm.fs.plot.impl.paper.submittedcodes.vldb2024.ICDEPlotter;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.DatasetOfCandidates;
-import vm.metricSpace.data.RandomVectorsGenerator;
-import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
-import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
-import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
-import vm.metricSpace.distance.impl.L2OnFloatsArray;
+import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
+import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
 import vm.search.algorithm.SearchingAlgorithm;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.DatasetOfCandidates;
+import vm.searchSpace.data.RandomVectorsGenerator;
+import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
+import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.bounding.BoundsOnDistanceEstimation;
+import vm.searchSpace.distance.impl.L2OnFloatsArray;
+import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 
 /**
  *
@@ -73,10 +73,10 @@ public class ICDE25DataDepPtolemaicFiltering {
 
     private static Dataset[] createOrGetRandomUniformDatasetQueriesPivots(int datasetObjectCount, int pivotsCount, int queriesCount, int... dimensionalities) {
         DistanceFunctionInterface df = new L2OnFloatsArray();
-        FSMetricSpaceImpl metricSpace = new FSMetricSpaceImpl(df);
-        MetricObjectDataToStringInterface<float[]> dataSerializator = SingularisedConvertors.FLOAT_VECTOR_SPACE;
+        FSSearchSpaceImpl searchSpace = new FSSearchSpaceImpl(df);
+        SearchObjectDataToStringInterface<float[]> dataSerializator = SingularisedConvertors.FLOAT_VECTOR_SPACE;
         int[] sizes = {datasetObjectCount, queriesCount, pivotsCount};
-        RandomVectorsGenerator generator = new RandomVectorsGenerator(metricSpace, new FSMetricSpacesStorage(metricSpace, dataSerializator), sizes, dimensionalities);
+        RandomVectorsGenerator generator = new RandomVectorsGenerator(new FSSearchSpacesStorage(searchSpace, dataSerializator), sizes, dimensionalities);
         return generator.createOrGet(DATASET_PREFIX_NAME);
     }
 
@@ -101,7 +101,7 @@ public class ICDE25DataDepPtolemaicFiltering {
         int i;
         for (i = 0; i < filters.length; i++) {
             BoundsOnDistanceEstimation filter = filters[i];
-            SearchingAlgorithm alg = FSKNNQueriesSeqScanWithFilteringMain.initAlg(filter, dataset, dataset.getMetricSpace(), pivots, null, null);
+            SearchingAlgorithm alg = FSKNNQueriesSeqScanWithFilteringMain.initAlg(filter, dataset, dataset.getSearchSpace(), pivots, null, null);
             folders[i] = alg.getResultName();
         }
         folders[i] = "ground_truth";

@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstances;
-import vm.metricSpace.Dataset;
+import vm.searchSpace.Dataset;
 
 /**
  *
@@ -42,7 +42,7 @@ public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
             datasetSize = dataset.updateDatasetSize();
         }
         LOG.log(Level.INFO, "Going to select {0} pivots and {1} queries (if not exist) for a dataset of size {2}", new Object[]{numberOfPivots, numberOfQueries, datasetSize});
-        Iterator it = dataset.getMetricObjectsFromDataset();
+        Iterator it = dataset.getSearchObjectsFromDataset();
         float lcm;
         Long batchSizeForQueries;
         Long batchSizeForPivots;

@@ -1,4 +1,4 @@
-package vm.fs.metricSpaceImpl;
+package vm.fs.searchSpaceImpl;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,46 +21,33 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
-import vm.metricSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.AbstractSearchSpacesStorage;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 
 /**
  *
  * @author xmic
  * @param <T>
  */
-public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
+public class FSSearchSpacesStorage<T> extends AbstractSearchSpacesStorage<T> {
 
-    public static final Logger LOG = Logger.getLogger(FSMetricSpacesStorage.class.getName());
+    public static final Logger LOG = Logger.getLogger(FSSearchSpacesStorage.class.getName());
 
     private VMMVStorage singularizatorOfDiskStorage = null;
 
     /**
-     * Methods metricSpace.getIDOfMetricObject and
-     * metricSpace.getDataOfMetricObject are used to store the metric objects in
+     * Methods searchSpace.getIDOfObject and
+     * searchSpace.getDataOfObject are used to store the search objects in
      * the "key-value" format
      *
-     * @param metricSpace
+     * @param searchSpace
      * @param dataSerializator transforms T to string and vice versa see
      * @SingularisedConvertors
      */
-    public FSMetricSpacesStorage(AbstractMetricSpace<T> metricSpace, MetricObjectDataToStringInterface<T> dataSerializator) {
-        super(metricSpace, dataSerializator);
-    }
-
-    /**
-     *
-     * @param dataSerializator transforms T to string and vice versa
-     */
-    public FSMetricSpacesStorage(MetricObjectDataToStringInterface<T> dataSerializator) {
-        this(new FSMetricSpaceImpl<T>(), dataSerializator);
-    }
-
-    public FSMetricSpacesStorage(DistanceFunctionInterface<T> df, MetricObjectDataToStringInterface<T> dataSerializator) {
-        this(new FSMetricSpaceImpl<T>(df), dataSerializator);
+    public FSSearchSpacesStorage(AbstractSearchSpace<T> searchSpace, SearchObjectDataToStringInterface<T> dataSerializator) {
+        super(searchSpace, dataSerializator);
     }
 
     @Override
@@ -99,7 +86,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
                 return null;
             }
             Iterator<Map.Entry<Object, T>> iterator = map.entrySet().iterator();
-            return new Dataset.StaticIteratorOfMetricObjectsMadeOfKeyValueMap(iterator, metricSpace, params);
+            return new Dataset.StaticIteratorOfSearchObjectsMadeOfKeyValueMap(iterator, searchSpace, params);
         }
         return getIteratorOfObjects(f, params);
     }
@@ -126,26 +113,26 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
             }
             return getIteratorForReader(br, count, f.getAbsolutePath());
         } catch (IOException ex) {
-            Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FSSearchSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
     /**
      *
-     * @param metricObject
+     * @param searchObject
      * @param datasetName
      * @param additionalParamsToStoreWithNewDataset zero must be the instance of
-     * the metric space which is used to extract the ID of the metric object and
+     * the search space which is used to extract the ID of the search object and
      * its data
      */
     @Override
-    public void storeObjectToDataset(Object metricObject, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
+    public void storeObjectToDataset(Object searchObject, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
         GZIPOutputStream datasetOutputStream = null;
         try {
             File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
             datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
-            storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
+            storeSearchObject(searchObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } finally {
@@ -158,12 +145,12 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
         }
     }
 
-    protected void storeMetricObject(Object metricObject, OutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
-        if (metricObject == null) {
-            throw new IllegalArgumentException("Attempt to store null object as the metric object");
+    protected void storeSearchObject(Object searchObject, OutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
+        if (searchObject == null) {
+            throw new IllegalArgumentException("Attempt to store null object as the search object");
         }
-        String id = metricSpace.getIDOfMetricObject(metricObject).toString();
-        String data = dataSerializator.metricObjectDataToString((T) metricSpace.getDataOfMetricObject(metricObject));
+        String id = searchSpace.getIDOfObject(searchObject).toString();
+        String data = dataSerializator.searchObjectDataToString((T) searchSpace.getDataOfObject(searchObject));
         datasetOutputStream.write(id.getBytes());
         datasetOutputStream.write(':');
         datasetOutputStream.write(data.getBytes());
@@ -183,10 +170,10 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
                 datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, true), true);
             }
             for (ret = 1; it.hasNext(); ret++) {
-                Object metricObject = it.next();
-                storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
+                Object searchObject = it.next();
+                storeSearchObject(searchObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
                 if (ret % 50000 == 0) {
-                    LOG.log(Level.INFO, "Stored {0} metric objects", ret);
+                    LOG.log(Level.INFO, "Stored {0} search objects", ret);
                 }
             }
         } catch (IOException ex) {
@@ -221,10 +208,10 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
 
     /**
      *
-     * @param pivots metric objects to store
+     * @param pivots search objects to store
      * @param pivotSetName identifier of the pivot set
      * @param additionalParamsToStoreWithNewPivotSet zero must be the instance
-     * of the metric space which is used to extract the ID of the metric object
+     * of the search space which is used to extract the ID of the search object
      * and its data
      */
     @Override
@@ -237,8 +224,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
         try {
             File f = getFileForObjects(FSGlobal.PIVOT_FOLDER, pivotSetName, delete);
             os = new GZIPOutputStream(new FileOutputStream(f, !delete), true);
-            for (Object metricObject : pivots) {
-                storeMetricObject(metricObject, os, additionalParamsToStoreWithNewPivotSet);
+            for (Object searchObject : pivots) {
+                storeSearchObject(searchObject, os, additionalParamsToStoreWithNewPivotSet);
             }
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
@@ -257,7 +244,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
      * @param queryObjs
      * @param querySetName
      * @param additionalParamsToStoreWithNewQuerySet zero must be the instance
-     * of the metric space which is used to extract the ID of the metric object
+     * of the search space which is used to extract the ID of the search object
      * and its data
      */
     @Override
@@ -271,8 +258,8 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
             File f = getFileForObjects(FSGlobal.QUERY_FOLDER, querySetName, delete);
             FSGlobal.checkFileExistence(f);
             datasetOutputStream = new GZIPOutputStream(new FileOutputStream(f, !delete), true);
-            for (Object metricObject : queryObjs) {
-                storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewQuerySet);
+            for (Object searchObject : queryObjs) {
+                storeSearchObject(searchObject, datasetOutputStream, additionalParamsToStoreWithNewQuerySet);
             }
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
@@ -317,7 +304,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
         for (i = 0; it.hasNext(); i++) {
             it.next();
             if (i % 100000 == 0) {
-                Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.INFO, "Read {0} objects", i);
+                Logger.getLogger(FSSearchSpacesStorage.class.getName()).log(Level.INFO, "Read {0} objects", i);
             }
         }
         File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", false);
@@ -326,7 +313,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
             bw.write(Integer.toString(i));
             bw.flush();
         } catch (IOException ex) {
-            Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FSSearchSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -339,12 +326,12 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
             byte[] bytes = Integer.toString(count).getBytes();
             os.write(bytes);
         } catch (IOException ex) {
-            Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FSSearchSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 os.close();
             } catch (IOException ex) {
-                Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FSSearchSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -363,7 +350,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
                     throw new RuntimeException("File " + realPath + " is on the tertiary storage. Stopping. The symbolic link path is " + fGZ.getAbsolutePath());
                 }
             } catch (IOException ex) {
-                Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FSSearchSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -376,10 +363,10 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
      * @return
      */
     protected Iterator<AbstractMap.SimpleEntry<String, T>> getIteratorForReader(BufferedReader br, int count, String filePath) {
-        return new MetricObjectFileIterator(br, count);
+        return new SearchObjectFileIterator(br, count);
     }
 
-    protected class MetricObjectFileIterator<T> implements Iterator<AbstractMap.SimpleEntry<String, T>> {
+    protected class SearchObjectFileIterator<T> implements Iterator<AbstractMap.SimpleEntry<String, T>> {
 
         protected AbstractMap.SimpleEntry<String, T>[] nextObjects;
         private int pointer;
@@ -390,7 +377,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
 
         private final int BATCH_SIZE = 256;
 
-        public MetricObjectFileIterator(BufferedReader br, int maxCount) {
+        public SearchObjectFileIterator(BufferedReader br, int maxCount) {
             this.br = br;
             nextObjects = new AbstractMap.SimpleEntry[BATCH_SIZE];
             this.maxCount = maxCount;
@@ -410,7 +397,7 @@ public class FSMetricSpacesStorage<T> extends AbstractMetricSpacesStorage<T> {
                 try {
                     br.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(FSMetricSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FSSearchSpacesStorage.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             return ret;

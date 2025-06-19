@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import vm.fs.FSGlobal;
-import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
+import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.objTransforms.storeLearned.SVDStoreInterface;
 
 /**
@@ -40,22 +40,22 @@ public class FSSVDStorageImpl implements SVDStoreInterface {
             bw = new BufferedWriter(new OutputStreamWriter(datasetOutputStream));
 
             bw.write("Means\n");
-            bw.write(SingularisedConvertors.FLOAT_VECTOR_SPACE.metricObjectDataToString(meansOverColumns));
+            bw.write(SingularisedConvertors.FLOAT_VECTOR_SPACE.searchObjectDataToString(meansOverColumns));
             bw.write("\n");
             LOG.log(Level.INFO, "Stored sizes of arrays: meansOverColumns: {0}", meansOverColumns.length);
 
             bw.write("Singular values\n");
-            bw.write(SingularisedConvertors.FLOAT_VECTOR_SPACE.metricObjectDataToString(singularValues));
+            bw.write(SingularisedConvertors.FLOAT_VECTOR_SPACE.searchObjectDataToString(singularValues));
             bw.write("\n");
             LOG.log(Level.INFO, "Stored sizes of arrays: singularValues: {0}", singularValues.length);
 
             bw.write("matrixVT\n");
-            bw.write(SingularisedConvertors.FLOAT_MATRIX_SPACE.metricObjectDataToString(matrixVT));
+            bw.write(SingularisedConvertors.FLOAT_MATRIX_SPACE.searchObjectDataToString(matrixVT));
             bw.write("\n");
             LOG.log(Level.INFO, "Stored sizes of arrays: matrixVT: {0} * {1}", new Object[]{matrixVT.length, matrixVT[0].length});
 
             bw.write("matrixU\n");
-            bw.write(SingularisedConvertors.FLOAT_MATRIX_SPACE.metricObjectDataToString(matrixU));
+            bw.write(SingularisedConvertors.FLOAT_MATRIX_SPACE.searchObjectDataToString(matrixU));
             bw.write("\n");
             LOG.log(Level.INFO, "Stored sizes of arrays: matrixU: {0} * {1}", new Object[]{matrixU.length, matrixU[0].length});
 

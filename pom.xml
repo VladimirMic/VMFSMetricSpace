@@ -62,9 +62,8 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>VMMetricSpaceTechniquesImpl</artifactId>
-            <version>1.0</version>
-            <type>jar</type>
+            <artifactId>VMSearchSpaceTechniquesImpl</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>

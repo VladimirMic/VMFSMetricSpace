@@ -13,8 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.fs.FSGlobal;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
 
 /**
  *
@@ -73,7 +73,7 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
                 }
             }
             if (dataset != null) {
-                checkOrdersOfPivots(dataset.getPivots(maxColumnCount), dataset.getMetricSpace());
+                checkOrdersOfPivots(dataset.getPivots(maxColumnCount), dataset.getSearchSpace());
             }
             return ret;
         } catch (IOException ex) {

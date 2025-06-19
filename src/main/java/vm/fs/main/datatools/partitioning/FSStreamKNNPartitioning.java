@@ -13,15 +13,15 @@ import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAngles
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.partitioning.FSStorageDatasetPartitionsInterface;
 import vm.fs.store.partitioning.FSVoronoiPartitioningStorage;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.datasetPartitioning.impl.Stream1NNClassifierWithFilter;
-import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
-import vm.metricSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
-import vm.metricSpace.distance.bounding.onepivot.impl.TriangleInequality;
-import vm.metricSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFilteringForStreamKNNClassifier;
-import vm.metricSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
-import vm.metricSpace.distance.bounding.twopivots.impl.PtolemaicFilteringForStreamKNNClassifier;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.datasetPartitioning.impl.Stream1NNClassifierWithFilter;
+import vm.searchSpace.distance.bounding.BoundsOnDistanceEstimation;
+import vm.searchSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
+import vm.searchSpace.distance.bounding.onepivot.impl.TriangleInequality;
+import vm.searchSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
+import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFilteringForStreamKNNClassifier;
+import vm.searchSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
+import vm.searchSpace.distance.bounding.twopivots.impl.PtolemaicFilteringForStreamKNNClassifier;
 
 /**
  *
@@ -63,7 +63,7 @@ public class FSStreamKNNPartitioning {
         BoundsOnDistanceEstimation[] filters = initTestedFilters(resultSetPrefix, pivots, centroids, dataset);
         for (BoundsOnDistanceEstimation filter : filters) {
             Stream1NNClassifierWithFilter classifier = new Stream1NNClassifierWithFilter<>(
-                    dataset.getMetricSpace(),
+                    dataset.getSearchSpace(),
                     dataset.getDistanceFunction(),
                     pivotCountForFilter,
                     centroids,
@@ -75,7 +75,7 @@ public class FSStreamKNNPartitioning {
     }
 
     private static Map<Comparable, List<Comparable>> partition(Dataset dataset, Stream1NNClassifierWithFilter partitioning, int pivotCount, FSStorageDatasetPartitionsInterface storage) {
-        Iterator it = dataset.getMetricObjectsFromDataset();
+        Iterator it = dataset.getSearchObjectsFromDataset();
         Map ret = partitioning.partitionObjects(it, dataset.getDatasetName(), storage, pivotCount);
         try {
             String path = storage.getFile(dataset.getDatasetName(), null, pivotCount, true).getAbsolutePath();
@@ -102,8 +102,8 @@ public class FSStreamKNNPartitioning {
 
     private static BoundsOnDistanceEstimation[] initTestedFilters(String resultSetPrefix, List pivots, List centroids, Dataset dataset) {
         int pivotCount = pivots.size();
-        List pivotsData = dataset.getMetricSpace().getDataOfMetricObjects(pivots);
-        List centroidsData = dataset.getMetricSpace().getDataOfMetricObjects(centroids);
+        List pivotsData = dataset.getSearchSpace().getDataOfObjects(pivots);
+        List centroidsData = dataset.getSearchSpace().getDataOfObjects(centroids);
         AbstractOnePivotFilter metricFiltering = new TriangleInequality(resultSetPrefix);
         AbstractOnePivotFilter dataDependentMetricFiltering = FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstanceTriangleInequalityWithLimitedAngles(resultSetPrefix, pivotCount, dataset);
         AbstractTwoPivotsFilter fourPointPropertyBased = new FourPointBasedFiltering(resultSetPrefix);

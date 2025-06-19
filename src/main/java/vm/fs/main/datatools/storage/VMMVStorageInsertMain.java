@@ -3,9 +3,8 @@ package vm.fs.main.datatools.storage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstances;
-//import vm.m2.dataset.M2DatasetInstanceSingularizator;
-import vm.metricSpace.Dataset;
-import vm.fs.metricSpaceImpl.VMMVStorage;
+import vm.searchSpace.Dataset;
+import vm.fs.searchSpaceImpl.VMMVStorage;
 
 /**
  *

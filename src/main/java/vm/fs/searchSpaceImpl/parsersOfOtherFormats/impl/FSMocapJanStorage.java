@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl;
+package vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,24 +7,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import vm.fs.FSGlobal;
-import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.AbstractFSMetricSpacesStorageWithOthersDatasetStorage;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
-import vm.metricSpace.distance.impl.DTWOnFloatsArray;
+import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
+import vm.fs.searchSpaceImpl.parsersOfOtherFormats.AbstractFSSearchSpacesStorageWithOthersDatasetStorage;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.ToolsSpaceDomain;
+import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
+import vm.searchSpace.distance.impl.DTWOnFloatsArray;
 
 /**
  *
  * @author xmic
  */
-public class FSMocapJanStorage extends AbstractFSMetricSpacesStorageWithOthersDatasetStorage<List<float[][]>> {
+public class FSMocapJanStorage extends AbstractFSSearchSpacesStorageWithOthersDatasetStorage<List<float[][]>> {
 
     public static final String DATASET_NAME_10FPS = "actions-single-subject-all-POS-fps10.data";
     public static final String DATASET_NAME_30FPS = "actions-single-subject-all-POS.data";
 
     public FSMocapJanStorage() {
-        super(new DTWOnFloatsArray(), SingularisedConvertors.MOCAP_SPACE);
+        super(new FSSearchSpaceImpl(new DTWOnFloatsArray()), SingularisedConvertors.MOCAP_SPACE);
     }
 
     @Override
@@ -57,11 +53,11 @@ public class FSMocapJanStorage extends AbstractFSMetricSpacesStorageWithOthersDa
 ///////////////////////////////// priprietary
     public static final Dataset<List<float[][]>> createInstanceOfOriginalDataset(String datasetNameSeeConstants) {
         FSMocapJanStorage storage = new FSMocapJanStorage();
-        return new Dataset<List<float[][]>>(datasetNameSeeConstants, new FSMetricSpaceImpl<>(), storage) {
+        return new Dataset<List<float[][]>>(datasetNameSeeConstants, storage) {
             @Override
             public Map<Comparable, List<float[][]>> getKeyValueStorage() {
                 Iterator<Object> it = storage.getObjectsFromDataset(datasetName, -1);
-                Map<Comparable, List<float[][]>> ret = ToolsMetricDomain.getMetricObjectsAsIdDataMap(this);
+                Map<Comparable, List<float[][]>> ret = ToolsSpaceDomain.getObjectsAsIdDataMap(this);
                 return ret;
             }
 

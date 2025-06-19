@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.plot.impl.paper.submittedcodes.vldb2024;
 
 import java.io.File;
@@ -11,7 +7,7 @@ import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl.QUERY_STATS;
-import vm.metricSpace.Dataset;
+import vm.searchSpace.Dataset;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotXCategoriesPlotter;
 

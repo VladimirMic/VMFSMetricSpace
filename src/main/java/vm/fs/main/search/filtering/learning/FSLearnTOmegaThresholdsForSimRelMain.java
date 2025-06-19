@@ -1,8 +1,8 @@
 package vm.fs.main.search.filtering.learning;
 
 import vm.fs.dataset.FSDatasetInstances;
-import vm.metricSpace.Dataset;
 import vm.fs.store.filtering.FSSimRelThresholdsTOmegaStorage;
+import vm.searchSpace.Dataset;
 import vm.simRel.impl.learn.ThresholdsTOmegaEvaluator;
 import vm.simRel.impl.learn.storeLearnt.SimRelEuclidThresholdsTOmegaStorage;
 
@@ -46,7 +46,7 @@ public class FSLearnTOmegaThresholdsForSimRelMain {
 //        for (int i = 0; i < querySamples.size(); i++) {
 //            Object queryObj = querySamples.get(i);
 //            simRelLearn.resetCounters(pcaLength);
-//            alg.candSetKnnSearch(pcaDataset.getMetricSpace(), queryObj, kPCA, sampleOfDataset.iterator());
+//            alg.candSetKnnSearch(pcaDataset.getSearchSpace(), queryObj, kPCA, sampleOfDataset.iterator());
 //            System.out.println("Learning tresholds with the query obj" + (i + 1));
 //        }
 //        int idx = SimRelEuclidThresholdsTOmegaStorage.percentileToArrayIdx(percentileWrong);

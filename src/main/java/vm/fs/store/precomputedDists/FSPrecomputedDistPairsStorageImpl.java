@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
 /**
  *

@@ -1,31 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package vm.fs.metricSpaceImpl.parsersOfOtherFormats;
+package vm.fs.searchSpaceImpl.parsersOfOtherFormats;
 
 import java.io.File;
 import java.util.Iterator;
 import vm.fs.FSGlobal;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.metricSpace.MetricSpaceWithIDsAsObjects;
-import vm.metricSpace.data.toStringConvertors.SingularisedConvertors;
-import vm.metricSpace.distance.impl.QScore;
+import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
+import vm.searchSpace.SearchSpaceWithIDsAsObjects;
+import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
+import vm.searchSpace.distance.impl.QScore;
 
 /**
  *
  * @author xmic
  */
-public class FSPDBeStorage extends FSMetricSpacesStorage<String> {
+public class FSPDBeStorage extends FSSearchSpacesStorage<String> {
     
     public static final String DOUBLE_DOT_WINDOWS = "%3A";
 
     public FSPDBeStorage() {
-        super(new MetricSpaceWithIDsAsObjects(new QScore(0)), SingularisedConvertors.EMPTY_CONVERTOR);
+        super(new SearchSpaceWithIDsAsObjects(new QScore(0)), SingularisedConvertors.EMPTY_CONVERTOR);
     }
 
     @Override
-    public void storeObjectToDataset(Object metricObject, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
+    public void storeObjectToDataset(Object searchObject, String datasetName, Object... additionalParamsToStoreWithNewDataset) {
         throw new UnsupportedOperationException("This dataset does not support adding objects in this way. Download binaries instead.");
     }
 

@@ -4,9 +4,9 @@ import java.util.Map;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.dataTransforms.FSGHPSketchesPivotPairsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
-import vm.metricSpace.Dataset;
 import vm.objTransforms.learning.LearnSketchingGHP;
 import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
+import vm.searchSpace.Dataset;
 
 /**
  *

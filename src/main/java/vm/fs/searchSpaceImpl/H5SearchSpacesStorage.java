@@ -1,4 +1,4 @@
-package vm.fs.metricSpaceImpl;
+package vm.fs.searchSpaceImpl;
 
 import io.jhdf.HdfFile;
 import io.jhdf.api.Dataset;
@@ -18,24 +18,20 @@ import java.util.logging.Logger;
 import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.data.toStringConvertors.MetricObjectDataToStringInterface;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 
 /**
  *
  * @author xmic
  */
-public class H5MetricSpacesStorage<T> extends FSMetricSpacesStorage<T> {
+public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    public final Logger LOG = Logger.getLogger(H5MetricSpacesStorage.class.getName());
+    public final Logger LOG = Logger.getLogger(H5SearchSpacesStorage.class.getName());
 
-    public H5MetricSpacesStorage(AbstractMetricSpace<T> metricSpace, MetricObjectDataToStringInterface dataSerializator) {
-        super(metricSpace, dataSerializator);
-    }
-
-    public H5MetricSpacesStorage(MetricObjectDataToStringInterface dataSerializator) {
-        super(dataSerializator);
+    public H5SearchSpacesStorage(AbstractSearchSpace<T> searchSpace, SearchObjectDataToStringInterface dataSerializator) {
+        super(searchSpace, dataSerializator);
     }
 
     @Override
@@ -78,12 +74,12 @@ public class H5MetricSpacesStorage<T> extends FSMetricSpacesStorage<T> {
             count = Integer.MAX_VALUE;
         }
         String prefix = params[params.length - 1].toString();
-        return new H5MetricObjectFileIterator(hdfFile, dataset, prefix, count);
+        return new H5SearchObjectFileIterator(hdfFile, dataset, prefix, count);
     }
 
     @Override
-    protected void storeMetricObject(Object metricObject, OutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
-        super.storeMetricObject(metricObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
+    protected void storeSearchObject(Object searchObject, OutputStream datasetOutputStream, Object... additionalParamsToStoreWithNewDataset) throws IOException {
+        super.storeSearchObject(searchObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
     }
 
     public Map<Comparable, Object> getAsMap(String datasetName) {
@@ -97,7 +93,7 @@ public class H5MetricSpacesStorage<T> extends FSMetricSpacesStorage<T> {
         return ret;
     }
 
-    private class H5MetricObjectFileIterator implements Iterator<Object> {
+    private class H5SearchObjectFileIterator implements Iterator<Object> {
 
         protected AbstractMap.SimpleEntry<String, float[]> nextObject;
         protected AbstractMap.SimpleEntry<String, float[]> currentObject;
@@ -109,7 +105,7 @@ public class H5MetricSpacesStorage<T> extends FSMetricSpacesStorage<T> {
         private final String prefixFoIDs;
         private final long[] counter;
 
-        private H5MetricObjectFileIterator(HdfFile hdfFile, Dataset dataset, String prefix, int maxCount) {
+        private H5SearchObjectFileIterator(HdfFile hdfFile, Dataset dataset, String prefix, int maxCount) {
             this.hdfFile = hdfFile;
             this.dataset = dataset;
             int[] storageDimensions = dataset.getDimensions();

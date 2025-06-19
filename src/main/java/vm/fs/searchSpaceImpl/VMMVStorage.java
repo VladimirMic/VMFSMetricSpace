@@ -1,4 +1,4 @@
-package vm.fs.metricSpaceImpl;
+package vm.fs.searchSpaceImpl;
 
 import java.io.File;
 import java.util.Collections;
@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 import org.h2.mvstore.MVMap;
 import org.h2.mvstore.MVStore;
 import vm.fs.FSGlobal;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.ToolsMetricDomain;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.ToolsSpaceDomain;
 
 /**
  *
@@ -77,7 +77,7 @@ public class VMMVStorage<T> {
     public File getFile() {
         File ret = new File(FSGlobal.DATASET_MVSTORAGE_FOLDER, datasetName);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
-        FSMetricSpacesStorage.checkBigTertiaryDatasetStorage(ret);
+        FSSearchSpacesStorage.checkBigTertiaryDatasetStorage(ret);
         return ret;
     }
 
@@ -97,12 +97,12 @@ public class VMMVStorage<T> {
     }
 
     public void insertObjects(Dataset<T> dataset) {
-        Iterator metricObjects = dataset.getMetricObjectsFromDataset();
-        AbstractMetricSpace<T> metricSpace = dataset.getMetricSpace();
-        SortedMap<Comparable, T> priorityObjects = loadBatch(metricObjects, metricSpace);
+        Iterator searchObjects = dataset.getSearchObjectsFromDataset();
+        AbstractSearchSpace<T> searchSpace = dataset.getSearchSpace();
+        SortedMap<Comparable, T> priorityObjects = loadBatch(searchObjects, searchSpace);
         int batchSize = priorityObjects.size();
-        if (metricObjects.hasNext()) {
-            SortedSet allSortedIDs = new TreeSet<>(ToolsMetricDomain.getIDs(dataset.getMetricObjectsFromDataset(), metricSpace));
+        if (searchObjects.hasNext()) {
+            SortedSet allSortedIDs = new TreeSet<>(ToolsSpaceDomain.getIDs(dataset.getSearchObjectsFromDataset(), searchSpace));
             LOG.log(Level.INFO, "Loaded and sorted {0} IDs", allSortedIDs.size());
             storePrefix(allSortedIDs, priorityObjects);
             int goArounds = 0;
@@ -110,8 +110,8 @@ public class VMMVStorage<T> {
             while (!allSortedIDs.isEmpty()) {
                 goArounds++;
                 System.gc();
-                performPrefixBatch(metricObjects, metricSpace, priorityObjects, allSortedIDs, batchSize, goArounds);
-                metricObjects = dataset.getMetricObjectsFromDataset();
+                performPrefixBatch(searchObjects, searchSpace, priorityObjects, allSortedIDs, batchSize, goArounds);
+                searchObjects = dataset.getSearchObjectsFromDataset();
             }
         } else {
             map.putAll(priorityObjects);
@@ -125,14 +125,14 @@ public class VMMVStorage<T> {
         return getKeyValueStorage().size();
     }
 
-    private SortedMap<Comparable, T> loadBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace) {
+    private SortedMap<Comparable, T> loadBatch(Iterator searchObjects, AbstractSearchSpace<T> searchSpace) {
         SortedMap<Comparable, T> ret = new TreeMap<>();
-        List<Object> objectsFromIterator = vm.datatools.Tools.getObjectsFromIterator(90f, metricObjects);
+        List<Object> objectsFromIterator = vm.datatools.Tools.getObjectsFromIterator(90f, searchObjects);
         for (int i = 0; i < objectsFromIterator.size(); i++) {
             Object next = objectsFromIterator.get(i);
-            Comparable id = metricSpace.getIDOfMetricObject(next);
-            T dataOfMetricObject = metricSpace.getDataOfMetricObject(next);
-            ret.put(id, dataOfMetricObject);
+            Comparable id = searchSpace.getIDOfObject(next);
+            T dataOfSearchObject = searchSpace.getDataOfObject(next);
+            ret.put(id, dataOfSearchObject);
         }
         LOG.log(Level.INFO, "Loaded batch of {0} objects", ret.size());
         return ret;
@@ -159,13 +159,13 @@ public class VMMVStorage<T> {
         return ret;
     }
 
-    private void performPrefixBatch(Iterator metricObjects, AbstractMetricSpace<T> metricSpace, SortedMap<Comparable, T> priorityObjects, SortedSet allSortedIDs, int batchSize, int goArounds) {
+    private void performPrefixBatch(Iterator searchObjects, AbstractSearchSpace<T> searchSpace, SortedMap<Comparable, T> priorityObjects, SortedSet allSortedIDs, int batchSize, int goArounds) {
         int itCounter = 0;
-        while (metricObjects.hasNext() && !allSortedIDs.isEmpty()) {
+        while (searchObjects.hasNext() && !allSortedIDs.isEmpty()) {
             itCounter++;
-            Object o = metricObjects.next();
-            Comparable id = metricSpace.getIDOfMetricObject(o);
-            T data = metricSpace.getDataOfMetricObject(o);
+            Object o = searchObjects.next();
+            Comparable id = searchSpace.getIDOfObject(o);
+            T data = searchSpace.getDataOfObject(o);
             boolean add = (priorityObjects.size() < batchSize || id.compareTo(priorityObjects.lastKey()) < 0) && (id.compareTo(allSortedIDs.first()) >= 0);
             if (add) {
                 priorityObjects.put(id, data);
