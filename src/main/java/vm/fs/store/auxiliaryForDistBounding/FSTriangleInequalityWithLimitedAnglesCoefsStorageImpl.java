@@ -12,12 +12,12 @@ import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.distance.bounding.onepivot.impl.DataDependentMetricFiltering;
-import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
-import vm.metricSpace.distance.bounding.onepivot.storeLearned.TriangleInequalityWithLimitedAnglesCoefsStoreInterface;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.ToolsSpaceDomain;
+import vm.searchSpace.distance.bounding.onepivot.impl.DataDependentMetricFiltering;
+import static vm.searchSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
+import vm.searchSpace.distance.bounding.onepivot.storeLearned.TriangleInequalityWithLimitedAnglesCoefsStoreInterface;
 
 /**
  *
@@ -67,12 +67,12 @@ public class FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl implements Tr
         String fileName = storage.getResultDescription(dataset.getDatasetName(), pivotsCount, sampleSetSize, queriesSampleSize, RATIO_OF_SMALLEST_DISTS);
         fileName = storage.getFile(fileName, false).getAbsolutePath();
         SortedMap<String, Float> coefsForPivots = Tools.parseCsvMapStringFloat(fileName);
-        float[] coefsArray = getCoefsForPivots(dataset.getPivots(pivotsCount), dataset.getMetricSpace(), coefsForPivots);
+        float[] coefsArray = getCoefsForPivots(dataset.getPivots(pivotsCount), dataset.getSearchSpace(), coefsForPivots);
         return new DataDependentMetricFiltering(resultPreffixName, coefsArray);
     }
 
-    private static float[] getCoefsForPivots(List pivots, AbstractMetricSpace metricSpace, SortedMap<String, Float> coefsForPivots) {
-        List iDs = ToolsMetricDomain.getIDsAsList(pivots.iterator(), metricSpace);
+    private static float[] getCoefsForPivots(List pivots, AbstractSearchSpace searchSpace, SortedMap<String, Float> coefsForPivots) {
+        List iDs = ToolsSpaceDomain.getIDsAsList(pivots.iterator(), searchSpace);
         float[] ret = new float[iDs.size()];
         for (int i = 0; i < iDs.size(); i++) {
             String pivotID = (String) iDs.get(i);

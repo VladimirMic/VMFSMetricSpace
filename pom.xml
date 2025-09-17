@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>vm</groupId>
-    <artifactId>VMFSMetricSpace</artifactId>
+    <artifactId>VMFSSearchSpace</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
     <build>
@@ -26,7 +26,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>vm.fs.main.datatools.FSPrepareNewDatasetForPivotFilterings</mainClass>
+                            <mainClass>vm.fs.papers.impl.main.icde2025.DataDepPtolemaicFiltering.ICDE25DataDepPtolemaicFiltering</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -62,9 +62,8 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>VMMetricSpaceTechniquesImpl</artifactId>
-            <version>1.0</version>
-            <type>jar</type>
+            <artifactId>VMSearchSpaceTechniquesImpl</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>
@@ -72,4 +71,5 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+    <name>VMFSSearchSpace</name>
 </project>

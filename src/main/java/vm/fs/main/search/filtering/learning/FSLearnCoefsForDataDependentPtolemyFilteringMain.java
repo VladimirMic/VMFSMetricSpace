@@ -9,9 +9,9 @@ import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import static vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getFile;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningCoefsForPtolemyInequalityWithLimitedAngles;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.bounding.twopivots.learning.LearningCoefsForPtolemyInequalityWithLimitedAngles;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
 /**
  *

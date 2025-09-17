@@ -12,11 +12,11 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.ToolsMetricDomain;
-import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.ToolsSpaceDomain;
+import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
 /**
  * TODO - paralelisation?!
@@ -49,11 +49,11 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
         FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
         String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount, true).getAbsolutePath();
         GZIPOutputStream outputStream = null;
-        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
+        AbstractSearchSpace searchSpace = dataset.getSearchSpace();
         List pivots = dataset.getPivots(pivotCount);
-        Iterator objects = dataset.getMetricObjectsFromDataset();
+        Iterator objects = dataset.getSearchObjectsFromDataset();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
-        List<Comparable>  pivotIDs = metricSpace.getIDsOfMetricObjects(pivots.iterator());
+        List<Comparable>  pivotIDs = searchSpace.getIDsOfObjects(pivots.iterator());
         try {
             outputStream = new GZIPOutputStream(new FileOutputStream(output), true);
             int batchSize = 60000;
@@ -62,7 +62,7 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
             while (objects.hasNext()) {
                 System.gc();
                 batchCounter++;
-                MainMemoryStoredPrecomputedDistances pd = ToolsMetricDomain.evaluateMatrixOfDistances(objects, pivots, metricSpace, df, batchSize);
+                MainMemoryStoredPrecomputedDistances pd = ToolsSpaceDomain.evaluateMatrixOfDistances(objects, pivots, searchSpace, df, batchSize);
                 Map<Comparable, Integer> rowHeaders = pd.getRowHeaders();
                 Map<Comparable, Integer> columnHeaders = pd.getColumnHeaders();
                 float[][] dists = pd.loadPrecomPivotsToObjectsDists(null, -1);

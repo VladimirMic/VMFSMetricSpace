@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.main.search.perform;
 
 import java.util.List;
@@ -14,18 +10,18 @@ import vm.fs.store.filtering.FSSecondaryFilteringWithSketchesStorage;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.bounding.nopivot.impl.SecondaryFilteringWithSketches;
-import vm.metricSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
-import vm.metricSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringWithSketchesStoreInterface;
 import vm.objTransforms.objectToSketchTransformators.AbstractObjectToSketchTransformator;
 import vm.objTransforms.objectToSketchTransformators.SketchingGHP;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
 import vm.search.algorithm.SearchingAlgorithm;
 import vm.search.algorithm.impl.KNNSearchWithSketchSecondaryFiltering;
 import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.bounding.nopivot.impl.SecondaryFilteringWithSketches;
+import vm.searchSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
+import vm.searchSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringWithSketchesStoreInterface;
 
 /**
  *
@@ -71,16 +67,16 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
 
     private static void run(Dataset fullDataset, Dataset sketchesDataset, float distIntervalForPX, float pCum, int sketchLength, String pivotPairsFileName) {
         int k = 10;
-        AbstractMetricSpace metricSpace = fullDataset.getMetricSpace();
+        AbstractSearchSpace searchSpace = fullDataset.getSearchSpace();
         DistanceFunctionInterface df = fullDataset.getDistanceFunction();
 
         PivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         List pivots = fullDataset.getPivots(-1);
         AbstractObjectToSketchTransformator sketchingTechnique;
         if (pivotPairsFileName == null) {
-            sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
+            sketchingTechnique = new SketchingGHP(df, searchSpace, pivots, fullDataset.getDatasetName(), 0.5f, sketchLength, storageOfPivotPairs);
         } else {
-            sketchingTechnique = new SketchingGHP(df, metricSpace, pivots, pivotPairsFileName, storageOfPivotPairs);
+            sketchingTechnique = new SketchingGHP(df, searchSpace, pivots, pivotPairsFileName, storageOfPivotPairs);
         }
 
         SecondaryFilteringWithSketchesStoreInterface storage = new FSSecondaryFilteringWithSketchesStorage();
@@ -90,7 +86,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
 
         List queries = fullDataset.getQueryObjects();
 
-        TreeSet[] results = alg.completeKnnFilteringWithQuerySet(metricSpace, queries, k, fullDataset.getMetricObjectsFromDataset());
+        TreeSet[] results = alg.completeKnnFilteringWithQuerySet(searchSpace, queries, k, fullDataset.getSearchObjectsFromDataset());
 
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(fullDataset.getDatasetName(), fullDataset.getQuerySetName(), k, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), filter.getTechFullName(), null);
@@ -99,7 +95,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
 
         LOG.log(Level.INFO, "Storing results of queries");
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
-        resultsStorage.storeQueryResults(metricSpace, queries, results, k, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), filter.getTechFullName());
+        resultsStorage.storeQueryResults(searchSpace, queries, results, k, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), filter.getTechFullName());
 
         LOG.log(Level.INFO, "Evaluating accuracy of queries");
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(fullDataset.getDatasetName(), fullDataset.getQuerySetName(), k, fullDataset.getDatasetName(), fullDataset.getQuerySetName(), filter.getTechFullName(), null);

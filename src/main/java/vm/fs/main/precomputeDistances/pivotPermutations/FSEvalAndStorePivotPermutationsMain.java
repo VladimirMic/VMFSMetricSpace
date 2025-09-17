@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.main.precomputeDistances.pivotPermutations;
 
 import java.io.FileOutputStream;
@@ -19,8 +15,8 @@ import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
 import vm.fs.store.precomputedDists.permutations.FSPrecomputedPivotPermutationsLoaderImpl;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
 
 /**
  *
@@ -50,10 +46,10 @@ public class FSEvalAndStorePivotPermutationsMain {
         FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
         float[][] distsToPivots = loader.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
         Map<Comparable, Integer> rowHeaders = loader.getRowHeaders();
-        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
+        AbstractSearchSpace searchSpace = dataset.getSearchSpace();
         List pivots = dataset.getPivots(pivotCount);
-        String[] pivotIDs = checkPivots(metricSpace, loader.getColumnHeaders(), pivots);
-        Iterator it = dataset.getMetricObjectsFromDataset();
+        String[] pivotIDs = checkPivots(searchSpace, loader.getColumnHeaders(), pivots);
+        Iterator it = dataset.getSearchObjectsFromDataset();
         SortedSet<AbstractMap.SimpleEntry<Integer, Float>> pivotPermutation = new TreeSet<>(new Tools.MapByFloatValueComparator<>());
 
         String output = new FSPrecomputedPivotPermutationsLoaderImpl().deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivots.size(), true).getAbsolutePath();
@@ -70,7 +66,7 @@ public class FSEvalAndStorePivotPermutationsMain {
             for (int i = 0; it.hasNext(); i++) {
                 pivotPermutation.clear();
                 Object o = it.next();
-                String oId = metricSpace.getIDOfMetricObject(o).toString();
+                String oId = searchSpace.getIDOfObject(o).toString();
                 outputStream.write(oId.getBytes());
                 outputStream.write(';');
                 Integer idx = rowHeaders.get(oId);
@@ -107,10 +103,10 @@ public class FSEvalAndStorePivotPermutationsMain {
         }
     }
 
-    private static String[] checkPivots(AbstractMetricSpace metricSpace, Map<Comparable, Integer> columnHeaders, List pivots) {
+    private static String[] checkPivots(AbstractSearchSpace searchSpace, Map<Comparable, Integer> columnHeaders, List pivots) {
         String[] ret = new String[pivots.size()];
         for (int i = 0; i < pivots.size(); i++) {
-            Object pId = metricSpace.getIDOfMetricObject(pivots.get(i));
+            Object pId = searchSpace.getIDOfObject(pivots.get(i));
             Integer idx = columnHeaders.get(pId);
             if (idx == null || i != idx) {
                 throw new IllegalArgumentException("Wrong order of pivots: " + i + ", " + idx);

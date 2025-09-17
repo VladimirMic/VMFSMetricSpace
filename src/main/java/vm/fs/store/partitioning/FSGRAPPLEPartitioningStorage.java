@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.store.partitioning;
 
 import java.io.File;
@@ -16,7 +12,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
+import vm.searchSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
 
 /**
  *

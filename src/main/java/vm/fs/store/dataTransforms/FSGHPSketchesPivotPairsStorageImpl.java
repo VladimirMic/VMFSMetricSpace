@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.FSGlobal;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
-import vm.metricSpace.AbstractMetricSpace;
+import vm.searchSpace.AbstractSearchSpace;
 import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 
 /**
@@ -25,13 +25,13 @@ public class FSGHPSketchesPivotPairsStorageImpl<T> implements PivotPairsStoreInt
     private static final Logger LOG = Logger.getLogger(FSGHPSketchesPivotPairsStorageImpl.class.getName());
 
     @Override
-    public void storePivotPairs(String resultName, AbstractMetricSpace<T> metricSpace, List<Object> pivots, Object... additionalInfoToStoreWithLearningSketching) {
+    public void storePivotPairs(String resultName, AbstractSearchSpace<T> searchSpace, List<Object> pivots, Object... additionalInfoToStoreWithLearningSketching) {
         OutputStreamWriter w = null;
         try {
             w = new OutputStreamWriter(new FileOutputStream(getFileForResults(resultName, true), false));
             for (int i = 0; i < pivots.size(); i += 2) {
-                Object p1 = metricSpace.getIDOfMetricObject(pivots.get(i));
-                Object p2 = metricSpace.getIDOfMetricObject(pivots.get(i + 1));
+                Object p1 = searchSpace.getIDOfObject(pivots.get(i));
+                Object p2 = searchSpace.getIDOfObject(pivots.get(i + 1));
                 w.write(p1 + ";" + p2 + "\n");
             }
             if (additionalInfoToStoreWithLearningSketching.length != 0) {

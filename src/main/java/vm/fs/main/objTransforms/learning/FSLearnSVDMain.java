@@ -3,12 +3,11 @@ package vm.fs.main.objTransforms.learning;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.dataTransforms.FSSVDStorageImpl;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
 import vm.objTransforms.learning.LearnSVD;
 import vm.objTransforms.storeLearned.SVDStoreInterface;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
 
 /**
  *
@@ -38,11 +37,11 @@ public class FSLearnSVDMain {
 
     private static void run(Dataset dataset, int sampleCount) {
         String datasetName = dataset.getDatasetName();
-        AbstractMetricSpace sourceMetricSpace = dataset.getMetricSpace();
+        AbstractSearchSpace sourceSearchSpace = dataset.getSearchSpace();
         List<Object> sampleOfDataset = dataset.getSampleOfDataset(sampleCount);
         SVDStoreInterface pcaStorage = new FSSVDStorageImpl(datasetName, sampleCount, true);
 
-        LearnSVD svd = new LearnSVD(sourceMetricSpace, pcaStorage, sampleOfDataset, datasetName, sampleCount);
+        LearnSVD svd = new LearnSVD(sourceSearchSpace, pcaStorage, sampleOfDataset, datasetName, sampleCount);
         svd.execute();
     }
 }

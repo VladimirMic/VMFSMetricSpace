@@ -12,9 +12,9 @@
 //import java.util.logging.Logger;
 //import vm.datatools.Tools;
 //import vm.fs.dataset.FSDatasetInstanceSingularizator;
-//import vm.metricSpace.AbstractMetricSpace;
-//import vm.metricSpace.Dataset;
-//import vm.metricSpace.ToolsMetricDomain;
+//import vm.searchSpace.AbstractSearchSpace;
+//import vm.searchSpace.Dataset;
+//import vm.searchSpace.ToolsMetricDomain;
 //
 ///**
 // *

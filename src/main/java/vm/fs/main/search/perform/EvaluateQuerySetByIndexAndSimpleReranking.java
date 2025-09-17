@@ -1,18 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.main.search.perform;
 
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.fs.store.partitioning.FSGRAPPLEPartitioningStorage;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.datasetPartitioning.StorageDatasetPartitionsInterface;
 import vm.search.AlgorithmEvaluator;
 import vm.search.algorithm.SearchingAlgorithm;
 import vm.search.algorithm.impl.GRAPPLEPartitionsCandSetIdentifier;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.datasetPartitioning.StorageDatasetPartitionsInterface;
 
 /**
  *

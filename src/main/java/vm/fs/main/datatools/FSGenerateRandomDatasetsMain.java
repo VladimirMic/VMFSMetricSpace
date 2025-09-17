@@ -1,14 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.main.datatools;
 
-import vm.fs.metricSpaceImpl.FSMetricSpaceImpl;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.data.RandomVectorsGenerator;
-import vm.metricSpace.data.toStringConvertors.impl.FloatVectorToStringConvertor;
+import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
+import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
+import vm.searchSpace.AbstractSearchSpacesStorage;
+import vm.searchSpace.data.RandomVectorsGenerator;
+import vm.searchSpace.data.toStringConvertors.impl.FloatVectorToStringConvertor;
+import vm.searchSpace.distance.impl.L2OnFloatsArray;
 
 /**
  *
@@ -18,10 +15,10 @@ public class FSGenerateRandomDatasetsMain {
 
     public static void main(String[] args) {
         FloatVectorToStringConvertor floatVectorConvertor = new FloatVectorToStringConvertor();
-        FSMetricSpaceImpl<float[]> metricSpace = new FSMetricSpaceImpl<>();
-        AbstractMetricSpacesStorage storage = new FSMetricSpacesStorage(metricSpace, floatVectorConvertor);
+        FSSearchSpaceImpl<float[]> searchSpace = new FSSearchSpaceImpl<>(new L2OnFloatsArray());
+        AbstractSearchSpacesStorage storage = new FSSearchSpacesStorage(searchSpace, floatVectorConvertor);
 
-        RandomVectorsGenerator generator = new RandomVectorsGenerator(metricSpace, storage);
+        RandomVectorsGenerator generator = new RandomVectorsGenerator(storage);
         generator.run();
     }
 

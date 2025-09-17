@@ -5,9 +5,7 @@
 package vm.fs.main.datatools.storage;
 
 import vm.fs.dataset.FSDatasetInstances;
-import vm.fs.metricSpaceImpl.FSMetricSpacesStorage;
-import vm.metricSpace.AbstractMetricSpacesStorage;
-import vm.metricSpace.Dataset;
+import vm.searchSpace.Dataset;
 
 /**
  *

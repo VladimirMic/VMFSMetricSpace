@@ -16,8 +16,8 @@ import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreSampleOfSmallestDistsMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDepenentMetricFilteringMain;
 import vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.DatasetOfCandidates;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.DatasetOfCandidates;
 import vm.search.algorithm.impl.GroundTruthEvaluator;
 
 /**
@@ -39,20 +39,19 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
+            new FSDatasetInstances.DeCAFDataset(),
+            new FSDatasetInstances.MOCAP10FPS(),
+            new FSDatasetInstances.MOCAP30FPS()
 //            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
 //            new FSDatasetInstances.LAION_100M_PCA256Dataset()
-//            new FSDatasetInstances.MOCAP10FPS(),
-//            new FSDatasetInstances.MOCAP30FPS()
 //            FSLayersKasperStorage.createDataset(FSLayersKasperStorage.TYPE_0_small, FSLayersKasperStorage.DIMENSION_0_small)
 //            new FSDatasetInstances.DeCAF20M_PCA256Dataset(),
-            new FSDatasetInstances.DeCAFDataset(),
-//            new FSDatasetInstances.Yahoo100M_1MSubset_Dataset(),
+//            new FSDatasetInstances.Yahoo100M_1MSubset_Dataset()
 //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
 //            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
         //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
         //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates(),
         //            new FSDatasetInstanceSingularizator.FaissDyn_Clip_100M_PCA256_Candidates(300),
-        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates(),
         //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
         //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
@@ -123,7 +122,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         if (skipEverythingEvaluated) {
             return true;
         }
-        if (!FSGlobal.ASK_WHEN_GOING_TO_OVERRIDE_FILE) {
+        if (!FSGlobal.askWhenGoingToOverrideFile) {
             return false;
         }
         try {

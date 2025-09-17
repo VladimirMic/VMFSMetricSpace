@@ -13,12 +13,12 @@ import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAngles
 import vm.fs.store.partitioning.FSGRAPPLEPartitioningStorage;
 import vm.fs.store.partitioning.FSStorageDatasetPartitionsInterface;
 import vm.fs.store.partitioning.FSVoronoiPartitioningStorage;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.datasetPartitioning.AbstractDatasetPartitioning;
-import vm.metricSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
-import vm.metricSpace.datasetPartitioning.impl.VoronoiPartitioningWithoutFilter;
-import vm.metricSpace.distance.bounding.BoundsOnDistanceEstimation;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.datasetPartitioning.AbstractDatasetPartitioning;
+import vm.searchSpace.datasetPartitioning.impl.GRAPPLEPartitioning;
+import vm.searchSpace.datasetPartitioning.impl.VoronoiPartitioningWithoutFilter;
+import vm.searchSpace.distance.bounding.BoundsOnDistanceEstimation;
+import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
 
 /**
  *
@@ -48,7 +48,7 @@ public class FSPartitioningMain {
 
     public static void runVoronoiPartitioning(Dataset dataset, int pivotCount) {
         List<Object> pivots = dataset.getPivots(pivotCount);
-        VoronoiPartitioningWithoutFilter vp = new VoronoiPartitioningWithoutFilter(dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
+        VoronoiPartitioningWithoutFilter vp = new VoronoiPartitioningWithoutFilter(dataset.getSearchSpace(), dataset.getDistanceFunction(), pivots);
         FSVoronoiPartitioningStorage storage = new FSVoronoiPartitioningStorage();
         partition(dataset, vp, pivotCount, storage);
         System.gc();
@@ -58,14 +58,14 @@ public class FSPartitioningMain {
     private static void runGRAPPLEPartitioning(Dataset dataset, BoundsOnDistanceEstimation filter, int pivotCount) {
         List<Object> pivots = dataset.getPivots(pivotCount);
         filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(pivotCount + "_pivots", dataset, pivotCount);
-        AbstractDatasetPartitioning partitioning = new GRAPPLEPartitioning((DataDependentPtolemaicFiltering) filter, dataset.getMetricSpace(), dataset.getDistanceFunction(), pivots);
+        AbstractDatasetPartitioning partitioning = new GRAPPLEPartitioning((DataDependentPtolemaicFiltering) filter, dataset.getSearchSpace(), dataset.getDistanceFunction(), pivots);
         FSGRAPPLEPartitioningStorage storage = new FSGRAPPLEPartitioningStorage();
         partition(dataset, partitioning, pivotCount, storage);
         System.gc();
     }
 
     private static Map<Comparable, List<Comparable>> partition(Dataset dataset, AbstractDatasetPartitioning partitioning, int pivotCount, FSStorageDatasetPartitionsInterface storage) {
-        Iterator it = dataset.getMetricObjectsFromDataset();
+        Iterator it = dataset.getSearchObjectsFromDataset();
         Map ret = partitioning.partitionObjects(it, dataset.getDatasetName(), storage, pivotCount);
         try {
             String path = storage.getFile(dataset.getDatasetName(), null, pivotCount, true).getAbsolutePath();

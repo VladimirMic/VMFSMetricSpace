@@ -4,11 +4,10 @@ import java.io.File;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles;
-import static vm.metricSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
-import vm.search.algorithm.SearchingAlgorithm;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles;
+import static vm.searchSpace.distance.bounding.onepivot.learning.LearningTriangleInequalityWithLimitedAngles.RATIO_OF_SMALLEST_DISTS;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
 /**
  *

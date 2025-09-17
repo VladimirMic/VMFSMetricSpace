@@ -11,12 +11,12 @@ import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentP
 import static vm.fs.main.search.filtering.learning.FSLearnCoefsForDataDependentPtolemyFilteringMain.SAMPLE_SET_SIZE;
 import vm.fs.store.auxiliaryForDistBounding.FSDataDependentPtolemyInequalityPivotPairsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.DistanceFunctionInterface;
-import vm.metricSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
-import vm.metricSpace.distance.bounding.twopivots.learning.LearningPivotPairsForPtolemyInequalityWithLimitedAngles;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
+import vm.searchSpace.distance.bounding.twopivots.learning.LearningPivotPairsForPtolemyInequalityWithLimitedAngles;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
 /**
  *
@@ -44,7 +44,7 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
     }
 
     private static void run(Dataset dataset) {
-        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
+        AbstractSearchSpace searchSpace = dataset.getSearchSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         List<Object> pivots = dataset.getPivots(dataset.getRecommendedNumberOfPivotsForFiltering());
 
@@ -52,7 +52,7 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
 
         List<Object> sampleObjectsAndQueries = dataset.getSampleOfDataset(SAMPLE_SET_SIZE + SAMPLE_QUERY_SET_SIZE);
         FSDataDependentPtolemyInequalityPivotPairsStorageImpl storage = new FSDataDependentPtolemyInequalityPivotPairsStorageImpl();
-        LearningPivotPairsForPtolemyInequalityWithLimitedAngles learning = new LearningPivotPairsForPtolemyInequalityWithLimitedAngles(metricSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.IMPLICIT_K, filter, dataset.getDatasetName(), storage);
+        LearningPivotPairsForPtolemyInequalityWithLimitedAngles learning = new LearningPivotPairsForPtolemyInequalityWithLimitedAngles(searchSpace, df, pivots, sampleObjectsAndQueries, SAMPLE_SET_SIZE, SAMPLE_QUERY_SET_SIZE, AbstractPrecomputedPairsOfDistancesStorage.IMPLICIT_K, filter, dataset.getDatasetName(), storage);
         try {
             learning.execute();
         } catch (InterruptedException ex) {

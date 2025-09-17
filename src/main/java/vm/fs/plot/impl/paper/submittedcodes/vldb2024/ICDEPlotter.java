@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.plot.impl.paper.submittedcodes.vldb2024;
 
 import java.io.File;
@@ -11,7 +7,7 @@ import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl.QUERY_STATS;
-import vm.metricSpace.Dataset;
+import vm.searchSpace.Dataset;
 import vm.plot.AbstractPlotter;
 import vm.plot.impl.BoxPlotXCategoriesPlotter;
 
@@ -19,7 +15,7 @@ import vm.plot.impl.BoxPlotXCategoriesPlotter;
  *
  * @author Vlada
  */
-public class VLDBPlotter extends FSAbstractPlotterFromResults {
+public class ICDEPlotter extends FSAbstractPlotterFromResults {
 
     private final int k;
     private final int datasetSize;
@@ -27,7 +23,7 @@ public class VLDBPlotter extends FSAbstractPlotterFromResults {
     private final String datasetName;
     private final String querysetName;
 
-    public VLDBPlotter(int k, Dataset dataset, String[] folderNamesForDisplayedTraces) {
+    public ICDEPlotter(int k, Dataset dataset, String[] folderNamesForDisplayedTraces) {
         super(true, null, folderNamesForDisplayedTraces);
         this.k = k;
         this.folderNamesForDisplayedTraces = folderNamesForDisplayedTraces;

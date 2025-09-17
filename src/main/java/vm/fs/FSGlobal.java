@@ -12,23 +12,10 @@ import vm.javatools.Tools;
  */
 public class FSGlobal {
 
-    public static final boolean ASK_WHEN_GOING_TO_OVERRIDE_FILE;
-    public static final boolean SLEEP_MY_COMP = false;
-    private static final Logger LOG;
+    public static Boolean askWhenGoingToOverrideFile = null;
+    public static final boolean SLEEP_MY_COMP = true;
+    private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
 
-    static {
-        String question = "Should I ask when going to rewrite existing file?";
-        boolean answer = true;
-        try {
-            Object[] options = new String[]{"Yes", "No"};
-            int banOverloadingFiles = JOptionPane.showOptionDialog(null, question, "Ask when overriding?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
-            answer = banOverloadingFiles != 1;
-        } catch (Exception e) {
-        }
-        ASK_WHEN_GOING_TO_OVERRIDE_FILE = answer;
-        LOG = Logger.getLogger(FSGlobal.class.getName());
-        LOG.log(Level.INFO, "Will ask when rewritting a file? {0}", ASK_WHEN_GOING_TO_OVERRIDE_FILE);
-    }
     /**
      * N drive is the tertiary storage with slow reading. If dataset is stored
      * there and should be read, the flag decides whether the Exception is fired
@@ -103,7 +90,10 @@ public class FSGlobal {
         Object[] options = new String[]{"Yes", "No"};
         file = new File(checkUnixPath(file.getAbsolutePath()));
         file.getParentFile().mkdirs();
-        if (file.exists() && willBeDeleted && ASK_WHEN_GOING_TO_OVERRIDE_FILE) {
+        if (file.exists() && willBeDeleted && askWhenGoingToOverrideFile == null) {
+            askRewritting();
+        }
+        if (file.exists() && willBeDeleted && askWhenGoingToOverrideFile) {
             LOG.log(Level.WARNING, "Asking for a question, waiting for the reply: {0}", file.getAbsolutePath());
             String question = "File " + file.getName() + " at " + file.getAbsolutePath() + " already exists. Do you want to delete its content? Answer no causes immediate stop.";
             int add = JOptionPane.showOptionDialog(null, question, "Override file?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
@@ -117,6 +107,19 @@ public class FSGlobal {
             LOG.log(Level.INFO, "File pointer created ({0})", file.getAbsolutePath());
         }
         return file;
+    }
+
+    private static void askRewritting() {
+        String question = "Should I ask when going to rewrite existing file?";
+        boolean answer = true;
+        try {
+            Object[] options = new String[]{"Yes", "No"};
+            int banOverloadingFiles = JOptionPane.showOptionDialog(null, question, "Ask when overriding?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
+            answer = banOverloadingFiles != 1;
+        } catch (Exception e) {
+        }
+        askWhenGoingToOverrideFile = answer;
+        LOG.log(Level.INFO, "Will ask when rewritting a file? {0}", askWhenGoingToOverrideFile);
     }
 
     public static final File checkFileExistence(File file) {

@@ -4,8 +4,8 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.precomputedDists.FSPrecomputedDistPairsStorageImpl;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
 
 /**
  *

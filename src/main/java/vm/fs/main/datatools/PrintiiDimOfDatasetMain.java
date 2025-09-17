@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
-import vm.fs.metricSpaceImpl.parsersOfOtherFormats.impl.FSSpectraPhilipStorage;
-import vm.metricSpace.AbstractMetricSpace;
-import vm.metricSpace.Dataset;
-import vm.metricSpace.distance.DistanceFunctionInterface;
+import vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl.FSSpectraPhilipStorage;
+import vm.searchSpace.AbstractSearchSpace;
+import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.DistanceFunctionInterface;
 
 /**
  *
@@ -56,12 +56,12 @@ public class PrintiiDimOfDatasetMain {
 
     public static void run(Dataset dataset) {
         List sampleOfDataset = dataset.getSampleOfDataset(FSPrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT);
-        AbstractMetricSpace metricSpace = dataset.getMetricSpace();
+        AbstractSearchSpace searchSpace = dataset.getSearchSpace();
         DistanceFunctionInterface df = dataset.getDistanceFunction();
         double[] distances = new double[FSPrintAndPlotDDOfDatasetMain.IMPLICIT_DIST_COUNT];
         for (int i = 0; i < distances.length; i++) {
-            Object o1 = metricSpace.getDataOfMetricObject(Tools.randomObject(sampleOfDataset));
-            Object o2 = metricSpace.getDataOfMetricObject(Tools.randomObject(sampleOfDataset));
+            Object o1 = searchSpace.getDataOfObject(Tools.randomObject(sampleOfDataset));
+            Object o2 = searchSpace.getDataOfObject(Tools.randomObject(sampleOfDataset));
             distances[i] = df.getDistance(o1, o2);
             if (i % 100000 == 0) {
                 Logger.getLogger(PrintiiDimOfDatasetMain.class.getName()).log(Level.INFO, "Evaluated {0} distances out of {1}", new Object[]{i, distances.length});

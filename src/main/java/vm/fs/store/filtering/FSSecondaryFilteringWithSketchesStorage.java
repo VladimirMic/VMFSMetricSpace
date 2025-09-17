@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.store.filtering;
 
 import java.io.BufferedWriter;
@@ -16,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.datatools.Tools;
 import vm.fs.FSGlobal;
-import vm.metricSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
-import vm.metricSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringWithSketchesStoreInterface;
+import vm.searchSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
+import vm.searchSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringWithSketchesStoreInterface;
 
 /**
  *

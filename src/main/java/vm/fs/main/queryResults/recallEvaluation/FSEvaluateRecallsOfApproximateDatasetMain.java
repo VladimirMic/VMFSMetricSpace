@@ -10,8 +10,8 @@ import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
-import vm.metricSpace.Dataset;
 import vm.queryResults.recallEvaluation.RecallOfCandsSetsEvaluator;
+import vm.searchSpace.Dataset;
 
 /**
  *
