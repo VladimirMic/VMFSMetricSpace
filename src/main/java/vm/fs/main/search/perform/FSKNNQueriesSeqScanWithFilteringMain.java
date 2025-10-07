@@ -33,6 +33,7 @@ import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFil
 import vm.searchSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
 import vm.searchSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
 import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
+import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
 /**
  *
@@ -45,9 +46,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static void main(String[] args) {
         boolean publicQueries = true;
-        Dataset[] datasets = new Dataset[]{ 
-//            new FSDatasetInstances.DeCAF(),
-//            new FSDatasetInstances.MOCAP10FPS(),
+        Dataset[] datasets = new Dataset[]{ //            new FSDatasetInstances.DeCAF(),
+        //            new FSDatasetInstances.MOCAP10FPS(),
         //            new FSDatasetInstances.MOCAP30FPS(),
         //            new FSDatasetInstances.DeCAFDataset()
         //                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
@@ -167,8 +167,15 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         return poDists;
     }
 
+    public static SearchingAlgorithm initAlg(BoundsOnDistanceEstimation filter, Dataset dataset, AbstractSearchSpace searchSpace, List pivots, DistanceFunctionInterface df) {
+        return initAlg(filter, dataset, searchSpace, pivots, df, null);
+    }
+
     public static SearchingAlgorithm initAlg(BoundsOnDistanceEstimation filter, Dataset dataset, AbstractSearchSpace searchSpace, List pivots, DistanceFunctionInterface df, float[][] pivotPivotDists) {
         SearchingAlgorithm alg;
+        if (pd == null) {
+            initPODists(dataset, pivots.size(), -1, pivots);
+        }
         Map<Comparable, Integer> rowHeaders = pd == null ? null : pd.getRowHeaders();
         Map<Comparable, Integer> columnHeaders = pd == null ? null : pd.getColumnHeaders();
         if (filter instanceof AbstractPtolemaicBasedFiltering) {
@@ -186,6 +193,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
                 tmp.setThresholdOnLBsPerObjForSeqScan(62.5f);
             }
         } else if (filter instanceof AbstractTwoPivotsFilter) {
+            if (pivotPivotDists == null) {
+                pivotPivotDists = searchSpace.getDistanceMap(df, pivots, pivots);
+            }
             alg = new KNNSearchWithGenericTwoPivotFiltering(searchSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, rowHeaders, pivotPivotDists, df);
         } else if (filter instanceof AbstractOnePivotFilter) {
             alg = new KNNSearchWithOnePivotFiltering(searchSpace, (AbstractOnePivotFilter) filter, pivots, poDists, rowHeaders, columnHeaders, df);
