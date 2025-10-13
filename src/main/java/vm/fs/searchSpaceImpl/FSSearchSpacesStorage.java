@@ -279,7 +279,7 @@ public class FSSearchSpacesStorage<T> extends AbstractSearchSpacesStorage<T> {
         try {
             File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", false);
             if (!f.exists()) {
-                return -1;
+                return updateDatasetSize(datasetName);
             }
             br = new BufferedReader(new FileReader(f));
             String line = br.readLine();

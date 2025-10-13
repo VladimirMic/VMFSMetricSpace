@@ -2117,16 +2117,32 @@ public class FSDatasetInstances {
 
     }
 
-    public static class H5FloatVectorDataset extends Dataset<float[]> {
+    public static abstract class H5FloatVectorDataset extends H5Dataset<float[]> {
 
         public H5FloatVectorDataset(String datasetName, DistanceFunctionInterface<float[]> df) {
+            super(datasetName, df, SingularisedConvertors.FLOAT_VECTOR_SPACE);
+        }
+
+    }
+
+    public static abstract class H5LongVectorDataset extends H5Dataset<long[]> {
+
+        public H5LongVectorDataset(String datasetName, DistanceFunctionInterface<long[]> df) {
+            super(datasetName, df, SingularisedConvertors.LONG_VECTOR_SPACE);
+        }
+
+    }
+
+    public static abstract class H5Dataset<T> extends Dataset<T> {
+
+        public H5Dataset(String datasetName, DistanceFunctionInterface<T> df, SearchObjectDataToStringInterface<T> serialisator) {
             super(datasetName,
-                    new H5SearchSpacesStorage<>(new FSSearchSpaceImpl<>(df), SingularisedConvertors.FLOAT_VECTOR_SPACE)
+                    new H5SearchSpacesStorage<>(new FSSearchSpaceImpl<>(df), serialisator)
             );
         }
 
         @Override
-        public Map<Comparable, float[]> getKeyValueStorage() {
+        public Map<Comparable, T> getKeyValueStorage() {
             H5SearchSpacesStorage storage = (H5SearchSpacesStorage) searchSpacesStorage;
             return storage.getAsMap(datasetName);
         }

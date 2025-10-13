@@ -3,16 +3,8 @@ package vm.fs.searchSpaceImpl;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl.FSMocapJanStorage;
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.distance.DistanceFunctionInterface;
-import vm.searchSpace.distance.impl.AngularDistance;
-import vm.searchSpace.distance.impl.CosineDistance;
-import vm.searchSpace.distance.impl.DTWOnFloatsArray;
-import vm.searchSpace.distance.impl.DotProduct;
-import vm.searchSpace.distance.impl.HammingDistanceLongs;
-import vm.searchSpace.distance.impl.L2OnFloatsArray;
-import vm.searchSpace.distance.impl.Sapir3DistanceFunction;
 
 /**
  *

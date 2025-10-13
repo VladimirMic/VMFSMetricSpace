@@ -24,6 +24,7 @@ import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 /**
  *
  * @author xmic
+ * @param <T>
  */
 public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
 
@@ -95,8 +96,8 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
 
     private class H5SearchObjectFileIterator implements Iterator<Object> {
 
-        protected AbstractMap.SimpleEntry<String, float[]> nextObject;
-        protected AbstractMap.SimpleEntry<String, float[]> currentObject;
+        protected AbstractMap.SimpleEntry<String, T> nextObject;
+        protected AbstractMap.SimpleEntry<String, T> currentObject;
 
         private final HdfFile hdfFile;
         private final Dataset dataset;
@@ -126,7 +127,7 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
         }
 
         @Override
-        public AbstractMap.SimpleEntry<String, float[]> next() {
+        public AbstractMap.SimpleEntry<String, T> next() {
             if (nextObject == null) {
                 throw new NoSuchElementException("No more objects in the stream");
             }
@@ -135,13 +136,13 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
             return currentObject;
         }
 
-        private AbstractMap.SimpleEntry<String, float[]> nextStreamObject() {
+        private AbstractMap.SimpleEntry<String, T> nextStreamObject() {
             if (counter[0] >= maxCount) {
                 return null;
             }
-            float[][] dataBuffer = (float[][]) dataset.getData(counter, vectorDimensions);
+            T[] dataBuffer = (T[]) dataset.getData(counter, vectorDimensions);
             String id = prefixFoIDs + (counter[0] + 1);
-            AbstractMap.SimpleEntry<String, float[]> entry = new AbstractMap.SimpleEntry<>(id, dataBuffer[0]);
+            AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(id, dataBuffer[0]);
             counter[0]++;
             return entry;
         }
