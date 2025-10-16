@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.AbstractMap;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -83,12 +84,16 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
         super.storeSearchObject(searchObject, datasetOutputStream, additionalParamsToStoreWithNewDataset);
     }
 
-    public Map<Comparable, Object> getAsMap(String datasetName) {
+    public HdfFile getHDFFile(String datasetName) {
         File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName, false);
-        HdfFile hdfFile = new HdfFile(f.toPath());
+        return new HdfFile(f.toPath());
+    }
+
+    public Map<Comparable, Object> getAsMap(String datasetName) {
+        HdfFile hdfFile = getHDFFile(datasetName);
         Node node = hdfFile.iterator().next();
         String name = node.getName();
-        LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, f.getName()});
+        LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, hdfFile.getName()});
         Dataset dataset = hdfFile.getDatasetByPath(name);
         VMH5StorageAsMap ret = new VMH5StorageAsMap(dataset);
         return ret;
@@ -194,8 +199,19 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
                 long x = Long.parseLong(key.toString());
                 x -= 1;
                 long[] shift = new long[]{x, 0};
-                float[][] dataBuffer = (float[][]) dataset.getData(shift, vectorDimensions);
-                return dataBuffer[0];
+                Object dataBuffer = dataset.getData(shift, vectorDimensions);
+                if (dataBuffer instanceof float[][] c) {
+                    return c[0];
+                }
+                if (dataBuffer instanceof double[][] c) {
+                    return DataTypeConvertor.doublesToFloats(c[0]);
+                }
+                if (dataBuffer instanceof int[][] c) {
+                    return DataTypeConvertor.intsArrayToFloats(c[0]);
+                }
+                if (dataBuffer instanceof long[][] c) {
+                    return DataTypeConvertor.longsArrayToFloats(c[0]);
+                }
             }
             return null;
         }
@@ -233,8 +249,51 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
 
         @Override
         public Set entrySet() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            Set<Map.Entry<Comparable, Object>> ret = new HashSet<>();
+            for (int i = 1; i <= size(); i++) {
+                float[] v = get(i);
+                ret.add(new AbstractMap.SimpleEntry<>(Integer.toString(i), v));
+            }
+            return ret;
         }
     };
+
+    public static double[] toDoubleArray(Object dataOfObject) {
+        if (dataOfObject == null) {
+            return null;
+        }
+        if (dataOfObject instanceof long[] c) {
+            return DataTypeConvertor.longsArrayToDoubles(c);
+        }
+        if (dataOfObject instanceof int[] c) {
+            return DataTypeConvertor.intsToDoubles(c);
+        }
+        if (dataOfObject instanceof float[] c) {
+            return DataTypeConvertor.floatsToDoubles(c);
+        }
+        if (dataOfObject instanceof double[] c) {
+            return c;
+        }
+        throw new IllegalArgumentException("Uknown data" + dataOfObject.getClass().getSimpleName());
+    }
+
+    public static float[] toFloatArray(Object dataOfObject) {
+        if (dataOfObject == null) {
+            return null;
+        }
+        if (dataOfObject instanceof long[] c) {
+            return DataTypeConvertor.longsArrayToFloats(c);
+        }
+        if (dataOfObject instanceof int[] c) {
+            return DataTypeConvertor.intsArrayToFloats(c);
+        }
+        if (dataOfObject instanceof float[] c) {
+            return c;
+        }
+        if (dataOfObject instanceof double[] c) {
+            return DataTypeConvertor.doublesToFloats(c);
+        }
+        throw new IllegalArgumentException("Uknown data" + dataOfObject.getClass().getSimpleName());
+    }
 
 }

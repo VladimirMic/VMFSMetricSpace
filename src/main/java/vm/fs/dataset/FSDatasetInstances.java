@@ -1,5 +1,6 @@
 package vm.fs.dataset;
 
+import io.jhdf.HdfFile;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -2139,6 +2140,11 @@ public class FSDatasetInstances {
             super(datasetName,
                     new H5SearchSpacesStorage<>(new FSSearchSpaceImpl<>(df), serialisator)
             );
+        }
+
+        public HdfFile getHDFFile() {
+            H5SearchSpacesStorage storage = (H5SearchSpacesStorage) searchSpacesStorage;
+            return storage.getHDFFile(datasetName);
         }
 
         @Override
