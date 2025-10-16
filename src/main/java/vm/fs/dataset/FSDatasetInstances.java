@@ -23,7 +23,7 @@ import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 import vm.searchSpace.distance.DistanceFunctionInterface;
 import vm.searchSpace.distance.impl.AngularDistance;
-import vm.searchSpace.distance.impl.CosineDistance;
+import vm.searchSpace.distance.impl.CosineOnFloatsArray;
 import vm.searchSpace.distance.impl.DTWOnFloatsArray;
 import vm.searchSpace.distance.impl.DotProduct;
 import vm.searchSpace.distance.impl.HammingDistanceLongs;
@@ -1041,7 +1041,7 @@ public class FSDatasetInstances {
         }
 
         public LAION_10M_Dataset(boolean publicQueries) {
-            super("laion2B-en-clip768v2-n=10M.h5", new CosineDistance());
+            super("laion2B-en-clip768v2-n=10M.h5", new CosineOnFloatsArray());
             this.publicQueries = publicQueries;
         }
 
@@ -1077,7 +1077,7 @@ public class FSDatasetInstances {
         }
 
         public LAION_30M_Dataset(boolean publicQueries) {
-            super("laion2B-en-clip768v2-n=30M.h5", new CosineDistance());
+            super("laion2B-en-clip768v2-n=30M.h5", new CosineOnFloatsArray());
             this.publicQueries = publicQueries;
         }
 
@@ -1105,7 +1105,7 @@ public class FSDatasetInstances {
         }
 
         public LAION_100M_Dataset(boolean publicQueries) {
-            super("laion2B-en-clip768v2-n=100M.h5", new CosineDistance());
+            super("laion2B-en-clip768v2-n=100M.h5", new CosineOnFloatsArray());
             this.publicQueries = publicQueries;
         }
 
