@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.h2.mvstore.MVStoreException;
+import vm.datatools.DataTypeConvertor;
+import vm.datatools.Tools;
 import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
 import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
 import vm.fs.searchSpaceImpl.H5SearchSpacesStorage;
@@ -2168,7 +2170,7 @@ public class FSDatasetInstances {
             if (FORCED_PIVOT_COUNT > 0) {
                 return FORCED_PIVOT_COUNT;
             }
-            return -1;
+            return getPrecomputedDatasetSize();
         }
 
         @Override
@@ -2179,6 +2181,30 @@ public class FSDatasetInstances {
         @Override
         public boolean shouldCreateKeyValueStorage() {
             return false;
+        }
+
+        @Override
+        public List<Object> getSampleOfDataset(int objCount, Object... params) {
+            params = Tools.concatArrays(params, new Object[]{getDistanceFunction()});
+            return super.getSampleOfDataset(objCount, params);
+        }
+
+        @Override
+        public List<Object> getPivots(int objCount, Object... params) {
+            params = Tools.concatArrays(new Object[]{objCount}, new Object[]{getDistanceFunction()});
+            return super.getPivots(objCount, objCount, params);
+        }
+
+        @Override
+        public List<Object> getQueryObjects(Object... params) {
+            params = Tools.concatArrays(params, new Object[]{getDistanceFunction()});
+            return super.getQueryObjects(params);
+        }
+
+        @Override
+        public Iterator<Object> getSearchObjectsFromDataset(Object... params) {
+            params = Tools.concatArrays(params, new Object[]{getDistanceFunction()});
+            return super.getSearchObjectsFromDataset(params); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         }
 
     }

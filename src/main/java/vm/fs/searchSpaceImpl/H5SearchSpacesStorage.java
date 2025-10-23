@@ -6,6 +6,7 @@ import io.jhdf.api.Node;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
+import vm.searchSpace.distance.DistanceFunctionInterface;
 
 /**
  *
@@ -76,7 +78,13 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
             count = Integer.MAX_VALUE;
         }
         String prefix = params[params.length - 1].toString();
-        return new H5SearchObjectFileIterator(hdfFile, dataset, prefix, count);
+        Class clazz = null;
+        for (Object param : params) {
+            if (param instanceof DistanceFunctionInterface c) {
+                clazz = c.getClassOfComparedData();
+            }
+        }
+        return new H5SearchObjectFileIterator(hdfFile, dataset, prefix, count, clazz);
     }
 
     @Override
@@ -110,8 +118,9 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
         private final int[] vectorDimensions;
         private final String prefixFoIDs;
         private final long[] counter;
+        private final Class clazz;
 
-        private H5SearchObjectFileIterator(HdfFile hdfFile, Dataset dataset, String prefix, int maxCount) {
+        private H5SearchObjectFileIterator(HdfFile hdfFile, Dataset dataset, String prefix, int maxCount, Class clazz) {
             this.hdfFile = hdfFile;
             this.dataset = dataset;
             int[] storageDimensions = dataset.getDimensions();
@@ -119,6 +128,7 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
             this.vectorDimensions = new int[]{1, storageDimensions[1]};
             this.prefixFoIDs = prefix;
             counter = new long[]{0, 0};
+            this.clazz = clazz;
             nextObject = nextStreamObject();
         }
 
@@ -146,8 +156,24 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
                 return null;
             }
             T[] dataBuffer = (T[]) dataset.getData(counter, vectorDimensions);
+            T data = null;
+            if (clazz == null) {
+                throw new IllegalArgumentException("Did you provided distance function as a param?");
+            }
+            if (clazz.equals(float[].class)) {
+                data = (T) DataTypeConvertor.arrayToFloatArray(dataBuffer[0]);
+            }
+            if (clazz.equals(double[].class)) {
+                data = (T) DataTypeConvertor.arrayToDoubleArray(dataBuffer[0]);
+            }
+            if (clazz.equals(int[].class)) {
+                data = (T) DataTypeConvertor.arrayToIntArray(dataBuffer[0]);
+            }
+            if (data == null) {
+                throw new IllegalArgumentException("Unknown class: " + clazz.getName());
+            }
             String id = prefixFoIDs + (counter[0] + 1);
-            AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(id, dataBuffer[0]);
+            AbstractMap.SimpleEntry<String, T> entry = new AbstractMap.SimpleEntry<>(id, data);
             counter[0]++;
             return entry;
         }
@@ -257,43 +283,5 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
             return ret;
         }
     };
-
-    public static double[] toDoubleArray(Object dataOfObject) {
-        if (dataOfObject == null) {
-            return null;
-        }
-        if (dataOfObject instanceof long[] c) {
-            return DataTypeConvertor.longsArrayToDoubles(c);
-        }
-        if (dataOfObject instanceof int[] c) {
-            return DataTypeConvertor.intsToDoubles(c);
-        }
-        if (dataOfObject instanceof float[] c) {
-            return DataTypeConvertor.floatsToDoubles(c);
-        }
-        if (dataOfObject instanceof double[] c) {
-            return c;
-        }
-        throw new IllegalArgumentException("Uknown data" + dataOfObject.getClass().getSimpleName());
-    }
-
-    public static float[] toFloatArray(Object dataOfObject) {
-        if (dataOfObject == null) {
-            return null;
-        }
-        if (dataOfObject instanceof long[] c) {
-            return DataTypeConvertor.longsArrayToFloats(c);
-        }
-        if (dataOfObject instanceof int[] c) {
-            return DataTypeConvertor.intsArrayToFloats(c);
-        }
-        if (dataOfObject instanceof float[] c) {
-            return c;
-        }
-        if (dataOfObject instanceof double[] c) {
-            return DataTypeConvertor.doublesToFloats(c);
-        }
-        throw new IllegalArgumentException("Uknown data" + dataOfObject.getClass().getSimpleName());
-    }
 
 }

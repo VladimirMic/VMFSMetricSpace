@@ -43,8 +43,17 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
     }
 
     public static void run(Dataset dataset, int pivotCount) {
+        run(dataset, pivotCount, dataset.getDistanceFunction());
+    }
+
+    public static boolean delete(Dataset dataset, int pivotCount) {
+        FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
+        return loader.deletePrecomputedDists(dataset, pivotCount);
+    }
+
+    public static void run(Dataset dataset, int pivotCount, DistanceFunctionInterface df) {
         if (pivotCount < 0) {
-            throw new IllegalArgumentException("The dataset does not specify the number of pivots");
+            pivotCount = Integer.MAX_VALUE;
         }
         FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
         String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount, true).getAbsolutePath();
@@ -52,8 +61,7 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();
         List pivots = dataset.getPivots(pivotCount);
         Iterator objects = dataset.getSearchObjectsFromDataset();
-        DistanceFunctionInterface df = dataset.getDistanceFunction();
-        List<Comparable>  pivotIDs = searchSpace.getIDsOfObjects(pivots.iterator());
+        List<Comparable> pivotIDs = searchSpace.getIDsOfObjects(pivots.iterator());
         try {
             outputStream = new GZIPOutputStream(new FileOutputStream(output), true);
             int batchSize = 60000;

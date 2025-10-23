@@ -95,6 +95,14 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
         return loadPrecomPivotsToObjectsDists(file, dataset, pivotCount);
     }
 
+    public boolean deletePrecomputedDists(Dataset dataset, int pivotCount) {
+        String datasetName = dataset.getDatasetName();
+        String pivotSetName = dataset.getPivotSetName();
+        File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount, false);
+        file = FSGlobal.checkFileExistence(file, true);
+        return file.delete();
+    }
+
     public File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount, boolean willBeDeleted) {
         File ret = new File(FSGlobal.PRECOMPUTED_DISTS_FOLDER, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
