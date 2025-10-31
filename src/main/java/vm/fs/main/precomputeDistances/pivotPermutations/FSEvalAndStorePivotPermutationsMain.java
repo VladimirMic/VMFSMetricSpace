@@ -44,7 +44,7 @@ public class FSEvalAndStorePivotPermutationsMain {
 
     private static void run(Dataset dataset, int pivotCount) {
         FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
-        float[][] distsToPivots = loader.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
+        float[][] distsToPivots = loader.loadPrecomPivotsToObjectsDists(dataset, pivotCount).getDists();
         Map<Comparable, Integer> rowHeaders = loader.getRowHeaders();
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();
         List pivots = dataset.getPivots(pivotCount);

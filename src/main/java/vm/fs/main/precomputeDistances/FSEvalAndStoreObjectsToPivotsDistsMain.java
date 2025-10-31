@@ -47,42 +47,15 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
         run(dataset, pivotCount, dataset.getDistanceFunction());
     }
 
-    @Deprecated
-    public static boolean delete(Dataset dataset, int pivotCount) {
-        FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
-        return loader.deletePrecomputedDists(dataset, pivotCount);
-    }
-
-    public static GZIPOutputStream getGZIPOutputStream(Dataset dataset, int pivotCount) {
-        return getGZIPOutputStream(dataset, pivotCount, null);
-    }
-
-    public static GZIPOutputStream getGZIPOutputStream(Dataset dataset, int pivotCount, String dfModification) {
-        FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
-        String suf = "";
-        if (dfModification != null) {
-            suf = "_" + dfModification;
-        }
-        String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName() + suf, pivotCount, true).getAbsolutePath();
-        GZIPOutputStream outputStream = null;
-        try {
-            outputStream = new GZIPOutputStream(new FileOutputStream(output), true);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-        }
-        return outputStream;
-    }
-
     public static void run(Dataset dataset, int pivotCount, DistanceFunctionInterface df) {
         if (pivotCount < 0) {
             pivotCount = Integer.MAX_VALUE;
         }
         FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
-        GZIPOutputStream outputStream = getGZIPOutputStream(dataset, pivotCount);
+        GZIPOutputStream outputStream = FSPrecomputedDistancesMatrixSerializatorImpl.getGZIPOutputStream(dataset, pivotCount, false);
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();
         List pivots = dataset.getPivots(pivotCount);
         Iterator objects = dataset.getSearchObjectsFromDataset();
-        List<Comparable> pivotIDs = searchSpace.getIDsOfObjects(pivots.iterator());
         try {
             int batchSize = 60000;
             int batchCounter = -1;
@@ -93,7 +66,7 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
                 MainMemoryStoredPrecomputedDistances pd = ToolsSpaceDomain.evaluateMatrixOfDistances(objects, pivots, searchSpace, df, batchSize);
                 Map<Comparable, Integer> rowHeaders = pd.getRowHeaders();
                 Map<Comparable, Integer> columnHeaders = pd.getColumnHeaders();
-                float[][] dists = pd.loadPrecomPivotsToObjectsDists(null, -1);
+                float[][] dists = pd.getDists();
                 if (batchCounter == 0) {
                     loader.serializeColumnsHeaders(outputStream, columnHeaders);
                 }

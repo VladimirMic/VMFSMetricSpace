@@ -35,7 +35,7 @@ public class FSHeatMapFromFile {
         resultFile = FSGlobal.checkFileExistence(resultFile, true);
 
         FSPrecomputedDistancesMatrixSerializatorImpl pd = new FSPrecomputedDistancesMatrixSerializatorImpl();
-        float[][] values = pd.loadPrecomPivotsToObjectsDists(file, null, -1);
+        float[][] values = pd.loadPrecomPivotsToObjectsDists(file, null, -1).getDists();
         Map<Comparable, Integer> yHeaders = pd.getRowHeaders();
         Map<Comparable, Integer> xHeaders = pd.getColumnHeaders();
 

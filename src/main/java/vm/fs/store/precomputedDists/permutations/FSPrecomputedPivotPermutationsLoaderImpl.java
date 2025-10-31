@@ -15,7 +15,7 @@ import vm.searchSpace.Dataset;
 public class FSPrecomputedPivotPermutationsLoaderImpl extends FSPrecomputedDistancesMatrixSerializatorImpl {
 
     public int[][] loadPivotPermutations(Dataset dataset, int pivotCount) {
-        float[][] floats = super.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
+        float[][] floats = super.loadPrecomPivotsToObjectsDists(dataset, pivotCount).getDists();
         int[][] ret = new int[floats.length][floats[0].length];
         for (int i = 0; i < floats.length; i++) {
             float[] row = floats[i];

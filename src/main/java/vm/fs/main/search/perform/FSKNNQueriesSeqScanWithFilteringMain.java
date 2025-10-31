@@ -149,12 +149,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         }
         if (pd == null) {
             pd = new FSPrecomputedDistancesMatrixSerializatorImpl();
-            poDists = pd.loadPrecomPivotsToObjectsDists(origDataset, pivotCount);
+            poDists = pd.loadPrecomPivotsToObjectsDists(origDataset, pivotCount).getDists();
         }
         if (poDists == null || poDists.length == 0) {
             int precomputedDatasetSize = origDataset.getPrecomputedDatasetSize();
             pd = ToolsSpaceDomain.evaluateMatrixOfDistances(origDataset.getSearchObjectsFromDataset(maxObjectsCount), pivots, searchSpace, df, precomputedDatasetSize);
-            poDists = pd.loadPrecomPivotsToObjectsDists(null, -1);
+            poDists = pd.loadPrecomPivotsToObjectsDists(null, -1).getDists();
         }
 
     }

@@ -3,6 +3,7 @@ package vm.fs.store.precomputedDists;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,9 +15,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import vm.fs.FSGlobal;
+import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.searchSpace.Dataset;
 import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixSerializator;
+import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
 /**
  *
@@ -26,10 +30,10 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
 
     private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixSerializatorImpl.class.getName());
 
-    public float[][] loadPrecomPivotsToObjectsDists(File file, Dataset dataset, int maxColumnCount) {
+    public MainMemoryStoredPrecomputedDistances loadPrecomPivotsToObjectsDists(File file, Dataset dataset, int maxColumnCount) {
         List<float[]> retList = new ArrayList<>();
         int maxPivots = maxColumnCount > 0 ? maxColumnCount : Integer.MAX_VALUE;
-        float[][] ret = dataset == null ? null : new float[dataset.getPrecomputedDatasetSize()][maxPivots];
+        float[][] dists = dataset == null ? null : new float[dataset.getPrecomputedDatasetSize()][maxPivots];
         try {
             BufferedReader br;
             if (file.getName().toLowerCase().endsWith(".gz")) {
@@ -54,8 +58,8 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
                     for (int i = 0; i < lineFloats.length; i++) {
                         lineFloats[i] = Float.parseFloat(split[i + 1]);
                     }
-                    if (ret != null) {
-                        ret[counter - 1] = lineFloats;
+                    if (dists != null) {
+                        dists[counter - 1] = lineFloats;
                     } else {
                         retList.add(lineFloats);
                     }
@@ -68,15 +72,16 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
                 }
             } catch (NullPointerException ex) {
             }
-            if (ret == null) {
-                ret = new float[retList.size()][maxPivots];
+            if (dists == null) {
+                dists = new float[retList.size()][maxPivots];
                 for (int i = 0; i < retList.size(); i++) {
-                    ret[i] = retList.get(i);
+                    dists[i] = retList.get(i);
                 }
             }
-            if (dataset != null) {
-                checkOrdersOfPivots(dataset.getPivots(maxColumnCount), dataset.getSearchSpace());
-            }
+//            if (dataset != null) {
+//                checkOrdersOfPivots(dataset.getPivots(maxColumnCount), dataset.getSearchSpace());
+//            }
+            MainMemoryStoredPrecomputedDistances ret = new MainMemoryStoredPrecomputedDistances(dists, columnHeaders, rowHeaders);
             return ret;
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
@@ -86,23 +91,24 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
     }
 
     @Override
-    public float[][] loadPrecomPivotsToObjectsDists(Dataset dataset, int pivotCount) {
+    public MainMemoryStoredPrecomputedDistances loadPrecomPivotsToObjectsDists(Dataset dataset, String dfModification, int pivotCount) {
         String datasetName = dataset.getDatasetName();
         String pivotSetName = dataset.getPivotSetName();
-        File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount, false);
+        File file = deriveFileForDatasetAndPivots(datasetName, dfModification, pivotSetName, pivotCount, false);
         if (!file.exists()) {
             LOG.log(Level.WARNING, "No precomputed distances found for dataset {0} pivot set {1} and {2} pivots", new Object[]{datasetName, pivotSetName, pivotCount});
             return null;
         }
         return loadPrecomPivotsToObjectsDists(file, dataset, pivotCount);
+
     }
 
-    public boolean deletePrecomputedDists(Dataset dataset, int pivotCount) {
-        String datasetName = dataset.getDatasetName();
-        String pivotSetName = dataset.getPivotSetName();
-        File file = deriveFileForDatasetAndPivots(datasetName, pivotSetName, pivotCount, false);
-        file = FSGlobal.checkFileExistence(file, true);
-        return file.delete();
+    public File deriveFileForDatasetAndPivots(String datasetName, String dfModification, String pivotSetName, int pivotCount, boolean willBeDeleted) {
+        String suf = "";
+        if (dfModification != null && !dfModification.equals("")) {
+            suf = "_" + dfModification;
+        }
+        return deriveFileForDatasetAndPivots(datasetName + suf, pivotSetName, pivotCount, willBeDeleted);
     }
 
     public File deriveFileForDatasetAndPivots(String datasetName, String pivotSetName, int pivotCount, boolean willBeDeleted) {
@@ -140,6 +146,12 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
     }
 
     @Override
+    public void serializeColumnsHeaders(Dataset dataset, int pivotCount, String additionalName, Map<Comparable, Integer> columnKeys) throws IOException {
+        try (OutputStream outputStream = getGZIPOutputStream(dataset, pivotCount, additionalName, false)) {
+            serializeColumnsHeaders(outputStream, columnKeys);
+        }
+    }
+
     public void serializeColumnsHeaders(OutputStream outputStream, Map<Comparable, Integer> columnKeys) throws IOException {
         outputStream.write(';');
         for (Comparable pivotID : columnKeys.keySet()) {
@@ -151,6 +163,14 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
     }
 
     @Override
+    public int serializeRows(Dataset dataset, int pivotCount, String additionalName, Map<Comparable, Integer> rowKeys, Map<Comparable, Integer> columnKeys, float[][] distsInRow, int rowCounter) throws IOException {
+        int ret;
+        try (OutputStream outputStream = getGZIPOutputStream(dataset, pivotCount, additionalName, true)) {
+            ret = serializeRows(outputStream, rowKeys, columnKeys, distsInRow, rowCounter);
+        }
+        return ret;
+    }
+
     public int serializeRows(OutputStream outputStream, Map<Comparable, Integer> rowKeys, Map<Comparable, Integer> columnKeys, float[][] distsInRow, int rowCounter) throws IOException {
         for (Map.Entry<Comparable, Integer> oID : rowKeys.entrySet()) {
             rowCounter++;
@@ -170,6 +190,31 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
         }
         outputStream.flush();
         return rowCounter;
+    }
+
+    public int serialize(OutputStream os, Map<Comparable, Integer> rowKeys, Map<Comparable, Integer> columnKeys, float[][] distsInRow, int rowCounter) throws IOException {
+        serializeColumnsHeaders(os, columnKeys);
+        return serializeRows(os, rowKeys, columnKeys, distsInRow, rowCounter);
+    }
+
+    public int serialize(OutputStream os, Map<Comparable, Integer> rowKeys, Map<Comparable, Integer> columnKeys, float[][] distsInRow) throws IOException {
+        return serialize(os, rowKeys, columnKeys, distsInRow, 0);
+    }
+
+    public static GZIPOutputStream getGZIPOutputStream(Dataset dataset, int pivotCount, boolean append) {
+        return getGZIPOutputStream(dataset, pivotCount, null, append);
+    }
+
+    public static GZIPOutputStream getGZIPOutputStream(Dataset dataset, int pivotCount, String dfModification, boolean append) {
+        FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
+        String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dfModification, dataset.getPivotSetName(), pivotCount, !append).getAbsolutePath();
+        GZIPOutputStream outputStream = null;
+        try {
+            outputStream = new GZIPOutputStream(new FileOutputStream(output, append), true);
+        } catch (IOException ex) {
+            FSEvalAndStoreObjectsToPivotsDistsMain.LOG.log(Level.SEVERE, null, ex);
+        }
+        return outputStream;
     }
 
 }

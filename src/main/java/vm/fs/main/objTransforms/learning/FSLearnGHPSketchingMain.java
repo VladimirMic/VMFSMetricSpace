@@ -7,6 +7,7 @@ import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl
 import vm.objTransforms.learning.LearnSketchingGHP;
 import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
 /**
  *
@@ -32,10 +33,10 @@ public class FSLearnGHPSketchingMain {
         LearnSketchingGHP learn = new LearnSketchingGHP(dataset, sketchingTechStorage, pivotCount, 15000);
         // voluntary step and voluntary arguments - is the precomputed distances does not excist, that deals with it automatically
         FSPrecomputedDistancesMatrixSerializatorImpl pd = new FSPrecomputedDistancesMatrixSerializatorImpl();
-        float[][] dists = pd.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
+        MainMemoryStoredPrecomputedDistances dists = pd.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
         Map<Comparable, Integer> columnHeaders = pd.getColumnHeaders();
         Map<Comparable, Integer> rowHeaders = pd.getRowHeaders();
         // voluntary step and voluntary arguments
-        learn.evaluate(dataset, sampleSize, sketchesLengths, 0.5f, dists, columnHeaders, rowHeaders);
+        learn.evaluate(dataset, sampleSize, sketchesLengths, 0.5f, dists.getDists(), columnHeaders, rowHeaders);
     }
 }
