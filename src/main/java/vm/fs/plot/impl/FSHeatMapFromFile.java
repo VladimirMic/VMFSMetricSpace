@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Map;
 import org.jfree.chart.JFreeChart;
 import vm.fs.FSGlobal;
-import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl;
 import vm.plot.impl.HeatMapPlotter;
 
 /**
@@ -34,7 +34,7 @@ public class FSHeatMapFromFile {
         resultFile = new File(resultFile, file.getName());
         resultFile = FSGlobal.checkFileExistence(resultFile, true);
 
-        FSPrecomputedDistancesMatrixLoaderImpl pd = new FSPrecomputedDistancesMatrixLoaderImpl();
+        FSPrecomputedDistancesMatrixSerializatorImpl pd = new FSPrecomputedDistancesMatrixSerializatorImpl();
         float[][] values = pd.loadPrecomPivotsToObjectsDists(file, null, -1);
         Map<Comparable, Integer> yHeaders = pd.getRowHeaders();
         Map<Comparable, Integer> xHeaders = pd.getColumnHeaders();

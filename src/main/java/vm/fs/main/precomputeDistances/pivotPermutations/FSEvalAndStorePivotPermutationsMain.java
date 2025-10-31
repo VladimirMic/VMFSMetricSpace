@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstances;
-import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl;
 import vm.fs.store.precomputedDists.permutations.FSPrecomputedPivotPermutationsLoaderImpl;
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.Dataset;
@@ -43,7 +43,7 @@ public class FSEvalAndStorePivotPermutationsMain {
     }
 
     private static void run(Dataset dataset, int pivotCount) {
-        FSPrecomputedDistancesMatrixLoaderImpl loader = new FSPrecomputedDistancesMatrixLoaderImpl();
+        FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
         float[][] distsToPivots = loader.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
         Map<Comparable, Integer> rowHeaders = loader.getRowHeaders();
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();

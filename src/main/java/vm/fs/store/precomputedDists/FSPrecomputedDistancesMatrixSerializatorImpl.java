@@ -6,23 +6,25 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import vm.fs.FSGlobal;
 import vm.searchSpace.Dataset;
-import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixSerializator;
 
 /**
  *
  * @author xmic
  */
-public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedDistancesMatrixLoader {
+public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecomputedDistancesMatrixSerializator {
 
-    private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixSerializatorImpl.class.getName());
 
     public float[][] loadPrecomPivotsToObjectsDists(File file, Dataset dataset, int maxColumnCount) {
         List<float[]> retList = new ArrayList<>();
@@ -131,6 +133,37 @@ public class FSPrecomputedDistancesMatrixLoaderImpl extends AbstractPrecomputedD
         name = name.substring(name.lastIndexOf("_") + 1);
         name = name.substring(0, name.indexOf("pivot"));
         return Integer.parseInt(name);
+    }
+
+    @Override
+    public void serializeColumnsHeaders(OutputStream outputStream, Map<Comparable, Integer> columnKeys) throws IOException {
+        outputStream.write(';');
+        for (Comparable pivotID : columnKeys.keySet()) {
+            outputStream.write(pivotID.toString().getBytes());
+            outputStream.write(';');
+        }
+        outputStream.write('\n');
+    }
+
+    @Override
+    public int serializeRows(OutputStream outputStream, Map<Comparable, Integer> rowKeys, Map<Comparable, Integer> columnKeys, float[][] distsInRow, int rowCounter) throws IOException {
+        for (Map.Entry<Comparable, Integer> oID : rowHeaders.entrySet()) {
+            rowCounter++;
+            String oIdString = oID.getKey().toString();
+            outputStream.write(oIdString.getBytes());
+            outputStream.write(';');
+            for (Map.Entry<Comparable, Integer> colunm : columnKeys.entrySet()) {
+                Integer pIdx = colunm.getValue();
+                float distance = distsInRow[oID.getValue()][pIdx];
+                outputStream.write(Float.toString(distance).getBytes());
+                outputStream.write(';');
+            }
+            outputStream.write('\n');
+            if (rowCounter % 20000 == 0) {
+                LOG.log(Level.INFO, "Stored {0} rows", rowCounter);
+            }
+        }
+        return rowCounter;
     }
 
 }

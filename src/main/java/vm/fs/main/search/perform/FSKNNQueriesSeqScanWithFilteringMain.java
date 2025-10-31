@@ -9,7 +9,7 @@ import vm.datatools.Tools;
 import vm.fs.dataset.FSDatasetInstances;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
-import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
@@ -32,7 +32,7 @@ import vm.searchSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
 import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
 import vm.searchSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
 import vm.searchSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
-import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixSerializator;
 import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
 /**
@@ -95,7 +95,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         }
     }
 
-    private static AbstractPrecomputedDistancesMatrixLoader pd;
+    private static AbstractPrecomputedDistancesMatrixSerializator pd;
     private static float[][] poDists = null;
 
     public static final void run(Dataset dataset, BoundsOnDistanceEstimation[] filters, List pivots, int k) {
@@ -148,7 +148,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             pd = null;
         }
         if (pd == null) {
-            pd = new FSPrecomputedDistancesMatrixLoaderImpl();
+            pd = new FSPrecomputedDistancesMatrixSerializatorImpl();
             poDists = pd.loadPrecomPivotsToObjectsDists(origDataset, pivotCount);
         }
         if (poDists == null || poDists.length == 0) {
@@ -159,7 +159,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     }
 
-    public static AbstractPrecomputedDistancesMatrixLoader getPd() {
+    public static AbstractPrecomputedDistancesMatrixSerializator getPd() {
         return pd;
     }
 

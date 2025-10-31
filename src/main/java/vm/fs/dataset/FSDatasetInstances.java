@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.h2.mvstore.MVStoreException;
-import vm.datatools.DataTypeConvertor;
 import vm.datatools.Tools;
 import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
 import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
@@ -15,6 +14,7 @@ import vm.fs.searchSpaceImpl.VMMVStorage;
 import vm.fs.searchSpaceImpl.parsersOfOtherFormats.FSPDBeStorage;
 import vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl.FSLayersKasperStorage;
 import vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl.FSMocapJanStorage;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl;
 import vm.fs.store.queryResults.FSNearestNeighboursStorageImpl;
 import vm.queryResults.QueryNearestNeighboursStoreInterface;
 import vm.searchSpace.AbstractSearchSpacesStorage;
@@ -31,6 +31,7 @@ import vm.searchSpace.distance.impl.DotProduct;
 import vm.searchSpace.distance.impl.HammingDistanceLongs;
 import vm.searchSpace.distance.impl.L2OnFloatsArray;
 import vm.searchSpace.distance.impl.Sapir3DistanceFunction;
+import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
 /**
  *
@@ -2074,6 +2075,9 @@ public class FSDatasetInstances {
             VMMVStorage.delete(datasetName);
         }
 
+        public MainMemoryStoredPrecomputedDistances getPrecomputedDistsToPivots() {
+            return getPrecomputedDistsToPivots(new FSPrecomputedDistancesMatrixSerializatorImpl());
+        }
     }
 
     public static abstract class FSDatasetWithOtherSource<T> extends Dataset<T> {
@@ -2205,6 +2209,10 @@ public class FSDatasetInstances {
         public Iterator<Object> getSearchObjectsFromDataset(Object... params) {
             params = Tools.concatArrays(params, new Object[]{getDistanceFunction()});
             return super.getSearchObjectsFromDataset(params); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        }
+
+        public MainMemoryStoredPrecomputedDistances getPrecomputedDistsToPivots() {
+            return getPrecomputedDistsToPivots(new FSPrecomputedDistancesMatrixSerializatorImpl());
         }
 
     }

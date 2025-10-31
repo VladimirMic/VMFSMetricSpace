@@ -7,7 +7,7 @@ package vm.fs.main.datatools;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
-import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl;
 import vm.searchSpace.Dataset;
 import vm.searchSpace.distance.impl.LocalUltraMetricDFWithPrecomputedValues;
 
@@ -27,7 +27,7 @@ public class FSCreateAndStoreLocallyUltraMetricDF {
         LOG.log(Level.INFO, "Precomputing distances for dataset {0}", dataset.getDatasetName());
         FSPrepareNewDatasetForPivotFilterings.precomputeObjectToPivotDists(dataset);
         LOG.log(Level.INFO, "Learning ultra metric for dataset {0}", dataset.getDatasetName());
-        LocalUltraMetricDFWithPrecomputedValues lum = new LocalUltraMetricDFWithPrecomputedValues(new FSPrecomputedDistancesMatrixLoaderImpl(), dataset, false);
+        LocalUltraMetricDFWithPrecomputedValues lum = new LocalUltraMetricDFWithPrecomputedValues(new FSPrecomputedDistancesMatrixSerializatorImpl(), dataset, false);
         FSEvalAndStoreObjectsToPivotsDistsMain.delete(dataset, dataset.getPrecomputedDatasetSize());
         LOG.log(Level.INFO, "Storing ultra metric for dataset {0}", dataset.getDatasetName());
         FSEvalAndStoreObjectsToPivotsDistsMain.run(dataset, dataset.getPrecomputedDatasetSize(), lum);

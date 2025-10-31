@@ -5,14 +5,14 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vm.fs.FSGlobal;
-import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl;
 import vm.searchSpace.Dataset;
 
 /**
  *
  * @author Vlada
  */
-public class FSPrecomputedPivotPermutationsLoaderImpl extends FSPrecomputedDistancesMatrixLoaderImpl {
+public class FSPrecomputedPivotPermutationsLoaderImpl extends FSPrecomputedDistancesMatrixSerializatorImpl {
 
     public int[][] loadPivotPermutations(Dataset dataset, int pivotCount) {
         float[][] floats = super.loadPrecomPivotsToObjectsDists(dataset, pivotCount);
@@ -31,7 +31,7 @@ public class FSPrecomputedPivotPermutationsLoaderImpl extends FSPrecomputedDista
         File ret = new File(FSGlobal.PRECOMPUTED_PIVOT_PERMUTATIONS_FOLDER, datasetName + "_" + pivotSetName + "_" + pivotCount + "pivots.csv.gz");
         FSGlobal.checkFileExistence(ret, willBeDeleted);
         if (!willBeDeleted && !ret.exists()) {
-            Logger.getLogger(FSPrecomputedDistancesMatrixLoaderImpl.class.getName()).log(Level.WARNING, "File with precomputed distances does not exist: {0}", ret.getAbsolutePath());
+            Logger.getLogger(FSPrecomputedDistancesMatrixSerializatorImpl.class.getName()).log(Level.WARNING, "File with precomputed distances does not exist: {0}", ret.getAbsolutePath());
         }
         return ret;
     }

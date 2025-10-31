@@ -13,7 +13,7 @@ import vm.fs.plot.FSAbstractPlotterFromResults;
 import static vm.fs.plot.FSPlotFolders.Y2025_AFTER_VLDB_PTOLEMAIOS_LIMITED_FILTERING_INDEXES;
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.fs.store.auxiliaryForDistBounding.FSTriangleInequalityWithLimitedAnglesCoefsStorageImpl;
-import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixLoaderImpl;
+import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl;
 import vm.fs.store.queryResults.FSQueryExecutionStatsStoreImpl;
 import vm.fs.store.queryResults.recallEvaluation.FSRecallOfCandidateSetsStorageImpl;
 import vm.plot.impl.LinesOrPointsPlotter;
@@ -29,7 +29,7 @@ import vm.searchSpace.distance.bounding.twopivots.AbstractTwoPivotsFilter;
 import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
 import vm.searchSpace.distance.bounding.twopivots.impl.FourPointBasedFiltering;
 import vm.searchSpace.distance.bounding.twopivots.impl.PtolemaicFiltering;
-import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixLoader;
+import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixSerializator;
 
 /**
  *
@@ -62,7 +62,7 @@ public class AfterVLDBTimeRecallIndexesPlots {
         plotter.setIncludeZeroForXAxis(true);
         plotter.setIncludeZeroForYAxis(false);
         float[][] xValues = new float[filters.length][cands.size()];
-        AbstractPrecomputedDistancesMatrixLoader pd = new FSPrecomputedDistancesMatrixLoaderImpl();
+        AbstractPrecomputedDistancesMatrixSerializator pd = new FSPrecomputedDistancesMatrixSerializatorImpl();
         float[][] yValues = new float[filters.length][cands.size()];
         for (int i = 0; i < filters.length; i++) {
             BoundsOnDistanceEstimation filter = filters[i];

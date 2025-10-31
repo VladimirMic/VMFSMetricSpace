@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vm.fs.main.datatools;
 
 import java.io.FileNotFoundException;
@@ -39,9 +35,9 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new FSDatasetInstances.DeCAFDataset(),
+//            new FSDatasetInstances.DeCAFDataset(),
             new FSDatasetInstances.MOCAP10FPS(),
-            new FSDatasetInstances.MOCAP30FPS()
+//            new FSDatasetInstances.MOCAP30FPS()
 //            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
 //            new FSDatasetInstances.LAION_100M_PCA256Dataset()
 //            FSLayersKasperStorage.createDataset(FSLayersKasperStorage.TYPE_0_small, FSLayersKasperStorage.DIMENSION_0_small)
@@ -80,17 +76,6 @@ public class FSPrepareNewDatasetForPivotFilterings {
         for (Dataset dataset : datasets) {
             run(dataset);
         }
-
-//        int dim = 8;
-//        while (dim < 1500) {
-//            for (int type = 0; type < 4; type++) {
-//                Dataset<float[]> dataset = FSMetricSpaceKasperStorage.createDataset(type, dim);
-//                if (dataset != null) {
-//                    run(dataset);
-//                }
-//            }
-//            dim = dim * 2;
-//        }
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {
@@ -102,14 +87,14 @@ public class FSPrepareNewDatasetForPivotFilterings {
         } else {
             plotDistanceDensity(dataset);
         }
-        selectRandomPivotsAndQueryObjects(origDataset);
-        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
-        evaluateSampleOfSmallestDistances(dataset);
+//        selectRandomPivotsAndQueryObjects(origDataset);
+//        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
+//        evaluateSampleOfSmallestDistances(dataset);
         precomputeObjectToPivotDists(origDataset);
-        createKeyValueStorageForBigDataset(origDataset);
-        learnDataDependentMetricFiltering(dataset);
-        learnDataDependentPtolemaicFiltering(dataset);
-        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
+//        createKeyValueStorageForBigDataset(origDataset);
+//        learnDataDependentMetricFiltering(dataset);
+//        learnDataDependentPtolemaicFiltering(dataset);
+//        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
     }
 
     /**
