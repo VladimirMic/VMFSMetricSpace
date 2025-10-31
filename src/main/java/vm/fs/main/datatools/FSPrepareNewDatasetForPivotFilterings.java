@@ -87,14 +87,14 @@ public class FSPrepareNewDatasetForPivotFilterings {
         } else {
             plotDistanceDensity(dataset);
         }
-//        selectRandomPivotsAndQueryObjects(origDataset);
-//        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
-//        evaluateSampleOfSmallestDistances(dataset);
+        selectRandomPivotsAndQueryObjects(origDataset);
+        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
+        evaluateSampleOfSmallestDistances(dataset);
         precomputeObjectToPivotDists(origDataset);
-//        createKeyValueStorageForBigDataset(origDataset);
-//        learnDataDependentMetricFiltering(dataset);
-//        learnDataDependentPtolemaicFiltering(dataset);
-//        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
+        createKeyValueStorageForBigDataset(origDataset);
+        learnDataDependentMetricFiltering(dataset);
+        learnDataDependentPtolemaicFiltering(dataset);
+        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
     }
 
     /**

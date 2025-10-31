@@ -47,6 +47,7 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
         run(dataset, pivotCount, dataset.getDistanceFunction());
     }
 
+    @Deprecated
     public static boolean delete(Dataset dataset, int pivotCount) {
         FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
         return loader.deletePrecomputedDists(dataset, pivotCount);
