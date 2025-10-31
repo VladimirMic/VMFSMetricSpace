@@ -130,9 +130,13 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
     }
 
     private int parsePivotCountFromFileName(String name) {
-        name = name.substring(name.lastIndexOf("_") + 1);
-        name = name.substring(0, name.indexOf("pivot"));
-        return Integer.parseInt(name);
+        try {
+            name = name.substring(name.lastIndexOf("_") + 1);
+            name = name.substring(0, name.indexOf("pivot"));
+            return Integer.parseInt(name);
+        } catch (Exception e) {
+            return -Integer.MAX_VALUE;
+        }
     }
 
     @Override
@@ -143,11 +147,12 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
             outputStream.write(';');
         }
         outputStream.write('\n');
+        outputStream.flush();
     }
 
     @Override
     public int serializeRows(OutputStream outputStream, Map<Comparable, Integer> rowKeys, Map<Comparable, Integer> columnKeys, float[][] distsInRow, int rowCounter) throws IOException {
-        for (Map.Entry<Comparable, Integer> oID : rowHeaders.entrySet()) {
+        for (Map.Entry<Comparable, Integer> oID : rowKeys.entrySet()) {
             rowCounter++;
             String oIdString = oID.getKey().toString();
             outputStream.write(oIdString.getBytes());
@@ -163,6 +168,7 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
                 LOG.log(Level.INFO, "Stored {0} rows", rowCounter);
             }
         }
+        outputStream.flush();
         return rowCounter;
     }
 
