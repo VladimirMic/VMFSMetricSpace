@@ -113,6 +113,7 @@ public class FSGlobal {
         String question = "Should I ask when going to rewrite existing file?";
         boolean answer = true;
         try {
+            LOG.log(Level.WARNING, "Asking for a question, waiting for the reply (rewritting)");
             Object[] options = new String[]{"Yes", "No"};
             int banOverloadingFiles = JOptionPane.showOptionDialog(null, question, "Ask when overriding?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, JOptionPane.NO_OPTION);
             answer = banOverloadingFiles != 1;
