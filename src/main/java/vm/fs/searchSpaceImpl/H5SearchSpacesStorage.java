@@ -203,15 +203,17 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
 
         @Override
         public boolean containsKey(Object key) {
-            int id;
-            if (key instanceof String) {
-                id = Integer.parseInt(key.toString());
-            } else if (!(key instanceof Long) && !(key instanceof Integer)) {
-                return false;
-            } else {
-                id = (int) key;
+            if (key instanceof Long cast) {
+                return cast <= size();
             }
-            return id <= size();
+            if (key instanceof Integer cast) {
+                return cast <= size();
+            }
+            if (key instanceof String) {
+                int id = Integer.parseInt(key.toString());
+                return id <= size();
+            }
+            return false;
         }
 
         @Override
@@ -221,10 +223,10 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
 
         @Override
         public float[] get(Object key) {
-            if (containsKey(key)) {
-                long x = Long.parseLong(key.toString());
-                x -= 1;
-                long[] shift = new long[]{x, 0};
+            Long keyLong = Tools.getDigitsFromString(key.toString());
+            if (containsKey(keyLong)) {
+                keyLong -= 1;
+                long[] shift = new long[]{keyLong, 0};
                 Object dataBuffer = dataset.getData(shift, vectorDimensions);
                 if (dataBuffer instanceof float[][] c) {
                     return c[0];

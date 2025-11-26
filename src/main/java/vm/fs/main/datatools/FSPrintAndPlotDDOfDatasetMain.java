@@ -16,6 +16,7 @@ import vm.mathtools.Tools;
 import vm.searchSpace.ToolsSpaceDomain;
 import vm.searchSpace.Dataset;
 import vm.plot.impl.LinesOrPointsPlotter;
+import vm.searchSpace.distance.DistanceFunctionInterface;
 
 /**
  *
@@ -29,9 +30,8 @@ public class FSPrintAndPlotDDOfDatasetMain {
     public static void main(String[] args) {
         Dataset[] datasets = {
             //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(true),
-            new FSDatasetInstances.DeCAFDataset(),
-//            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
+            new FSDatasetInstances.DeCAFDataset(), //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
+        //            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset()
         };
         for (Dataset dataset : datasets) {
             run(dataset);
@@ -39,14 +39,19 @@ public class FSPrintAndPlotDDOfDatasetMain {
     }
 
     public static void run(Dataset dataset) {
+        run(dataset, null);
+    }
+
+    public static void run(Dataset dataset, DistanceFunctionInterface distanceFunction) {
         String datasetName = dataset.getDatasetName();
 //      getHistogramsForRandomPairs
-        File f = getFileForDistDensity(datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false);
+        String dfName = distanceFunction != null ? distanceFunction.getName() : "";
+        File f = getFileForDistDensity(datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false, dfName);
         SortedMap<Float, Float> ddRandomSample;
         if (f.exists()) {
             ddRandomSample = vm.datatools.Tools.parseCsvMapFloats(f.getAbsolutePath());
         } else {
-            ddRandomSample = ToolsSpaceDomain.createDistanceDensityPlot(dataset, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
+            ddRandomSample = ToolsSpaceDomain.createDistanceDensityPlot(dataset, distanceFunction, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
         }
 //      print
         Map<Float, Float> mapOfValues = printDD(f, ddRandomSample);
@@ -87,12 +92,12 @@ public class FSPrintAndPlotDDOfDatasetMain {
     }
 
     public static boolean existsForDataset(Dataset dataset) {
-        File f = getFileForDistDensity(dataset.getDatasetName(), IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false);
+        File f = getFileForDistDensity(dataset.getDatasetName(), IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false, "");
         return f.exists();
     }
 
-    private static File getFileForDistDensity(String datasetName, int objCount, int distCount, boolean willBeDeleted) {
-        String fileName = datasetName + "_o" + objCount + "_d" + distCount + ".csv";
+    private static File getFileForDistDensity(String datasetName, int objCount, int distCount, boolean willBeDeleted, String dfName) {
+        String fileName = datasetName + "_o" + objCount + "_d" + distCount + dfName + ".csv";
         File ret = new File(FSGlobal.DIST_DISTRIBUTION_PLOTS_FOLDER, fileName);
         ret = FSGlobal.checkFileExistence(ret, willBeDeleted);
         return ret;

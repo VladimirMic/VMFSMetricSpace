@@ -19,6 +19,7 @@ import java.util.zip.GZIPOutputStream;
 import vm.fs.FSGlobal;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.searchSpace.Dataset;
+import vm.searchSpace.distance.DistanceFunctionInterface;
 import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixSerializator;
 import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
@@ -94,7 +95,7 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
     public MainMemoryStoredPrecomputedDistances loadPrecomPivotsToObjectsDists(Dataset dataset, String dfModification, int pivotCount) {
         String datasetName = dataset.getDatasetName();
         String pivotSetName = dataset.getPivotSetName();
-        File file = deriveFileForDatasetAndPivots(datasetName, dfModification, pivotSetName, pivotCount, false);
+        File file = deriveFileForDatasetAndPivots(datasetName, dfModification, dataset.getDistanceFunction(), pivotSetName, pivotCount, false);
         if (!file.exists()) {
             LOG.log(Level.WARNING, "No precomputed distances found for dataset {0} pivot set {1} and {2} pivots", new Object[]{datasetName, pivotSetName, pivotCount});
             return null;
@@ -103,9 +104,9 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
 
     }
 
-    public File deriveFileForDatasetAndPivots(String datasetName, String dfModification, String pivotSetName, int pivotCount, boolean willBeDeleted) {
+    public File deriveFileForDatasetAndPivots(String datasetName, String dfModification, DistanceFunctionInterface nativeDF, String pivotSetName, int pivotCount, boolean willBeDeleted) {
         String suf = "";
-        if (dfModification != null && !dfModification.equals("")) {
+        if (dfModification != null && !dfModification.equals("")&& !dfModification.equals(nativeDF.getName())) {
             suf = "_" + dfModification;
         }
         return deriveFileForDatasetAndPivots(datasetName + suf, pivotSetName, pivotCount, willBeDeleted);
@@ -207,7 +208,7 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
 
     public static GZIPOutputStream getGZIPOutputStream(Dataset dataset, int pivotCount, String dfModification, boolean append) {
         FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
-        String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dfModification, dataset.getPivotSetName(), pivotCount, !append).getAbsolutePath();
+        String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dfModification, dataset.getDistanceFunction(), dataset.getPivotSetName(), pivotCount, !append).getAbsolutePath();
         GZIPOutputStream outputStream = null;
         try {
             outputStream = new GZIPOutputStream(new FileOutputStream(output, append), true);

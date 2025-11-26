@@ -38,9 +38,8 @@ public class FSSearchSpacesStorage<T> extends AbstractSearchSpacesStorage<T> {
     private VMMVStorage singularizatorOfDiskStorage = null;
 
     /**
-     * Methods searchSpace.getIDOfObject and
-     * searchSpace.getDataOfObject are used to store the search objects in
-     * the "key-value" format
+     * Methods searchSpace.getIDOfObject and searchSpace.getDataOfObject are
+     * used to store the search objects in the "key-value" format
      *
      * @param searchSpace
      * @param dataSerializator transforms T to string and vice versa see
@@ -72,7 +71,8 @@ public class FSSearchSpacesStorage<T> extends AbstractSearchSpacesStorage<T> {
         if (!f.exists()) {
             LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
             if (!folder.equals(FSGlobal.DATASET_FOLDER)) {
-                return null;
+                LOG.log(Level.SEVERE, "Returning dataset objects instead of objects from {0}", folder);
+                return getIteratorOfObjects(FSGlobal.DATASET_FOLDER, setName, params);
             }
             if (singularizatorOfDiskStorage == null) {
                 singularizatorOfDiskStorage = new VMMVStorage(setName, false);
