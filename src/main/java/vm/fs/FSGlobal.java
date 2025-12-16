@@ -85,6 +85,7 @@ public class FSGlobal {
     public static final String FOLDER_PLOTS = ROOT + "Plots\\";
     public static final String FOLDER_DATA_FOR_PLOTS = FOLDER_PLOTS + "Data\\";
     public static final String DIST_DISTRIBUTION_PLOTS_FOLDER = DATA_FOLDER + "DD_Plots\\";
+    public static final String BFDF_STATS_FOLDER = DATA_FOLDER + "BFDF_Stats\\";
 
     public static final File checkFileExistence(File file, boolean willBeDeleted) {
         Object[] options = new String[]{"Yes", "No"};
