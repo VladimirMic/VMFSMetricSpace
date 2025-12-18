@@ -106,7 +106,7 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
 
     public File deriveFileForDatasetAndPivots(String datasetName, String dfModification, DistanceFunctionInterface nativeDF, String pivotSetName, int pivotCount, boolean willBeDeleted) {
         String suf = "";
-        if (dfModification != null && !dfModification.equals("")&& !dfModification.equals(nativeDF.getName())) {
+        if (dfModification != null && !dfModification.equals("") && !dfModification.equals(nativeDF.getName())) {
             suf = "_" + dfModification;
         }
         return deriveFileForDatasetAndPivots(datasetName + suf, pivotSetName, pivotCount, willBeDeleted);
