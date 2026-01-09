@@ -110,7 +110,7 @@ public class FSGlobal {
         return file;
     }
 
-    private static void askRewritting() {
+    public static void askRewritting() {
         String question = "Should I ask when going to rewrite existing file?";
         boolean answer = true;
         try {
