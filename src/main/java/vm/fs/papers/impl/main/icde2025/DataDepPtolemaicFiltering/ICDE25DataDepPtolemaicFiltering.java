@@ -13,7 +13,7 @@ import vm.searchSpace.Dataset;
 import vm.searchSpace.DatasetOfCandidates;
 import vm.searchSpace.data.RandomVectorsGenerator;
 import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.bounding.BoundsOnDistanceEstimation;
 import vm.searchSpace.distance.impl.L2OnFloatsArray;
 import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
@@ -72,7 +72,7 @@ public class ICDE25DataDepPtolemaicFiltering {
     }
 
     private static Dataset[] createOrGetRandomUniformDatasetQueriesPivots(int datasetObjectCount, int pivotsCount, int queriesCount, int... dimensionalities) {
-        DistanceFunctionInterface df = new L2OnFloatsArray();
+        AbstractDistanceFunction df = new L2OnFloatsArray();
         FSSearchSpaceImpl searchSpace = new FSSearchSpaceImpl(df);
         SearchObjectDataToStringInterface<float[]> dataSerializator = SingularisedConvertors.FLOAT_VECTOR_SPACE;
         int[] sizes = {datasetObjectCount, queriesCount, pivotsCount};

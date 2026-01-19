@@ -10,7 +10,7 @@ import vm.fs.dataset.FSDatasetInstances;
 import vm.searchSpace.ToolsSpaceDomain;
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.Dataset;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 
 /**
  *
@@ -42,7 +42,7 @@ public class FSPrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         List<Object> transformedObjects = datasetTransformed.getSearchSpacesStorage().getSampleOfDataset(transformedDatasetName, -1);
         AbstractSearchSpace searchSpace = datasetTransformed.getSearchSpace();
         Map<Comparable, Object> searchObjectsAsIdObjectMap = ToolsSpaceDomain.getSearchObjectsAsIdDataMap(searchSpace, transformedObjects);
-        DistanceFunctionInterface distanceFunctionForTransformedDataset = searchSpace.getDistanceFunction();
+        AbstractDistanceFunction distanceFunctionForTransformedDataset = searchSpace.getDistanceFunction();
         SortedMap<Float, Float> ddRandomSampleTransformed = evaluateDDForPairs(distanceFunctionForTransformedDataset, idsOfRandomPairs, searchObjectsAsIdObjectMap);
         SortedMap<Float, Float> ddOfNNSampleTransformed = evaluateDDForPairs(distanceFunctionForTransformedDataset, idsOfNNPairs, searchObjectsAsIdObjectMap);
 
@@ -72,7 +72,7 @@ public class FSPrintDDOfNearNeighboursAndDatasetOrigAndTransformedMain {
         return ToolsSpaceDomain.createDistanceDensityPlot(distances);
     }
 
-    private static SortedMap<Float, Float> evaluateDDForPairs(DistanceFunctionInterface distanceFunction, List<Object[]> idsPairs, Map<Comparable, Object> searchObjects) {
+    private static SortedMap<Float, Float> evaluateDDForPairs(AbstractDistanceFunction distanceFunction, List<Object[]> idsPairs, Map<Comparable, Object> searchObjects) {
         List<Float> distances = new ArrayList<>();
         for (Object[] idsPair : idsPairs) {
             Object o1 = searchObjects.get(idsPair[0]);

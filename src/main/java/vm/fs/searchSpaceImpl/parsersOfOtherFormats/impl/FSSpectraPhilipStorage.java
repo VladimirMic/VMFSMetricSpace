@@ -14,7 +14,7 @@ import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
 import vm.fs.searchSpaceImpl.parsersOfOtherFormats.AbstractFSSearchSpacesStorageWithOthersDatasetStorage;
 import vm.searchSpace.Dataset;
 import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.impl.L2OnFloatsArray;
 import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 
@@ -27,7 +27,7 @@ public class FSSpectraPhilipStorage<T> extends AbstractFSSearchSpacesStorageWith
 
     public static final String DATASET_NAME = "data95_dyn.txt";
 
-    public FSSpectraPhilipStorage(DistanceFunctionInterface<T> df, SearchObjectDataToStringInterface<T> dataSerializator) {
+    public FSSpectraPhilipStorage(AbstractDistanceFunction<T> df, SearchObjectDataToStringInterface<T> dataSerializator) {
         super(new FSSearchSpaceImpl(df), dataSerializator);
     }
 

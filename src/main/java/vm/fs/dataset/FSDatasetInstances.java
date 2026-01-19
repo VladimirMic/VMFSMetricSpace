@@ -23,7 +23,7 @@ import vm.searchSpace.DatasetOfCandidates;
 import vm.searchSpace.ToolsSpaceDomain;
 import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
 import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.impl.AngularDistance;
 import vm.searchSpace.distance.impl.CosineOnFloatsArray;
 import vm.searchSpace.distance.impl.DTWOnFloatsArray;
@@ -1038,7 +1038,7 @@ public class FSDatasetInstances {
 
         private final boolean publicQueries;
 
-        protected LAION_10M_Dataset(boolean publicQueries, DistanceFunctionInterface<float[]> df) {
+        protected LAION_10M_Dataset(boolean publicQueries, AbstractDistanceFunction<float[]> df) {
             super("laion2B-en-clip768v2-n=10M.h5", df);
             this.publicQueries = publicQueries;
         }
@@ -1074,7 +1074,7 @@ public class FSDatasetInstances {
 
         private final boolean publicQueries;
 
-        protected LAION_30M_Dataset(boolean publicQueries, DistanceFunctionInterface< float[]> df) {
+        protected LAION_30M_Dataset(boolean publicQueries, AbstractDistanceFunction< float[]> df) {
             super("laion2B-en-clip768v2-n=30M.h5", df);
             this.publicQueries = publicQueries;
         }
@@ -1102,7 +1102,7 @@ public class FSDatasetInstances {
 
         private final boolean publicQueries;
 
-        protected LAION_100M_Dataset(boolean publicQueries, DistanceFunctionInterface<float[]> df) {
+        protected LAION_100M_Dataset(boolean publicQueries, AbstractDistanceFunction<float[]> df) {
             super("laion2B-en-clip768v2-n=100M.h5", df);
             this.publicQueries = publicQueries;
         }
@@ -2043,7 +2043,7 @@ public class FSDatasetInstances {
 
     public static abstract class FSGenericDataset<T> extends Dataset<T> {
 
-        public FSGenericDataset(String datasetName, DistanceFunctionInterface<T> df, SearchObjectDataToStringInterface<T> dataSerializator) {
+        public FSGenericDataset(String datasetName, AbstractDistanceFunction<T> df, SearchObjectDataToStringInterface<T> dataSerializator) {
             super(datasetName, new FSSearchSpacesStorage<>(new FSSearchSpaceImpl(df), dataSerializator));
         }
 
@@ -2110,7 +2110,7 @@ public class FSDatasetInstances {
 
     public static abstract class FSFloatVectorDataset extends FSGenericDataset<float[]> {
 
-        public FSFloatVectorDataset(String datasetName, DistanceFunctionInterface<float[]> df) {
+        public FSFloatVectorDataset(String datasetName, AbstractDistanceFunction<float[]> df) {
             super(datasetName, df, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
 
@@ -2126,7 +2126,7 @@ public class FSDatasetInstances {
 
     public static abstract class H5FloatVectorDataset extends H5Dataset<float[]> {
 
-        public H5FloatVectorDataset(String datasetName, DistanceFunctionInterface<float[]> df) {
+        public H5FloatVectorDataset(String datasetName, AbstractDistanceFunction<float[]> df) {
             super(datasetName, df, SingularisedConvertors.FLOAT_VECTOR_SPACE);
         }
 
@@ -2134,7 +2134,7 @@ public class FSDatasetInstances {
 
     public static abstract class H5LongVectorDataset extends H5Dataset<long[]> {
 
-        public H5LongVectorDataset(String datasetName, DistanceFunctionInterface<long[]> df) {
+        public H5LongVectorDataset(String datasetName, AbstractDistanceFunction<long[]> df) {
             super(datasetName, df, SingularisedConvertors.LONG_VECTOR_SPACE);
         }
 
@@ -2142,7 +2142,7 @@ public class FSDatasetInstances {
 
     public static abstract class H5Dataset<T> extends Dataset<T> {
 
-        public H5Dataset(String datasetName, DistanceFunctionInterface<T> df, SearchObjectDataToStringInterface<T> serialisator) {
+        public H5Dataset(String datasetName, AbstractDistanceFunction<T> df, SearchObjectDataToStringInterface<T> serialisator) {
             super(datasetName,
                     new H5SearchSpacesStorage<>(new FSSearchSpaceImpl<>(df), serialisator)
             );

@@ -23,7 +23,7 @@ import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.Dataset;
 import vm.searchSpace.DatasetOfCandidates;
 import vm.searchSpace.ToolsSpaceDomain;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.bounding.BoundsOnDistanceEstimation;
 import vm.searchSpace.distance.bounding.onepivot.AbstractOnePivotFilter;
 import vm.searchSpace.distance.bounding.onepivot.impl.TriangleInequality;
@@ -115,7 +115,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         int maxObjectsCount = -1;
         int pivotCount = pivots.size();
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();
-        DistanceFunctionInterface df = dataset.getDistanceFunction();
+        AbstractDistanceFunction df = dataset.getDistanceFunction();
 
         initPODists(dataset, pivotCount, maxObjectsCount, pivots);
         int qCount;
@@ -139,7 +139,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static void initPODists(Dataset dataset, int pivotCount, int maxObjectsCount, List pivots, boolean allowCache) {
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();
-        DistanceFunctionInterface df = dataset.getDistanceFunction();
+        AbstractDistanceFunction df = dataset.getDistanceFunction();
         Dataset origDataset = dataset;
         if (dataset instanceof DatasetOfCandidates) {
             origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
@@ -167,11 +167,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         return poDists;
     }
 
-    public static SearchingAlgorithm initAlg(BoundsOnDistanceEstimation filter, Dataset dataset, AbstractSearchSpace searchSpace, List pivots, DistanceFunctionInterface df) {
+    public static SearchingAlgorithm initAlg(BoundsOnDistanceEstimation filter, Dataset dataset, AbstractSearchSpace searchSpace, List pivots, AbstractDistanceFunction df) {
         return initAlg(filter, dataset, searchSpace, pivots, df, null);
     }
 
-    public static SearchingAlgorithm initAlg(BoundsOnDistanceEstimation filter, Dataset dataset, AbstractSearchSpace searchSpace, List pivots, DistanceFunctionInterface df, float[][] pivotPivotDists) {
+    public static SearchingAlgorithm initAlg(BoundsOnDistanceEstimation filter, Dataset dataset, AbstractSearchSpace searchSpace, List pivots, AbstractDistanceFunction df, float[][] pivotPivotDists) {
         SearchingAlgorithm alg;
         if (pd == null) {
             initPODists(dataset, pivots.size(), -1, pivots);
@@ -256,7 +256,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         recallStorage.save();
     }
 
-    private static void evalAndStore(Dataset dataset, List queries, int k, AbstractSearchSpace searchSpace, BoundsOnDistanceEstimation filter, List pivots, DistanceFunctionInterface df, float[][] pivotPivotDists, int repetitions) {
+    private static void evalAndStore(Dataset dataset, List queries, int k, AbstractSearchSpace searchSpace, BoundsOnDistanceEstimation filter, List pivots, AbstractDistanceFunction df, float[][] pivotPivotDists, int repetitions) {
         if (dataset == null) {
             return;
         }

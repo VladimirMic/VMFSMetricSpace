@@ -19,7 +19,7 @@ import java.util.zip.GZIPOutputStream;
 import vm.fs.FSGlobal;
 import vm.fs.main.precomputeDistances.FSEvalAndStoreObjectsToPivotsDistsMain;
 import vm.searchSpace.Dataset;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedDistancesMatrixSerializator;
 import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
@@ -104,7 +104,7 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
 
     }
 
-    public File deriveFileForDatasetAndPivots(String datasetName, String dfModification, DistanceFunctionInterface nativeDF, String pivotSetName, int pivotCount, boolean willBeDeleted) {
+    public File deriveFileForDatasetAndPivots(String datasetName, String dfModification, AbstractDistanceFunction nativeDF, String pivotSetName, int pivotCount, boolean willBeDeleted) {
         String suf = "";
         if (dfModification != null && !dfModification.equals("") && !dfModification.equals(nativeDF.getName())) {
             suf = "_" + dfModification;

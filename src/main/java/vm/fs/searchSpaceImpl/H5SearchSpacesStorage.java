@@ -22,7 +22,7 @@ import vm.datatools.Tools;
 import vm.fs.FSGlobal;
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 
 /**
  *
@@ -80,7 +80,7 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
         String prefix = params[params.length - 1].toString();
         Class clazz = null;
         for (Object param : params) {
-            if (param instanceof DistanceFunctionInterface c) {
+            if (param instanceof AbstractDistanceFunction c) {
                 clazz = c.getClassOfComparedData();
             }
         }

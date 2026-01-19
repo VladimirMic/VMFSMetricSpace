@@ -18,7 +18,7 @@ import vm.search.algorithm.impl.KNNSearchWithSketchSecondaryFiltering;
 import vm.objTransforms.storeLearned.PivotPairsStoreInterface;
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.Dataset;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.bounding.nopivot.impl.SecondaryFilteringWithSketches;
 import vm.searchSpace.distance.bounding.nopivot.learning.LearningSecondaryFilteringWithSketches;
 import vm.searchSpace.distance.bounding.nopivot.storeLearned.SecondaryFilteringWithSketchesStoreInterface;
@@ -68,7 +68,7 @@ public class FSKNNQueriesSeqScanWithSecondaryFilteringWithSketchesMain {
     private static void run(Dataset fullDataset, Dataset sketchesDataset, float distIntervalForPX, float pCum, int sketchLength, String pivotPairsFileName) {
         int k = 10;
         AbstractSearchSpace searchSpace = fullDataset.getSearchSpace();
-        DistanceFunctionInterface df = fullDataset.getDistanceFunction();
+        AbstractDistanceFunction df = fullDataset.getDistanceFunction();
 
         PivotPairsStoreInterface storageOfPivotPairs = new FSGHPSketchesPivotPairsStorageImpl();
         List pivots = fullDataset.getPivots(-1);

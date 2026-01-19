@@ -16,7 +16,7 @@ import vm.mathtools.Tools;
 import vm.searchSpace.ToolsSpaceDomain;
 import vm.searchSpace.Dataset;
 import vm.plot.impl.LinesOrPointsPlotter;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 
 /**
  *
@@ -42,7 +42,7 @@ public class FSPrintAndPlotDDOfDatasetMain {
         run(dataset, null);
     }
 
-    public static void run(Dataset dataset, DistanceFunctionInterface distanceFunction) {
+    public static void run(Dataset dataset, AbstractDistanceFunction distanceFunction) {
         String datasetName = dataset.getDatasetName();
 //      getHistogramsForRandomPairs
         String dfName = distanceFunction != null ? distanceFunction.getName() : "";

@@ -11,7 +11,7 @@ import vm.datatools.Tools;
 import vm.fs.searchSpaceImpl.parsersOfOtherFormats.impl.FSSpectraPhilipStorage;
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.Dataset;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 
 /**
  *
@@ -57,7 +57,7 @@ public class PrintiiDimOfDatasetMain {
     public static void run(Dataset dataset) {
         List sampleOfDataset = dataset.getSampleOfDataset(FSPrintAndPlotDDOfDatasetMain.IMPLICIT_OBJ_COUNT);
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();
-        DistanceFunctionInterface df = dataset.getDistanceFunction();
+        AbstractDistanceFunction df = dataset.getDistanceFunction();
         double[] distances = new double[FSPrintAndPlotDDOfDatasetMain.IMPLICIT_DIST_COUNT];
         for (int i = 0; i < distances.length; i++) {
             Object o1 = searchSpace.getDataOfObject(Tools.randomObject(sampleOfDataset));

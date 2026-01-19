@@ -16,7 +16,7 @@ import vm.fs.store.precomputedDists.FSPrecomputedDistancesMatrixSerializatorImpl
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.Dataset;
 import vm.searchSpace.ToolsSpaceDomain;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
 /**
@@ -47,7 +47,7 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
         run(dataset, pivotCount, dataset.getDistanceFunction());
     }
 
-    public static void run(Dataset dataset, int pivotCount, DistanceFunctionInterface df) {
+    public static void run(Dataset dataset, int pivotCount, AbstractDistanceFunction df) {
         if (pivotCount < 0) {
             pivotCount = Integer.MAX_VALUE;
         }

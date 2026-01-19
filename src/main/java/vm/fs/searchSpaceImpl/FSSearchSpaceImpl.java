@@ -4,7 +4,7 @@ import java.util.AbstractMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import vm.searchSpace.AbstractSearchSpace;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 
 /**
  *
@@ -15,46 +15,46 @@ public class FSSearchSpaceImpl<T> extends AbstractSearchSpace<T> {
 
     private final Logger LOG = Logger.getLogger(FSSearchSpaceImpl.class.getName());
 
-    public FSSearchSpaceImpl(DistanceFunctionInterface<T> df) {
+    public FSSearchSpaceImpl(AbstractDistanceFunction<T> df) {
         super(df);
     }
 
 //    @Override
-//    public DistanceFunctionInterface<T> getDistanceFunctionForDataset(String datasetName, Object... params) {
+//    public AbstractDistanceFunction<T> getDistanceFunctionForDataset(String datasetName, Object... params) {
 //        if (implicitDF != null) {
 //            return implicitDF;
 //        }
 //        if (datasetName.contains("Angular")) {
-//            return (DistanceFunctionInterface<T>) new AngularDistance();
+//            return (AbstractDistanceFunction<T>) new AngularDistance();
 //        }
 //        if (datasetName.contains("DotPro")) {
-//            return (DistanceFunctionInterface<T>) new DotProduct();
+//            return (AbstractDistanceFunction<T>) new DotProduct();
 //        }
 //        if (datasetName.toLowerCase().contains("pca") || datasetName.toLowerCase().contains("euclid")) {
-//            return (DistanceFunctionInterface<T>) new L2OnFloatsArray();
+//            return (AbstractDistanceFunction<T>) new L2OnFloatsArray();
 //        }
 //        if (datasetName.contains("_GHP_50_") || datasetName.contains("_GHP_80_")) {
-//            return (DistanceFunctionInterface<T>) new HammingDistanceLongs();
+//            return (AbstractDistanceFunction<T>) new HammingDistanceLongs();
 //        }
 //        if (datasetName.contains("laion2B-en")) {
-//            return (DistanceFunctionInterface<T>) new CosineDistance();
+//            return (AbstractDistanceFunction<T>) new CosineDistance();
 //        }
 //        if (datasetName.contains("random_") && datasetName.toLowerCase().contains("_uniform_1m")) {
-//            return (DistanceFunctionInterface<T>) new L2OnFloatsArray();
+//            return (AbstractDistanceFunction<T>) new L2OnFloatsArray();
 //        }
 //        switch (datasetName) {
 //            case ("decaf_1m"):
 //            case ("decaf_100m"):
 //            case ("sift_1m"):
-//                return (DistanceFunctionInterface<T>) new L2OnFloatsArray();
+//                return (AbstractDistanceFunction<T>) new L2OnFloatsArray();
 //            case ("mpeg7_1m"): {
-//                return (DistanceFunctionInterface<T>) new Sapir3DistanceFunction();
+//                return (AbstractDistanceFunction<T>) new Sapir3DistanceFunction();
 //            }
 //            case (FSMocapJanStorage.DATASET_NAME_10FPS):
 //            case (FSMocapJanStorage.DATASET_NAME_30FPS):
 //            case (FSMocapJanStorage.DATASET_NAME_10FPS + "_selected.txt"):
 //            case (FSMocapJanStorage.DATASET_NAME_30FPS + "_selected.txt"):
-//                return (DistanceFunctionInterface<T>) new DTWOnFloatsArray();
+//                return (AbstractDistanceFunction<T>) new DTWOnFloatsArray();
 //        }
 //        throw new IllegalArgumentException("Unknown dataset name " + datasetName + ". No distance function provided.");
 //    }

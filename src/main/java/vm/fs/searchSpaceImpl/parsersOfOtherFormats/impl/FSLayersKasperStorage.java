@@ -10,7 +10,7 @@ import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
 import vm.fs.searchSpaceImpl.parsersOfOtherFormats.AbstractFSSearchSpacesStorageWithOthersDatasetStorage;
 import vm.searchSpace.Dataset;
 import vm.searchSpace.data.toStringConvertors.SingularisedConvertors;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.impl.L2OnFloatsArray;
 import vm.searchSpace.data.toStringConvertors.SearchObjectDataToStringInterface;
 
@@ -85,7 +85,7 @@ public class FSLayersKasperStorage<T> extends AbstractFSSearchSpacesStorageWithO
         }
     }
 
-    public FSLayersKasperStorage(DistanceFunctionInterface<T> df, SearchObjectDataToStringInterface<T> dataSerializator) {
+    public FSLayersKasperStorage(AbstractDistanceFunction<T> df, SearchObjectDataToStringInterface<T> dataSerializator) {
         super(new FSSearchSpaceImpl(df), dataSerializator);
     }
 

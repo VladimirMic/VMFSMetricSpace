@@ -13,7 +13,7 @@ import vm.fs.store.auxiliaryForDistBounding.FSDataDependentPtolemyInequalityPivo
 import vm.fs.store.auxiliaryForDistBounding.FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl;
 import vm.searchSpace.AbstractSearchSpace;
 import vm.searchSpace.Dataset;
-import vm.searchSpace.distance.DistanceFunctionInterface;
+import vm.searchSpace.distance.AbstractDistanceFunction;
 import vm.searchSpace.distance.bounding.twopivots.impl.DataDependentPtolemaicFiltering;
 import vm.searchSpace.distance.bounding.twopivots.learning.LearningPivotPairsForPtolemyInequalityWithLimitedAngles;
 import vm.searchSpace.distance.storedPrecomputedDistances.AbstractPrecomputedPairsOfDistancesStorage;
@@ -45,7 +45,7 @@ public class FSLearnPivotPairsForDataDepenentPtolemyFilteringMain {
 
     private static void run(Dataset dataset) {
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();
-        DistanceFunctionInterface df = dataset.getDistanceFunction();
+        AbstractDistanceFunction df = dataset.getDistanceFunction();
         List<Object> pivots = dataset.getPivots(dataset.getRecommendedNumberOfPivotsForFiltering());
 
         DataDependentPtolemaicFiltering filter = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(null, dataset, pivots.size());
