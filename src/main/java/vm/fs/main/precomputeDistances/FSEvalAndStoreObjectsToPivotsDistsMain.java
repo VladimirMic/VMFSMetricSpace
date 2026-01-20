@@ -52,7 +52,14 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
             pivotCount = Integer.MAX_VALUE;
         }
         FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
-        GZIPOutputStream outputStream = FSPrecomputedDistancesMatrixSerializatorImpl.getGZIPOutputStream(dataset, pivotCount, false);
+
+        String modification = null;
+        String dfName = df.getName();
+        if (!dfName.equals(dataset.getDistanceFunction().getName())) {
+            modification = dfName;
+        }
+
+        GZIPOutputStream outputStream = FSPrecomputedDistancesMatrixSerializatorImpl.getGZIPOutputStream(dataset, pivotCount, modification, false);
         AbstractSearchSpace searchSpace = dataset.getSearchSpace();
         List pivots = dataset.getPivots(pivotCount);
         Iterator objects = dataset.getSearchObjectsFromDataset();
