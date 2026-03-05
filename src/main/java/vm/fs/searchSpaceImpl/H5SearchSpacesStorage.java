@@ -158,7 +158,7 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
             T[] dataBuffer = (T[]) dataset.getData(counter, vectorDimensions);
             T data = null;
             if (clazz == null) {
-                throw new IllegalArgumentException("Did you provided distance function as a param?");
+                throw new IllegalArgumentException("Did you provided distance function as a param? BNote it defines the data type so I do not know how to read data (int? float? double?)");
             }
             if (clazz.equals(float[].class)) {
                 data = (T) DataTypeConvertor.arrayToFloatArray(dataBuffer[0]);

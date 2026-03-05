@@ -274,12 +274,12 @@ public class FSSearchSpacesStorage<T> extends AbstractSearchSpacesStorage<T> {
     }
 
     @Override
-    public int getPrecomputedDatasetSize(String datasetName) {
+    public int getPrecomputedDatasetSize(String datasetName, Object ... params) {
         BufferedReader br = null;
         try {
             File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", false);
             if (!f.exists()) {
-                return updateDatasetSize(datasetName);
+                return updateDatasetSize(datasetName, params);
             }
             br = new BufferedReader(new FileReader(f));
             String line = br.readLine();
