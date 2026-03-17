@@ -273,8 +273,13 @@ public class FSSearchSpacesStorage<T> extends AbstractSearchSpacesStorage<T> {
         }
     }
 
+    private int datasetSizeCache = -1;
+
     @Override
-    public int getPrecomputedDatasetSize(String datasetName, Object ... params) {
+    public int getPrecomputedDatasetSize(String datasetName, Object... params) {
+        if (datasetSizeCache != -1) {
+            return datasetSizeCache;
+        }
         BufferedReader br = null;
         try {
             File f = getFileForObjects(FSGlobal.DATASET_FOLDER, datasetName + "_size.txt", false);
@@ -283,7 +288,8 @@ public class FSSearchSpacesStorage<T> extends AbstractSearchSpacesStorage<T> {
             }
             br = new BufferedReader(new FileReader(f));
             String line = br.readLine();
-            return Integer.parseInt(line);
+            datasetSizeCache = Integer.parseInt(line);
+            return datasetSizeCache;
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } finally {

@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import org.jfree.chart.JFreeChart;
 import vm.colour.StandardColours;
 import vm.datatools.DataTypeConvertor;

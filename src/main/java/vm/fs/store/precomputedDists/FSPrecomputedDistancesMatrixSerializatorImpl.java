@@ -178,8 +178,8 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
             String oIdString = oID.getKey().toString();
             outputStream.write(oIdString.getBytes());
             outputStream.write(';');
-            for (Map.Entry<Comparable, Integer> colunm : columnKeys.entrySet()) {
-                Integer pIdx = colunm.getValue();
+            for (Map.Entry<Comparable, Integer> column : columnKeys.entrySet()) {
+                Integer pIdx = column.getValue();
                 float distance = distsInRow[oID.getValue()][pIdx];
                 outputStream.write(Float.toString(distance).getBytes());
                 outputStream.write(';');

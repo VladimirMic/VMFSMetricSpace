@@ -17,7 +17,7 @@ import vm.search.algorithm.SearchingAlgorithm;
  */
 public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromResults {
 
-    public static final Integer PIVOTS = 128;
+    public static final Integer PIVOTS = 64;
 
     public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
@@ -104,7 +104,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
 
     @Override
     public String getResultName() {
-        return "Filterings";
+        return "Filterings_" + PIVOTS + "p";
     }
 
     @Override
