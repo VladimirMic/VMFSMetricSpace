@@ -59,6 +59,14 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
                     for (int i = 0; i < lineFloats.length; i++) {
                         lineFloats[i] = Float.parseFloat(split[i + 1]);
                     }
+                    //
+                    float tmpMin = Float.MAX_VALUE;
+                    for (float f : lineFloats) {
+                        if (f > 0 && f < tmpMin) {
+                            tmpMin = f;
+                        }
+                    }
+                    //
                     if (dists != null) {
                         dists[counter - 1] = lineFloats;
                     } else {

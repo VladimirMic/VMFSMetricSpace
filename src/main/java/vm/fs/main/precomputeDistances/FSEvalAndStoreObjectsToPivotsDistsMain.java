@@ -96,4 +96,10 @@ public class FSEvalAndStoreObjectsToPivotsDistsMain {
         String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), dataset.getPivotSetName(), pivotCount, false).getAbsolutePath();
         return new File(output).exists();
     }
+
+    public static boolean existsForDataset(Dataset dataset, int pivotCount, AbstractDistanceFunction df) {
+        FSPrecomputedDistancesMatrixSerializatorImpl loader = new FSPrecomputedDistancesMatrixSerializatorImpl();
+        String output = loader.deriveFileForDatasetAndPivots(dataset.getDatasetName(), df.getName(), dataset.getDistanceFunction(),  dataset.getPivotSetName(), pivotCount, false).getAbsolutePath();
+        return new File(output).exists();
+    }
 }
