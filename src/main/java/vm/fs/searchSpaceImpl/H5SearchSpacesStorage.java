@@ -6,7 +6,6 @@ import io.jhdf.api.Node;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashSet;
@@ -168,6 +167,9 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
             }
             if (clazz.equals(int[].class)) {
                 data = (T) DataTypeConvertor.arrayToIntArray(dataBuffer[0]);
+            }
+            if (clazz.equals(long[].class)) {
+                data = (T) DataTypeConvertor.arrayToLongArray(dataBuffer[0]);
             }
             if (data == null) {
                 throw new IllegalArgumentException("Unknown class: " + clazz.getName());

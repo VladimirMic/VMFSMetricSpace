@@ -104,6 +104,12 @@ public class FSPrintAndPlotDDOfDatasetMain {
     }
 
     private static void createPlot(File f, Map<Float, Float> mapOfValues) {
+        String path = f.getAbsolutePath();
+        path = path.substring(0, path.lastIndexOf("."));
+        boolean exists = new File(path + ".pdf").exists() && new File(path + "_log.pdf").exists();;
+        if (exists) {
+            return;
+        }
         LinesOrPointsPlotter plotter = new LinesOrPointsPlotter();
         float[] traceXValues = new float[mapOfValues.size()];
         float[] traceYValues = new float[mapOfValues.size()];
@@ -115,8 +121,6 @@ public class FSPrintAndPlotDDOfDatasetMain {
         }
         plotter.setIncludeZeroForXAxis(true);
         JFreeChart plot = plotter.createPlot("", "Distance", "", "", null, traceXValues, traceYValues);
-        String path = f.getAbsolutePath();
-        path = path.substring(0, path.lastIndexOf("."));
         plotter.storePlotPDF(path, plot);
         plotter.setLogY(true);
         plot = plotter.createPlot("", "Distance", "occurences", "", null, traceXValues, traceYValues);
