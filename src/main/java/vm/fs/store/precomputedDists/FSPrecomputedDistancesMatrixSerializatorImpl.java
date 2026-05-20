@@ -30,8 +30,16 @@ import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecom
 public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecomputedDistancesMatrixSerializator {
 
     private static final Logger LOG = Logger.getLogger(FSPrecomputedDistancesMatrixSerializatorImpl.class.getName());
+    private static final Map<String, MainMemoryStoredPrecomputedDistances> CACHE = new HashMap<>();
 
     public MainMemoryStoredPrecomputedDistances loadPrecomPivotsToObjectsDists(File file, Dataset dataset, int maxColumnCount) {
+        String cacheKey = file.getAbsolutePath() + "_" + Integer.toString(maxColumnCount);
+        if (dataset != null) {
+            cacheKey += Integer.toString(dataset.getPrecomputedDatasetSize());
+        }
+        if (CACHE.containsKey(cacheKey)) {
+            return CACHE.get(cacheKey);
+        }
         List<float[]> retList = new ArrayList<>();
         int maxPivots = maxColumnCount > 0 ? maxColumnCount : Integer.MAX_VALUE;
         float[][] dists = dataset == null ? null : new float[dataset.getPrecomputedDatasetSize()][maxPivots];
@@ -91,6 +99,7 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
 //                checkOrdersOfPivots(dataset.getPivots(maxColumnCount), dataset.getSearchSpace());
 //            }
             MainMemoryStoredPrecomputedDistances ret = new MainMemoryStoredPrecomputedDistances(dists, columnHeaders, rowHeaders);
+            CACHE.put(cacheKey, ret);
             return ret;
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
