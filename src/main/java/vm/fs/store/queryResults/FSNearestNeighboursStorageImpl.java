@@ -31,6 +31,9 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
 
     private final Logger LOG = Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName());
     private final boolean compress;
+    private static final Boolean CACHE_LOADED_NEIGHBOURS = true;
+
+    private static final Map<Comparable, Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>>> CACHE = new HashMap();
 
     public FSNearestNeighboursStorageImpl() {
         this(true);
@@ -38,6 +41,10 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
 
     public FSNearestNeighboursStorageImpl(boolean compress) {
         this.compress = compress;
+    }
+
+    public static void clearCache() {
+        CACHE.clear();
     }
 
     public File getFileWithResults(String resultsName, String datasetName, String querySetName, Integer k, boolean willBeDeleted) {
@@ -123,8 +130,6 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
         }
     }
 
-    private final Map<Comparable, Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>>> cache = new HashMap();
-
     @Override
     public Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>> getQueryResultsForDataset(String queryResultsName, String datasetName, String querySetName, Integer k) {
         try {
@@ -142,11 +147,13 @@ public class FSNearestNeighboursStorageImpl extends QueryNearestNeighboursStoreI
             if (k != null) {
                 key += k;
             }
-            if (cache.containsKey(key)) {
-                return cache.get(key);
+            if (CACHE.containsKey(key)) {
+                return CACHE.get(key);
             }
             Map<Comparable, TreeSet<Map.Entry<Comparable, Float>>> ret = getQueryResultsForDataset(file);
-            cache.put(key, ret);
+            if (CACHE_LOADED_NEIGHBOURS) {
+                CACHE.put(key, ret);
+            }
             return ret;
         } catch (IOException ex) {
             Logger.getLogger(FSNearestNeighboursStorageImpl.class.getName()).log(Level.SEVERE, null, ex);
