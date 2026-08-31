@@ -39,16 +39,16 @@ public class FSPrintAndPlotDDOfDatasetMain {
     }
 
     public static void run(Dataset dataset) {
-        run(dataset, null);
+        run(dataset, null, false);
     }
 
-    public static void run(Dataset dataset, AbstractDistanceFunction distanceFunction) {
+    public static void run(Dataset dataset, AbstractDistanceFunction distanceFunction, boolean forceNew) {
         String datasetName = dataset.getDatasetName();
 //      getHistogramsForRandomPairs
         String dfName = distanceFunction != null ? distanceFunction.getName() : "";
         File f = getFileForDistDensity(datasetName, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, false, dfName);
         SortedMap<Float, Float> ddRandomSample;
-        if (f.exists()) {
+        if (f.exists() && !forceNew) {
             ddRandomSample = vm.datatools.Tools.parseCsvMapFloats(f.getAbsolutePath());
         } else {
             ddRandomSample = ToolsSpaceDomain.createDistanceDensityPlot(dataset, distanceFunction, IMPLICIT_OBJ_COUNT, IMPLICIT_DIST_COUNT, null);
