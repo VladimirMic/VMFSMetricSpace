@@ -68,7 +68,12 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
         if (!f.exists()) {
             LOG.log(Level.SEVERE, "The file does not exists!");
         }
-        HdfFile hdfFile = new HdfFile(f.toPath());
+        HdfFile hdfFile = null;
+        try {
+            hdfFile = new HdfFile(f.toPath());
+        } catch (HdfException e) {
+            return super.getIteratorOfObjects(f, params);
+        }
         Dataset dataset = null;
         Iterator<Node> it = hdfFile.iterator();
         while (it.hasNext()) {
