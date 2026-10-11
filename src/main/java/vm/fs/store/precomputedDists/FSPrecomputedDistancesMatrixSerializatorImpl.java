@@ -172,8 +172,14 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
 
     public void serializeColumnsHeaders(OutputStream outputStream, Map<Comparable, Integer> columnKeys) throws IOException {
         outputStream.write(';');
-        for (Comparable pivotID : columnKeys.keySet()) {
-            outputStream.write(pivotID.toString().getBytes());
+        Comparable[] line = new Comparable[columnKeys.size()];
+        for (Map.Entry<Comparable, Integer> entry : columnKeys.entrySet()) {
+            Comparable key = entry.getKey();
+            Integer idx = entry.getValue();
+            line[idx] = key;
+        }
+        for (Comparable key : line) {
+            outputStream.write(key.toString().getBytes());
             outputStream.write(';');
         }
         outputStream.write('\n');

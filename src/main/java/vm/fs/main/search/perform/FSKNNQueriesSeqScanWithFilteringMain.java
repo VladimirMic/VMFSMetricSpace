@@ -47,10 +47,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
     public static void main(String[] args) {
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-//            new FSDatasetInstances.MOCAP10FPS()
+            new FSDatasetInstances.MOCAP10FPS()
         //            new FSDatasetInstances.MOCAP30FPS(),
         //            new FSDatasetInstances.DeCAFDataset()
-            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries)
+//            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries)
         //            new FSDatasetInstances.RandomDataset10Uniform(),
         //            new FSDatasetInstances.RandomDataset15Uniform(),
         //            new FSDatasetInstances.RandomDataset20Uniform(),
@@ -138,8 +138,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             pd = new FSPrecomputedDistancesMatrixSerializatorImpl();
             MainMemoryStoredPrecomputedDistances storage = pd.loadPrecomPivotsToObjectsDists(origDataset, pivotCount);
             if (storage != null) {
-                poDists = storage.getDists();
-            }
+            poDists = storage.getDists();
+        }
         }
         if (poDists == null || poDists.length == 0) {
             int precomputedDatasetSize = origDataset.getPrecomputedDatasetSize();
@@ -214,12 +214,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         DataDependentPtolemaicFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(resultSetPrefix, dataset, pivotCount, true);
         return new BoundsOnDistanceEstimation[]{
             metricFiltering,
-            dataDependentMetricFiltering,
-            fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering,
-            dataDependentPtolemaicFilteringRandomPivots,
-            dataDependentPtolemaicFiltering
+            //            dataDependentMetricFiltering,
+        //            fourPointPropertyBased,
+        //            ptolemaicFilteringRandomPivots,
+        //            ptolemaicFiltering,
+        //            dataDependentPtolemaicFilteringRandomPivots,
+        //            WdataDependentPtolemaicFiltering
         };
     }
 
@@ -249,10 +249,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             return;
         }
         for (int i = 0; i < repetitions; i++) {
-            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class
-                    .getName()).log(Level.INFO, "Repetition {0} out of {1}", new Object[]{i + 1, repetitions
-            }
-                    );
+            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Repetition {0} out of {1}", new Object[]{i + 1, repetitions});
             SearchingAlgorithm alg = initAlg(filter, dataset, searchSpace, pivots, df, pivotPivotDists);
             if (dataset instanceof DatasetOfCandidates) {
                 DatasetOfCandidates cast = (DatasetOfCandidates) dataset;

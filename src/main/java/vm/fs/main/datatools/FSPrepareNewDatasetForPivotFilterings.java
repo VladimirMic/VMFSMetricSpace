@@ -35,9 +35,9 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new FSDatasetInstances.WIKI_BGE_M3_SISAP26()
+//            new FSDatasetInstances.WIKI_BGE_M3_SISAP26()
 //            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries)
-            //            new FSDatasetInstances.MOCAP10FPS(),
+                        new FSDatasetInstances.MOCAP10FPS(),
             //            new FSDatasetInstances.MOCAP30FPS(),
             //            new FSDatasetInstances.DeCAFDataset()
         //            new FSDatasetInstances.RandomDataset10Uniform(),
@@ -75,7 +75,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
         createKeyValueStorageForBigDataset(origDataset);
         learnDataDependentMetricFiltering(dataset);
         learnDataDependentPtolemaicFiltering(dataset);
-        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
+//        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
     }
 
     /**
