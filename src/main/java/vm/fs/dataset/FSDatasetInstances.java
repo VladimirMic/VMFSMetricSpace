@@ -2115,7 +2115,7 @@ public class FSDatasetInstances {
                         storage = new VMMVStorage(datasetName, false);
                         ((FSSearchSpacesStorage) searchSpacesStorage).setSingularizatorOfDiskStorage(storage);
                     } catch (Exception e) {
-                        return ToolsSpaceDomain.getObjectsAsIdDataMap(this);
+                        return ToolsSpaceDomain.getSearchObjectsAsIdDataMap(this);
                     }
                 }
                 return storage.getKeyValueStorage();
@@ -2286,7 +2286,7 @@ public class FSDatasetInstances {
 
         @Override
         public Map<Comparable, long[]> getKeyValueStorage() {
-            return ToolsSpaceDomain.getObjectsAsIdDataMap(this);
+            return ToolsSpaceDomain.getSearchObjectsAsIdDataMap(this);
         }
 
         @Override

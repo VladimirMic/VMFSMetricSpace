@@ -57,7 +57,7 @@ public class FSMocapJanStorage extends AbstractFSSearchSpacesStorageWithOthersDa
             @Override
             public Map<Comparable, List<float[][]>> getKeyValueStorage() {
                 Iterator<Object> it = storage.getObjectsFromDataset(datasetName, -1);
-                Map<Comparable, List<float[][]>> ret = ToolsSpaceDomain.getObjectsAsIdDataMap(this);
+                Map<Comparable, List<float[][]>> ret = ToolsSpaceDomain.getSearchObjectsAsIdDataMap(this);
                 return ret;
             }
 

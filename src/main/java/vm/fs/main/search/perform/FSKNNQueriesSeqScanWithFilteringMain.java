@@ -138,8 +138,8 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             pd = new FSPrecomputedDistancesMatrixSerializatorImpl();
             MainMemoryStoredPrecomputedDistances storage = pd.loadPrecomPivotsToObjectsDists(origDataset, pivotCount);
             if (storage != null) {
-            poDists = storage.getDists();
-        }
+                poDists = storage.getDists();
+            }
         }
         if (poDists == null || poDists.length == 0) {
             int precomputedDatasetSize = origDataset.getPrecomputedDatasetSize();
@@ -169,7 +169,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         Map<Comparable, Integer> rowHeaders = pd == null ? null : pd.getRowHeaders();
         Map<Comparable, Integer> columnHeaders = pd == null ? null : pd.getColumnHeaders();
         if (filter instanceof AbstractPtolemaicBasedFiltering) {
-            alg = new KNNSearchWithPtolemaicFiltering(searchSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, rowHeaders, df);
+            alg = new KNNSearchWithPtolemaicFiltering(searchSpace, (AbstractPtolemaicBasedFiltering) filter, pivots, poDists, rowHeaders, columnHeaders, df);
             if (filter instanceof DataDependentPtolemaicFiltering && dataset.equals(new FSDatasetInstances.LAION_10M_PCA256Dataset())) {
                 KNNSearchWithPtolemaicFiltering tmp = (KNNSearchWithPtolemaicFiltering) alg;
 //STRAIN
@@ -186,7 +186,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             if (pivotPivotDists == null) {
                 pivotPivotDists = searchSpace.getDistanceMap(df, pivots, pivots);
             }
-            alg = new KNNSearchWithGenericTwoPivotFiltering(searchSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, rowHeaders, pivotPivotDists, df);
+            alg = new KNNSearchWithGenericTwoPivotFiltering(searchSpace, (AbstractTwoPivotsFilter) filter, pivots, poDists, rowHeaders, columnHeaders, pivotPivotDists, df);
         } else if (filter instanceof AbstractOnePivotFilter) {
             alg = new KNNSearchWithOnePivotFiltering(searchSpace, (AbstractOnePivotFilter) filter, pivots, poDists, rowHeaders, columnHeaders, df);
         } else {
@@ -213,8 +213,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         DataDependentPtolemaicFiltering dataDependentPtolemaicFilteringRandomPivots = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(resultSetPrefix, dataset, pivotCount, false);
         DataDependentPtolemaicFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(resultSetPrefix, dataset, pivotCount, true);
         return new BoundsOnDistanceEstimation[]{
-            metricFiltering,
-            //            dataDependentMetricFiltering,
+            metricFiltering, //            dataDependentMetricFiltering,
         //            fourPointPropertyBased,
         //            ptolemaicFilteringRandomPivots,
         //            ptolemaicFiltering,

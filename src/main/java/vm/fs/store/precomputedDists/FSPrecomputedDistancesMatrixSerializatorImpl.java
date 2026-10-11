@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
@@ -178,7 +179,8 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
             Integer idx = entry.getValue();
             line[idx] = key;
         }
-        for (Comparable key : line) {
+        Set<Comparable> keySet = columnKeys.keySet();
+        for (Comparable key : keySet) {
             outputStream.write(key.toString().getBytes());
             outputStream.write(';');
         }
