@@ -35,44 +35,24 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-            new FSDatasetInstances.LAION_10M_Dataset_QFD(publicQueries)
-//            new FSDatasetInstances.DeCAFDataset(),
-//            new FSDatasetInstances.MOCAP10FPS(),
-//            new FSDatasetInstances.MOCAP30FPS()
-//            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
-//            new FSDatasetInstances.LAION_100M_PCA256Dataset()
-//            FSLayersKasperStorage.createDataset(FSLayersKasperStorage.TYPE_0_small, FSLayersKasperStorage.DIMENSION_0_small)
-//            new FSDatasetInstances.DeCAF20M_PCA256Dataset(),
-//            new FSDatasetInstances.Yahoo100M_1MSubset_Dataset()
-//            new FSDatasetInstanceSingularizator.DeCAF100M_Dataset(),
-//            new FSDatasetInstanceSingularizator.DeCAF100M_PCA256Dataset(),
-        //            new FSDatasetInstanceSingularizator.Faiss_Clip_100M_PCA256_Candidates(),
-        //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_Candidates(),
-        //            new FSDatasetInstanceSingularizator.FaissDyn_Clip_100M_PCA256_Candidates(300),
-        //            new FSDatasetInstanceSingularizator.RandomDataset10Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset15Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset20Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset25Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset30Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset35Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset40Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset50Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset60Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset70Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset80Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset90Uniform(),
-        //            new FSDatasetInstanceSingularizator.RandomDataset100Uniform()
-        //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-        //            new FSDatasetInstanceSingularizator.SIFTdataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_PCA256Dataset(),
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries),
-        //            new FSDatasetInstanceSingularizator.LAION_100M_Dataset_Euclid(publicQueries)
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(true)
-        //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(true)
-        //                    new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(true)
+            //            new FSDatasetInstances.MOCAP10FPS(),
+            //            new FSDatasetInstances.MOCAP30FPS(),
+            //            new FSDatasetInstances.DeCAFDataset()
+            new FSDatasetInstances.WIKI_BGE_M3_SISAP26(),
+//            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries)
+        //            new FSDatasetInstances.RandomDataset10Uniform(),
+        //            new FSDatasetInstances.RandomDataset15Uniform(),
+        //            new FSDatasetInstances.RandomDataset20Uniform(),
+        //            new FSDatasetInstances.RandomDataset25Uniform(),
+        //            new FSDatasetInstances.RandomDataset30Uniform(),
+        //            new FSDatasetInstances.RandomDataset35Uniform(),
+        //            new FSDatasetInstances.RandomDataset40Uniform(),
+        //            new FSDatasetInstances.RandomDataset50Uniform(),
+        //            new FSDatasetInstances.RandomDataset60Uniform(),
+        //            new FSDatasetInstances.RandomDataset70Uniform(),
+        //            new FSDatasetInstances.RandomDataset80Uniform(),
+        //            new FSDatasetInstances.RandomDataset90Uniform(),
+        //            new FSDatasetInstances.RandomDataset100Uniform()
         };
         for (Dataset dataset : datasets) {
             run(dataset);

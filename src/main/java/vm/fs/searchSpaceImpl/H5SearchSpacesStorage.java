@@ -68,10 +68,20 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
             LOG.log(Level.SEVERE, "The file does not exists!");
         }
         HdfFile hdfFile = new HdfFile(f.toPath());
-        Node node = hdfFile.iterator().next();
-        String name = node.getName();
-        LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, f.getName()});
-        Dataset dataset = hdfFile.getDatasetByPath(name);
+        Dataset dataset = null;
+        Iterator<Node> it = hdfFile.iterator();
+        while (it.hasNext()) {
+            Node node = it.next();
+            String name = node.getName();
+            if (node instanceof Dataset) {
+                LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, f.getName()});
+                dataset = (Dataset) node;
+                break;
+            }
+        }
+        if (dataset == null) {
+            throw new IllegalArgumentException("H5 file does no contain a dataset");
+        }
         int count = params.length > 0 && params[0] instanceof Integer ? (int) params[0] : Integer.MAX_VALUE;
         if (count < 0) {
             count = Integer.MAX_VALUE;
@@ -158,20 +168,15 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
             T data = null;
             if (clazz == null) {
                 throw new IllegalArgumentException("Did you provided distance function as a param? BNote it defines the data type so I do not know how to read data (int? float? double?)");
-            }
-            if (clazz.equals(float[].class)) {
+            } else if (clazz.equals(float[].class)) {
                 data = (T) DataTypeConvertor.arrayToFloatArray(dataBuffer[0]);
-            }
-            if (clazz.equals(double[].class)) {
+            } else if (clazz.equals(double[].class)) {
                 data = (T) DataTypeConvertor.arrayToDoubleArray(dataBuffer[0]);
-            }
-            if (clazz.equals(int[].class)) {
+            } else if (clazz.equals(int[].class)) {
                 data = (T) DataTypeConvertor.arrayToIntArray(dataBuffer[0]);
-            }
-            if (clazz.equals(long[].class)) {
+            } else if (clazz.equals(long[].class)) {
                 data = (T) DataTypeConvertor.arrayToLongArray(dataBuffer[0]);
-            }
-            if (data == null) {
+            } else if (data == null) {
                 throw new IllegalArgumentException("Unknown class: " + clazz.getName());
             }
             String id = prefixFoIDs + (counter[0] + 1);

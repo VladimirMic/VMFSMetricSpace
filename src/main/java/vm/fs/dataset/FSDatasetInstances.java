@@ -1001,6 +1001,38 @@ public class FSDatasetInstances {
 
     }
 
+    public static class LAION_1M_Dataset_QFD extends LAION_10M_Dataset {
+
+        public LAION_1M_Dataset_QFD(boolean publicQueries) {
+            super(publicQueries, new QuadraticFormDistance(Path.of(FSGlobal.DATA_FOLDER, "Matus_matice", "matrix_31", "matrix.npy").toString()));
+            datasetName += "QFD_first1M";
+        }
+
+        @Override
+        public Iterator<Object> getSearchObjectsFromDataset(Object... params) {
+            params = Tools.concatArrays(new Object[]{1000000, getDistanceFunction()}, params);
+            return super.getSearchObjectsFromDataset(params);
+        }
+
+        @Override
+        public int getPrecomputedDatasetSize() {
+            return 1000000;
+        }
+
+        @Override
+        public List<Object> getSampleOfDataset(int objCount, Object... params) {
+            params = Tools.concatArrays(new Object[]{getDistanceFunction()}, params);
+            return searchSpacesStorage.getSampleOfDataset(datasetName, Math.min(1000000, objCount), params);
+        }
+
+        @Override
+        public List<Object> getQueryObjects(Object... params) {
+            params = Tools.concatArrays(new Object[]{1000}, params);
+            return super.getQueryObjects(params);
+        }
+
+    }
+
     public static class LAION_10M_Dataset_QFD extends LAION_10M_Dataset {
 
         public LAION_10M_Dataset_QFD(boolean publicQueries) {
@@ -1136,6 +1168,19 @@ public class FSDatasetInstances {
         public String getPivotSetName() {
             return "laion2B-en-clip768v2-n=100M.h5_20000pivots";
         }
+    }
+
+    public static class WIKI_BGE_M3_SISAP26 extends H5FloatVectorDataset {
+
+        public WIKI_BGE_M3_SISAP26() {
+            super("benchmark-dev-wikipedia-bge-m3.h5", new DotProduct());
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 64;
+        }
+
     }
 
     public static class LAION_100k_PCA32Dataset extends H5FloatVectorDataset {

@@ -46,38 +46,24 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static void main(String[] args) {
         boolean publicQueries = true;
-        Dataset[] datasets = new Dataset[]{ //new FSDatasetInstances.MOCAP10FPS(),
-            //            new FSDatasetInstances.MOCAP30FPS(),
-            //            new FSDatasetInstances.DeCAFDataset()
-            //            new FSDatasetInstances.LAION_10M_PCA256Dataset(),
-            //            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
-            //            new FSDatasetInstances.LAION_100M_PCA256Dataset()
-            //            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
-            //            new FSDatasetInstances.Faiss_DeCAF_100M_Candidates()
-            //            new FSDatasetInstanceSingularizator.Faiss_DeCAF_100M_PCA256_Candidates()
-            //            new FSDatasetInstanceSingularizator.DeCAFDataset(),
-            //            new FSDatasetInstanceSingularizator.SIFTdataset(),
-            //            new FSDatasetInstanceSingularizator.MPEG7dataset(),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Euclid(publicQueries)
-            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Angular(publicQueries)
-            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset_Dot(publicQueries),
-            //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
-            //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
-            //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
-            //            new FSDatasetInstances.RandomDataset10Uniform(),
-            //            new FSDatasetInstances.RandomDataset15Uniform(),
-            //            new FSDatasetInstances.RandomDataset20Uniform(),
-            //            new FSDatasetInstances.RandomDataset25Uniform(),
-            //            new FSDatasetInstances.RandomDataset30Uniform(),
-            //            new FSDatasetInstances.RandomDataset35Uniform(),
-            //            new FSDatasetInstances.RandomDataset40Uniform(),
-            //            new FSDatasetInstances.RandomDataset50Uniform(),
-            //            new FSDatasetInstances.RandomDataset60Uniform(),
-            //            new FSDatasetInstances.RandomDataset70Uniform(),
-            //            new FSDatasetInstances.RandomDataset80Uniform(),
-            //            new FSDatasetInstances.RandomDataset90Uniform(),
-            //            new FSDatasetInstances.RandomDataset100Uniform()
-            new FSDatasetInstances.LAION_10M_Dataset_QFD(publicQueries)
+        Dataset[] datasets = new Dataset[]{
+//            new FSDatasetInstances.MOCAP10FPS()
+        //            new FSDatasetInstances.MOCAP30FPS(),
+        //            new FSDatasetInstances.DeCAFDataset()
+            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries)
+        //            new FSDatasetInstances.RandomDataset10Uniform(),
+        //            new FSDatasetInstances.RandomDataset15Uniform(),
+        //            new FSDatasetInstances.RandomDataset20Uniform(),
+        //            new FSDatasetInstances.RandomDataset25Uniform(),
+        //            new FSDatasetInstances.RandomDataset30Uniform(),
+        //            new FSDatasetInstances.RandomDataset35Uniform(),
+        //            new FSDatasetInstances.RandomDataset40Uniform(),
+        //            new FSDatasetInstances.RandomDataset50Uniform(),
+        //            new FSDatasetInstances.RandomDataset60Uniform(),
+        //            new FSDatasetInstances.RandomDataset70Uniform(),
+        //            new FSDatasetInstances.RandomDataset80Uniform(),
+        //            new FSDatasetInstances.RandomDataset90Uniform(),
+        //            new FSDatasetInstances.RandomDataset100Uniform()
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
@@ -100,15 +86,12 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static final void run(Dataset dataset, BoundsOnDistanceEstimation[] filters, List pivots, int k) {
         for (BoundsOnDistanceEstimation filter : filters) {
-            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class
-                    .getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
+            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
             run(dataset, filter, pivots, k);
-
         }
         // due to caching, first filter is evaluated again
         if (dataset instanceof DatasetOfCandidates) {
-            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class
-                    .getName()).log(Level.INFO, "Processing filter {0}", filters[0].getTechFullName());
+            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filters[0].getTechFullName());
             run(dataset, filters[0], pivots, k);
         }
     }

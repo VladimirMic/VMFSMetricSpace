@@ -20,7 +20,7 @@ import vm.searchSpace.Dataset;
 public class FSSelectRandomQueryObjectsAndPivotsFromDatasetMain {
 
     public static final Integer IMPLICIT_NUMBER_OF_QUERIES = 1000;
-    public static final Integer IMPLICIT_NUMBER_OF_PIVOTS = 2560; // also selects one tenth and one fifth, and one 40th, 20th
+    public static final Integer IMPLICIT_NUMBER_OF_PIVOTS = 2560; // also selects one tenth and one fifth, and one 40th, 20th, i.e., 512, 256, 128, 64
 
     public static final Logger LOG = Logger.getLogger(FSSelectRandomQueryObjectsAndPivotsFromDatasetMain.class.getName());
 

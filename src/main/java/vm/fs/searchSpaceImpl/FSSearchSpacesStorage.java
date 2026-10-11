@@ -70,9 +70,10 @@ public class FSSearchSpacesStorage<T> extends AbstractSearchSpacesStorage<T> {
         File f = getFileForObjects(folder, setName, false);
         if (!f.exists()) {
             LOG.log(Level.SEVERE, "No file for objects {0} exists", f.getAbsolutePath());
-            if (!folder.equals(FSGlobal.DATASET_FOLDER)) {
-                LOG.log(Level.SEVERE, "Returning dataset objects instead of objects from {0}", folder);
-                return getIteratorOfObjects(FSGlobal.DATASET_FOLDER, setName, params);
+            if (!folder.equals(FSGlobal.DATASET_FOLDER)) {//?!?!?! WHAT TO DO WITH THIS?
+                return null;
+//                LOG.log(Level.SEVERE, "Returning dataset objects instead of objects from {0}", folder);
+//                return getIteratorOfObjects(FSGlobal.DATASET_FOLDER, setName, params);
             }
             if (singularizatorOfDiskStorage == null) {
                 singularizatorOfDiskStorage = new VMMVStorage(setName, false);
