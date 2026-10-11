@@ -46,11 +46,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static void main(String[] args) {
         boolean publicQueries = true;
-        Dataset[] datasets = new Dataset[]{ //            new FSDatasetInstances.DeCAF(),
-            new FSDatasetInstances.MOCAP10FPS(),
-            new FSDatasetInstances.MOCAP30FPS(),
-            new FSDatasetInstances.DeCAFDataset(),
-            //                        new FSDatasetInstances.LAION_10M_PCA256Dataset(),
+        Dataset[] datasets = new Dataset[]{ //new FSDatasetInstances.MOCAP10FPS(),
+            //            new FSDatasetInstances.MOCAP30FPS(),
+            //            new FSDatasetInstances.DeCAFDataset()
+            //            new FSDatasetInstances.LAION_10M_PCA256Dataset(),
             //            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
             //            new FSDatasetInstances.LAION_100M_PCA256Dataset()
             //            new FSDatasetInstances.Faiss_Clip_100M_PCA256_Candidates()
@@ -65,19 +64,20 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             //            new FSDatasetInstanceSingularizator.LAION_10M_GHP_50_512Dataset(publicQueries)
             //            new FSDatasetInstanceSingularizator.LAION_10M_PCA256Dataset()
             //            new FSDatasetInstanceSingularizator.LAION_10M_Dataset(publicQueries)
-            new FSDatasetInstances.RandomDataset10Uniform(),
-            new FSDatasetInstances.RandomDataset15Uniform(),
-            new FSDatasetInstances.RandomDataset20Uniform(),
-            new FSDatasetInstances.RandomDataset25Uniform(),
-            new FSDatasetInstances.RandomDataset30Uniform(),
-            new FSDatasetInstances.RandomDataset35Uniform(),
-            new FSDatasetInstances.RandomDataset40Uniform(),
-            new FSDatasetInstances.RandomDataset50Uniform(),
-            new FSDatasetInstances.RandomDataset60Uniform(),
-            new FSDatasetInstances.RandomDataset70Uniform(),
-            new FSDatasetInstances.RandomDataset80Uniform(),
-            new FSDatasetInstances.RandomDataset90Uniform(),
-            new FSDatasetInstances.RandomDataset100Uniform()
+            //            new FSDatasetInstances.RandomDataset10Uniform(),
+            //            new FSDatasetInstances.RandomDataset15Uniform(),
+            //            new FSDatasetInstances.RandomDataset20Uniform(),
+            //            new FSDatasetInstances.RandomDataset25Uniform(),
+            //            new FSDatasetInstances.RandomDataset30Uniform(),
+            //            new FSDatasetInstances.RandomDataset35Uniform(),
+            //            new FSDatasetInstances.RandomDataset40Uniform(),
+            //            new FSDatasetInstances.RandomDataset50Uniform(),
+            //            new FSDatasetInstances.RandomDataset60Uniform(),
+            //            new FSDatasetInstances.RandomDataset70Uniform(),
+            //            new FSDatasetInstances.RandomDataset80Uniform(),
+            //            new FSDatasetInstances.RandomDataset90Uniform(),
+            //            new FSDatasetInstances.RandomDataset100Uniform()
+            new FSDatasetInstances.LAION_10M_Dataset_QFD(publicQueries)
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
@@ -100,12 +100,15 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
     public static final void run(Dataset dataset, BoundsOnDistanceEstimation[] filters, List pivots, int k) {
         for (BoundsOnDistanceEstimation filter : filters) {
-            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
+            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class
+                    .getName()).log(Level.INFO, "Processing filter {0}", filter.getTechFullName());
             run(dataset, filter, pivots, k);
+
         }
         // due to caching, first filter is evaluated again
         if (dataset instanceof DatasetOfCandidates) {
-            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Processing filter {0}", filters[0].getTechFullName());
+            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class
+                    .getName()).log(Level.INFO, "Processing filter {0}", filters[0].getTechFullName());
             run(dataset, filters[0], pivots, k);
         }
     }
@@ -263,7 +266,10 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
             return;
         }
         for (int i = 0; i < repetitions; i++) {
-            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName()).log(Level.INFO, "Repetition {0} out of {1}", new Object[]{i + 1, repetitions});
+            Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class
+                    .getName()).log(Level.INFO, "Repetition {0} out of {1}", new Object[]{i + 1, repetitions
+            }
+                    );
             SearchingAlgorithm alg = initAlg(filter, dataset, searchSpace, pivots, df, pivotPivotDists);
             if (dataset instanceof DatasetOfCandidates) {
                 DatasetOfCandidates cast = (DatasetOfCandidates) dataset;

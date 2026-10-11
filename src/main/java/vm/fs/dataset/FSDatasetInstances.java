@@ -1,12 +1,14 @@
 package vm.fs.dataset;
 
 import io.jhdf.HdfFile;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.h2.mvstore.MVStoreException;
 import vm.datatools.Tools;
+import vm.fs.FSGlobal;
 import vm.fs.searchSpaceImpl.FSSearchSpaceImpl;
 import vm.fs.searchSpaceImpl.FSSearchSpacesStorage;
 import vm.fs.searchSpaceImpl.H5SearchSpacesStorage;
@@ -30,6 +32,7 @@ import vm.searchSpace.distance.impl.DTWOnFloatsArray;
 import vm.searchSpace.distance.impl.DotProduct;
 import vm.searchSpace.distance.impl.HammingDistanceLongs;
 import vm.searchSpace.distance.impl.L2OnFloatsArray;
+import vm.searchSpace.distance.impl.QuadraticFormDistance;
 import vm.searchSpace.distance.impl.Sapir3DistanceFunction;
 import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecomputedDistances;
 
@@ -994,6 +997,15 @@ public class FSDatasetInstances {
         public LAION_10M_Dataset_Angular(boolean publicQueries) {
             super(publicQueries, new AngularDistance());
             datasetName += "Angular";
+        }
+
+    }
+
+    public static class LAION_10M_Dataset_QFD extends LAION_10M_Dataset {
+
+        public LAION_10M_Dataset_QFD(boolean publicQueries) {
+            super(publicQueries, new QuadraticFormDistance(Path.of(FSGlobal.DATA_FOLDER, "Matus_matice", "matrix_31", "matrix.npy").toString()));
+            datasetName += "QFD";
         }
 
     }

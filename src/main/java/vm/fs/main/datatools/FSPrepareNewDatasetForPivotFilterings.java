@@ -35,8 +35,9 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
+            new FSDatasetInstances.LAION_10M_Dataset_QFD(publicQueries)
 //            new FSDatasetInstances.DeCAFDataset(),
-            new FSDatasetInstances.MOCAP10FPS(),
+//            new FSDatasetInstances.MOCAP10FPS(),
 //            new FSDatasetInstances.MOCAP30FPS()
 //            new FSDatasetInstances.LAION_30M_PCA256Dataset(),
 //            new FSDatasetInstances.LAION_100M_PCA256Dataset()
