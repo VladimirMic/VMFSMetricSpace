@@ -3,6 +3,7 @@ package vm.fs.searchSpaceImpl;
 import io.jhdf.HdfFile;
 import io.jhdf.api.Dataset;
 import io.jhdf.api.Node;
+import io.jhdf.exceptions.HdfException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;

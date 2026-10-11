@@ -1027,7 +1027,9 @@ public class FSDatasetInstances {
 
         @Override
         public List<Object> getQueryObjects(Object... params) {
-            params = Tools.concatArrays(new Object[]{1000}, params);
+            if (params == null || params.length == 0 || !(params[0] instanceof Integer)) {
+                params = Tools.concatArrays(new Object[]{1000}, params);
+            }
             return super.getQueryObjects(params);
         }
 

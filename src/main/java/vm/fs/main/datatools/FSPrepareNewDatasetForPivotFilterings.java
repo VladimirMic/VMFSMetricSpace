@@ -35,11 +35,11 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
+            new FSDatasetInstances.WIKI_BGE_M3_SISAP26()
+//            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries)
             //            new FSDatasetInstances.MOCAP10FPS(),
             //            new FSDatasetInstances.MOCAP30FPS(),
             //            new FSDatasetInstances.DeCAFDataset()
-            new FSDatasetInstances.WIKI_BGE_M3_SISAP26(),
-//            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries)
         //            new FSDatasetInstances.RandomDataset10Uniform(),
         //            new FSDatasetInstances.RandomDataset15Uniform(),
         //            new FSDatasetInstances.RandomDataset20Uniform(),
