@@ -35,7 +35,7 @@ public class FSPrepareNewDatasetForPivotFilterings {
     public static void main(String[] args) throws FileNotFoundException {
         boolean publicQueries = true;
         Dataset[] datasets = {
-//            new FSDatasetInstances.WIKI_BGE_M3_SISAP26()
+            new FSDatasetInstances.WIKI_BGE_M3_SISAP26(),
             new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries)
 //                        new FSDatasetInstances.MOCAP10FPS(),
         //            new FSDatasetInstances.MOCAP30FPS(),
@@ -60,22 +60,22 @@ public class FSPrepareNewDatasetForPivotFilterings {
     }
 
     private static void run(Dataset dataset) throws FileNotFoundException {
-        precomputeDatasetSize(dataset);
-        Dataset origDataset = dataset;
-        if (dataset instanceof DatasetOfCandidates) {
-            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
-            plotDistanceDensity(origDataset);
-        } else {
-            plotDistanceDensity(dataset);
-        }
-        selectRandomPivotsAndQueryObjects(origDataset);
-        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
-        evaluateSampleOfSmallestDistances(dataset);
-        precomputeObjectToPivotDists(origDataset);
-        createKeyValueStorageForBigDataset(origDataset);
-        learnDataDependentMetricFiltering(dataset);
-        learnDataDependentPtolemaicFiltering(dataset);
-//        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
+//        precomputeDatasetSize(dataset);
+//        Dataset origDataset = dataset;
+//        if (dataset instanceof DatasetOfCandidates) {
+//            origDataset = ((DatasetOfCandidates) dataset).getOrigDataset();
+//            plotDistanceDensity(origDataset);
+//        } else {
+//            plotDistanceDensity(dataset);
+//        }
+//        selectRandomPivotsAndQueryObjects(origDataset);
+//        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_GROUND_TRUTH);
+//        evaluateSampleOfSmallestDistances(dataset);
+//        precomputeObjectToPivotDists(origDataset);
+//        createKeyValueStorageForBigDataset(origDataset);
+//        learnDataDependentMetricFiltering(dataset);
+//        learnDataDependentPtolemaicFiltering(dataset);
+        evaluateGroundTruth(dataset, GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES);
     }
 
     /**
