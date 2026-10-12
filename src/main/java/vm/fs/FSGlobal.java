@@ -12,7 +12,7 @@ import vm.javatools.Tools;
  */
 public class FSGlobal {
 
-    public static Boolean askWhenGoingToOverrideFile = true; // null - only once and store.
+    public static Boolean askWhenGoingToOverrideFile = false; // null - only once and store.
     // if measuing times, set true to wait during the night
     public static final boolean SLEEP_MY_COMP = false;
     private static final Logger LOG = Logger.getLogger(FSGlobal.class.getName());
