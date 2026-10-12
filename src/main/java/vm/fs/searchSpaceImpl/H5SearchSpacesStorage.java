@@ -114,10 +114,21 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
 
     public Map<Comparable, Object> getAsMap(String datasetName) {
         HdfFile hdfFile = getHDFFile(datasetName);
-        Node node = hdfFile.iterator().next();
-        String name = node.getName();
-        LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, hdfFile.getName()});
-        Dataset dataset = hdfFile.getDatasetByPath(name);
+        Iterator<Node> it = hdfFile.iterator();
+        Dataset dataset = null;
+        String name = null;
+        while (it.hasNext()) {
+            Node node = it.next();
+            name = node.getName();
+            if (node instanceof Dataset) {
+                LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, hdfFile.getName()});
+                dataset = (Dataset) node;
+                break;
+            }
+        }
+        if (dataset == null) {
+            throw new IllegalArgumentException("H5 file does no contain a dataset");
+        }
         VMH5StorageAsMap ret = new VMH5StorageAsMap(dataset);
         return ret;
     }
