@@ -42,30 +42,31 @@ import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecom
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
-    private static final Integer QUERIES_COUNT = -1;
+    private static final Integer QUERIES_COUNT = 100;
 
     public static void main(String[] args) {
-//        vm.javatools.Tools.sleep(94);
+        vm.javatools.Tools.sleep(4*60);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
-            new FSDatasetInstances.WIKI_BGE_M3_SISAP26(),
-            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries),
-            new FSDatasetInstances.RandomDataset10Uniform(),
-            new FSDatasetInstances.RandomDataset15Uniform(),
-            new FSDatasetInstances.RandomDataset20Uniform(),
-            new FSDatasetInstances.RandomDataset25Uniform(),
-            new FSDatasetInstances.RandomDataset30Uniform(),
-            new FSDatasetInstances.RandomDataset35Uniform(),
-            new FSDatasetInstances.RandomDataset40Uniform(),
-            new FSDatasetInstances.RandomDataset50Uniform(),
-            new FSDatasetInstances.RandomDataset60Uniform(),
-            new FSDatasetInstances.RandomDataset70Uniform(),
-            new FSDatasetInstances.RandomDataset80Uniform(),
-            new FSDatasetInstances.RandomDataset90Uniform(),
-            new FSDatasetInstances.RandomDataset100Uniform(),
-            new FSDatasetInstances.MOCAP10FPS(),
-            new FSDatasetInstances.DeCAFDataset()
-//            new FSDatasetInstances.MOCAP30FPS(),
+//            new FSDatasetInstances.WIKI_BGE_M3_SISAP26(),
+//            new FSDatasetInstances.LAION_1M_Dataset_QFD(publicQueries),
+            new FSDatasetInstances.LAION_100k_Dataset_QFD(publicQueries),
+//            new FSDatasetInstances.RandomDataset10Uniform(),
+//            new FSDatasetInstances.RandomDataset15Uniform(),
+//            new FSDatasetInstances.RandomDataset20Uniform(),
+//            new FSDatasetInstances.RandomDataset25Uniform(),
+//            new FSDatasetInstances.RandomDataset30Uniform(),
+//            new FSDatasetInstances.RandomDataset35Uniform(),
+//            new FSDatasetInstances.RandomDataset40Uniform(),
+//            new FSDatasetInstances.RandomDataset50Uniform(),
+//            new FSDatasetInstances.RandomDataset60Uniform(),
+//            new FSDatasetInstances.RandomDataset70Uniform(),
+//            new FSDatasetInstances.RandomDataset80Uniform(),
+//            new FSDatasetInstances.RandomDataset90Uniform(),
+//            new FSDatasetInstances.RandomDataset100Uniform(),
+//            new FSDatasetInstances.MOCAP10FPS(),
+//            new FSDatasetInstances.DeCAFDataset()
+//////            new FSDatasetInstances.MOCAP30FPS(),
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
@@ -225,7 +226,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         };
     }
 
-    private static void store(SearchingAlgorithm alg, TreeSet[] results, Dataset dataset, AbstractSearchSpace metricSpace, List queries, int k) {
+    private static void store(SearchingAlgorithm alg, TreeSet[] results, Dataset dataset, AbstractSearchSpace searchSpace, List queries, int k) {
         LOG.log(Level.INFO, "Storing statistics of queries");
         FSQueryExecutionStatsStoreImpl statsStorage = new FSQueryExecutionStatsStoreImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);
         statsStorage.storeStatsForQueries(alg.getDistCompsPerQueries(), alg.getTimesPerQueries(), alg.getAdditionalStats());
@@ -233,7 +234,7 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 
         LOG.log(Level.INFO, "Storing results of queries");
         FSNearestNeighboursStorageImpl resultsStorage = new FSNearestNeighboursStorageImpl();
-        resultsStorage.storeQueryResults(metricSpace, queries, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName());
+        resultsStorage.storeQueryResults(searchSpace, queries, results, k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName());
 
         LOG.log(Level.INFO, "Evaluating accuracy of queries");
         FSRecallOfCandidateSetsStorageImpl recallStorage = new FSRecallOfCandidateSetsStorageImpl(dataset.getDatasetName(), dataset.getQuerySetName(), k, dataset.getDatasetName(), dataset.getQuerySetName(), alg.getResultName(), null);

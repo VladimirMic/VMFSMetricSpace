@@ -1033,6 +1033,56 @@ public class FSDatasetInstances {
             return super.getQueryObjects(params);
         }
 
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
+            return 64;
+        }
+
+    }
+
+    public static class LAION_100k_Dataset_QFD extends LAION_10M_Dataset {
+
+        public LAION_100k_Dataset_QFD(boolean publicQueries) {
+            super(publicQueries, new QuadraticFormDistance(Path.of(FSGlobal.DATA_FOLDER, "Matus_matice", "matrix_15", "matrix.npy").toString()));
+            datasetName += "QFD_first100k";
+        }
+
+        @Override
+        public Iterator<Object> getSearchObjectsFromDataset(Object... params) {
+            params = Tools.concatArrays(new Object[]{100000, getDistanceFunction()}, params);
+            return super.getSearchObjectsFromDataset(params);
+        }
+
+        @Override
+        public int getPrecomputedDatasetSize() {
+            return 100000;
+        }
+
+        @Override
+        public List<Object> getSampleOfDataset(int objCount, Object... params) {
+            params = Tools.concatArrays(new Object[]{getDistanceFunction()}, params);
+            return searchSpacesStorage.getSampleOfDataset(datasetName, Math.min(100000, objCount), params);
+        }
+
+        @Override
+        public List<Object> getQueryObjects(Object... params) {
+            if (params == null || params.length == 0 || !(params[0] instanceof Integer)) {
+                params = Tools.concatArrays(new Object[]{1000}, params);
+            }
+            return super.getQueryObjects(params);
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            if (FORCED_PIVOT_COUNT > 0) {
+                return FORCED_PIVOT_COUNT;
+            }
+            return 64;
+        }
+
     }
 
     public static class LAION_10M_Dataset_QFD extends LAION_10M_Dataset {
