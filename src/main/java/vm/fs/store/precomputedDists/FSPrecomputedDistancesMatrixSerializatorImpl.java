@@ -171,14 +171,15 @@ public class FSPrecomputedDistancesMatrixSerializatorImpl extends AbstractPrecom
         }
     }
 
+    /**
+     * This must be concsistent with serializeRows method. This is correct.
+     *
+     * @param outputStream
+     * @param columnKeys
+     * @throws IOException
+     */
     public void serializeColumnsHeaders(OutputStream outputStream, Map<Comparable, Integer> columnKeys) throws IOException {
         outputStream.write(';');
-        Comparable[] line = new Comparable[columnKeys.size()];
-        for (Map.Entry<Comparable, Integer> entry : columnKeys.entrySet()) {
-            Comparable key = entry.getKey();
-            Integer idx = entry.getValue();
-            line[idx] = key;
-        }
         Set<Comparable> keySet = columnKeys.keySet();
         for (Comparable key : keySet) {
             outputStream.write(key.toString().getBytes());

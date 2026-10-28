@@ -21,5 +21,7 @@ public class FSPlotFolders {
     public static final String Y2025_PTOLEMAIOS_LIMITED = FSGlobal.FOLDER_PLOTS + "2025_PtolemaiosLimited\\";
     public static final String Y2025_PTOLEMAIOS_LIMITED10FPS = Y2025_PTOLEMAIOS_LIMITED + "10FPS\\";
     public static final String Y2025_PTOLEMAIOS_LIMITED30FPS = Y2025_PTOLEMAIOS_LIMITED + "30FPS\\";
+    public static final String Y2025_PTOLEMAIOS_LIMITEDWIKI = Y2025_PTOLEMAIOS_LIMITED + "Wiki\\";
+    public static final String Y2025_PTOLEMAIOS_LIMITEDRandom = Y2025_PTOLEMAIOS_LIMITED + "Random\\";
 
 }

@@ -71,7 +71,7 @@ public class FSDatasetInstances {
     public static class MOCAP10FPS extends FSGenericDataset<List<float[][]>> {
 
         public MOCAP10FPS() {
-            super("actions-single-subject-all-POS-fps10.data_selected.txt", new DTWOnFloatsArray(), SingularisedConvertors.MOCAP_SPACE);
+            super("actions-single-subject-all-POS-fps10.data_selected2026.txt", new DTWOnFloatsArray(), SingularisedConvertors.MOCAP_SPACE);
         }
 
         @Override
@@ -295,7 +295,7 @@ public class FSDatasetInstances {
         }
     }
 
-    private static final Integer PIVOTS_RANDOM_DATASETS = FORCED_PIVOT_COUNT > 0 ? FORCED_PIVOT_COUNT : 128;
+    private static final Integer PIVOTS_RANDOM_DATASETS = FORCED_PIVOT_COUNT > 0 ? FORCED_PIVOT_COUNT : 64;
 
     public static class RandomDataset10Uniform extends FSFloatVectorDataset {
 
@@ -1046,8 +1046,8 @@ public class FSDatasetInstances {
     public static class LAION_100k_Dataset_QFD extends LAION_10M_Dataset {
 
         public LAION_100k_Dataset_QFD(boolean publicQueries) {
-            super(publicQueries, new QuadraticFormDistance(Path.of(FSGlobal.DATA_FOLDER, "Matus_matice", "matrix_15", "matrix.npy").toString()));
-            datasetName += "QFD_first100k";
+            super(publicQueries, new QuadraticFormDistance(Path.of(FSGlobal.DATA_FOLDER, "Matus_matice", "velke_SF", "performance_experiment_person_reading_on_a_train", "matrix_6", "matrix.npy").toString()));
+            datasetName += "QFD_first100k_SF10";
         }
 
         @Override
@@ -1235,6 +1235,29 @@ public class FSDatasetInstances {
 
     }
 
+    public static class NQSparse_SISAP26 extends H5FloatVectorDataset {
+
+        public NQSparse_SISAP26() {
+            super("nq.h5", new DotProduct());
+        }
+
+        @Override
+        public int getRecommendedNumberOfPivotsForFiltering() {
+            return 64;
+        }
+
+        @Override
+        public String getTableNameForDataset() {
+            return "train";
+        }
+
+        @Override
+        public String getGroupNameForDataset() {
+            return "data";
+        }
+
+    }
+
     public static class LAION_100k_PCA32Dataset extends H5FloatVectorDataset {
 
         public LAION_100k_PCA32Dataset() {
@@ -1249,7 +1272,6 @@ public class FSDatasetInstances {
         @Override
         public String getPivotSetName() {
             return "laion2B-en-clip768v2-n=100M.h5_PCA32_20000";
-
         }
     }
 
@@ -2322,6 +2344,19 @@ public class FSDatasetInstances {
 
         public MainMemoryStoredPrecomputedDistances getPrecomputedDistsToPivots() {
             return getPrecomputedDistsToPivots(new FSPrecomputedDistancesMatrixSerializatorImpl());
+        }
+
+        public String getGroupNameForDataset() {
+            return null;
+        }
+
+        public String getTableNameForDataset() {
+            return null;
+        }
+
+        @Override
+        public int getPrecomputedDatasetSize() {
+            return searchSpacesStorage.getPrecomputedDatasetSize(datasetName, getDistanceFunction(), getGroupNameForDataset(), getTableNameForDataset());
         }
 
     }

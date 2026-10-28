@@ -5,7 +5,8 @@
 package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.random;
 
 import vm.colour.StandardColours.COLOUR_NAME;
-
+import vm.plot.AbstractPlotter;
+import vm.plot.impl.BoxPlotXCategoriesPlotter;
 
 /**
  *
@@ -18,12 +19,19 @@ public class PlotPtolemaiosRandomData5Tech40_100Recall extends PlotPtolemaiosRan
     public PlotPtolemaiosRandomData5Tech40_100Recall(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
     }
+    @Override
+    public AbstractPlotter getPlotter() {
+        BoxPlotXCategoriesPlotter ret = new BoxPlotXCategoriesPlotter();
+        ret.setXStep(10d);
+        return ret;
+    }
 
     @Override
     public String[] getDisplayedNamesOfTracesThatMatchesFolders() {
         return strings(
                 "Data-dep. Metric Filtering",
-                "Data-dep. Ptolemaic Filering"
+                "Data-dep. Pt.Filt. with Rand. P.",
+                "Data-dep. Ptolemaic Filtering"
         );
     }
 
@@ -31,6 +39,7 @@ public class PlotPtolemaiosRandomData5Tech40_100Recall extends PlotPtolemaiosRan
     protected COLOUR_NAME[] getVoluntaryColoursForTracesOrNull() {
         return new COLOUR_NAME[]{
             COLOUR_NAME.C2_RED,
+            COLOUR_NAME.C7_PURPLE,
             COLOUR_NAME.C5_VIOLET
         };
     }
@@ -39,6 +48,7 @@ public class PlotPtolemaiosRandomData5Tech40_100Recall extends PlotPtolemaiosRan
     public String[] getFolderNamesForDisplayedTraces() {
         return strings(
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_data-dependent_metric_filtering",
+                "2026_10_" + PIVOTS + "_pivots_30NN_data-dependent_ptolemaic_filtering_randomPivots_" + PIVOTS + "LB_random_pivots",
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_" + PIVOTS + "LB"
         );
     }

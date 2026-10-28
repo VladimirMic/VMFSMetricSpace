@@ -2,6 +2,7 @@ package vm.fs.searchSpaceImpl;
 
 import io.jhdf.HdfFile;
 import io.jhdf.api.Dataset;
+import io.jhdf.api.Group;
 import io.jhdf.api.Node;
 import io.jhdf.exceptions.HdfException;
 import java.io.File;
@@ -76,13 +77,37 @@ public class H5SearchSpacesStorage<T> extends FSSearchSpacesStorage<T> {
         }
         Dataset dataset = null;
         Iterator<Node> it = hdfFile.iterator();
-        while (it.hasNext()) {
-            Node node = it.next();
-            String name = node.getName();
-            if (node instanceof Dataset) {
-                LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, f.getName()});
-                dataset = (Dataset) node;
-                break;
+        String groupName = null;
+        String tableName = null;
+        if (listOfParams.size() >= 3) {
+            Object first = listOfParams.get(1);
+            Object second = listOfParams.get(2);
+            if (first instanceof String && second instanceof String) {
+                groupName = (String) second;
+                tableName = (String) first;
+            }
+        }
+        Node node = hdfFile.getChild(tableName);
+        if (node != null && node instanceof Dataset cast) {
+            dataset = cast;
+        } else {
+            node = hdfFile.getChild(groupName);
+            if (node instanceof Group cast) {
+                node = cast.getChild(tableName);
+                if (node != null && node instanceof Dataset cast2) {
+                    dataset = cast2;
+                }
+            }
+        }
+        if (dataset == null) {
+            while (it.hasNext()) {
+                node = it.next();
+                String name = node.getName();
+                if (node instanceof Dataset) {
+                    LOG.log(Level.INFO, "Returning data from the dataset (group) {0} in the file {1}", new Object[]{name, f.getName()});
+                    dataset = (Dataset) node;
+                    break;
+                }
             }
         }
         if (dataset == null) {

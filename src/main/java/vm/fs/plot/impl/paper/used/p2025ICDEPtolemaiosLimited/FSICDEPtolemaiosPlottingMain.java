@@ -21,8 +21,10 @@ public class FSICDEPtolemaiosPlottingMain {
         int[] pivots = new int[]{64};
         for (int pivot : pivots) {
             PlotPtolemaiosMOCAP10FPS.setPivotCount(pivot);
-            new PlotPtolemaiosMOCAP10FPS(PLOT_ONLY_PDF).makePlots();
-            new PlotPtolemaiosMOCAP30FPS(PLOT_ONLY_PDF).makePlots();
+            PlotPtolemaiosWikipedia.setPivotCount(pivot);
+            new PlotPtolemaiosWikipedia(PLOT_ONLY_PDF).makePlots();
+//            new PlotPtolemaiosMOCAP10FPS(PLOT_ONLY_PDF).makePlots();
+//            new PlotPtolemaiosMOCAP30FPS(PLOT_ONLY_PDF).makePlots();
         }
 //        Y2025_PlotPtolemaiosTransformedClips5Tech.makePlots();
 //        Y2025_PlotPtolemaiosDeCAF1M.makePlots();

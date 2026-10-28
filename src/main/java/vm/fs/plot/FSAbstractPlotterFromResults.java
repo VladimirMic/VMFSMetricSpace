@@ -35,7 +35,7 @@ public abstract class FSAbstractPlotterFromResults {
     private static final Logger LOG = Logger.getLogger(FSAbstractPlotterFromResults.class.getName());
 
     private final boolean plotOnlyPDF;
-    private AbstractPlotter plotter = getPlotter();
+    protected AbstractPlotter plotter = getPlotter();
     private final Object[] xTicks;
     private final StandardColours.COLOUR_NAME[] colourIndexesForTraces;
     private final String[] folderNames;
@@ -58,7 +58,9 @@ public abstract class FSAbstractPlotterFromResults {
 
     private void check() {
         if (plotter instanceof BoxPlotXCategoriesPlotter && Tools.isParseableToFloats(xTicks)) {
+            Double xStep = plotter.getxStep();
             plotter = new BoxPlotXNumbersPlotter();
+            plotter.setXStep(xStep);
         }
         if (colourIndexesForTraces != null && colourIndexesForTraces.length < folderNames.length) {
             throw new IllegalArgumentException("Incosistent specification of colours and folders. The counts do not match. Colours: " + colourIndexesForTraces.length + ", folders: " + folderNames.length);

@@ -42,10 +42,9 @@ import vm.searchSpace.distance.storedPrecomputedDistances.MainMemoryStoredPrecom
 public class FSKNNQueriesSeqScanWithFilteringMain {
 
     private static final Logger LOG = Logger.getLogger(FSKNNQueriesSeqScanWithFilteringMain.class.getName());
-    private static final Integer QUERIES_COUNT = 100;
+    private static final Integer QUERIES_COUNT = 1000;
 
     public static void main(String[] args) {
-        vm.javatools.Tools.sleep(4*60);
         boolean publicQueries = true;
         Dataset[] datasets = new Dataset[]{
 //            new FSDatasetInstances.WIKI_BGE_M3_SISAP26(),
@@ -64,9 +63,9 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
 //            new FSDatasetInstances.RandomDataset80Uniform(),
 //            new FSDatasetInstances.RandomDataset90Uniform(),
 //            new FSDatasetInstances.RandomDataset100Uniform(),
-//            new FSDatasetInstances.MOCAP10FPS(),
-//            new FSDatasetInstances.DeCAFDataset()
-//////            new FSDatasetInstances.MOCAP30FPS(),
+//            new FSDatasetInstances.MOCAP10FPS()
+//            new FSDatasetInstances.DeCAFDataset(),
+//            new FSDatasetInstances.MOCAP30FPS()
         };
 
         int k = GroundTruthEvaluator.K_IMPLICIT_FOR_QUERIES;
@@ -216,11 +215,11 @@ public class FSKNNQueriesSeqScanWithFilteringMain {
         DataDependentPtolemaicFiltering dataDependentPtolemaicFilteringRandomPivots = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(resultSetPrefix, dataset, pivotCount, false);
         DataDependentPtolemaicFiltering dataDependentPtolemaicFiltering = FSPtolemyInequalityWithLimitedAnglesCoefsStorageImpl.getLearnedInstance(resultSetPrefix, dataset, pivotCount, true);
         return new BoundsOnDistanceEstimation[]{
-            metricFiltering,
+//            metricFiltering,
             dataDependentMetricFiltering,
-            fourPointPropertyBased,
-            ptolemaicFilteringRandomPivots,
-            ptolemaicFiltering,
+//            fourPointPropertyBased,
+//            ptolemaicFilteringRandomPivots,
+//            ptolemaicFiltering,
             dataDependentPtolemaicFilteringRandomPivots,
             dataDependentPtolemaicFiltering
         };

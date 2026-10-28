@@ -1,9 +1,4 @@
 package vm.fs.plot.impl.paper.used.p2025ICDEPtolemaiosLimited;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 import org.jfree.chart.JFreeChart;
 import vm.colour.StandardColours;
 import vm.fs.plot.FSAbstractPlotterFromResults;

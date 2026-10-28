@@ -4,6 +4,7 @@
  */
 package vm.fs.plot.impl.paper.devel.p2024VLDBPtolemaiosLimited.random;
 
+import org.jfree.chart.JFreeChart;
 import vm.colour.StandardColours.COLOUR_NAME;
 import vm.fs.plot.FSAbstractPlotterFromResults;
 import vm.fs.plot.FSPlotFolders;
@@ -17,7 +18,7 @@ import vm.search.algorithm.SearchingAlgorithm;
  */
 public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromResults {
 
-    public static final Integer PIVOTS = 64;
+    public static final Integer PIVOTS = 128;
 
     public PlotPtolemaiosRandomData5Tech10_40(boolean plotOnlyPDF) {
         super(plotOnlyPDF);
@@ -30,8 +31,9 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
                 "Data-dep. Metric Filtering",
                 "Four Point Prop.",
                 "Ptolemaic Filtering",
-                "Ptolemaic with Dyn. Pivots",
-                "Data-dep. Ptolemaic Filering",
+                "Ptolemaic w. Dyn. Pivots",
+                "Data-dep. Pt.Filt. with Rand. P.",
+                "Data-dep. Ptolemaic Filtering",
                 "Sequential Brute Force"
         );
     }
@@ -44,6 +46,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
             COLOUR_NAME.C3_GREEN,
             COLOUR_NAME.C4_ORANGE,
             COLOUR_NAME.C6_BROWN,
+            COLOUR_NAME.C7_PURPLE,
             COLOUR_NAME.C5_VIOLET,
             COLOUR_NAME.CX_BLACK
         };
@@ -57,14 +60,9 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_FourPointBasedFiltering",
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_ptolemaios_" + PIVOTS + "LB_random_pivots",
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_ptolemaios_" + PIVOTS + "LB",
+                "2026_10_" + PIVOTS + "_pivots_30NN_data-dependent_ptolemaic_filtering_randomPivots_" + PIVOTS + "LB_random_pivots",
                 "2024_08_" + PIVOTS + "_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection_" + PIVOTS + "LB",
                 "ground_truth"
-        //                "2024_03_256_pivots_30NN_seq_triangle_inequality",
-        //                "2024_03_256_pivots_30NN_seq_data-dependent_metric_filtering",
-        //                "2024_03_256_pivots_30NN_seq_FourPointBasedFiltering",
-        //                "2024_03_256_pivots_30NN_seq_ptolemaios",
-        //                "2024_03_256_pivots_30NN_seq_data-dependent_generalised_ptolemaic_filtering_pivot_array_selection",
-        //                "ground_truth"
         );
     }
 
@@ -99,8 +97,16 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
 
     @Override
     public AbstractPlotter getPlotter() {
-        return new BoxPlotXCategoriesPlotter();
+        BoxPlotXCategoriesPlotter ret = new BoxPlotXCategoriesPlotter();
+        ret.setBoxWidthScale(0.8f);
+        ret.setForceHorizontalXLabels(true);
+        return ret;
     }
+
+//    @Override
+//    protected void storePDF(AbstractPlotter plotter, String path, JFreeChart plot) {
+//        plotter.storePlotPDF(path, plot, 3200, 600);
+//    }
 
     @Override
     public String getResultName() {
@@ -109,7 +115,7 @@ public class PlotPtolemaiosRandomData5Tech10_40 extends FSAbstractPlotterFromRes
 
     @Override
     public String getFolderForPlots() {
-        return FSPlotFolders.Y2024_PTOLEMAIOS_LIMITED;
+        return FSPlotFolders.Y2025_PTOLEMAIOS_LIMITEDRandom;
     }
 
     @Override
